@@ -1,121 +1,823 @@
 <template>
-	<view>
-		<view class="box">
-			<view class="text-box">
-				<input type="text" v-model="user" placeholder="请输入账号" />
-			</view>
-			<view class="text-box">
-				<input type="password" v-model="pwd" placeholder="请输入密码" />
-			</view>
-			
-			<view class="msg-box">
-				<p>静态登录用户信息在:commen/tim/user.js 中,登录用户为 user1~user9;密码随便输</p>
-				<p>测试/开发时请先更换为自己的IM腾讯云账户</p>
-				
-			</view>
-			<button type="primary" @click="loginBtn">登录</button>
-		</view>
+	<view class="container">
+	  <view class="header_box">
+	    <view class="index_box1">
+	      <image class="user_tx" :src="filter.imgIP('tx.png')"></image>
+	      <view class="sousuo_box" @tap="jump" data-url="/pages/search/search">
+	        <text class="iconfont iconsousuo"></text> 搜索人名代言号/商品/品牌
+	      </view>
+	      <view class="game_js" @tap="jump" data-url="/pages/game_js/game_js">
+	        <text class="iconfont iconic_help_px"></text>
+	        玩法介绍
+	      </view>
+	    </view>
+	    <view class="index_box1 index_box2">
+	      <view class="cur">代言动态<text></text></view>
+	      <view @tap="jump" data-url="/pages/daiyan_sc/daiyan_sc">代言商城</view>
+	      <view  @tap="jump" data-url="/pages/star_list/star_list?type=0">明星</view>
+	      <view @tap="jump" data-url="/pages/star_list/star_list?type=1">达人</view>
+	      <view @tap="jump" data-url="/pages/my_friends/my_friends">好友</view>
+	      <view @tap="jump" data-url="/pages/daiyan_ph/daiyan_ph">排行</view>
+	    </view>
+	  </view>
+	  <view class="index_box1 index_box3">
+	    <text class="iconfont iconyiping"></text>
+	    <view>您还有12件商品未代言，快来代言吧～</view>
+	  </view>
+	  <view class="index_box1 index_box4" @tap="jump" data-url="/pages/star_list/star_list?type=0">
+	    <view>明星达人代言人推荐：</view>
+	    <text>各种玩法尽在明星达人代言秀</text>
+	  </view>
+	  <scroll-view class="start_list" scroll-x>
+	    <view class="start_list1">
+	      <view class="start_li" v-for="(item,index) in start_li" @tap="jump" data-url="/pages/my_index/my_index">
+	        <view class="star_tx">
+	          <image :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+	          <view>
+	            <image src="/static/images/star_b.png"></image>
+	          </view>
+	        </view>
+	        <view class="star_name">范冰冰</view>
+	        <view class="star_btn">关注</view>
+	      </view>
+	    </view>
+	  </scroll-view>
+	  <view class="find_star" @tap="jump" data-url="/pages/daiyan_find/daiyan_find">
+	    <view class="find_tit">
+	      <view>寻找代言人:</view>
+	      <text>（赏金任务）</text>
+	    </view>
+	    <view class="find_sj">
+	      <view class="sj_list">
+	        <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+	        <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+	        <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+	        <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+	        <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+	      </view>
+	      <text class="iconfont iconnext3"></text>
+	    </view>
+	  </view>
+	  <view class="goods_index">
+	    <view  @tap="jump" data-url="/pages/xvideo/xvideo">
+	      <view class="goodstype_name">代言人短视频 <image src="/static/images/goods_type1.png"></image></view>
+	      <view class="goods_tip">已为您更新10个视频</view>
+	      <view class="goods_list">
+	        <view class="goods_li">
+	          <image class="goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
+	          <image class="goods_play" :src="filter.imgIP('goods_play.png')"></image>
+	        </view>
+	        <view class="goods_li">
+	          <image class="goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
+	          <image class="goods_play" :src="filter.imgIP('goods_play.png')"></image>
+	        </view>
+	      </view>
+	      <!-- <image src="/static/images/goods_type1.png"></image> -->
+	    </view>
+	    <view @tap="jump" data-url="/pages/goods_tj/goods_tj">
+	      <view class="goodstype_name goodstype_name1">好货推荐<image src="/static/images/goods_type2.png"></image></view>
+	      <view class="goods_tip">发现更多人气代言好货</view>
+	      <view class="goods_list">
+	        <view class="goods_li">
+	          <image class="goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
+	        </view>
+	        <view class="goods_li">
+	          <image class="goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
+	        </view>
+	      </view>
+	      <!-- <image src="/static/images/goods_type2.png"></image> -->
+	    </view>
+	  </view>
+	  <!-- 代言圈 -->
+	  <view class="quan_list">
+	    <view class="quan_li" v-for="(item,idx) in start_li">
+	      <view class="quan_user_box">
+	        <image @tap="jump" data-url="/pages/my_index/my_index" class="quan_user_tx" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+	        <view class="quan_user_msg">
+	          <view class="quan_user_name">倪小丫 <image src="/static/images/star_b.png"></image></view>
+	          <view class="quan_user_time"><text>10-14 18:03</text><text>演员</text></view>
+	        </view>
+	        <view v-if="item.tp_type==1" class="quan_user_btn" @tap.stop="toupiao" :data-idx="idx">为我投票</view>
+	        <view v-else class="quan_user_btn quan_user_btn1" >已投票</view>
+	      </view>
+	      <view class="quan_msg">
+	        <view class="oh4  quan_msg_text">可能这辈子都戒不掉米饭了，吃好饭的用好锅，我为苏泊尔智能电饭锅代言。</view>
+	        <view v-if="idx==2" class="quan_msg_img">
+	          <image class="one" :src="filter.imgIP('goods.png')" mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
+	        </view>
+	        <view v-else class="quan_msg_img">
+	          <image :src="filter.imgIP('goods.png')" mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
+	          <image :src="filter.imgIP('goods1.png')" mode="aspectFill" :data-src="filter.imgIP('goods1.png')" @tap.stop="pveimg"></image>
+	          <image :src="filter.imgIP('goods.png')" mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
+	        </view>
+	      </view>
+	      <view class="quan_goods"  @tap="jump" data-url="/pages/details/details">
+	        <image class="quan_goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
+	        <view class="quan_goods_msg">
+	          <view class="quan_goods_name oh1">苏泊尔IH家用大容量智能电饭锅</view>
+	          <view class="quan_goods_pri">
+	            <text class="pri1">¥668</text>
+	            <text class="pri2">¥1368</text>
+	          </view>
+	          <view class="quan_goods_btn">
+	            <view class="goods_btn1">库存:11000</view>
+	            <view  class="goods_btn2"><text>5200+</text>代言人</view>
+	          </view>
+	        </view>
+	      </view>
+	      <view class="quan_li_cz">
+	        <!-- <text class="iconfont iconcaozuo" @tap.stop=""></text>
+	        <view class="cz_li">
+	          <view>
+	            <text class="iconfont iconhongxinicon"></text>赞
+	          </view>
+	          |
+	          <view>
+	           <text class="iconfont iconpinglun"></text>评论
+	          </view>
+	        </view> -->
+	        <view class="cz_li">跟随购买：6321</view>
+	        <view class="cz_li" @tap.stop="jump" data-url="/pages/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>1566</view>
+	        <view class="cz_li" @tap.stop="zan" :data-id="idx"><text class="iconfont iconzan"></text>1566</view>
+	      </view>
+	    </view>
+	  </view>
+	  <!-- <view class="zxkf_btn">
+			<button open-type="contact" bindcontact="kffuc"></button>
+			<image src="../../static/images/zxkf.png"></image>
+		</view> -->
 	</view>
 </template>
-
+<script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
-	import userList from '../../commen/tim/user.js';
-	import {mapState} from "vuex";
+	import service from '../../service.js';
 	export default {
 		data() {
 			return {
-				user: '',
-				data: null,
-				pwd: '',
-
+				banner: '',
+				homeSeek: '',
+				homeTeacher: '',
+				homeVideo: '',
+				start_li:[
+				  {
+				    name: '未达标商户',
+				    img: '/static/images/1_03.jpg',
+				    url: '/pages/list/list',
+				    tp_type: '1'
+				  },
+				  {
+				    name: '达标商户',
+				    img: '/static/images/1_05.jpg',
+				    url: '/pages/list/list',
+				    tp_type: '1'
+				  },
+				  {
+				    name: '巡机单',
+				    img: '/static/images/1_09.jpg',
+				    url: '/pages/list/list',
+				    tp_type: '1'
+				  },
+				  {
+				    name: '已巡机',
+				    img: '/static/images/1_10.jpg',
+				    url: '/pages/list/list',
+				    tp_type: '1'
+				  },
+				  {
+				    name: '装机单',
+				    img: '/static/images/1_13.jpg',
+				    url: '/pages/list/list',
+				    tp_type: '1'
+				  },
+				  {
+				    name: '已装机',
+				    img: '/static/images/1_14.jpg',
+				    url: '/pages/list/list',
+				    tp_type: '1'
+				  },
+				  {
+				    name: '维护单',
+				    img: '/static/images/1_17.jpg',
+				    url: '/pages/list/list',
+				    tp_type: '1'
+				  },
+				  {
+				    name: '已维护',
+				    img: '/static/images/1_18.jpg',
+				    url: '/pages/list/list',
+				    type: '7'
+				  },
+				  {
+				    name: '换机单',
+				    img: '/static/images/2_09.jpg',
+				    url: '/pages/list/list',
+				    type: '8'
+				  },
+				  {
+				    name: '已换机',
+				    img: '/static/images/2_10.jpg',
+				    url: '/pages/list/list',
+				    type: '9'
+				  },
+				  {
+				    name: '撤机单',
+				    img: '/static/images/2_13.jpg',
+				    url: '/pages/list/list',
+				    type: '10'
+				  },
+				  {
+				    name: '已撤机',
+				    img: '/static/images/2_14.jpg',
+				    url: '/pages/list/list',
+				    type: '11'
+				  },
+				  {
+				    name: '终端交易查询',
+				    img: '/static/images/2_17.jpg',
+				    url: '/pages/list/list',
+				    type: '12'
+				  },
+				  {
+				    name: '应收列表',
+				    img: '/static/images/2_18.jpg',
+				    url: '/pages/list/list',
+				    type: '13'
+				  },
+				  
+				],
+				indicatorDots: true,
+				autoplay: true,
+				interval: 3000,
+				duration: 1000,
+				circular: true
 			}
 		},
-		computed:{
-			...mapState({
-				isLogin:state=>state.isLogin,
-				isSDKReady:state=>state.isSDKReady
-			})
+		onPullDownRefresh: function () {
+		  wx.stopPullDownRefresh();
+		  // this.getdata()
 		},
-		onShow() {
-			this.$store.commit('reset')
+		
+		/**
+		 * 页面上拉触底事件的处理函数
+		 */
+		onReachBottom: function () {
+		
 		},
-		onLoad() {
-			
+		
+		/**
+		 * 用户点击右上角分享
+		 */
+		onShareAppMessage: function () {
+		
 		},
-
 		methods: {
-			loginBtn() {
-				if (this.user && this.pwd) {  //获取user的userId,实际接口为后端返回（user基础信息+userSig）
-					let userInfo = null
-					userList.forEach((item) => {
-						if (item.user == this.user) {
-							userInfo = item
-						}
-					})
-					if (userInfo) {		//根据返回的userID 以及 userSig 登录tim
-						let promise = this.tim.login({
-							userID: userInfo.userId,
-							userSig: userInfo.userSig
-						});
-						promise.then((res) => {
-							console.log(res)
-							//登录成功后 更新登录状态
-							this.$store.commit("toggleIsLogin", true);
-							//自己平台的用户基础信息
-							uni.setStorageSync('userInfo', JSON.stringify(userInfo))
-							//tim 返回的用户信息
-							uni.setStorageSync('userTIMInfo', JSON.stringify(res.data))
-							console.log('userTIMInfo========>'+JSON.stringify(res.data))
-							uni.reLaunch({
-								url: '../tim/record'
-							})
-						}).catch((err) => {
-							console.warn('login error:', err); // 登录失败的相关信息
-						});
-					} else {
-						uni.showToast({
-							icon: 'none',
-							title: '用户不存在',
-							duration: 1500
-						});
-					}
-				} else {
-					uni.showToast({
-						icon: 'none',
-						title: '请将账户密码输入完整',
-						duration: 1500
-					});
-				}
+			toupiao(e){
+			  var idx = e.currentTarget.dataset.idx
+			  var newdata=this.start_li
+			  newdata[idx].tp_type=2
+			  this.start_li= newdata
 			},
-
-
+			getdata(){
+			  ///api/homeIndex
+			  var that = this
+			  const htmlStatus1 = htmlStatus.default(that)
+			  wx.request({
+			    url: app.IPurl + '/api/homeIndex',
+			    data: {},
+			    header: {
+			      'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    dataType: 'json',
+			    method: 'get',
+			    success(res) {
+			      // 停止下拉动作
+			      wx.stopPullDownRefresh();
+			      htmlStatus1.finish()
+			      console.log(res.data)
+			      if (res.data.code == 1) {  //数据为空
+			
+			        that.setData({
+			          banner: res.data.data.homeBanner,
+			          homeSeek: res.data.data.homeSeek,
+			          homeTeacher: res.data.data.homeTeacher,
+			          homeVideo: res.data.data.homeVideo,
+			        })
+			      } else {
+			        htmlStatus1.error()
+			        wx.showToast({
+			          icon: 'none',
+			          title: '加载失败'
+			        })
+			
+			      }
+			    },
+			    fail() {
+			      // 停止下拉动作
+			      wx.stopPullDownRefresh();
+			      htmlStatus1.error()
+			      wx.showToast({
+			        icon: 'none',
+			        title: '加载失败'
+			      })
+			
+			    },
+			    complete() {
+			      // // 停止下拉动作
+			      // wx.stopPullDownRefresh();
+			    }
+			  })
+			},
+			zan(e){
+			  console.log(e.currentTarget.dataset.id)
+			},
+			jump(e){
+			  service.jump(e)
+			},
+			pveimg(e) {
+			  service.pveimg(e)
+			},
+			kffuc(e){
+				console.log(e)
+			},
+			retry() {
+			  this.getdata()
+			},
 		}
 	}
 </script>
 
-<style scoped lang="scss">
-	.box {
-		width: 80%;
-		margin: 0 auto;
+<style scoped>
+	.container{
+	  width: 100%;
+	  min-height: 100vh;
+	  background: #f5f5f5;
+	  /* padding: 30rpx 47rpx; */
 	}
-
+	.header_box{
+	  width: 100%;
+	  background:linear-gradient(180deg,rgba(245,195,61,1),rgba(254,133,53,1));
+	}
+	.index_box1{
+	  width: 100%;
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  padding: 5rpx 29rpx 5rpx;
+	  box-sizing: border-box;
+	}
 	
-	.text-box input{
-		height: 80rpx;
-		border-bottom: 1px solid #EEEEEE;
-		margin: 20rpx 0;
-		font-size: 28rpx;
-		color: #f66;
-		line-height: 80rpx;
+	.user_tx{
+	  width:74rpx;
+	  height:74rpx;
+	  border-radius:37px;
+	  margin-right: 10rpx;
 	}
-	.text-box input:focus{
-		
-		border-bottom: 1px solid #f06c7a;
+	.sousuo_box{
+	  flex: 1;
+	  height:55rpx;
+	  background:rgba(255,255,255,1);
+	  border-radius:28px;
+	  font-size: 24rpx!important;
+	  color: #BBBBBB!important;
+	  box-sizing: border-box;
+	  padding: 0 20rpx;
+	  display: flex;
+	  align-items: center;
 	}
-	.msg-box{
-		margin:50rpx 0;
-		color: #f06c7a;
+	.sousuo_box text{
+	  margin-right: 20rpx;
 		font-size: 24rpx;
-		line-height: 40rpx;
+		color: #BBBBBB;
+	}
+	.game_js{
+	  width:165rpx;
+	  height:45rpx;
+	  background:linear-gradient(180deg,rgba(252,139,17,1),rgba(255,85,25,1));
+	  opacity:0.8;
+	  border-radius:0px 23px 23px 0px;
+	  margin-left: 30rpx;
+	  font-size: 24rpx;
+	  color: #fff;
+	  display: flex;
+	  align-items: center;
+	  padding-left: 50rpx;
+	  box-sizing: border-box;
+	  position: relative;
+	}
+	.game_js text{
+	  position: absolute;
+	  left: -20rpx;
+	  font-size: 60rpx;
+		color: #fff;
+	}
+	/* index_box2 */
+	.index_box2 {
+	  padding: 5rpx 29rpx 20rpx;
+	}
+	.index_box2 view{
+	  color: #fff;
+	  font-size: 30rpx;
+	  position: relative;
+	}
+	.index_box2  .cur text{
+	  content: '';
+	  position: absolute;
+	  bottom: -8rpx;
+	  left: 50%;
+	  margin-left: -25rpx;
+	  width:50rpx;
+	  height:6rpx;
+	  background:rgba(255,251,240,1);
+	  border-radius:3px;
+	}
+	.index_box3{
+	  height:52rpx;
+	  background: #FFF4EF;
+	  font-size: 22rpx;
+	  color: #f9b234;
+	  justify-content: flex-start;
+	  padding: 10rpx 28rpx;
+	  align-items: center;
+	}
+	.index_box3 text{
+	  margin-right: 20rpx;
+	  font-size: 24rpx;
+		color: #f9b234;
+	}
+	.index_box4{
+	  height:82rpx;
+	  background: #fff;
+	  justify-content: space-between;
+	  font-size: 24rpx;
+	  color: #999;
+	}
+	.index_box4 text{
+	  color: #FE8735;
+	}
+	.start_list{
+	  width: 100%;
+	  
+	  
+	  background: #fff;
+	  height: 286rpx;
+	  display: flex;
+	  white-space: nowrap;
+	  margin-bottom: 20rpx;
+	
+	}
+	.start_list1{
+	  padding: 10rpx 29rpx 40rpx;
+	  box-sizing: border-box;
+	  height: 286rpx;
+	}
+	.start_li{
+	  display: inline-flex;
+	  width:198rpx;
+	  height:246rpx;
+	  background:rgba(255,255,255,1);
+	  box-shadow:0px 3rpx 20rpx 0px rgba(119,119,119,0.3);
+	  border-radius:10rpx;
+	  margin-right: 20rpx;
+	  flex-direction: column;
+	  align-items: center;
+	  padding: 17rpx;
+	  box-sizing: border-box;
+	}
+	
+	.star_tx{
+	  width:82rpx;
+	  height:82rpx;
+	  border-radius:50%;
+	  position: relative;
+	  margin-bottom: 20rpx;
+	}
+	.star_tx>image{
+	  width:82rpx;
+	  height:82rpx;
+	  border-radius:50%;
+	  position: relative;
+	  z-index: 1;
+	  
+	}
+	.star_tx view image{
+	  width:27rpx;
+	  height:28rpx;
+	  position: absolute;
+	  bottom: 0;
+	  right: -5rpx;
+	  z-index: 2;
+	}
+	.star_name{
+	  font-size: 30rpx;
+	  line-height: 30rpx;
+	  margin-bottom: 20rpx;
+	  color: #333;
+	}
+	.star_btn{
+	  width: 100%;
+	  height:56rpx;
+	  background:rgba(254,135,53,1);
+	  border-radius:10rpx;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  font-size: 30rpx;
+	  color: #fff;
+	}
+	.find_star{
+	  background: #fff;
+	  padding: 19rpx 29rpx;
+	  width: 100%;
+	  box-sizing: border-box;
+	  font-size: 30rpx;
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	  margin-bottom: 20rpx;
+	}
+	.find_tit{
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: space-around
+	}
+	.find_tit text{
+	  font-size: 24rpx;
+	  color: #FE8735;
+	}
+	.find_sj{
+	 
+	  display: flex;
+	  align-items: center;
+	}
+	.find_sj>text{
+	  color: #EEEEEE;
+	  font-size: 24rpx;
+	  margin-left: 20rpx;
+	}
+	.sj_list{
+	  display: flex;
+	  flex-direction: row-reverse;
+	}
+	.sj_li{
+	  width:96rpx;
+	  height:96rpx;
+	  background:rgba(255,255,255,1);
+	  box-shadow:0px 3rpx 10rpx 0px rgba(119,119,119,0.2);
+	  border-radius:50%;
+	  position: relative;
+	  z-index: 10;
+	}
+	.sj_li:nth-child(2){
+	  position: relative;
+	  left: 20rpx;
+	  z-index: 9;
+	}
+	.sj_li:nth-child(3){
+	  position: relative;
+	  left: 40rpx;
+	  z-index: 8;
+	}
+	.sj_li:nth-child(4){
+	  position: relative;
+	  left: 60rpx;
+	  z-index: 7;
+	}
+	.sj_li:nth-child(5){
+	  position: relative;
+	  left: 80rpx;
+	  z-index: 6;
+	}
+	/* goods_index */
+	
+	.goods_index{
+	  width: 100%;
+	  background: #fff;
+	  display: flex;
+	  margin-bottom: 20rpx;
+	}
+	.goods_index>view{
+	  flex: 1;
+	  padding: 15rpx 18rpx;
+	  box-sizing: border-box;
+	}
+	.goods_index>view+view{
+	  border-left:1rpx solid #eee;
+	}
+	.goodstype_name{
+	  font-size: 30rpx;
+	  color: #333;
+	  font-weight: bold;
+	  display: flex;
+	  align-items: center;
+	}
+	.goodstype_name image{
+	  width: 142rpx;
+	  height: 40rpx;
+	  margin-left: 5rpx;
+	}
+	.goodstype_name1 image{
+	  width: 40rpx;
+	}
+	.goods_tip{
+	  margin-top: 8rpx;
+	  font-size: 24rpx;
+	  color: #999;
+	}
+	.goods_list{
+	  margin-top: 30rpx;
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-around;
+	  padding-bottom: 10rpx;
+	}
+	.goods_li{
+	  position: relative;
+	  width:156rpx;
+	  height:156rpx;
+	}
+	.goods_img{
+	 width:156rpx;
+	  height:156rpx;
+	  border-radius:12rpx;
+	  position: relative;
+	  z-index: 1
+	}
+	.goods_play{
+	  position: absolute;
+	  bottom: 10rpx;
+	  right: 10rpx;
+	  z-index: 2;
+	  width:38rpx;
+	  height:38rpx;
+	}
+	/* quan */
+	.quan_list{
+	  width: 100%;
+	}
+	.quan_li{
+	  width: 100%;
+	  background: #fff;
+	  padding: 23rpx 28rpx 0;
+	  box-sizing: border-box;
+	}
+	.quan_li+.quan_li{
+	  margin-top: 20rpx;
+	}
+	.quan_user_box{
+	  display: flex;
+	  align-items: center;
+	}
+	.quan_user_tx{
+	  width:74rpx;
+	  height:74rpx;
+	  /* background:rgba(252,68,56,1); */
+	  border-radius:37rpx;
+	  margin-right: 22rpx;
+	}
+	.quan_user_btn{
+	  font-size: 28rpx;
+	  color: #fff;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  width:168rpx;
+	  height:56rpx;
+	  background:rgba(254,58,53,1);
+	  border-radius:10rpx;
+	  margin-left: 20rpx;
+	}
+	.quan_user_btn1{
+	  background: #ddd;
+	}
+	.quan_user_msg{
+	  flex: 1;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: space-around;
+	}
+	.quan_user_name{
+	  font-size: 28rpx;
+	  color: #6876BD;
+	  display: flex;
+	  align-items: center;
+	}
+	.quan_user_name image{
+	  width: 28rpx;
+	  height: 28rpx;
+	  margin-left: 10rpx;
+	}
+	.quan_user_time{
+	  font-size: 22rpx;
+	  color: #999;
+	}
+	.quan_user_time text{
+	  margin-right: 20rpx;
+	}
+	.quan_msg{
+	  width: 100%;
+	  padding-left:96rpx;
+	  box-sizing: border-box; 
+	  margin-top: 16rpx;
+	  font-size: 30rpx;
+	  color: #333;
+	
+	}
+	.quan_msg_text{
+	  line-height: 40rpx;
+	  margin-bottom: 20rpx;
+	}
+	.quan_msg_img image{
+	  width:196rpx;
+	  height:196rpx;
+	  border-radius:10rpx;
+	  margin-right: 4rpx;
+	  margin-bottom: 4rpx;
+	}
+	.quan_msg_img image:nth-child(3n){
+	  margin-right: 0;
+	}
+	.quan_msg_img image.one{
+	  max-width: 100%;
+	  
+	  border-radius:10px;
+	}
+	.quan_goods{
+	  margin-top: 16rpx;
+	  width: 100%;
+	  height:238rpx;
+	  background:rgba(255,255,255,1);
+	  box-shadow:0px 3px 20rpx 0px rgba(119,119,119,0.3);
+	  border-radius:10rpx;
+	  padding: 20rpx;
+	  box-sizing: border-box;
+	  display: flex;
+	}
+	.quan_goods_img{
+	  width:196rpx;
+	  height:196rpx;
+	  border-radius:10rpx;
+	  margin-right: 20rpx;
+	}
+	.quan_goods_msg{
+	  flex: 1;
+	}
+	.quan_goods_name{
+	  font-size: 30rpx;
+	  color: #333;
+	  margin-bottom: 22rpx;
+	}
+	.quan_goods_pri{
+	  color: #EB4443;
+	  font-size: 30rpx;
+	  margin-bottom: 50rpx;
+	}
+	.quan_goods_pri .pri2{
+	  margin-left: 20rpx;
+	  text-decoration:line-through;
+	  color:#999;
+	}
+	.quan_goods_btn{
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  font-size: 24rpx;
+	  color:#333;
+	}
+	.goods_btn1{
+	  padding: 0 9rpx;
+	  height:40rpx;
+	  line-height: 40rpx;
+	  background:rgba(254,135,53,1);
+	  border-radius:10rpx;
+	  color: #fff;
+	}
+	.goods_btn2 text{
+	  color: #FE8735;
+	}
+	.quan_li_cz{
+	  width: 100%;
+	  margin-top: 15rpx;
+	  height: 70rpx;
+	  display: flex;
+	  /* flex-direction: row-reverse; */
+	  justify-content: space-between;
+	  align-items: center;
+	}
+	.quan_li_cz .iconcaozuo{
+	  font-size: 48rpx;
+	  color: #BBBBBB;
+	}
+	.cz_li{
+	 
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-around;
+	  color: #999;
+	  font-size: 24rpx;
+	}
+	.cz_li text{
+	  font-size: 26rpx;
+	  color: #999;
+	  margin-right: 10rpx;
 	}
 </style>

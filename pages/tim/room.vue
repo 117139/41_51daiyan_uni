@@ -311,7 +311,9 @@
 			},
 		},
 		onLoad(option) {
-		
+			if(!this.hasLogin){
+				return
+			}
 			this.userInfo = JSON.parse(uni.getStorageSync('userInfo'))
 			this.toUserId = this.$store.state.toUserId
 			this.conversationActive = this.$store.state.conversationActive

@@ -1,0 +1,129 @@
+<template>
+	<view>
+		<view class="container">
+		  <view class="fx_li" @tap="jump" data-url="/pages/daiyan_find/daiyan_find">
+		    <image class="li_icon" src="/static/images/images/faxian_02.jpg"></image>
+				<view class="fx_tit">寻找代言人</view>
+				<view class="fx_r_img">
+					<image src="../../static/images/tx.png"></image>
+					<!-- <text></text> -->
+				</view>
+		    <text class="iconfont iconnext3"></text>
+		  </view>
+		  <view class="fx_li mt20" @tap="jump" data-url="/pages/daiyan_sc/daiyan_sc">
+		    <image class="li_icon" src="/static/images/images/faxian_05.jpg"></image>
+				<view class="fx_tit">代言商城</view>
+		    <text class="iconfont iconnext3"></text>
+		  </view>
+		  <view class="fx_li" @tap="jump" data-url="/pages/star_list/star_list?type=0">
+		    <image class="li_icon" src="/static/images/images/faxian_07.jpg"></image>
+				<view class="fx_tit">明星达人秀</view>
+		    <text class="iconfont iconnext3"></text>
+		  </view>
+		  <view class="fx_li" @tap="jump" data-url="/pages/daiyan_quan/daiyan_quan">
+		    <image class="li_icon" src="/static/images/images/faxian_09.jpg"></image>
+				<view class="fx_tit">代言圈</view>
+		    <text class="iconfont iconnext3"></text>
+		  </view>
+		  <view class="fx_li mt20" @tap="jump" data-url="/pages/my_friends/my_friends">
+		    <image class="li_icon" src="/static/images/images/faxian_11.jpg"></image>
+				<view class="fx_tit">我的好友</view>
+		    <text class="iconfont iconnext3"></text>
+		  </view>
+		  <view class="fx_li"  @tap="jump" data-url="/pages/my_guanzhu/my_guanzhu">
+		    <image class="li_icon" src="/static/images/images/faxian_13.jpg"></image>
+				<view class="fx_tit">我的关注</view>
+		    <text class="iconfont iconnext3"></text>
+		  </view>
+		  <view class="fx_li" @tap="jump" data-url="/pages/my_fans/my_fans">
+		    <image class="li_icon" src="/static/images/images/faxian_15.jpg"></image>
+				<view class="fx_tit">我的粉丝</view>
+		    <text class="iconfont iconnext3"></text>
+		  </view>
+		  <view class="fx_li mt20" @tap="jump" data-url="/pages/daiyan_ph/daiyan_ph">
+		    <image class="li_icon" src="/static/images/images/faxian_17.jpg"></image>
+				<view class="fx_tit">代言排行</view>
+		    <text class="iconfont iconnext3"></text>
+		  </view>
+		  <view class="fx_li mt20" @tap="jump" data-url="/pages/goods_youxuan/goods_youxuan">
+		    <image class="li_icon" src="/static/images/images/fx_02.jpg"></image>
+				<view class="fx_tit">优选代言池</view>
+		    <text class="iconfont iconnext3"></text>
+		  </view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import service from '../../service.js';
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			jump(e){
+			  service.jump(e)
+			},
+			pveimg(e) {
+			  service.pveimg(e)
+			},
+		}
+	}
+</script>
+
+<style scoped>
+.container{
+  width: 100%;
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+.fx_li{
+  width: 100%;
+  background: #fff;
+  height: 90rpx;
+  padding-right: 28rpx;
+	display: flex;
+	align-items: center;
+	margin-bottom: 3rpx;
+	
+	box-sizing: border-box;
+}
+.li_icon{
+  width: 90rpx;
+  height: 90rpx;
+}
+.fx_tit{
+	flex:1;
+	display: flex;
+	align-items: center;
+	font-size: 30rpx;
+	color: #333;
+}
+.fx_r_img{
+	position: relative;
+}
+.fx_r_img image{
+	width: 67rpx;
+	height: 67rpx;
+  display: block;
+}
+.fx_r_img text{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 14rpx;
+	height: 14rpx;
+	background: #FE3A35;
+	border-radius:50%;
+}
+.iconnext3{
+	margin-left: 20rpx;
+	font-size: 28rpx;
+	color: #BBBBBB;
+}
+.mt20{
+	margin-top: 20rpx;
+}
+</style>

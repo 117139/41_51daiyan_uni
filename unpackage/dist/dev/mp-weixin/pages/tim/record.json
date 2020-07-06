@@ -1,4 +1,7 @@
 {
-  "navigationBarTitleText": "uni-app",
+  "navigationBarTitleText": "代言消息",
+  "backgroundColor": "#f5f5f5",
+  "navigationBarBackgroundColor": "#F5C33D",
+  "navigationBarTextStyle": "white",
   "usingComponents": {}
 }

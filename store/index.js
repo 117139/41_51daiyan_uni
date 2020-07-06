@@ -13,9 +13,27 @@ const store = new Vuex.Store({
 		conversationList:[],		//会话列表
 		currentMessageList:[],			//消息列表
 		
-		
+		forcedLogin: false,
+		hasLogin: false,
+		platform:'',
+		shouquan:'',
+		userName: "游客"
 	},
-    mutations: {
+   mutations: {
+		login(state, userName) {
+			state.userName = userName || '新用户';
+			state.hasLogin = true;
+		},
+		setplatform(state, platform) {
+			state.platform = platform || 'android';
+		},
+		logout(state) {
+			state.userName = "";
+			state.hasLogin = false;
+		},
+		wxshouquan(state, shouquan) {
+			state.shouquan = shouquan || '';
+		},
 		//更新登录状态
 		toggleIsLogin(state, isLogin) {
 		  state.isLogin = typeof isLogin === 'undefined' ? !state.isLogin : isLogin

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="user-box">
+		<!-- <view class="user-box">
 			<view class="nav-tab">
 				<view :class="isActive ==0 ?'tab-item-active tab-item': 'tab-item'" @click="changeTabBtn(0)">聊天记录</view>
 				<view :class="isActive ==1 ?'tab-item-active tab-item1': 'tab-item1'" @click="changeTabBtn(1)">好友列表</view>
@@ -8,9 +8,54 @@
 
 				<view class="clear-box"></view>
 			</view>
-		</view>
+		</view> -->
 		<!-- 聊天记录 会话列表 -->
-		<view class="conversition-box" v-if="isActive ==0">
+		<view class="conversition-box" v-if="hasLogin">
+			<view class="xx_li" bindtap="jump" data-url="/pages/xiaoxi_list/xiaoxi_list?type=0">
+				<view class="user_tx" >
+					<image class="user_tx" src="../../static/images/xtxx.png"></image>
+					<text></text>
+				</view>
+				<view class="xx_msg">
+					<view class="to_name">
+						<text >系统消息</text>
+						<text class="time">17:30</text>
+					</view>
+					<view class="to_msg oh1">
+						您参与的【华为优选代言人活动】即将开始，敬请关注。
+					</view>
+				</view>
+			</view>
+			<!-- <view class="xx_li" bindtap="jump" data-url="/pages/lts/lts">
+				<view class="user_tx" >
+					<image class="user_tx" src="../../static/images/wlxx.png"></image>
+					<text></text>
+				</view>
+				<view class="xx_msg">
+					<view class="to_name">
+						<text >物流信息</text>
+						<text class="time">17:30</text>
+					</view>
+					<view class="to_msg oh1">
+						您参与的【华为优选代言人活动】即将开始，敬请关注。
+					</view>
+				</view>
+			</view> -->
+			<view class="xx_li" bindtap="jump" data-url="/pages/xiaoxi_list/xiaoxi_list?type=1">
+				<view class="user_tx" >
+					<image class="user_tx" src="../../static/images/dyxx.png"></image>
+					<text></text>
+				</view>
+				<view class="xx_msg">
+					<view class="to_name">
+						<text >代言收益</text>
+						<text class="time">17:30</text>
+					</view>
+					<view class="to_msg oh1">
+						您代言钱包进账3元，余额变为¥235。
+					</view>
+				</view>
+			</view>
 			<view class="list-box" v-if="conversationList && conversationList.length>0">
 				<view v-for="(item,index) in conversationList" :key="index" @click="toRoom(item)">
 					<view class="item-box">
@@ -43,19 +88,9 @@
 
 
 		<!-- 好友列表 -->
-		<view class="user-box" v-if="isActive ==1">
-			<view class="list-box">
-				<view class="user-item-box" v-for="(item,index) in friendList" :key="index" @click="checkUserToRoom(item)">
-					<view class="user-img">
-						<image :src="item.img" alt=""></image>
-					</view>
-					<view class="user-name">
-						{{item.user}}
-					</view>
-				</view>
-			</view>
+		<view class="user-box" v-if="!hasLogin">
 
-			<view class="btn" style="margin-top: 40rpx;"><button type="default" @click="createGroup()">创建群组</button></view>
+			<view class="btn" style="margin-top: 40%;"><button type="default" @tap="gologin">授权登录</button></view>
 		</view>
 
 	</view>
@@ -64,8 +99,9 @@
 <script>
 	import userList from '../../commen/tim/user.js'
 	import {
-		mapState
-	} from "vuex";
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		name: 'record',
 		data() {
@@ -75,15 +111,41 @@
 				isActive: 0, //默认聊天记录
 			}
 		},
+		onLoad() {
+			if(this.hasLogin){
+				console.log('...')
+				console.log(this.conversationList)
+				let userInfo = JSON.parse(uni.getStorageSync('userInfo'))
+				this.friendList = []
+				userList.forEach(item => {
+					if (item.userId != userInfo.userId) {
+						console.log(item)
+						this.friendList.push(item)
+					}
+				})
+			}
+			
+		
+		},
 		onShow() {
-			uni.hideHomeButton()
+			if(this.hasLogin){
+				if (this.isSDKReady) {
+					console.log('2222')
+					this.getConversationList()
+				} else {
+					console.log('333333')
+				}
+			}
+			
 		},
 		computed: {
-			...mapState({
-				isLogin: state => state.isLogin,
-				isSDKReady: state => state.isSDKReady,
-				conversationList: state => state.conversationList,
-			})
+			...mapState([
+				'hasLogin',
+				'forcedLogin',
+				'isLogin',
+				'isSDKReady',
+				'conversationList'
+			])
 		},
 		watch: {
 			isSDKReady(val) {
@@ -99,6 +161,12 @@
 
 		},
 		methods: {
+			
+			gologin(){
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+			},
 			createGroup() {
 				let promise = this.tim.createGroup({
 					type: this.$TIM.TYPES.GRP_PUBLIC,
@@ -172,7 +240,7 @@
 				let promise = this.tim.getConversationList();
 				promise.then((res) => {
 					let conversationList = res.data.conversationList; // 会话列表，用该列表覆盖原有的会话列表
-					if (conversationList.length) {
+					if (conversationList.length>0) {
 
 						//将返回的会话列表拼接上 用户的基本资料  
 						//说明：如果已经将用户信息 提交到tim服务端了 就不需要再次拼接
@@ -197,34 +265,62 @@
 			}
 
 		},
-		onShow() {
-			if (this.isSDKReady) {
-				console.log('2222')
-				this.getConversationList()
-			} else {
-				console.log('333333')
-			}
-		},
-		onLoad() {
-			console.log('...')
-			console.log(this.conversationList)
-			let userInfo = JSON.parse(uni.getStorageSync('userInfo'))
-			this.friendList = []
-			userList.forEach(item => {
-				if (item.userId != userInfo.userId) {
-					console.log(item)
-					this.friendList.push(item)
-				}
-			})
-
-		}
+		
 	}
 </script>
 
 <style scoped lange="scss">
+	.xx_li{
+		width: 100%;
+		background: #FFF;
+		padding: 20rpx 22rpx;
+		box-sizing: border-box;
+		border-bottom: 1px solid #eee;
+		display: flex;
+		align-items: center;
+	}
+	.user_tx{
+		width:82rpx;
+		height:82rpx;
+		border-radius:50%;
+		position: relative;
+		margin-right: 20rpx;
+	}
+	.user_tx text{
+		width:14rpx;
+		height:14rpx;
+		background:rgba(254,58,53,1);
+		border-radius:50%;
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+	.xx_msg{
+		flex: 1;
+	}
+	.to_name{
+		width: 100%;
+		display: flex;
+		align-items: center;
+		margin-bottom: 10rpx;
+		font-size: 30rpx;
+		color: #333;
+		justify-content: space-between;
+	}
+	.to_name .time{
+		font-size: 24rpx;
+		color: #999;
+	}
+	.to_msg{
+		color: #999;
+		font-size: 24rpx;
+	}
+	
+	
+	
 	.list-box {
-		width: 94%;
-		margin: 40rpx auto;
+		width: 100%;
+		margin: 0rpx auto;
 	}
 
 	.item-box {
@@ -319,9 +415,14 @@
 	}
 
 	.msg-box {
-		line-height: 30rpx;
+		display: flex;
+		width: 100%;
+		line-height: 160rpx;
 		font-size: 28rpx;
 		color: #666;
+		text-align: center;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.user-item-box {

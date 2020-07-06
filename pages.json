@@ -3,13 +3,38 @@
 		{
 			"path": "pages/index/index",
 			"style": {
+				"navigationBarTitleText": "51代言",
+				"backgroundColor": "#f5f5f5",
+				"navigationBarBackgroundColor":"#F5C33D",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/index0/index0",
+			"style": {
 				"navigationBarTitleText": "uni-app"
+			}
+		},
+		
+		{
+			"path": "pages/faxian/faxian",
+			"style": {
+				"navigationBarTitleText": "发现"
+			}
+		},
+		{
+			"path": "pages/car/car",
+			"style": {
+				"navigationBarTitleText": "购物车"
 			}
 		},
 		{
 			"path": "pages/tim/record",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "代言消息",
+				"backgroundColor": "#f5f5f5",
+				"navigationBarBackgroundColor": "#F5C33D",
+				"navigationBarTextStyle": "white"
 			}
 		},
 		{
@@ -20,13 +45,118 @@
 					"softinputMode": "adjustResize"
 				}
 			}
-		}
-	],
+		},
+		{
+			"path": "pages/my/my",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"backgroundColor": "#f5f5f5",
+				"navigationBarBackgroundColor": "#F5C33D",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+					"path" : "pages/login/login",
+					"style" : {
+						"disableScroll": true,
+						"navigationBarTitleText": "授权登录"
+					}
+			},
+			{
+				"path":"pages/login_tel/login_tel",
+				"style":{
+					"disableScroll": true,
+					"navigationBarTitleText": "登录"
+				}
+			}
+      ,{
+            "path" : "pages/about/about",
+            "style" : {
+							"navigationBarTitleText": "关于我们"
+						}
+        }
+        ,{
+            "path" : "pages/activity/activity",
+            "style" : {
+							"navigationBarTitleText": "活动详情"
+						}
+        }
+        ,{
+            "path" : "pages/daiyan_find/daiyan_find",
+            "style" : {
+							"navigationBarTitleText": "寻找代言人",
+							"backgroundColor": "#f5f5f5",
+							"navigationBarBackgroundColor":"#f7b43b",
+							"navigationBarTextStyle": "white"
+						}
+        }
+        ,{
+            "path" : "pages/activity_db/activity_db",
+            "style" : {
+							"navigationBarTitleText": "活动详情"
+						}
+        }
+    ],
+	"tabBar": {
+	  "color": "#9b9b9b",
+	  "selectedColor": "#f7b43b",
+	  "list": [
+	    {
+	      "pagePath": "pages/index/index",
+	      "text": "首页",
+	      "iconPath": "/static/images/b_03.png",
+	      "selectedIconPath": "/static/images/b1_03.png"
+	    },
+	    {
+	      "pagePath": "pages/faxian/faxian",
+	      "text": "发现",
+	      "iconPath": "/static/images/b_05.png",
+	      "selectedIconPath": "/static/images/b1_05.png"
+	    },
+	    {
+	      "pagePath": "pages/tim/record",
+	      "text": "消息",
+	      "iconPath": "/static/images/b_07.png",
+	      "selectedIconPath": "/static/images/b1_07.png"
+	    },
+	    {
+	      "pagePath": "pages/car/car",
+	      "text": "购物车",
+	      "iconPath": "/static/images/b_09.png",
+	      "selectedIconPath": "/static/images/b1_09.png"
+	    },
+	    {
+	      "pagePath": "pages/my/my",
+	      "text": "我的",
+	      "iconPath": "/static/images/b_11.png",
+	      "selectedIconPath": "/static/images/b1_11.png"
+	    }
+	  ]
+	},
+	
 	"globalStyle": {
 		"enablePullDownRefresh": true,
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "51代言",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+		
+	},
+	"plugins": {
+	  "routePlan": {
+	    "version": "1.0.5",
+	    "provider": "wx50b5593e81dd937a"
+	  }
+	},
+	"permission": {
+	  "scope.userLocation": {
+	    "desc": "你的位置信息将用于小程序定位"
+	  }
+	},
+	"usingComponents": {
+	  "van-stepper": "vendor/vant/lib/stepper/index",
+	  "van-submit-bar": "vendor/vant/lib/submit-bar/index",
+	  "van-popup": "vendor/vant/lib/popup/index",
+	  "van-action-sheet": "vendor/vant/lib/action-sheet/index"
 	}
 }

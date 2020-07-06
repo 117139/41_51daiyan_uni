@@ -1,17 +1,62 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/index0/index0",
+    "pages/faxian/faxian",
+    "pages/car/car",
     "pages/tim/record",
-    "pages/tim/room"
+    "pages/tim/room",
+    "pages/my/my",
+    "pages/login/login",
+    "pages/login_tel/login_tel",
+    "pages/about/about",
+    "pages/activity/activity",
+    "pages/daiyan_find/daiyan_find",
+    "pages/activity_db/activity_db"
   ],
   "subPackages": [],
   "window": {
     "enablePullDownRefresh": true,
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
+    "navigationBarTitleText": "51代言",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap96.json"
+  "tabBar": {
+    "color": "#9b9b9b",
+    "selectedColor": "#f7b43b",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/static/images/b_03.png",
+        "selectedIconPath": "/static/images/b1_03.png"
+      },
+      {
+        "pagePath": "pages/faxian/faxian",
+        "text": "发现",
+        "iconPath": "/static/images/b_05.png",
+        "selectedIconPath": "/static/images/b1_05.png"
+      },
+      {
+        "pagePath": "pages/tim/record",
+        "text": "消息",
+        "iconPath": "/static/images/b_07.png",
+        "selectedIconPath": "/static/images/b1_07.png"
+      },
+      {
+        "pagePath": "pages/car/car",
+        "text": "购物车",
+        "iconPath": "/static/images/b_09.png",
+        "selectedIconPath": "/static/images/b1_09.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "/static/images/b_11.png",
+        "selectedIconPath": "/static/images/b1_11.png"
+      }
+    ]
+  },
+  "usingComponents": {}
 }
