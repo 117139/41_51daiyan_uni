@@ -12,7 +12,30 @@
     "pages/about/about",
     "pages/activity/activity",
     "pages/daiyan_find/daiyan_find",
-    "pages/activity_db/activity_db"
+    "pages/activity_db/activity_db",
+    "pages/details/details",
+    "pages/Order/Order",
+    "pages/addressEdit/addressEdit",
+    "pages/myaddress/myaddress",
+    "pages/OrderList/OrderList",
+    "pages/OrderDetails/OrderDetails",
+    "pages/my_daiyan/my_daiyan",
+    "pages/my_tx/my_tx",
+    "pages/my_tx_add/my_tx_add",
+    "pages/my_rz1/my_rz1",
+    "pages/my_rz2/my_rz2",
+    "pages/my_rz3/my_rz3",
+    "pages/my_guanzhu/my_guanzhu",
+    "pages/my_shoucang/my_shoucang",
+    "pages/my_yhq/my_yhq",
+    "pages/my_qianbao/my_qianbao",
+    "pages/my_qianbao1/my_qianbao1",
+    "pages/mymsg/mymsg",
+    "pages/my_name/my_name",
+    "pages/my_jj/my_jj",
+    "pages/my_xuexiao/my_xuexiao",
+    "pages/my_fans/my_fans",
+    "pages/my_friends/my_friends"
   ],
   "subPackages": [],
   "window": {
@@ -58,5 +81,6 @@
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap43.json"
 }

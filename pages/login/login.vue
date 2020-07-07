@@ -14,6 +14,10 @@
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import service from '../../service.js';
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		data() {
 			return {

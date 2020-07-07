@@ -155,6 +155,13 @@ const pveimg = function(e) {
 	})
 
 }
+const call=  function (e){
+	if(e.currentTarget.dataset.tel){
+		wx.makePhoneCall({
+			phoneNumber: e.currentTarget.dataset.tel+''
+		})
+	}
+}
 export default {
 	getUsers,
 	addUser,
@@ -164,5 +171,6 @@ export default {
 	imgurl,
 	gologin,
 	jump,
-	pveimg
+	pveimg,
+	call
 }

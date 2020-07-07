@@ -3,7 +3,7 @@
 		<view class="container">
 		
 		  <view class="header_box">
-		    <view class="user_box" v-if="!loginmsg">
+		    <view class="user_box" v-if="loginmsg">
 		      <view class="user_tx" data-url="/pages/login/login" @tap='jump'>
 		        <image class="user_tx" src="../../static/images/tx.jpg"></image>
 		      </view>
@@ -162,7 +162,7 @@
 		        <view class="fx_tit">我的钱包</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" @tap="jump" data-url="/pages/my_qianbao1/my_qianbao">
+		      <view class="fx_li" @tap="jump" data-url="/pages/my_qianbao1/my_qianbao1">
 		        <image class="li_icon" :src="filter.imgIP('ny_16.png')"></image>
 		        <view class="fx_tit">我的代言豆</view>
 		        <text class="iconfont iconnext3"></text>
