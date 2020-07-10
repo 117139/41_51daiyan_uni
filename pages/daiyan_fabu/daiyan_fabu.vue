@@ -143,10 +143,10 @@
 		mapMutations
 	} from 'vuex'
 	const { wxml, style } = require('./demo.js')
-	import _app from '../../util/QS-SharePoster/app.js';
+	import _app from '../../utils/QS-SharePoster/app.js';
 	import {
 		getSharePoster
-	} from '../../util/QS-SharePoster/QS-SharePoster.js';
+	} from '../../utils/QS-SharePoster/QS-SharePoster.js';
 	export default {
 		data() {
 			return {
