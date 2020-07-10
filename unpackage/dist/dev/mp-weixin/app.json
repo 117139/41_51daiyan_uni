@@ -35,14 +35,21 @@
     "pages/my_jj/my_jj",
     "pages/my_xuexiao/my_xuexiao",
     "pages/my_fans/my_fans",
-    "pages/my_friends/my_friends"
+    "pages/my_friends/my_friends",
+    "pages/dp_index/dp_index",
+    "pages/details_pl/details_pl",
+    "pages/game_js/game_js",
+    "pages/daiyan_fabu/daiyan_fabu",
+    "pages/daiyan_fabu_ok/daiyan_fabu_ok",
+    "pages/daiyan_ph/daiyan_ph",
+    "pages/daiyan_pl/daiyan_pl"
   ],
   "subPackages": [],
   "window": {
     "enablePullDownRefresh": true,
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "51代言",
-    "navigationBarBackgroundColor": "#F8F8F8",
+    "navigationBarBackgroundColor": "#fff",
     "backgroundColor": "#F8F8F8"
   },
   "tabBar": {
@@ -81,6 +88,10 @@
       }
     ]
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap43.json"
+  "usingComponents": {
+    "van-stepper": "/wxcomponents/vant-weapp/stepper/index",
+    "van-submit-bar": "/wxcomponents/vant-weapp/submit-bar/index",
+    "van-popup": "/wxcomponents/vant-weapp/popup/index",
+    "van-action-sheet": "/wxcomponents/vant-weapp/action-sheet/index"
+  }
 }

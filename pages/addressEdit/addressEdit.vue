@@ -51,13 +51,13 @@
 		data() {
 			return {
 				btnkg:0,   //0ok  1off
-				region: [],
+				region: ['北京市','北京市','东城区'],
 				moren:false,
 				editaddress:{
 					name: "aaa", 
 					tel: "18300000000", 
-					address: "北京市北京市东城区", 
-					xxaddress: "街道街道街道", 
+					area: "北京市 北京市 东城区", 
+					address: "街道街道街道", 
 					moren: "true",
 				}
 			}

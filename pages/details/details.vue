@@ -250,21 +250,21 @@
 							<view class="closebtn" @tap="onClose">
 								<image src="/static/images/closebtn_03.jpg"></image>
 							</view>
-							<view class="goods_pri_h">￥{{guige[type1[0]].pri}}</view>
-							<view class="kucun">库存{{guige[type1[0]].kucun}}件</view>
-							<view class="tkname oh2">已选择：{{guige[type1[0]].value1}}</view>
+							<view class="goods_pri_h">￥{{guige[0][type1[0]].pri}}</view>
+							<view class="kucun">库存{{guige[0][type1[0]].kucun}}件</view>
+							<view class="tkname oh2">已选择：{{ggshow1}}</view>
 							<!-- <view class="tkname oh2">YI-DONG SPORT 屹动专业运动鞋 专业为中小学生运动打造的运动鞋</view> -->
 						</view>
 					</view>
-					<block >
-						<view class="tkguigetit">类型</view>
+					<block v-for="(item,idx) in guige">
+						<view class="tkguigetit">{{item.name}}</view>
 						<view class="guigeBox">
-							<text class="guigeOne" :class="idx1==type1[0]?'cur':''"
-								v-for="(item1,idx1) in guige"
-												
-												:data-gg="'0'"
-												:data-gg1="idx1"
-												@tap="selegg">{{item1.value1}}</text>
+							<text class="guigeOne"
+							 v-for="(item1,idx1) in item.list"
+								:class="idx1==type1[idx]?'cur':''"
+								:data-gg="idx"
+								:data-gg1="idx1"
+								@tap="selegg">{{item1.value1}}</text>
 						</view>
 					</block>
 					<view class="countnum">
@@ -313,7 +313,7 @@
 		data() {
 			return {
 				indicatorDots: false,
-				autoplay: true,
+				autoplay: false,
 				circular: true,
 				interval: 3000,
 				duration: 1000,
@@ -339,13 +339,29 @@
 				showcan: false,
 				goods_total_limit: '',  //商品阶梯
 				guige: [
-				  { value1: '苏门答腊黄金曼特宁深度烘培', pri: 48, kucun:900 },
-				  { value1: '耳挂咖啡', pri: 49, kucun: 1900 },
-				  { value1: '耳挂咖啡1', pri: 41, kucun: 2900 },
-				  { value1: '耳挂咖啡2', pri: 42, kucun: 3900 },
-				  { value1: '耳挂咖啡3', pri: 43, kucun: 4900 },
+				  {
+						name:'类型',
+						list:[
+							{ value1: '苏门答腊黄金曼特宁深度烘培', pri: 48, kucun:900 },
+							{ value1: '耳挂咖啡', pri: 49, kucun: 1900 },
+							{ value1: '耳挂咖啡1', pri: 41, kucun: 2900 },
+							{ value1: '耳挂咖啡2', pri: 42, kucun: 3900 },
+							{ value1: '耳挂咖啡3', pri: 43, kucun: 4900 },
+						]
+					},
+				  {
+						name:'类型2',
+						list:[
+							{ value1: '类型1', pri: 48, kucun:900 },
+							{ value1: '类型2', pri: 49, kucun: 1900 },
+							{ value1: '类型21', pri: 41, kucun: 2900 },
+							{ value1: '类型22', pri: 42, kucun: 3900 },
+							{ value1: '类型23', pri: 43, kucun: 4900 },
+						]
+					},
 				],  //规格
 				type1: [0],         //规格index
+				ggshow1:[],
 				cnum: 1,//数量
 				goods_sku_id: 0,  //商品id
 			}
@@ -383,7 +399,7 @@
 			
 			
 			swiper_change(e){
-			  console.log(e.detail )
+			  // console.log(e.detail )
 			  var num = e.detail.current+1
 			  this.cur_swiper=num
 			},
@@ -393,6 +409,7 @@
 			  console.log(e.detail)
 			  // this.data.goods_sele[idx].num=e.detail
 			  this.cnum= e.detail
+				
 			},
 			txtype_fuc(e) {
 			  console.log(e.currentTarget.dataset.type)
@@ -405,56 +422,29 @@
 			},
 			//选择规格
 			selegg(e) {
+				var that=this
 			  // console.log(e.currentTarget.dataset.gg)
-			  this.type1[e.currentTarget.dataset.gg] = e.currentTarget.dataset.gg1
+			  // that.type1[e.currentTarget.dataset.gg] = e.currentTarget.dataset.gg1
 			
-			  this.type1= this.type1
-			  var ggs = this.guige
-			  var ggidxs = this.type1
+			  // this.type1= this.type1
+			  // var ggs = this.guige
+			  // var ggidxs = this.type1
 			
-			  var ggshow1 = []
-			  var ggshowid = []
-			  // var ggjson = '{'
-			  // for (var i = 0; i < ggs.length; i++) {
-			  //   console.log(ggidxs[i])
-			  //   if (ggidxs[i] != -1) {
-			  //     console.log(ggs[i].values)
-			  //     ggshow1.push(ggs[i].values[ggidxs[i]].attr_value)
-			  //     ggshowid.push(ggs[i].values[ggidxs[i]].id)
-			  //     ggjson += '"' + ggs[i].name + '":"' + ggs[i].values[ggidxs[i]].attr_value + '"'
-			  //     if (i != ggs.length - 1) {
-			  //       ggjson += ','
-			  //     }
-			  //   }
-			  // }
-			  // var ggshow2 = ggshow1.join('，')
-			  // ggjson += "}"
-			  // // ggjson=JSON.parse(ggjson)
-			  var newpri = this.bSort(ggshowid)
-			  newpri = newpri.join('_')
-			  console.log(newpri)
-			  var json1 = this.goods.sku_data
-			  var mrpri = this.goods.goods_real_price
-			  var mrpimg = this.goods.goods_pic
-			  this.newprice= mrpri
-			   this.newimg= mrpimg
-			   this.sku_id= 0
-			  for (var key in json1) {
-			    // console.log(key, newpri, newpri == key);     //获取key值
-			    if (key == newpri) {
-			      console.log(json1[key])
-			        this.newprice= json1[key].sku_price
-			        this.sku_id= json1[key].sku_id
-			        this.newimg= json1[key].sku_images
-			      
-			    }
-			    // console.log(json1[key]); //获取对应的value值
-			  }
-			  // console.log(this.goods.sku_data['"'+newpri+'"'])
-			  
-			    this.ggshow= ggshow2
-			    this.ggjson= ggjson
-			  
+			  that.$set(that.type1,e.currentTarget.dataset.gg,e.currentTarget.dataset.gg1)
+				var ggs = this.guige
+				var ggidxs = this.type1
+				var ggshow1 = []
+				var ggshowid = []
+				for (var i = 0; i < ggs.length; i++) {
+				  console.log(ggidxs[i])
+				  if (ggidxs[i] >=0) {
+				    console.log(ggs[i].list[ggidxs[i]].value1)
+				    ggshow1.push(ggs[i].list[ggidxs[i]].value1)
+				    ggshowid.push(ggs[i])
+				    
+				  }
+				}
+			  that.ggshow1=ggshow1.join(',')
 			},
 			jump(e) {
 			  console.log(e.currentTarget.dataset.type)
@@ -495,7 +485,7 @@
 			  //   return
 			  // }
 			  let that = this
-			
+				console.log(that.cnum)
 			  that.onClose()
 			  wx.showToast({
 			  	title:"加入成功"
@@ -1295,6 +1285,7 @@ padding: 0 10rpx;
 .countnum{
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	font-size: 26rpx;
 	color: #333;
 	margin-top: 20rpx;

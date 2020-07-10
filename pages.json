@@ -270,6 +270,56 @@
 							"navigationBarTextStyle": "white"
 						}
         }
+        ,{
+            "path" : "pages/dp_index/dp_index",
+            "style" : {
+							"navigationBarTitleText": "店铺首页",
+							"backgroundColor": "#f5f5f5",
+							"navigationBarBackgroundColor":"#0B0E2D",
+							"navigationBarTextStyle": "white"
+						}
+        }
+        ,{
+            "path" : "pages/details_pl/details_pl",
+            "style" : {
+							"navigationBarTitleText": "评论",
+							"backgroundColor": "#f5f5f5"
+						}
+        }
+        ,{
+            "path" : "pages/game_js/game_js",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/daiyan_fabu/daiyan_fabu",
+            "style" : {
+							"navigationBarTitleText": "我要代言",
+							"usingComponents": {
+							  
+								
+							}
+						}
+        }
+        ,{
+            "path" : "pages/daiyan_fabu_ok/daiyan_fabu_ok",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/daiyan_ph/daiyan_ph",
+            "style" : {
+							"navigationBarTitleText": "代言排行",
+							"backgroundColor": "#f5f5f5",
+							"navigationBarBackgroundColor":"#F5C33D",
+							"navigationBarTextStyle": "white"
+						}
+        }
+        ,{
+            "path" : "pages/daiyan_pl/daiyan_pl",
+            "style" : {
+							"navigationBarTitleText": "评论",
+							"backgroundColor": "#f5f5f5"
+						}
+        }
     ],
 	"tabBar": {
 	  "color": "#9b9b9b",
@@ -312,8 +362,14 @@
 		"enablePullDownRefresh": true,
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "51代言",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#fff",
+		"backgroundColor": "#F8F8F8",
+		"usingComponents": {
+		  "van-stepper": "/wxcomponents/vant-weapp/stepper/index",
+		  "van-submit-bar": "/wxcomponents/vant-weapp/submit-bar/index",
+		  "van-popup": "/wxcomponents/vant-weapp/popup/index",
+		  "van-action-sheet": "/wxcomponents/vant-weapp/action-sheet/index"
+		}
 		
 	},
 	"plugins": {
@@ -326,11 +382,6 @@
 	  "scope.userLocation": {
 	    "desc": "你的位置信息将用于小程序定位"
 	  }
-	},
-	"usingComponents": {
-	  "van-stepper": "vendor/vant/lib/stepper/index",
-	  "van-submit-bar": "vendor/vant/lib/submit-bar/index",
-	  "van-popup": "vendor/vant/lib/popup/index",
-	  "van-action-sheet": "vendor/vant/lib/action-sheet/index"
 	}
+	
 }

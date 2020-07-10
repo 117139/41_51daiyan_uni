@@ -311,4 +311,46 @@
 	.guige{
 		position: relative;
 	}
+	
+	
+	/*步进器*/
+	.steppera{
+		width: 148rpx;
+		height: 45rpx;
+		border: 1px solid #dcdcdc;
+		display: flex;
+		overflow: hidden;
+		align-items: stretch;
+	}
+	.steppera .vanipt{
+		width: 60rpx;
+	  max-height: 100%;
+	  min-height: 100%;
+		padding: 0;
+	  height: 40rpx;
+		line-height: 40rpx;
+		border-left: 1px solid #dcdcdc;
+		border-right: 1px solid #dcdcdc;
+		border-bottom: 0;
+		border-top: 0;
+		box-sizing: border-box;
+		background-color: #fff;
+		margin: 0;
+		text-align: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.steppera .vantjia,.steppera .vantjian{
+		width: 45rpx;
+		height: 43rpx;
+		background-color: #fff;
+		margin: 0;
+		text-align: center;
+		display: flex;
+		align-items: center;
+		font-size: 40rpx;
+		line-height: 40rpx;
+		justify-content: center;
+	}
 </style>

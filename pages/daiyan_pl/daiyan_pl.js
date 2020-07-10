@@ -102,17 +102,13 @@ Page({
   },
   shuru(){
     var that =this
-    that.setData({
-      shuru_type:true
-    })
-    console.log(that.data.shuru_type)
+    that.shuru_type= true
+    console.log(that.shuru_type)
   },
   shuru_guanbi(){
     var that = this
-    that.setData({
-      shuru_type: false
-    })
-    console.log(that.data.shuru_type)
+    that.shuru_type= false
+    console.log(that.shuru_type)
   },
   save_pl(e) {
     var that = this
@@ -135,48 +131,36 @@ Page({
   bindPickerChange: function (e) {
 
     console.log('picker发送选择改变，携带值为', e.detail.value)
-    this.setData({
-      index: e.detail.value
-    })
+    this.index= e.detail.value
   },
   swiper_change(e){
     console.log(e.detail )
     var num = e.detail.current+1
-    this.setData({
-      cur_swiper:num
-    })
+    this.cur_swiper=num
   },
   //数量
   onChange(e) {
     let idx = e.currentTarget.dataset.selec
     console.log(e.detail)
     // this.data.goods_sele[idx].num=e.detail
-    this.setData({
-      cnum: e.detail
-    });
+    this.cnum= e.detail
   },
   txtype_fuc(e) {
     console.log(e.currentTarget.dataset.type)
-    this.setData({
-      dyr_type: e.currentTarget.dataset.type
-    })
+    this.dyr_type= e.currentTarget.dataset.type
   },
   xz_dyr(){
-    console.log(this.data.dyr_type)
-    this.setData({
-      sheetshow1: false
-    })
+    console.log(this.dyr_type)
+    this.sheetshow1= false
   },
   //选择规格
   selegg(e) {
     // console.log(e.currentTarget.dataset.gg)
-    this.data.type1[e.currentTarget.dataset.gg] = e.currentTarget.dataset.gg1
+    this.type1[e.currentTarget.dataset.gg] = e.currentTarget.dataset.gg1
 
-    this.setData({
-      type1: this.data.type1
-    })
-    var ggs = this.data.guige
-    var ggidxs = this.data.type1
+    this.type1= this.type1
+    var ggs = this.guige
+    var ggidxs = this.type1
 
     var ggshow1 = []
     var ggshowid = []
