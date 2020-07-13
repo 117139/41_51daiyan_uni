@@ -94,11 +94,11 @@
 			
 			paixun1(){
 				var that =this
-				that.list_type1=!that.data.list_type1
+				that.list_type1=!that.list_type1
 			},
 			paixun(){
 				var that =this
-				that.list_type=!that.data.list_type
+				that.list_type=!that.list_type
 			},
 			getdata(){
 			  ///api/homeIndex

@@ -320,6 +320,124 @@
 							"backgroundColor": "#f5f5f5"
 						}
         }
+        ,{
+            "path" : "pages/daiyan_pl_hf/daiyan_pl_hf",
+            "style" : {
+							"navigationBarTitleText": "回复详情",
+							"backgroundColor": "#f5f5f5"
+						}
+        }
+        ,{
+            "path" : "pages/daiyan_quan/daiyan_quan",
+            "style" : {
+							"navigationBarTitleText": "代言圈",
+							"backgroundColor": "#f5f5f5",
+							"navigationBarBackgroundColor":"#F7AC39",
+							"navigationBarTextStyle": "white"
+						}
+        }
+        ,{
+            "path" : "pages/daiyan_quan_xq/daiyan_quan_xq",
+            "style" : {
+							"navigationBarTitleText": "代言圈",
+							"backgroundColor": "#f5f5f5",
+							"navigationBarBackgroundColor":"#F7AC39",
+							"navigationBarTextStyle": "white"
+						}
+        }
+        ,{
+            "path" : "pages/daiyan_sc/daiyan_sc",
+            "style" : {
+							"navigationBarTitleText": "代言商城",
+							"backgroundColor": "#f5f5f5",
+							"navigationBarBackgroundColor":"#F5C33D",
+							"navigationBarTextStyle": "white"
+						}
+        }
+        ,{
+            "path" : "pages/daiyanren/daiyanren",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/dyr_text/dyr_text",
+            "style" : {
+							"navigationBarTitleText": "代言人说",
+							"backgroundColor": "#f5f5f5",
+							"navigationBarBackgroundColor":"#F5C33D",
+							"navigationBarTextStyle": "white"
+						}
+        }
+        ,{
+            "path" : "pages/goods_list/goods_list",
+            "style" : {
+							"navigationBarTitleText": "商品列表"
+						}
+        }
+        ,{
+            "path" : "pages/goods_pj/goods_pj",
+            "style" : {
+							"navigationBarTitleText": "评价"
+						}
+        }
+        ,{
+            "path" : "pages/goods_tj/goods_tj",
+            "style" : {
+							"navigationBarTitleText": "好货推荐",
+							"backgroundColor": "#f5f5f5",
+							"navigationBarBackgroundColor":"#2a292f",
+							"navigationBarTextStyle": "white"
+						}
+        }
+        ,{
+            "path" : "pages/goods_youxuan/goods_youxuan",
+            "style" : {
+							"navigationBarTitleText": "优选代言池",
+							"backgroundColor": "#f5f5f5",
+							"navigationBarBackgroundColor":"#955a59",
+							"navigationBarTextStyle": "white"
+						}
+        }
+        ,{
+            "path" : "pages/my_index/my_index",
+            "style" : {
+							"navigationBarTitleText": "51代言",
+							"backgroundColor": "#f5f5f5",
+							"navigationBarBackgroundColor":"#F7AB38",
+							"navigationBarTextStyle": "white"
+						}
+        }
+        ,{
+            "path" : "pages/search/search",
+            "style" : {
+							"navigationBarTitleText": "搜索"
+						}
+        }
+        ,{
+            "path" : "pages/star_list/star_list",
+            "style" : {
+							"navigationBarTitleText": "明星达人秀",
+							"navigationBarBackgroundColor":"#091853",
+							 "navigationBarTextStyle": "white"
+						}
+        }
+        ,{
+            "path" : "pages/OrderList_sh/OrderList_sh",
+            "style" : {
+							"navigationBarTitleText": "退换/售后"
+						}
+        }
+        ,{
+            "path" : "pages/OrderList_sh_tk/OrderList_sh_tk",
+            "style" : {
+							"navigationBarTitleText": "申请售后"
+						}
+        }
+        ,{
+            "path" : "pages/OrderList_sh_xz/OrderList_sh_xz",
+            "style" : {
+							"navigationBarTitleText": "选择服务类型"
+						}
+        }
     ],
 	"tabBar": {
 	  "color": "#9b9b9b",

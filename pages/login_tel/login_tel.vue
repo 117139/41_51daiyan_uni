@@ -41,7 +41,13 @@
 	</view>
 </template>
 
+<script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
+	import service from '../../service.js';
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -78,35 +84,29 @@
 
 			oniptblur(e) {
 				console.log(e.detail.value)
-				this.setData({
-					tel: e.detail.value
-				})
+				this.tel= e.detail.value
 			},
 			getcode() {
 				let that = this
 
-				if (that.data.tel == '' || !(/^1\d{10}$/.test(that.data.tel))) {
+				if (that.tel == '' || !(/^1\d{10}$/.test(that.tel))) {
 					wx.showToast({
 						icon: 'none',
 						title: '手机号有误'
 					})
 					return
 				}
-				if (that.data.btnkg == 1) {
+				if (that.btnkg == 1) {
 					return
 				} else {
-					that.setData({
-						btnkg: 1
-					})
+					that.btnkg= 1
 				}
 				wx.showToast({
 					icon: 'none',
 					title: '发送成功'
 				})
 				that.codetime()
-				that.setData({
-					btnkg: 0
-				})
+				that.btnkg= 0
 				return
 
 				wx.request({
@@ -121,9 +121,7 @@
 					dataType: 'json',
 					method: 'POST',
 					success(res) {
-						that.setData({
-							btnkg: 0
-						})
+						that.btnkg= 0
 						if (res.data.code = 1) {
 							wx.showToast({
 								icon: 'none',
@@ -131,9 +129,7 @@
 							})
 							that.codetime()
 						} else {
-							that.setData({
-								btnkg: 0
-							})
+							that.btnkg= 0
 							if (res.data.msg) {
 								wx.showToast({
 									icon: 'none',
@@ -155,9 +151,7 @@
 						// that.codetime()
 					},
 					fail(err) {
-						that.setData({
-							btnkg: 0
-						})
+						that.btnkg= 0
 						wx.showToast({
 							icon: 'none',
 							title: '操作失败'
@@ -172,17 +166,13 @@
 				let time = 60
 				let st = setInterval(function() {
 					if (time == 0) {
-						that.setData({
-							setstate: 0,
-						})
+						that.setstate= 0
 						clearInterval(st);
 					} else {
 						let news = time--;
 						// console.log(news)
-						that.setData({
-							setstate: 1,
-							time: news
-						})
+						that.setstate= 1
+							that.time= news
 
 					}
 				}, 1000);
@@ -239,12 +229,10 @@
 				// }
 
 				// return
-				if (that.data.btnkg == 1) {
+				if (that.btnkg == 1) {
 					return
 				} else {
-					that.setData({
-						btnkg: 1
-					})
+					that.btnkg= 1
 				}
 				wx.showLoading({
 					title: '正在登录中',
@@ -257,9 +245,7 @@
 						duration: 1000,
 						icon: 'none'
 					});
-					that.setData({
-						btnkg: 0
-					})
+					that.btnkg= 0
 					wx.reLaunch({
 						url: '/pages/index/index'
 					})
@@ -288,9 +274,7 @@
 								icon: 'none'
 							});
 							setTimeout(function() {
-								that.setData({
-									btnkg: 0
-								})
+								that.btnkg= 0
 								wx.reLaunch({
 									url: '/pages/index/index'
 								})
@@ -299,9 +283,7 @@
 							wx.setStorageSync('login', 'login')
 
 						} else {
-							that.setData({
-								btnkg: 0
-							})
+							that.btnkg= 0
 							if (res.data.msg) {
 								wx.showToast({
 									title: res.data.msg,
@@ -335,15 +317,11 @@
 			},
 			toggless(e) {
 				console.log(e.currentTarget.dataset.type)
-				this.setData({
-					showpwd: e.currentTarget.dataset.type
-				})
+				this.showpwd= e.currentTarget.dataset.type
 			},
 			oniptblurpwd(e) {
 				console.log(e.detail.value)
-				this.setData({
-					pwd: e.detail.value
-				})
+				this.pwd= e.detail.value
 			},
 		}
 	}
