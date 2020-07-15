@@ -33,7 +33,7 @@
 		      </view>
 		    </view>
 		    <view class="user_money user_money1">
-		      <view class="user_money_tit" data-url="/pages/my_tx/my_tx" @tap="jump">
+		      <view class="user_money_tit" data-url="/pagesA/my_tx/my_tx" @tap="jump">
 		        <view class="v1">
 		          <text class="iconfont iconyue"></text>
 		          <view class="v1_tit">余额</view>
@@ -120,14 +120,14 @@
 		          <image class="order_icon" src="../../static/images/my22.png"></image>
 		          <view>待代言</view>
 		        </view>
-		        <view class="yue_li" @tap="jump" data-url="/pages/OrderList_sh/OrderList_sh">
+		        <view class="yue_li" @tap="jump" data-url="/pagesA/OrderList_sh/OrderList_sh">
 		          <image class="order_icon" src="../../static/images/my23.png"></image>
 		          <view>退换/售后</view>
 		        </view>
 		      </view>
 		    </view>
 		    <view class="my_list">
-		      <view class="fx_li  mt20" @tap="jump" data-url="/pages/my_rz1/my_rz1">
+		      <view class="fx_li  mt20" @tap="jump" data-url="/pagesA/my_rz1/my_rz1">
 		        <image class="li_icon" :src="filter.imgIP('ny_20.png')"></image>
 		        <view class="fx_tit">51认证申请</view>
 		        <text class="iconfont iconnext3"></text>
@@ -137,7 +137,7 @@
 		        <view class="fx_tit">地址管理</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li " @tap="jump" data-url="/pages/my_daiyan/my_daiyan">
+		      <view class="fx_li " @tap="jump" data-url="/pagesA/my_daiyan/my_daiyan">
 		        <image class="li_icon" :src="filter.imgIP('ny_04.png')"></image>
 		        <view class="fx_tit">我的代言</view>
 		        <text class="iconfont iconnext3"></text>
@@ -147,22 +147,22 @@
 		        <view class="fx_tit">我的关注</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" @tap="jump" data-url="/pages/my_shoucang/my_shoucang">
+		      <view class="fx_li" @tap="jump" data-url="/pagesA/my_shoucang/my_shoucang">
 		        <image class="li_icon" :src="filter.imgIP('ny_10.png')"></image>
 		        <view class="fx_tit">我的收藏</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" @tap="jump" data-url="/pages/my_yhq/my_yhq">
+		      <view class="fx_li" @tap="jump" data-url="/pagesA/my_yhq/my_yhq">
 		        <image class="li_icon" :src="filter.imgIP('ny_12.png')"></image>
 		        <view class="fx_tit">我的优惠券</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" data-url="/pages/my_qianbao/my_qianbao" @tap="jump">
+		      <view class="fx_li" data-url="/pagesA/my_qianbao/my_qianbao" @tap="jump">
 		        <image class="li_icon" :src="filter.imgIP('ny_14.png')"></image>
 		        <view class="fx_tit">我的钱包</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" @tap="jump" data-url="/pages/my_qianbao1/my_qianbao1">
+		      <view class="fx_li" @tap="jump" data-url="/pagesA/my_qianbao1/my_qianbao1">
 		        <image class="li_icon" :src="filter.imgIP('ny_16.png')"></image>
 		        <view class="fx_tit">我的代言豆</view>
 		        <text class="iconfont iconnext3"></text>

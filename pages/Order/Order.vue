@@ -4,7 +4,7 @@
 		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
 		<view class="container" v-if="htmlReset==0">
 		
-		  <view class="address" data-url="/pages/myaddress/myaddress?type=1" @tap="jump">
+		  <view class="address" data-url="/pagesA/myaddress/myaddress?type=1" @tap="jump">
 		    <view class="add_l">
 		      <view v-if="address.user_name" class="al_1">{{address.user_name}}
 		        <text class="l_tel">{{address.phone}}</text>
@@ -82,7 +82,7 @@
 		    <!-- <text class="iconfont iconsangedian fz36 c9"></text> -->
 		    <!-- </view> -->
 		  </view>
-		  <view class="guige" data-url="/pages/my_yhq/my_yhq?type=1" @tap="jump">
+		  <view class="guige" data-url="/pagesA/my_yhq/my_yhq?type=1" @tap="jump">
 		    <view class="guige_l">
 		      <view class="guige_l_name">优惠券</view>
 		      <!-- <view>10元</view> -->

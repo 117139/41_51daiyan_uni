@@ -1,4 +1,4 @@
-var imgip ='http://www.wanbonet.com/suxin/images/'
+var imgip ='http://51daiyan.test.upcdn.net/'
 // filter.wxs
 var dateFormat = function(date) {
     var dates = date.split('/');

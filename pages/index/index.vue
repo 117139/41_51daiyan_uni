@@ -6,25 +6,25 @@
 	      <view class="sousuo_box" @tap="jump" data-url="/pages/search/search">
 	        <text class="iconfont iconsousuo"></text> 搜索人名代言号/商品/品牌
 	      </view>
-	      <view class="game_js" @tap="jump" data-url="/pages/game_js/game_js">
+	      <view class="game_js" @tap="jump" data-url="/pages_goods/game_js/game_js">
 	        <text class="iconfont iconic_help_px"></text>
 	        玩法介绍
 	      </view>
 	    </view>
 	    <view class="index_box1 index_box2">
 	      <view class="cur">代言动态<text></text></view>
-	      <view @tap="jump" data-url="/pages/daiyan_sc/daiyan_sc">代言商城</view>
-	      <view  @tap="jump" data-url="/pages/star_list/star_list?type=0">明星</view>
-	      <view @tap="jump" data-url="/pages/star_list/star_list?type=1">达人</view>
-	      <view @tap="jump" data-url="/pages/my_friends/my_friends">好友</view>
-	      <view @tap="jump" data-url="/pages/daiyan_ph/daiyan_ph">排行</view>
+	      <view @tap="jump" data-url="/pages_goods/daiyan_sc/daiyan_sc">代言商城</view>
+	      <view  @tap="jump" data-url="/pages_goods/star_list/star_list?type=0">明星</view>
+	      <view @tap="jump" data-url="/pages_goods/star_list/star_list?type=1">达人</view>
+	      <view @tap="jump" data-url="/pagesA/my_friends/my_friends">好友</view>
+	      <view @tap="jump" data-url="/pages_goods/daiyan_ph/daiyan_ph">排行</view>
 	    </view>
 	  </view>
 	  <view class="index_box1 index_box3">
 	    <text class="iconfont iconyiping"></text>
 	    <view>您还有12件商品未代言，快来代言吧～</view>
 	  </view>
-	  <view class="index_box1 index_box4" @tap="jump" data-url="/pages/star_list/star_list?type=0">
+	  <view class="index_box1 index_box4" @tap="jump" data-url="/pages_goods/star_list/star_list?type=0">
 	    <view>明星达人代言人推荐：</view>
 	    <text>各种玩法尽在明星达人代言秀</text>
 	  </view>
@@ -42,7 +42,7 @@
 	      </view>
 	    </view>
 	  </scroll-view>
-	  <view class="find_star" @tap="jump" data-url="/pages/daiyan_find/daiyan_find">
+	  <view class="find_star" @tap="jump" data-url="/pages_goods/daiyan_find/daiyan_find">
 	    <view class="find_tit">
 	      <view>寻找代言人:</view>
 	      <text>（赏金任务）</text>
@@ -74,7 +74,7 @@
 	      </view>
 	      <!-- <image src="/static/images/goods_type1.png"></image> -->
 	    </view>
-	    <view @tap="jump" data-url="/pages/goods_tj/goods_tj">
+	    <view @tap="jump" data-url="/pages_goods/goods_tj/goods_tj">
 	      <view class="goodstype_name goodstype_name1">好货推荐<image src="/static/images/goods_type2.png"></image></view>
 	      <view class="goods_tip">发现更多人气代言好货</view>
 	      <view class="goods_list">

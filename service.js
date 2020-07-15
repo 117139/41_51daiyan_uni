@@ -1,8 +1,8 @@
 // 管理账号信息
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
-const IPurl = 'http://syczt.800123456.vip:8099';
-const imgurl = 'http://syczt.800123456.vip:8099';
+const IPurl = 'http://51daiyan.com.aa.800123456.top/api/';
+const imgurl = 'http://51daiyan.test.upcdn.net/';
 
 /**
  * 请求头
