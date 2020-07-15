@@ -48,7 +48,7 @@
 
 <style>
 	/*每个页面公共css */
-	@import 'vendor/wxParse/wxParse.wxss';
+	/* @import 'vendor/wxParse/wxParse.wxss'; */
 	@import './static/css/flex.wxss';
 	@import './static/css/iconfont.css';
 	@import './static/css/public.css';

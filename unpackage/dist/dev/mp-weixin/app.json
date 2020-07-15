@@ -9,7 +9,6 @@
     "pages/my/my",
     "pages/login/login",
     "pages/login_tel/login_tel",
-    "pages/about/about",
     "pages/activity/activity",
     "pages/daiyan_find/daiyan_find",
     "pages/activity_db/activity_db",
@@ -30,10 +29,6 @@
     "pages/my_yhq/my_yhq",
     "pages/my_qianbao/my_qianbao",
     "pages/my_qianbao1/my_qianbao1",
-    "pages/mymsg/mymsg",
-    "pages/my_name/my_name",
-    "pages/my_jj/my_jj",
-    "pages/my_xuexiao/my_xuexiao",
     "pages/my_fans/my_fans",
     "pages/my_friends/my_friends",
     "pages/dp_index/dp_index",
@@ -55,12 +50,23 @@
     "pages/goods_youxuan/goods_youxuan",
     "pages/my_index/my_index",
     "pages/search/search",
-    "pages/star_list/star_list",
-    "pages/OrderList_sh/OrderList_sh",
-    "pages/OrderList_sh_tk/OrderList_sh_tk",
-    "pages/OrderList_sh_xz/OrderList_sh_xz"
+    "pages/star_list/star_list"
   ],
-  "subPackages": [],
+  "subPackages": [
+    {
+      "root": "pagesA",
+      "pages": [
+        "about/about",
+        "mymsg/mymsg",
+        "my_name/my_name",
+        "my_jj/my_jj",
+        "my_xuexiao/my_xuexiao",
+        "OrderList_sh/OrderList_sh",
+        "OrderList_sh_tk/OrderList_sh_tk",
+        "OrderList_sh_xz/OrderList_sh_xz"
+      ]
+    }
+  ],
   "window": {
     "enablePullDownRefresh": true,
     "navigationBarTextStyle": "black",
@@ -104,6 +110,15 @@
       }
     ]
   },
+  "preloadRule": {
+    "pages/my/my": {
+      "network": "all",
+      "packages": [
+        "pagesA"
+      ]
+    }
+  },
+  "permission": {},
   "usingComponents": {
     "van-stepper": "/wxcomponents/vant-weapp/stepper/index",
     "van-submit-bar": "/wxcomponents/vant-weapp/submit-bar/index",
