@@ -4,24 +4,34 @@ import tim from '../commen/tim/tim'
 
 Vue.use(Vuex)
 const store = new Vuex.Store({
-    state: {
+	state: {
 		isLogin: false,
-		isSDKReady: false ,// TIM SDK 是否 ready
-		
-		conversationActive:{},	//聊天进行中的会话
-		toUserId:'',			//聊天对象id
-		conversationList:[],		//会话列表
-		currentMessageList:[],			//消息列表
-		
+		isSDKReady: false, // TIM SDK 是否 ready
+
+		conversationActive: {}, //聊天进行中的会话
+		toUserId: '', //聊天对象id
+		conversationList: [], //会话列表
+		currentMessageList: [], //消息列表
+
 		forcedLogin: false,
 		hasLogin: false,
-		platform:'',
-		shouquan:'',
-		userName: "游客"
+		platform: '',
+		shouquan: '',
+		userName: "游客",
+		loginMsg: '',
+		wxlogin: 0,
+		renzheng:''
 	},
-   mutations: {
-		login(state, userName) {
-			state.userName = userName || '新用户';
+	mutations: {
+		saverz(state,renzheng){
+			state.renzheng = renzheng || '';
+		},
+		wxlogin(state, num) {
+			state.wxlogin = num++
+		},
+		login(state, loginMsg) {
+			// state.userName = userName || '新用户';
+			state.loginMsg = loginMsg || '新用户';
 			state.hasLogin = true;
 		},
 		setplatform(state, platform) {
@@ -36,11 +46,11 @@ const store = new Vuex.Store({
 		},
 		//更新登录状态
 		toggleIsLogin(state, isLogin) {
-		  state.isLogin = typeof isLogin === 'undefined' ? !state.isLogin : isLogin
+			state.isLogin = typeof isLogin === 'undefined' ? !state.isLogin : isLogin
 		},
 		//更新TIMSDK状态
 		toggleIsSDKReady(state, isSDKReady) {
-		  state.isSDKReady = typeof isSDKReady === 'undefined' ? !state.isSDKReady : isSDKReady
+			state.isSDKReady = typeof isSDKReady === 'undefined' ? !state.isSDKReady : isSDKReady
 		},
 		//退出登录重置状态
 		reset(state) {
@@ -48,19 +58,19 @@ const store = new Vuex.Store({
 			state.isSDKReady = false
 		},
 		//选择好友聊天--创建会话/拼接会话id
-		createConversationActive(state,toUserId){
-			state.conversationActive.conversationID = 'C2C'+toUserId
+		createConversationActive(state, toUserId) {
+			state.conversationActive.conversationID = 'C2C' + toUserId
 			state.toUserId = toUserId
 			state.currentMessageList = []
 		},
 		//选择已有会话聊天--更新选中会话详情
-		updateConversationActive(state,conversationItem){
+		updateConversationActive(state, conversationItem) {
 			state.conversationActive = Object.assign({}, conversationItem);
 			state.toUserId = conversationItem.userProfile.userID
 			state.currentMessageList = []
 		},
 		//更新会话列表
-		updateConversationList(state,newConversationList){
+		updateConversationList(state, newConversationList) {
 			state.conversationList = newConversationList
 		},
 		/**
@@ -71,30 +81,30 @@ const store = new Vuex.Store({
 		 * @returns
 		 */
 		pushCurrentMessageList(state, data) {
-		  // 还没当前会话，则跳过
-		  if (Array.isArray(data)) {
-		    // 筛选出当前会话的消息
-		    const result = data.filter(item => item.conversationID === state.conversationActive.conversationID)
-		    state.currentMessageList = [...state.currentMessageList, ...result]
-		  } else if (data.conversationID === state.conversationActive.conversationID) {
-		    state.currentMessageList = [...state.currentMessageList, data]
-		  }
-		  console.log('1111')
-		  	console.log( state.currentMessageList)
+			// 还没当前会话，则跳过
+			if (Array.isArray(data)) {
+				// 筛选出当前会话的消息
+				const result = data.filter(item => item.conversationID === state.conversationActive.conversationID)
+				state.currentMessageList = [...state.currentMessageList, ...result]
+			} else if (data.conversationID === state.conversationActive.conversationID) {
+				state.currentMessageList = [...state.currentMessageList, data]
+			}
+			console.log('1111')
+			console.log(state.currentMessageList)
 		},
 		/**
 		 * 滑到顶部请求更多的历史消息
 		 * */
-		unshiftCurrentMessageList(state,data){
+		unshiftCurrentMessageList(state, data) {
 			console.log(data)
-			if(data){
-				state.currentMessageList = [...data,...state.currentMessageList]
+			if (data) {
+				state.currentMessageList = [...data, ...state.currentMessageList]
 			}
 		},
 	},
-	
-    actions: {
-		
+
+	actions: {
+
 	}
 })
 export default store

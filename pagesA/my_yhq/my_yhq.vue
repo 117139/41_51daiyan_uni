@@ -3,7 +3,7 @@
 		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
 		<view class="container" v-if="htmlReset==0">
 			<view class="data_null" v-if="goods.length==0">
-						 <image src="../../static/images/data_null1.png"></image>
+						 <image  :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
 			</view>
 		  <view class="goods" v-for="(item,idx) in goods"
 				:data-tab="idx"
@@ -18,9 +18,9 @@
 					</view> -->
 					<!-- <view class="goodsImg" v-if="item.goods_pic"> -->
 					<view class="yhq_li_img"  @tap="xz_add" :data-idx="idx">
-						<image v-if="idx==0" class="yhq_li_img" :src="filter.imgIP('mj.png')"  mode="aspectFill"></image>
-						<image v-if="idx==1" class="yhq_li_img" src="../../static/images/yhq_bg_07.png"  mode="aspectFill"></image>
-						<image v-if="idx==2" class="yhq_li_img" src="../../static/images/yhq_bg_10.png"  mode="aspectFill"></image>
+						<image v-if="idx==0" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/mj.png')"  mode="aspectFill"></image>
+						<image v-if="idx==1" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_07.png')"  mode="aspectFill"></image>
+						<image v-if="idx==2" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_10.png')"  mode="aspectFill"></image>
 						<view class="yhq_pri">
 							<view class="d1"><text>¥{{data_list[idx].arg1}}元</text> 代金券</view>
 							<view class="d2">2020.02.14-2020.02.18</view>

@@ -2,29 +2,29 @@
 	<view>
 		<form class="w100" @submit="formSubmit">
 		  <view class='container'>
-		    <image class="rz_jd" src="../../static/images/rz_jd_02.jpg"></image>
+		    <image class="rz_jd" :src="filter.imgIP('/static_s/51daiyan/images/rz_jd_02.jpg')"></image>
 		    <view class="hx10"></view>
-		    <picker class="w100" @change="bindPickerChange" :value="index" :range="sf" range-key='name'>
+		    <picker class="w100" @change="bindPickerChange" :value="index" :range="catelist" range-key='title'>
 		      <view class="msg_box">
 		        <text class="msg_name">认证身份</text>
-		        <view class="dis_flex aic msg_val">{{sf[index].name}}
+		        <view class="dis_flex aic msg_val">{{catelist[index].title}}
 		
 		        </view>
 		        <text class="iconfont iconnext3 c9 fz30"></text>
 		      </view>
-		      <input class="hidden" name="sf" type="text" :value="sf[index].value" disabled/>
+		      <input class="hidden" name="sfid" type="text" :value="catelist[index].id" disabled/>
 		
 		    </picker>
 		    <view class="hx10"></view>
 		    <view class="sfrz_tit">请提交身份证信息，仅用于平台审核</view>
 		    <view class="sf_sfz">
 		      <view @tap="scpic" data-type="1">
-		        <image class="sfzimg" :src="sfimg1?sfimg1:'../../static/images/rz_img_05.jpg'" mode="aspectFill"></image>
+		        <image class="sfzimg" :src="sfimg1?filter.imgIP(sfimg1):filter.imgIP('/static_s/51daiyan/images/rz_img_05.jpg')" mode="aspectFill"></image>
 		        <input class="hidden" name="sfimg1" type="text" :value="sfimg1" disabled/>
 		        <text class="fz30">身份证姓名面</text>
 		      </view>
 		      <view @tap="scpic" data-type="2">
-		        <image class="sfzimg" :src="sfimg2?sfimg2:'../../static/images/rz_img_07.jpg'" mode="aspectFill"></image>
+		        <image class="sfzimg" :src="sfimg2?filter.imgIP(sfimg2):filter.imgIP('/static_s/51daiyan/images/rz_img_07.jpg')" mode="aspectFill"></image>
 		        <input class="hidden" name="sfimg2" type="text" :value="sfimg2" disabled/>
 		        <text class="fz30">身份证国徽面</text>
 		      </view>
@@ -78,16 +78,16 @@
 			return {
 				uname: '',
 				sname: '',
-				sf: [
-				  { name: '身份1', value: '1' },
-				  { name: '身份2', value: '2' },
-				],
+				catelist: [],
 				index:'0',
 				sfimg1:'',
 				sfimg2:'',
 				yxtime1: '',
 				yxtime2:'',
 			}
+		},
+		onLoad() {
+			this.getclist()
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
@@ -96,6 +96,7 @@
 		  wx.stopPullDownRefresh();
 		},
 		methods: {
+			...mapMutations(['saverz','login']),
 			reset_val() {
 			  this.uname= ''
 			},
@@ -141,18 +142,41 @@
 			        uni.chooseImage({
 			          count: 1,
 			          sizeType: ['original'],
-			          sourceType: ['album'],
+			          sourceType: ['album','camera'],
 			          success(res) {
 			            // tempFilePath可以作为img标签的src属性显示图片
 			            console.log(res)
 			            const tempFilePaths = res.tempFilePaths
-			            if (sf_type == 1) {
-			              that.sfimg1= tempFilePaths[0]
-			             
-			            } else {
-			              that.sfimg2= tempFilePaths[0]
-			             
-			            }
+									wx.uploadFile({
+									  url: service.IPurl+'/upload/streamImg', //仅为示例，非真实的接口地址
+									  filePath: tempFilePaths[0],
+									  name: 'file',
+									  formData: {
+									    'type': 1,
+									  },
+									  success(res) {
+									    // console.log(res.data)
+									    var ndata = JSON.parse(res.data)
+									    // console.log(ndata)
+									    // console.log(ndata.error == 0)
+									    if (ndata.code == 1) {
+									      console.log(ndata.msg)
+									      if (sf_type == 1) {
+									        that.sfimg1= ndata.msg
+									       
+									      } else {
+									        that.sfimg2= ndata.msg
+									       
+									      }
+									    } else {
+									      wx.showToast({
+									        icon: "none",
+									        title: "上传失败"
+									      })
+									    }
+									  }
+									})
+			            
 			            // wx.setStorageSync('image_c', tempFilePaths[0])
 			            // wx.navigateTo({
 			            //   url: '/pages/cropper/cropper-example?&type=' + e.currentTarget.dataset.type,
@@ -183,6 +207,49 @@
 			get_val(e) {
 			  console.log(e.detail)
 			  this.sname= e.detail.value
+			},
+			getclist(){
+				var that =this
+				var jkurl='/cate/list'
+				var data={
+					type:1
+				}
+				service.get(jkurl, data,
+					function(res) {
+						
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							var datas = res.data.data
+							// console.log(typeof datas)
+							
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							that.catelist=datas
+						} else {
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '获取身份失败'
+								})
+							}
+						}
+					},
+					function(err) {
+						that.btnkg=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+					
+					}
+				)
 			},
 			formSubmit: function (e) {
 			  var that = this
@@ -226,8 +293,11 @@
 			    })
 			    return
 			  }
-			
-			  wx.showModal({
+				that.saverz(fs)
+				wx.navigateTo({
+				  url:'/pagesA/my_rz2/my_rz2'
+				})
+			  /*wx.showModal({
 			    title: '提示',
 			    content: '是否提交',
 			    success(res) {
@@ -315,7 +385,7 @@
 			        console.log('用户点击取消')
 			      }
 			    }
-			  })
+			  })*/
 			}
 		}
 	}

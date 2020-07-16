@@ -2,7 +2,7 @@
 	<view>
 		<view class="container" v-if="htmlReset==0">
 			<view class="zanwu_box" v-if="goods.length==0">
-				<image src="../../static/images/car_null.png"></image>
+				<image  :src="filter.imgIP('/static_s/51daiyan/images/car_null.png')"></image>
 				<text>购物车空空如也，快去挑好货咯～</text>
 				<view>逛逛代言商城</view>
 			</view>
@@ -27,7 +27,7 @@
 					<view class="goodsImg">
 						<!-- <image src="{{filter.getgimg(item.order_cart.goods_img)}}"></image> -->
 						<!-- <image src="{{filter.getgimg(item.goods_pic)}}"></image> -->
-						<image class="goodsImg" :src="filter.imgIP('goods.png')"  mode="aspectFill"></image>
+						<image class="goodsImg"  :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
 					</view>
 					<view class="goodsinr">
 						<!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
@@ -59,7 +59,7 @@
 				</view>
 				<view class="goods_list">
 					<view class="goods_li" @tap="jump" data-url="/pages/details/details" v-for="(item,index) in you_like">
-						<image class="goods_img" :src="filter.imgIP('/images/goods15_02.jpg')"  mode="aspectFill"></image>
+						<image class="goods_img"  :src="filter.imgIP('/static_s/51daiyan/images//images/goods15_02.jpg')"  mode="aspectFill"></image>
 						<view class="goods_msg">
 							<view class="oh1">奶油碧根果 整箱</view>
 							<view class="goods_pri">

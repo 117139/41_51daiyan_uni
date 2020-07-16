@@ -2,7 +2,7 @@
 	<view>
 		<view class="container">
 			<view class="tixian_box">
-				<image  class="tixian_box" src="../../static/images/tx_bg_02.jpg"></image>
+				<image  class="tixian_box" :src="filter.imgIP('/static_s/51daiyan/images/tx_bg_02.jpg')"></image>
 				<view class="money_yue">
 					<view class="d1">¥<text>1000.00</text></view>
 					<view class="d2">可提现金额</view>
@@ -16,7 +16,7 @@
 			<view class="tx_mon_box">
 				<view class="tx_mon_box_tit">提现方式</view>
 				<view class="tx_type" :class="tx_type==0? 'cur':''" data-type="0" @tap="txtype_fuc">
-					<view class="tx_type1"><image src="../../static/images/images/tx_bg_05.jpg"></image> 微信提现</view>
+					<view class="tx_type1"><image :src="filter.imgIP('/static_s/51daiyan/images/images/tx_bg_05.jpg')"></image> 微信提现</view>
 					<icon  v-if="tx_type==0" type="success" size="18" color="#F7B43B" />
 					<view v-else class="tx_type2">
 						
@@ -34,10 +34,10 @@
 			<view class="tx_mon_box" v-if="tx_type==1">
 				<view class="tx_mon_box_tit">
 					<text>提现账号</text>
-					<view @tap="jump" data-url="/pages/my_tx_add/my_tx_add"><text class="iconfont icon-tainjia" ></text> <text>添加银行卡</text></view>
+					<view @tap="jump" data-url="/pagesA/my_tx_add/my_tx_add"><text class="iconfont icon-tainjia" ></text> <text>添加银行卡</text></view>
 				</view>
 				<view class="crad_id " :class="tx_crad==0? 'cur':''" data-type="0" @tap="txcrad_fuc">
-					<image src="../../static/images/cradbg.png"></image>
+					<image :src="filter.imgIP('/static_s/51daiyan/images/cradbg.png')"></image>
 					<text  class="flex_1">中国建设银行  ********753</text>
 					<icon  v-if="tx_crad==0" type="success" size="18" color="#F7B43B" />
 					<view v-else class="tx_type2">
@@ -45,7 +45,7 @@
 					</view>
 				</view>
 				<view class="crad_id " :class="tx_crad==1? 'cur':''" data-type="1" @tap="txcrad_fuc">
-					<image src="../../static/images/cradbg.png"></image>
+					<image :src="filter.imgIP('/static_s/51daiyan/images/cradbg.png')"></image>
 					<text class="flex_1">中国建设银行  ********753</text>
 					<icon  v-if="tx_crad==1" type="success" size="18" color="#F7B43B" />
 					<view v-else class="tx_type2">

@@ -70,7 +70,7 @@
 				
 				  <view v-if="imgb.length<9" class="addimg" @tap="scpic">
 				
-				    <image src="../../static/images/upimg1.jpg"></image>
+				    <image :src="filter.imgIP('/static_s/51daiyan/images/upimg1.png')"></image>
 				  </view>
 				</view>
 		    <view class="zp_tip">为了帮您更好的解决问题，请务必上传照片凭证</view>

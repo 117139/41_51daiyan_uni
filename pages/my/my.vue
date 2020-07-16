@@ -3,9 +3,9 @@
 		<view class="container">
 		
 		  <view class="header_box">
-		    <view class="user_box" v-if="loginmsg">
+		    <view class="user_box" v-if="!hasLogin">
 		      <view class="user_tx" data-url="/pages/login/login" @tap='jump'>
-		        <image class="user_tx" src="../../static/images/tx.jpg"></image>
+		        <image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 		      </view>
 		      <view class="user_msg" data-url="/pages/login/login" @tap='jump'>
 		        <view class="user_name">登录</view>
@@ -14,33 +14,36 @@
 		
 		    <view v-else class="user_box">
 		      <view class="user_tx">
-		        <image class="user_tx" src="../../static/images/tx.png"></image>
-		        <image class="star_v" src="../../static/images/star_b.png"></image>
+		        <image class="user_tx" :src="loginMsg.avatarurl"></image>
+						<!-- mingxing -->
+		        <image v-if="loginMsg.identity_id==1" class="star_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+						<!-- daren -->
+		        <image v-if="loginMsg.identity_id==2" class="star_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
 		      </view>
 		      <!-- <view class="user_tx">
 						<image class="user_tx" src="../../static/images/tx.jpg"></image>
 					</view> -->
 		      <view class="user_msg">
 		        <view class="user_name">
-		          <text>范冰冰</text>
+		          <text>{{loginMsg.nickname}}</text>
 		          <view class="daiyan_lv">
-		            <text class="iconfont iconxingzhuang60kaobei2"></text>代言星级 3</view>
+		            <text class="iconfont iconxingzhuang60kaobei2"></text>代言星级 {{loginMsg.advocacy_grade_value}}</view>
 		        </view>
-		        <view class="user_id">代言ID: zy010</view>
+		        <view class="user_id">代言ID: {{loginMsg.identification_id}}</view>
 		      </view>
 		      <view @tap="jump" data-url="/pagesA/mymsg/mymsg">
 		        <text class="iconfont iconshezhi"></text>
 		      </view>
 		    </view>
 		    <view class="user_money user_money1">
-		      <view class="user_money_tit" data-url="/pagesA/my_tx/my_tx" @tap="jump">
+		      <view class="user_money_tit" data-url="/pagesA/my_tx/my_tx" @tap="jump" data-login="true" :data-haslogin="hasLogin">
 		        <view class="v1">
 		          <text class="iconfont iconyue"></text>
 		          <view class="v1_tit">余额</view>
 		          <text class="yue_tip">（可提现）</text>
 		        </view>
 		        <view class="v1">
-		          <view class="v1_tit">¥233</view>
+		          <view class="v1_tit">¥{{loginMsg.money?loginMsg.money:0}}</view>
 		        </view>
 		        <view class="v2">立即提现
 		          <text class="iconfont iconnext3"></text>
@@ -49,15 +52,15 @@
 		
 		      <view class="inr_box">
 		        <view class="yue_li">
-		          <view class="yue_num">¥122</view>
+		          <view class="yue_num">¥{{loginMsg.stay_entry_money?loginMsg.stay_entry_money:0}}</view>
 		          <view>待入账收益</view>
 		        </view>
 		        <view class="yue_li">
-		          <view class="yue_num">¥122</view>
+		          <view class="yue_num">¥{{loginMsg.yet_entry_money?loginMsg.yet_entry_money:0}}</view>
 		          <view>已入账收益</view>
 		        </view>
 		        <view class="yue_li">
-		          <view class="yue_num">¥122</view>
+		          <view class="yue_num">¥{{loginMsg.yet_withdraw_money?loginMsg.yet_withdraw_money:0}}</view>
 		          <view>已提现收益</view>
 		        </view>
 		      </view>
@@ -77,27 +80,27 @@
 		        <view class="yue_li">
 		          <view>代言商品</view>
 		          <view class="zhishu">
-		            <text>1135</text>件</view>
+		            <text>{{loginMsg.follow_buy_goods_number?loginMsg.follow_buy_goods_number:0}}</text>件</view>
 		        </view>
 		        <view class="yue_li">
 		          <view>跟随购买</view>
 		          <view class="zhishu">
-		            <text>1135</text>件</view>
+		            <text>{{loginMsg.follow_buy_goods_number?loginMsg.follow_buy_goods_number:0}}</text>件</view>
 		        </view>
 		        <view class="yue_li">
 		          <view>超过好友</view>
 		          <view class="zhishu">
-		            <text>1135</text>件</view>
+		            <text>{{loginMsg.exceed_number?loginMsg.exceed_number:0}}</text>%</view>
 		        </view>
 		        <view class="yue_li">
 		          <view>公益指数</view>
 		          <view class="zhishu">
-		            <text>1135</text>件</view>
+		            <text>{{loginMsg.public_benefit_number?loginMsg.public_benefit_number:0}}</text></view>
 		        </view>
 		      </view>
 		    </view>
 		    <view class="user_money mt20">
-		      <view class="user_money_tit" @tap="jump" data-url="/pages/OrderList/OrderList">
+		      <view class="user_money_tit" @tap="jump" data-url="/pagesA/OrderList/OrderList"  data-login="true" :data-haslogin="hasLogin">
 		        <view class="v1">
 		          <text class="iconfont icondingdan"></text>
 		          <view class="v1_tit">我的订单</view>
@@ -108,67 +111,72 @@
 		      </view>
 		
 		      <view class="inr_box">
-		        <view class="yue_li" @tap="jump" data-url="/pages/OrderList/OrderList?type=1">
-		          <image class="order_icon" src="../../static/images/my21.png"></image>
+		        <view class="yue_li" @tap="jump" data-url="/pagesA/OrderList/OrderList?type=1"  data-login="true" :data-haslogin="hasLogin">
+		          <image class="order_icon" :src="filter.imgIP('/static_s/51daiyan/images/my21.png')"></image>
 		          <view>待付款</view>
 		        </view>
-		        <view class="yue_li" @tap="jump" data-url="/pages/OrderList/OrderList?type=2">
-		          <image class="order_icon" src="../../static/images/my20.png"></image>
+		        <view class="yue_li" @tap="jump" data-url="/pagesA/OrderList/OrderList?type=2" data-login="true" :data-haslogin="hasLogin">
+		          <image class="order_icon" :src="filter.imgIP('/static_s/51daiyan/images/my20.png')" ></image>
 		          <view>待收货</view>
 		        </view>
-		        <view class="yue_li" @tap="jump" data-url="/pages/OrderList/OrderList?type=4">
-		          <image class="order_icon" src="../../static/images/my22.png"></image>
+		        <view class="yue_li" @tap="jump" data-url="/pagesA/OrderList/OrderList?type=4" data-login="true" :data-haslogin="hasLogin">
+		          <image class="order_icon" :src="filter.imgIP('/static_s/51daiyan/images/my22.png')"></image>
 		          <view>待代言</view>
 		        </view>
-		        <view class="yue_li" @tap="jump" data-url="/pagesA/OrderList_sh/OrderList_sh">
-		          <image class="order_icon" src="../../static/images/my23.png"></image>
+		        <view class="yue_li" @tap="jump" data-url="/pagesA/OrderList_sh/OrderList_sh" data-login="true" :data-haslogin="hasLogin">
+		          <image class="order_icon" :src="filter.imgIP('/static_s/51daiyan/images/my23.png')"></image>
 		          <view>退换/售后</view>
 		        </view>
 		      </view>
 		    </view>
 		    <view class="my_list">
-		      <view class="fx_li  mt20" @tap="jump" data-url="/pagesA/my_rz1/my_rz1">
-		        <image class="li_icon" :src="filter.imgIP('ny_20.png')"></image>
+		      <view v-if="loginMsg.auth_status==1" class="fx_li  mt20" @tap="jump" data-url="/pagesA/my_rz1/my_rz1" data-login="true" :data-haslogin="hasLogin">
+		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_20.png')"></image>
 		        <view class="fx_tit">51认证申请</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" @tap="jump" data-url="/pages/myaddress/myaddress">
-		        <image class="li_icon" :src="filter.imgIP('ny_14.png')"></image>
+		      <view v-else class="fx_li  mt20" @tap="jump" data-url="/pagesA/my_rz3/my_rz3" data-login="true" :data-haslogin="hasLogin">
+		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_20.png')"></image>
+		        <view class="fx_tit">51认证申请</view>
+		        <text class="iconfont iconnext3"></text>
+		      </view>
+		      <view class="fx_li" @tap="jump" data-url="/pagesA/myaddress/myaddress" data-login="true" :data-haslogin="hasLogin">
+		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_14.png')"></image>
 		        <view class="fx_tit">地址管理</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li " @tap="jump" data-url="/pagesA/my_daiyan/my_daiyan">
-		        <image class="li_icon" :src="filter.imgIP('ny_04.png')"></image>
+		      <view class="fx_li " @tap="jump" data-url="/pagesA/my_daiyan/my_daiyan" data-login="true" :data-haslogin="hasLogin">
+		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_04.png')"></image>
 		        <view class="fx_tit">我的代言</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" @tap="jump" data-url="/pages/my_guanzhu/my_guanzhu">
-		        <image class="li_icon" :src="filter.imgIP('ny_08.png')"></image>
+		      <view class="fx_li" @tap="jump" data-url="/pages/my_guanzhu/my_guanzhu" data-login="true" :data-haslogin="hasLogin">
+		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_08.png')"></image>
 		        <view class="fx_tit">我的关注</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" @tap="jump" data-url="/pagesA/my_shoucang/my_shoucang">
-		        <image class="li_icon" :src="filter.imgIP('ny_10.png')"></image>
+		      <view class="fx_li" @tap="jump" data-url="/pagesA/my_shoucang/my_shoucang" data-login="true" :data-haslogin="hasLogin">
+		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_10.png')"></image>
 		        <view class="fx_tit">我的收藏</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" @tap="jump" data-url="/pagesA/my_yhq/my_yhq">
-		        <image class="li_icon" :src="filter.imgIP('ny_12.png')"></image>
+		      <view class="fx_li" @tap="jump" data-url="/pagesA/my_yhq/my_yhq" data-login="true" :data-haslogin="hasLogin">
+		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_12.png')"></image>
 		        <view class="fx_tit">我的优惠券</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" data-url="/pagesA/my_qianbao/my_qianbao" @tap="jump">
-		        <image class="li_icon" :src="filter.imgIP('ny_14.png')"></image>
+		      <view class="fx_li" data-url="/pagesA/my_qianbao/my_qianbao" @tap="jump" data-login="true" :data-haslogin="hasLogin">
+		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_14.png')"></image>
 		        <view class="fx_tit">我的钱包</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" @tap="jump" data-url="/pagesA/my_qianbao1/my_qianbao1">
-		        <image class="li_icon" :src="filter.imgIP('ny_16.png')"></image>
+		      <view class="fx_li" @tap="jump" data-url="/pagesA/my_qianbao1/my_qianbao1" data-login="true" :data-haslogin="hasLogin">
+		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_16.png')"></image>
 		        <view class="fx_tit">我的代言豆</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
 		      <view class="fx_li" @tap="jump" data-url="/pagesA/about/about">
-		        <image class="li_icon" :src="filter.imgIP('ny_18.png')"></image>
+		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_18.png')"></image>
 		        <view class="fx_tit">关于51代言</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
@@ -181,11 +189,21 @@
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import service from '../../service.js';
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		data() {
 			return {
 				
 			}
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg'
+			])
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作

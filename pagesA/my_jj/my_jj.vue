@@ -27,6 +27,15 @@
 				sname:''
 			}
 		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg'
+			])
+		},
+		onLoad() {
+			this.uname=this.loginMsg.introduction
+		},
 		methods: {
 			/**
 			 * 页面相关事件处理函数--监听用户下拉动作
@@ -63,9 +72,11 @@
 			    })
 			    return
 			  }
-			  wx.showToast({
-			    title: '保存',
-			  })
+			  var data={
+			  	token:this.loginMsg.userToken,
+			  	introduction:this.sname,
+			  }
+			  service.setUsermsg(data)
 			  setTimeout(function (){
 			    wx.navigateBack()
 			  },1000)

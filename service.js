@@ -1,3 +1,5 @@
+import store from './store/index.js'
+
 // 管理账号信息
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
@@ -52,30 +54,30 @@ function request(url, params, method, onSuccess, onFailed) {
 			console.log('响应：', res.data);
 
 			// if (res.data) {
-			/*if (res.data.code == -1) {
-				if (params.login_type == 1) {
-					//一进来就登录失败
-					return
+			if (res.data.code == -1) {
+				// if (params.login_type == 1) {
+				// 	//一进来就登录失败
+				// 	return
 
-				}
-				if (params.login_type == 2) {
-					//授权登录失败
-					uni.navigateBack()
-					return
+				// }
+				// if (params.login_type == 2) {
+				// 	//授权登录失败
+				// 	uni.navigateBack()
+				// 	return
 
-				}
+				// }
 				uni.showToast({
 					icon: 'none',
-					title: '请先登录账号'
+					title: '请先授权登录'
 				})
 				setTimeout(function (){
 					uni.navigateTo({
-						url: '../login/login?haslogin=false'
+						url: './pages/login/login?haslogin=false'
 					})
 				},1000)
 				return
 
-			}*/
+			}
 
 			/** start 根据需求 接口的返回状态码进行处理 */
 			onSuccess(res);
@@ -128,13 +130,23 @@ const gologin = function() {
 
 const jump = function(e) {
 	console.log(e.currentTarget.dataset.type)
-	if (e.currentTarget.dataset.type == 2) {
+	var datas=e.currentTarget.dataset
+	if(datas.login){
+		console.log(datas.haslogin)
+		if(!datas.haslogin){
+			uni.navigateTo({
+				url: '../login/login',
+			});
+			return
+		}
+	}
+	if (datas.type == 2) {
 		uni.switchTab({
-			url: e.currentTarget.dataset.url
+			url: datas.url
 		})
 	} else {
 		uni.navigateTo({
-			url: e.currentTarget.dataset.url
+			url: datas.url
 		})
 	}
 }
@@ -162,6 +174,138 @@ const call=  function (e){
 		})
 	}
 }
+
+const wxlogin=function (num){
+	
+	// 获取用户信息
+	uni.getSetting({
+	  success: res => {
+	   console.log(res)
+	    if (res.authSetting['scope.userInfo']==true) {
+	      // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+	      console.log('已经授权')
+				uni.getUserInfo({
+					success(res) {
+						var userInfo = res.userInfo
+						console.log(userInfo)
+						uni.setStorageSync('userInfo', res.userInfo)
+						if(!userInfo){
+						
+						}else{
+	            uni.login({
+	              success: function (res) {
+									
+	                // 发送 res.code 到后台换取 openId, sessionKey, unionId
+	                var uinfo = userInfo
+	                let data = {
+	                  code: res.code,
+	                  nickname: uinfo.nickName,
+	                  avatarurl: uinfo.avatarUrl
+	                }
+	                let rcode = res.code
+	                console.log(res.code)
+	                uni.request({
+	                  url: IPurl+'/login',
+	                  data: data,
+	                  header: {
+	                    'content-type': 'application/x-www-form-urlencoded'
+	                  },
+	                  dataType: 'json',
+	                  method: 'POST',
+	                  success(res) {
+											uni.hideLoading()
+	                    console.log(res.data)
+	                    if (res.data.code == 1) {
+	                      console.log('登录成功')
+	                      console.log(res.data)
+												store.commit('login', res.data.data)
+	                      uni.setStorageSync('token', res.data.data.userToken)
+	                      uni.setStorageSync('loginmsg', res.data.data)
+												if(num==1){
+													uni.showToast({
+														icon:'none',
+														title:'登录成功'
+													})
+													setTimeout(()=>{
+														uni.navigateBack()
+													},1000)
+												}
+	                    } else {
+	                      uni.removeStorageSync('userInfo')
+	                      uni.removeStorageSync('token')
+	                      uni.showToast({
+	                        icon: 'none',
+	                        title: '登录失败',
+	                      })
+	                    }
+	
+	                  },
+	                  fail() {
+											uni.hideLoading()
+	                    uni.showToast({
+	                      icon: 'none',
+	                      title: '登录失败'
+	                    })
+	                  }
+	                })
+	              }
+	            })
+						}
+					}
+				})
+				
+	    }else{
+			  uni.hideLoading()
+	    }
+	  }
+	})
+}
+
+const setUsermsg=function(data){
+	var jkurl='/user/amendInfo'
+	
+	post(jkurl, data,
+		function(res) {
+			
+			// if (res.data.code == 1) {
+			if (res.data.code == 1) {
+				var datas = res.data.data
+				// console.log(typeof datas)
+				
+				if (typeof datas == 'string') {
+					datas = JSON.parse(datas)
+				}
+				wxlogin()
+				uni.showToast({
+					title:'操作成功'
+				})
+				
+			} else {
+				if (res.data.msg) {
+					uni.showToast({
+						icon: 'none',
+						title: res.data.msg
+					})
+				} else {
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
+				}
+			}
+		},
+		function(err) {
+			that.btnkg=0
+			
+				uni.showToast({
+					icon: 'none',
+					title: '获取数据失败'
+				})
+		
+		}
+	)
+}
+
 export default {
 	getUsers,
 	addUser,
@@ -172,5 +316,7 @@ export default {
 	gologin,
 	jump,
 	pveimg,
-	call
+	call,
+	wxlogin,
+	setUsermsg
 }

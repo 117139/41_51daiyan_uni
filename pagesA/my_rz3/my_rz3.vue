@@ -2,14 +2,16 @@
 	<view>
 		<form class="w100" @submit="formSubmit">
 		  <view class='container'>
-		    <image class="rz_jd" :src="filter.imgIP('rz_jd3_02.jpg')"></image>
+		    <image class="rz_jd" :src="filter.imgIP('/static_s/51daiyan/images/rz_jd3_02.jpg')"></image>
 		    <view class="hx10"></view>
 		    <view class="hx10"></view>
 		    <view class="sh_type">  
-		      <image class="rz_sh" :src="filter.imgIP('rz_sh.png')"></image>
-		      <text>审核中</text>
+		      <image class="rz_sh" :src="filter.imgIP('/static_s/51daiyan/images/rz_sh.png')"></image>
+					<!-- 1：未认证  2：审核中  3：审核通过  4：审核未通过 -->
+		      <text>{{loginMsg.auth_status==1?'未认证':loginMsg.auth_status==2?'审核中':loginMsg.auth_status==3?'审核通过':'审核未通过'}}</text>
+		      <text v-if="loginMsg.auth_status==4" class="jjyy">{{loginMsg.auth_cause}}</text>
 		    </view>
-		    <button class="definebtn" form-type="submit">确定</button>
+		    <button class="definebtn" form-type="submit">{{loginMsg.auth_status!=4?'确定':'重新认证'}}</button>
 		  </view>
 		</form>
 	</view>
@@ -38,11 +40,24 @@
 				yxtime2:'',
 			}
 		},
+		onLoad() {
+			uni.showLoading({
+				title:'正在获取状态',
+				mask:true
+			})
+			service.wxlogin()
+		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
 		  wx.stopPullDownRefresh();
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg'
+			])
 		},
 		methods: {
 			reset_val() {
@@ -135,108 +150,28 @@
 			},
 			formSubmit: function (e) {
 			  var that = this
-			  wx.switchTab({
-			    url: '/pages/my/my'
-			  })
+			  if(that.loginMsg.auth_status!=4){
+					wx.switchTab({
+					  url: '/pages/my/my'
+					})
+				}else{
+					wx.redirectTo({
+					  url: '/pagesA/my_rz1/my_rz1'
+					})
+				}
 			  
-			  return
-			
-			  wx.showModal({
-			    title: '提示',
-			    content: '是否上传',
-			    success(res) {
-			      if (res.confirm) {
-			        console.log('用户点击确定')
-			        wx.showLoading({
-			          title: '正在提交。。',
-			          mask: true
-			        })
-			        setTimeout(function(){
-			          wx.showToast({
-			            icon: 'none',
-			            title: '提交成功',
-			            duration: 2000
-			          })
-			          setTimeout(function () {
-			            wx.navigateTo({
-			              url:'pages/my_rz2/my_rz2'
-			            })
-			          }, 1000)
-			        }, 1000)
-			        return
-			        wx.request({
-			          url: app.IPurl + '/api/index/save',
-			          data: {
-			
-			            title: that.bookname,
-			            book_width: fs.book_h,//(图书高)
-			            author: fs.book_user,//(作者)
-			            isbn: fs.book_ISBN,//(ISBN)
-			            name: fs.book_myname,//(姓名)
-			            tel: fs.book_tel,//(联系方式)
-			            pic_book: fs.book_img1,//(书脊)
-			            pic_cover: fs.book_img2,//(封面)
-			            pic_rests: fs.book_img3,//(其他)
-			          },
-			          header: {
-			            'content-type': 'application/x-www-form-urlencoded'
-			          },
-			          dataType: 'json',
-			          method: 'POST',
-			          success(res) {
-			            wx.hideLoading()
-			            console.log(res.data)
-			
-			
-			            if (res.data.code == 1) {
-			
-			              wx.showToast({
-			                icon: 'none',
-			                title: '提交成功',
-			                duration: 2000
-			              })
-			              setTimeout(function () {
-			                wx.navigateBack()
-			
-			              }, 1000)
-			
-			            } else {
-			              if (res.data.msg) {
-			                wx.showToast({
-			                  icon: 'none',
-			                  title: res.data.msg
-			                })
-			              } else {
-			                wx.showToast({
-			                  icon: 'none',
-			                  title: '操作失败'
-			                })
-			              }
-			            }
-			
-			
-			          },
-			          fail() {
-			            wx.hideLoading()
-			            wx.showToast({
-			              icon: 'none',
-			              title: '操作失败'
-			            })
-			          }
-			        })
-			
-			      } else if (res.cancel) {
-			        console.log('用户点击取消')
-			      }
-			    }
-			  })
+			  
 			}
 		}
 	}
 </script>
 
 <style scoped>
-
+.jjyy{
+	margin-top: 40upx;
+	font-size: 24upx;
+	color: #999;
+}
 page{
 	overflow-y: auto!important;
 	background: #fff;
@@ -308,6 +243,6 @@ page{
 .sh_type image{
   width:80rpx;
   height:80rpx;
-  margin-bottom: 20rpx;
+  margin-bottom: 40rpx;
 }
 </style>

@@ -89,74 +89,8 @@
 			"style": {
 				"navigationBarTitleText": "填写订单"
 			}
-		}, {
-			"path": "pages/OrderList/OrderList",
-			"style": {
-				"navigationBarTitleText": "我的订单"
-			}
-		}, {
-			"path": "pages/OrderDetails/OrderDetails",
-			"style": {
-				"navigationBarTitleText": "订单详情"
-			}
 		},
 		{
-			"path": "pages/dp_index/dp_index",
-			"style": {
-				"navigationBarTitleText": "店铺首页",
-				"backgroundColor": "#f5f5f5",
-				"navigationBarBackgroundColor": "#0B0E2D",
-				"navigationBarTextStyle": "white"
-			}
-		}, {
-			"path": "pages/details_pl/details_pl",
-			"style": {
-				"navigationBarTitleText": "评论",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/daiyan_fabu/daiyan_fabu",
-			"style": {
-				"navigationBarTitleText": "我要代言",
-			}
-		}, {
-			"path": "pages/daiyan_fabu_ok/daiyan_fabu_ok",
-			"style": {}
-		}, {
-			"path": "pages/daiyan_pl/daiyan_pl",
-			"style": {
-				"navigationBarTitleText": "评论",
-				"backgroundColor": "#f5f5f5"
-			}
-		}, {
-			"path": "pages/daiyan_pl_hf/daiyan_pl_hf",
-			"style": {
-				"navigationBarTitleText": "回复详情",
-				"backgroundColor": "#f5f5f5"
-			}
-		}, {
-			"path": "pages/daiyanren/daiyanren",
-			"style": {}
-		}, {
-			"path": "pages/dyr_text/dyr_text",
-			"style": {
-				"navigationBarTitleText": "代言人说",
-				"backgroundColor": "#f5f5f5",
-				"navigationBarBackgroundColor": "#F5C33D",
-				"navigationBarTextStyle": "white"
-			}
-		}, {
-			"path": "pages/goods_list/goods_list",
-			"style": {
-				"navigationBarTitleText": "商品列表"
-			}
-		}, {
-			"path": "pages/goods_pj/goods_pj",
-			"style": {
-				"navigationBarTitleText": "评价"
-			}
-		}, {
 			"path": "pages/my_index/my_index",
 			"style": {
 				"navigationBarTitleText": "51代言",
@@ -170,7 +104,16 @@
 				"navigationBarTitleText": "搜索"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/xiaoxi_list/xiaoxi_list",
+            "style" : {
+							"navigationBarTitleText": "消息列表",
+							"backgroundColor": "#f5f5f5",
+							"navigationBarBackgroundColor": "#F5C33D",
+							"navigationBarTextStyle": "white"
+						}
+        }
+    ],
 
 	"subPackages": [{
 			"root": "pagesA",
@@ -207,6 +150,16 @@
 						"disableScroll": true,
 						"backgroundColor": "#fff",
 						"navigationBarTitleText": "添加学校"
+					}
+				}, {
+					"path": "OrderList/OrderList",
+					"style": {
+						"navigationBarTitleText": "我的订单"
+					}
+				}, {
+					"path": "OrderDetails/OrderDetails",
+					"style": {
+						"navigationBarTitleText": "订单详情"
 					}
 				}, {
 					"path": "OrderList_sh/OrderList_sh",
@@ -316,6 +269,15 @@
 						"backgroundColor": "#fff",
 						"navigationBarTitleText": "申请认证"
 					}
+				},
+				{
+					"path": "daiyan_fabu/daiyan_fabu",
+					"style": {
+						"navigationBarTitleText": "我要代言"
+					}
+				}, {
+					"path": "daiyan_fabu_ok/daiyan_fabu_ok",
+					"style": {}
 				}
 			]
 		},
@@ -339,6 +301,54 @@
 						"backgroundColor": "#f5f5f5",
 						"navigationBarBackgroundColor": "#F5C33D",
 						"navigationBarTextStyle": "white"
+					}
+				}, {
+					"path": "dp_index/dp_index",
+					"style": {
+						"navigationBarTitleText": "店铺首页",
+						"backgroundColor": "#f5f5f5",
+						"navigationBarBackgroundColor": "#0B0E2D",
+						"navigationBarTextStyle": "white"
+					}
+				}, {
+					"path": "details_pl/details_pl",
+					"style": {
+						"navigationBarTitleText": "评论",
+						"backgroundColor": "#f5f5f5"
+					}
+				}, {
+					"path": "dyr_text/dyr_text",
+					"style": {
+						"navigationBarTitleText": "代言人说",
+						"backgroundColor": "#f5f5f5",
+						"navigationBarBackgroundColor": "#F5C33D",
+						"navigationBarTextStyle": "white"
+					}
+				}, {
+					"path": "goods_list/goods_list",
+					"style": {
+						"navigationBarTitleText": "商品列表"
+					}
+				}, {
+					"path": "goods_pj/goods_pj",
+					"style": {
+						"navigationBarTitleText": "评价"
+					}
+				},
+				{
+					"path": "daiyanren/daiyanren",
+					"style": {}
+				}, {
+					"path": "daiyan_pl/daiyan_pl",
+					"style": {
+						"navigationBarTitleText": "代言评论",
+						"backgroundColor": "#f5f5f5"
+					}
+				}, {
+					"path": "daiyan_pl_hf/daiyan_pl_hf",
+					"style": {
+						"navigationBarTitleText": "回复详情",
+						"backgroundColor": "#f5f5f5"
 					}
 				}, {
 					"path": "star_list/star_list",
@@ -405,11 +415,11 @@
 	"preloadRule": {
 		"pages/index/index": {
 			"network": "all",
-			"packages": ["pages_goods"]
+			"packages": ["pages_goods", "pagesA"]
 		},
 		"pages/faxian/faxian": {
 			"network": "all",
-			"packages": ["pages_goods"]
+			"packages": ["pages_goods", "pagesA"]
 		},
 		"pages/car/car": {
 			"network": "all",
@@ -462,13 +472,8 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "51代言",
 		"navigationBarBackgroundColor": "#fff",
-		"backgroundColor": "#F8F8F8",
-		"usingComponents": {
-			"van-stepper": "/wxcomponents/vant-weapp/stepper/index",
-			"van-submit-bar": "/wxcomponents/vant-weapp/submit-bar/index",
-			"van-popup": "/wxcomponents/vant-weapp/popup/index",
-			"van-action-sheet": "/wxcomponents/vant-weapp/action-sheet/index"
-		}
+		"backgroundColor": "#F8F8F8"
+
 
 	},
 	"plugins": {

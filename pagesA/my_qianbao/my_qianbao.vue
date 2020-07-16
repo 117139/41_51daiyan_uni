@@ -2,7 +2,7 @@
 	<view>
 		<view class="container">
 			<view class="tixian_box">
-				<image  class="tixian_box" src="../../static/images/tx_bg_02.jpg"></image>
+				<image  class="tixian_box" :src="filter.imgIP('/static_s/51daiyan/images/tx_bg_02.jpg')"></image>
 				<view class="money_yue">
 					<view class="d1">¥<text>1000.00</text></view>
 					<view class="d2">余额</view>

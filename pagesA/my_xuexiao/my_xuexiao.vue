@@ -23,7 +23,6 @@
 		      </view>
 		      <text class="iconfont iconnext3 c9 fz30"></text>
 		    </view>
-		    <input class="hidden" name="sex" type="text" :value="sex[index].value" disabled/>
 		    
 		  </picker>
 		</view>
@@ -44,6 +43,17 @@
 				xname:'',
 				shengri: '',
 			}
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg'
+			])
+		},
+		onLoad() {
+			this.yname=this.loginMsg.school
+			this.xname=this.loginMsg.department
+			this.shengri=this.loginMsg.entrance_time
 		},
 		methods: {
 			/**
@@ -104,9 +114,13 @@
 			    })
 			    return
 			  }
-			  wx.showToast({
-			    title: '保存',
-			  })
+			  var data={
+			  	token:this.loginMsg.userToken,
+			  	school:this.yname,
+			  	department:this.xname,
+			  	entrance_time:this.shengri,
+			  }
+			  service.setUsermsg(data)
 			  setTimeout(function () {
 			    wx.navigateBack()
 			  }, 1000)

@@ -2,13 +2,13 @@
 	<view>
 		<view class="container">
 			<view class="h_bg">
-				<image class="h_bg" src="../../static/images/images/goods_tj_02.jpg"></image>
+				<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/goods_tj_02.jpg')"></image>
 			</view>
 			<view class="h_main">
 				<view class="goods_box1">
 					<view class="goods_li1"  @tap="jump" data-url="/pages/details/details">
 						<view class="goods_img">
-							<image class="goods_img" src="../../static/images/goods.png"></image>
+							<image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
 							<view class="goods_dy_num"><text class="iconfont icondianzan2"></text>111代言</view>
 						</view>
 						<view class="goods_name1 oh1">兰蔻第二代小黑</view>
@@ -16,7 +16,7 @@
 					</view>
 					<view class="goods_li1"  @tap="jump" data-url="/pages/details/details">
 						<view class="goods_img">
-							<image class="goods_img" src="../../static/images/goods.png"></image>
+							<image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
 							<view class="goods_dy_num"><text class="iconfont icondianzan2"></text>111代言</view>
 						</view>
 						<view class="goods_name1 oh1">兰蔻第二代小黑</view>
@@ -24,7 +24,7 @@
 					</view>
 					<view class="goods_li1"  @tap="jump" data-url="/pages/details/details">
 						<view class="goods_img">
-							<image class="goods_img" src="../../static/images/goods.png"></image>
+							<image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
 							<view class="goods_dy_num"><text class="iconfont icondianzan2"></text>111代言</view>
 						</view>
 						<view class="goods_name1 oh1">兰蔻第二代小黑</view>
@@ -44,7 +44,7 @@
 					<view class="goods_li2" v-for="(item,idx) in data_list"  @tap="jump" data-url="/pages/details/details">
 						<view class="goods_li2_d1">
 							<view class="goods_img2">
-								<image class="goods_img2" src="../../static/images/goods.png"></image>
+								<image class="goods_img2" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
 							</view>
 							<view class="goods_msg">
 								<view class="goods_name2 oh1 fz30">苏泊尔IH家用大容量智能电饭锅</view>
@@ -60,7 +60,7 @@
 						</view>
 						<view class="goods_li2_d2">
 							<view class="dy_tx">
-								<image class="dy_tx" src="../../static/images/tx.png"></image>
+								<image class="dy_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 							</view>
 							<view class="dy_star">王力宏代言：</view>
 							<view class="dy_text oh1">穿上去特别舒服，打篮球更有感觉了感觉了感觉了感觉了</view>

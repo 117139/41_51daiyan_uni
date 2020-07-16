@@ -2,7 +2,7 @@
 	<view>
 		<form class="w100" @submit="formSubmit">
 		  <view class='container'>
-		    <image class="rz_jd" src="../../static/images/rz_jd2_02.jpg"></image>
+		    <image class="rz_jd" :src="filter.imgIP('/static_s/51daiyan/images/rz_jd2_02.jpg')"></image>
 		
 		    <view class="hx10"></view>
 		    <view class="hx10"></view>
@@ -14,10 +14,10 @@
 		
 		    </view>
 		    <view class="sf_box">
-		      <view class="sfxx_box">
+		      <!-- <view class="sfxx_box">
 		        <text>姓名</text>
 		        <input name="sfz_name" placeholder="请输入姓名"></input>
-		      </view>
+		      </view> -->
 		      <view class="sfxx_box">
 		        <text>微博账号</text>
 		        <input name="wb_id" placeholder="请输入微博账号"></input>
@@ -30,10 +30,10 @@
 		        <text>快手账号</text>
 		        <input name="ks_id" placeholder="请输入快手账号"></input>
 		      </view>
-		      <view class="sfxx_box">
+		     <!-- <view class="sfxx_box">
 		        <text>手机号码</text>
 		        <input name="tel" type="number" placeholder="请输入手机号码"></input>
-		      </view>
+		      </view> -->
 		    </view>
 		    <button class="definebtn" form-type="submit">保存并进行下一步</button>
 		  </view>
@@ -70,6 +70,13 @@
 		onPullDownRefresh: function () {
 		  wx.stopPullDownRefresh();
 		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'renzheng'
+			])
+		},
 		methods: {
 			reset_val() {
 			  this.uname= ''
@@ -86,13 +93,13 @@
 			
 			  var fs = e.detail.value
 			  
-			  if (!fs.sfz_name) {
-			    wx.showToast({
-			      icon: 'none',
-			      title: '请输入姓名'
-			    })
-			    return
-			  }
+			  // if (!fs.sfz_name) {
+			  //   wx.showToast({
+			  //     icon: 'none',
+			  //     title: '请输入姓名'
+			  //   })
+			  //   return
+			  // }
 			  if (!fs.wb_id) {
 			    wx.showToast({
 			      icon: 'none',
@@ -114,13 +121,13 @@
 			    })
 			    return
 			  }
-			  if (!fs.tel || !(/^1\d{10}$/.test(fs.tel))) {
-			    wx.showToast({
-			      icon: 'none',
-			      title: '请输入正确格式的手机号'
-			    })
-			    return
-			  }
+			  // if (!fs.tel || !(/^1\d{10}$/.test(fs.tel))) {
+			  //   wx.showToast({
+			  //     icon: 'none',
+			  //     title: '请输入正确格式的手机号'
+			  //   })
+			  //   return
+			  // }
 			
 			  wx.showModal({
 			    title: '提示',
@@ -132,79 +139,66 @@
 			          title: '正在提交。。',
 			          mask: true
 			        })
-			        setTimeout(function(){
-			          wx.showToast({
-			            icon: 'none',
-			            title: '提交成功',
-			            duration: 2000
-			          })
-			          setTimeout(function () {
-			            wx.navigateTo({
-			              url:'/pagesA/my_rz3/my_rz3'
-			            })
-			          }, 1000)
-			        }, 1000)
-			        return
-			        wx.request({
-			          url: app.IPurl + '/api/index/save',
-			          data: {
-			
-			            title: that.bookname,
-			            book_width: fs.book_h,//(图书高)
-			            author: fs.book_user,//(作者)
-			            isbn: fs.book_ISBN,//(ISBN)
-			            name: fs.book_myname,//(姓名)
-			            tel: fs.book_tel,//(联系方式)
-			            pic_book: fs.book_img1,//(书脊)
-			            pic_cover: fs.book_img2,//(封面)
-			            pic_rests: fs.book_img3,//(其他)
-			          },
-			          header: {
-			            'content-type': 'application/x-www-form-urlencoded'
-			          },
-			          dataType: 'json',
-			          method: 'POST',
-			          success(res) {
-			            wx.hideLoading()
-			            console.log(res.data)
-			
-			
-			            if (res.data.code == 1) {
-			
-			              wx.showToast({
-			                icon: 'none',
-			                title: '提交成功',
-			                duration: 2000
-			              })
-			              setTimeout(function () {
-			                wx.navigateBack()
-			
-			              }, 1000)
-			
-			            } else {
-			              if (res.data.msg) {
-			                wx.showToast({
-			                  icon: 'none',
-			                  title: res.data.msg
-			                })
-			              } else {
-			                wx.showToast({
-			                  icon: 'none',
-			                  title: '操作失败'
-			                })
-			              }
-			            }
-			
-			
-			          },
-			          fail() {
-			            wx.hideLoading()
-			            wx.showToast({
-			              icon: 'none',
-			              title: '操作失败'
-			            })
-			          }
-			        })
+			       
+			      var jkurl='/user/applyApprove'
+			      var data={
+			      	"token": that.loginMsg.userToken,
+			      	    "identity_id": that.renzheng.sfid,
+			      	    "id_number_front": that.renzheng.sfimg1,
+			      	    "id_number_contrary": that.renzheng.sfimg2,
+			      	    "real_name": that.renzheng.sfz_name,
+			      	    "id_number": that.renzheng.sfz_id,
+			      	    "start_validity": that.renzheng.yxtime1,
+			      	    "end_validity": that.renzheng.yxtime2,
+			      	    "weibo_account": fs.wb_id,
+			      	    "douyin_account": fs.dy_id,
+			      	    "kuaishou_account": fs.ks_id
+			      }
+			      service.post(jkurl, data,
+			      	function(res) {
+			      		
+			      		// if (res.data.code == 1) {
+			      		if (res.data.code == 1) {
+			      			var datas = res.data.data
+			      			// console.log(typeof datas)
+			      			
+			      			if (typeof datas == 'string') {
+			      				datas = JSON.parse(datas)
+			      			}
+			      			wx.showToast({
+			      			  icon: 'none',
+			      			  title: '提交成功',
+			      			  duration: 2000
+			      			})
+			      			setTimeout(function () {
+			      			  wx.navigateTo({
+			      			    url:'/pagesA/my_rz3/my_rz3'
+			      			  })
+			      			}, 1000)
+			      		} else {
+			      			if (res.data.msg) {
+			      				uni.showToast({
+			      					icon: 'none',
+			      					title: res.data.msg
+			      				})
+			      			} else {
+			      				uni.showToast({
+			      					icon: 'none',
+			      					title: '获取身份失败'
+			      				})
+			      			}
+			      		}
+			      	},
+			      	function(err) {
+			      		that.btnkg=0
+			      		
+			      			uni.showToast({
+			      				icon: 'none',
+			      				title: '获取数据失败'
+			      			})
+			      	
+			      	}
+			      )
 			
 			      } else if (res.cancel) {
 			        console.log('用户点击取消')

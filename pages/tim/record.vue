@@ -13,7 +13,7 @@
 		<view class="conversition-box" v-if="hasLogin">
 			<view class="xx_li" bindtap="jump" data-url="/pages/xiaoxi_list/xiaoxi_list?type=0">
 				<view class="user_tx" >
-					<image class="user_tx" src="../../static/images/xtxx.png"></image>
+					<image class="user_tx"  :src="filter.imgIP('/static_s/51daiyan/images/xtxx.png')"></image>
 					<text></text>
 				</view>
 				<view class="xx_msg">
@@ -43,7 +43,7 @@
 			</view> -->
 			<view class="xx_li" bindtap="jump" data-url="/pages/xiaoxi_list/xiaoxi_list?type=1">
 				<view class="user_tx" >
-					<image class="user_tx" src="../../static/images/dyxx.png"></image>
+					<image class="user_tx"  :src="filter.imgIP('/static_s/51daiyan/images/dyxx.png')"></image>
 					<text></text>
 				</view>
 				<view class="xx_msg">

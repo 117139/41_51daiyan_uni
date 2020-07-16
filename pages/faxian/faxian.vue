@@ -2,58 +2,58 @@
 	<view>
 		<view class="container">
 		  <view class="fx_li" @tap="jump" data-url="/pages_goods/daiyan_find/daiyan_find">
-		    <image class="li_icon" src="/static/images/images/faxian_02.jpg"></image>
+		    <image class="li_icon"  :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_02.jpg')"></image>
 				<view class="fx_tit">寻找代言人</view>
 				<view class="fx_r_img">
-					<image src="../../static/images/tx.png"></image>
+					<image  :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 					<!-- <text></text> -->
 				</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
 		  <view class="fx_li mt20" @tap="jump" data-url="/pages_goods/daiyan_sc/daiyan_sc">
-		    <image class="li_icon" src="/static/images/images/faxian_05.jpg"></image>
+		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_05.jpg')"></image>
 				<view class="fx_tit">代言商城</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
 		  <view class="fx_li" @tap="jump" data-url="/pages_goods/star_list/star_list?type=0">
-		    <image class="li_icon" src="/static/images/images/faxian_07.jpg"></image>
+		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_07.jpg')"></image>
 				<view class="fx_tit">明星达人秀</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
 		  <view class="fx_li" @tap="jump" data-url="/pages_goods/daiyan_quan/daiyan_quan">
-		    <image class="li_icon" src="/static/images/images/faxian_09.jpg"></image>
+		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_09.jpg')"></image>
 				<view class="fx_tit">代言圈</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
 		  <view class="fx_li mt20" @tap="jump" data-url="/pagesA/my_friends/my_friends">
-		    <image class="li_icon" src="/static/images/images/faxian_11.jpg"></image>
+		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_11.jpg')"></image>
 				<view class="fx_tit">我的好友</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
 		  <view class="fx_li"  @tap="jump" data-url="/pagesA/my_guanzhu/my_guanzhu">
-		    <image class="li_icon" src="/static/images/images/faxian_13.jpg"></image>
+		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_13.jpg')"></image>
 				<view class="fx_tit">我的关注</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
 		  <view class="fx_li" @tap="jump" data-url="/pagesA/my_fans/my_fans">
-		    <image class="li_icon" src="/static/images/images/faxian_15.jpg"></image>
+		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_15.jpg')"></image>
 				<view class="fx_tit">我的粉丝</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
 		  <view class="fx_li mt20" @tap="jump" data-url="/pages_goods/daiyan_ph/daiyan_ph">
-		    <image class="li_icon" src="/static/images/images/faxian_17.jpg"></image>
+		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_17.jpg')"></image>
 				<view class="fx_tit">代言排行</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
 		  <view class="fx_li mt20" @tap="jump" data-url="/pages_goods/goods_youxuan/goods_youxuan">
-		    <image class="li_icon" src="/static/images/images/fx_02.jpg"></image>
+		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/fx_02.jpg')"></image>
 				<view class="fx_tit">优选代言池</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
 		</view>
 	</view>
 </template>
-
+<script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import service from '../../service.js';
 	export default {

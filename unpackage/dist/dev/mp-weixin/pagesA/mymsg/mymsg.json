@@ -2,5 +2,7 @@
   "disableScroll": true,
   "backgroundColor": "#fff",
   "navigationBarTitleText": "设置",
-  "usingComponents": {}
+  "usingComponents": {
+    "avatar": "/components/yq-avatar/yq-avatar"
+  }
 }

@@ -3,7 +3,7 @@
 		
 		  <view class="page-content">
 		    <view class="container">
-		      <image class="h_bg" src="../../static/images/images/star_list_02.jpg"></image>
+		      <image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/star_list_02.jpg')"></image>
 		
 		      <view class="js_box">
 						<view class="js_box1">
@@ -20,8 +20,9 @@
 							 <view class="star_li">
 							 	<view class="star_msg">
 							 		<view class="user_tx"  @tap="jump" data-url="/pages/my_index/my_index">
-							 			<image class="user_tx" src="../../static/images/tx.png"></image>
-							 			<image class="user_v" src="../../static/images/star_b.png"></image>
+							 			<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							 			<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							 			<!-- <image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image> -->
 							 		</view>
 							 		<view class="user_msg">
 							 			<view class="fwb">张一鸣</view>
@@ -35,8 +36,9 @@
 							 <view class="star_li">
 							 	<view class="star_msg">
 							 		<view class="user_tx">
-							 			<image class="user_tx" src="../../static/images/tx.png"></image>
-							 			<image class="user_v" src="../../static/images/star_b.png"></image>
+							 			<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							 			<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							 			<!-- <image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image> -->
 							 		</view>
 							 		<view class="user_msg">
 							 			<view class="fwb">张一鸣</view>
@@ -50,8 +52,9 @@
 							 <view class="star_li">
 							 	<view class="star_msg">
 							 		<view class="user_tx">
-							 			<image class="user_tx" src="../../static/images/tx.png"></image>
-							 			<image class="user_v" src="../../static/images/star_b.png"></image>
+							 			<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							 			<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							 			<!-- <image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image> -->
 							 		</view>
 							 		<view class="user_msg">
 							 			<view class="fwb">张一鸣</view>
@@ -63,9 +66,9 @@
 							 	</view>
 								<view class="star_dymsg">
 									<view class="dy_sp">
-										<image class="dy_sp" :src="filter.imgIP('/images/goods15_02.jpg')"  mode="aspectFill"></image>
+										<image class="dy_sp" :src="filter.imgIP('/static_s/51daiyan/images/images/goods15_02.jpg')"  mode="aspectFill"></image>
 										<view class="play_box">
-											<image src="../../static/images/bofang.png"></image>
+											<image :src="filter.imgIP('/static_s/51daiyan/images/bofang.png')"></image>
 										</view>
 									</view>
 								</view>

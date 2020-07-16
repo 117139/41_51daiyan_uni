@@ -3,33 +3,39 @@
 		<form class="w100" @submit="formSubmit">
 		  <view class='container'>
 		    <view class="tx_box" >
-		      <image :src="member.HeadPicUrl?member.HeadPicUrl:tximg"  @tap="scpic"></image>
-		      <text class="msg_name"  @tap="scpic">点击更换头像</text>
+		      <!-- <image :src="loginMsg.avatarurl"  @tap="scpic"></image> -->
+					<avatar stretch="short"
+					        selWidth="200px" selHeight="400upx" @upload="myUpload" :avatarSrc="loginMsg.avatarurl"
+					        avatarStyle="width: 165rpx; height: 165rpx; border-radius: 100%;">
+					    </avatar>
+		      <text class="msg_name" >点击更换头像</text>
 		    </view>
 		    <view class="msg_box" @tap="jump" data-url="/pagesA/my_name/my_name">
 		      <text class="msg_name">姓名</text>
-		       <view class="dis_flex aic msg_val">{{'昵称'}}</view>
+		       <view class="dis_flex aic msg_val">{{loginMsg.nickname?loginMsg.nickname:''}}</view>
 		        <text class="iconfont iconnext3 c9 fz30"></text>
 		    </view>
 		    <view class="msg_box">
 		      <text class="msg_name">代言号</text>
-		       <view class="dis_flex aic msg_val">{{'spzy010'}}</view>
+		       <view class="dis_flex aic msg_val">{{loginMsg.identification_id?loginMsg.identification_id:''}}</view>
 		    </view>
 		    
 		    <view class="msg_box" @tap="jump" data-url="/pagesA/my_jj/my_jj">
 		      <text class="msg_name">简介</text>
-		       <view class="dis_flex aic msg_val">{{'我就是我不一样的烟火'}}</view>
+		       <view class="dis_flex aic msg_val " style="text-align: right;">
+						 <view class="oh1">{{loginMsg.introduction?loginMsg.introduction:''}}</view>
+					 </view>
 		        <text class="iconfont iconnext3 c9  fz30"></text>
 		    </view>
 		    <view class="msg_box" @tap="jump" data-url="/pagesA/my_xuexiao/my_xuexiao">
 		      <text class="msg_name">学校</text>
-		       <view class="dis_flex aic msg_val">{{'中国政法大学'}}</view>
+		       <view class="dis_flex aic msg_val">{{loginMsg.school_data.school?loginMsg.school_data.school:''}}</view>
 		        <text class="iconfont iconnext3 c9 fz30"></text>
 		    </view>
 		    <picker class="w100" @change="bindPickerChange" :value="index" :range="sex" range-key='name'>
 		      <view class="msg_box">
 		        <text class="msg_name">性别</text>
-		        <view class="dis_flex aic msg_val">{{sex[index].name}}
+		        <view class="dis_flex aic msg_val">{{loginMsg.sex?loginMsg.sex:'男'}}
 		          
 		        </view>
 		        <text class="iconfont iconnext3 c9 fz30"></text>
@@ -40,12 +46,11 @@
 		    <picker class="w100" mode="date" @change="bindTimeChange" :value="index" >
 		      <view class="msg_box">
 		        <text class="msg_name">生日</text>
-		        <view class="dis_flex aic msg_val">{{shengri}}
+		        <view class="dis_flex aic msg_val">{{loginMsg.birthday}}
 		          
 		        </view>
 		        <text class="iconfont iconnext3 c9 fz30"></text>
 		      </view>
-		      <input class="hidden" name="sex" type="text" :value="sex[index].value" disabled/>
 		      
 		    </picker>
 		    
@@ -53,13 +58,12 @@
 		    <picker class="w100" mode="region" @change="bindRegionChange" :value="region">
 		      <view class="msg_box">
 		        <text class="msg_name">地区</text>
-		        <view class="dis_flex aic msg_val">{{region[0]}} {{region[1]}} {{region[2]}}
+		        <view class="dis_flex aic msg_val">{{loginMsg.province?loginMsg.province:''}} {{loginMsg.city?loginMsg.city:''}} {{loginMsg.county?loginMsg.county:''}}
 		         
 		        </view>
 		        <text class="iconfont iconnext3 c9 fz30"></text>
 		      </view>
 		
-		      <input class="hidden" name="address" type="text" :value="region[0]+region[1]+region[2]" disabled/>
 		    </picker>
 		    
 		    
@@ -71,6 +75,7 @@
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import service from '../../service.js';
+	 import avatar from "../../components/yq-avatar/yq-avatar.vue";
 	import {
 		mapState,
 		mapMutations
@@ -93,7 +98,21 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
-		  this.member= wx.getStorageSync('member')
+		  if(!this.hasLogin){
+				uni.reLaunch({
+					url:'../../pages/index/index'
+				})
+				return
+			}
+		},
+		components: {
+				avatar
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg'
+			])
 		},
 		methods: {
 			/**
@@ -122,21 +141,69 @@
 			
 			  console.log('picker发送选择改变，携带值为', e.detail.value)
 			  this.index= e.detail.value
+				var data={
+					token:this.loginMsg.userToken,
+					sex:this.sex[e.detail.value].name,
+				}
+				service.setUsermsg(data)
 			},
 			bindTimeChange(e) {
 			  console.log('picker发送选择改变，携带值为', e.detail.value)
-			  this.shengri = e.detail.value
-			  this.shengri= this.shengri
+			  // this.shengri = e.detail.value
+			  // this.shengri= this.shengri
+				var data={
+					token:this.loginMsg.userToken,
+					birthday:e.detail.value,
+				}
+				service.setUsermsg(data)
 			},
 			//选择地区
 			bindRegionChange(e) {
 			  console.log('picker发送选择改变，携带值为', e.detail.value)
-				this.region=e.detail.value
-			  this.region= this.region
+				// this.region=e.detail.value
+			 //  this.region= this.region
+				var data={
+					token:this.loginMsg.userToken,
+					province:e.detail.value[0],
+					city:e.detail.value[1],
+					county:e.detail.value[2],
+				}
+				service.setUsermsg(data)
 			},
 			jump(e) {
 			  console.log(e.currentTarget.dataset.type)
 			  service.jump(e)
+			},
+			myUpload(rsp) {
+				var that =this
+					var url = rsp.path; //更新头像方式一
+					wx.uploadFile({
+					  url: service.IPurl+'/upload/streamImg', //仅为示例，非真实的接口地址
+					  filePath: rsp.path,
+					  name: 'file',
+					  formData: {
+					    'type': 1,
+					  },
+					  success(res) {
+					    // console.log(res.data)
+					    var ndata = JSON.parse(res.data)
+					    // console.log(ndata)
+					    // console.log(ndata.error == 0)
+					    if (ndata.code == 1) {
+					      console.log(ndata.msg)
+					      var data={
+									token:that.loginMsg.userToken,
+									avatarurl:ndata.msg,
+								}
+								service.setUsermsg(data)
+					    } else {
+					      wx.showToast({
+					        icon: "none",
+					        title: "上传失败"
+					      })
+					    }
+					  }
+					})
 			},
 			scpic() {
 			  var that = this

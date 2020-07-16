@@ -2,9 +2,10 @@
 	<view class="container">
 	  <view class="header_box">
 	    <view class="index_box1">
-	      <image class="user_tx" :src="filter.imgIP('tx.png')"></image>
+	      <image v-if="!hasLogin" class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+	      <image v-else class="user_tx" :src="loginMsg.avatarurl"></image>
 	      <view class="sousuo_box" @tap="jump" data-url="/pages/search/search">
-	        <text class="iconfont iconsousuo"></text> 搜索人名代言号/商品/品牌
+	        <text class="iconfont iconsousuo"></text>搜索人名代言号/商品/品牌
 	      </view>
 	      <view class="game_js" @tap="jump" data-url="/pages_goods/game_js/game_js">
 	        <text class="iconfont iconic_help_px"></text>
@@ -32,9 +33,9 @@
 	    <view class="start_list1">
 	      <view class="start_li" v-for="(item,index) in start_li" @tap="jump" data-url="/pages/my_index/my_index">
 	        <view class="star_tx">
-	          <image :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+	          <image :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
 	          <view>
-	            <image src="/static/images/star_b.png"></image>
+	            <image :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 	          </view>
 	        </view>
 	        <view class="star_name">范冰冰</view>
@@ -49,40 +50,40 @@
 	    </view>
 	    <view class="find_sj">
 	      <view class="sj_list">
-	        <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
-	        <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
-	        <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
-	        <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
-	        <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
+	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
+	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
+	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
+	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
 	      </view>
 	      <text class="iconfont iconnext3"></text>
 	    </view>
 	  </view>
 	  <view class="goods_index">
 	    <view  @tap="jump" data-url="/pages/xvideo/xvideo">
-	      <view class="goodstype_name">代言人短视频 <image src="/static/images/goods_type1.png"></image></view>
+	      <view class="goodstype_name">代言人短视频 <image  :src="filter.imgIP('/static_s/51daiyan/images/goods_type1.png')"></image></view>
 	      <view class="goods_tip">已为您更新10个视频</view>
 	      <view class="goods_list">
 	        <view class="goods_li">
-	          <image class="goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
-	          <image class="goods_play" :src="filter.imgIP('goods_play.png')"></image>
+	          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
+	          <image class="goods_play" :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
 	        </view>
 	        <view class="goods_li">
-	          <image class="goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
-	          <image class="goods_play" :src="filter.imgIP('goods_play.png')"></image>
+	          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
+	          <image class="goods_play" :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
 	        </view>
 	      </view>
 	      <!-- <image src="/static/images/goods_type1.png"></image> -->
 	    </view>
 	    <view @tap="jump" data-url="/pages_goods/goods_tj/goods_tj">
-	      <view class="goodstype_name goodstype_name1">好货推荐<image src="/static/images/goods_type2.png"></image></view>
+	      <view class="goodstype_name goodstype_name1">好货推荐<image :src="filter.imgIP('/static_s/51daiyan/images/goods_type2.png')"></image></view>
 	      <view class="goods_tip">发现更多人气代言好货</view>
 	      <view class="goods_list">
 	        <view class="goods_li">
-	          <image class="goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
+	          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
 	        </view>
 	        <view class="goods_li">
-	          <image class="goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
+	          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
 	        </view>
 	      </view>
 	      <!-- <image src="/static/images/goods_type2.png"></image> -->
@@ -92,9 +93,9 @@
 	  <view class="quan_list">
 	    <view class="quan_li" v-for="(item,idx) in start_li">
 	      <view class="quan_user_box">
-	        <image @tap="jump" data-url="/pages/my_index/my_index" class="quan_user_tx" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+	        <image @tap="jump" data-url="/pages/my_index/my_index" class="quan_user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
 	        <view class="quan_user_msg">
-	          <view class="quan_user_name">倪小丫 <image src="/static/images/star_b.png"></image></view>
+	          <view class="quan_user_name">倪小丫 <image :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image></view>
 	          <view class="quan_user_time"><text>10-14 18:03</text><text>演员</text></view>
 	        </view>
 	        <view v-if="item.tp_type==1" class="quan_user_btn" @tap.stop="toupiao" :data-idx="idx">为我投票</view>
@@ -103,16 +104,16 @@
 	      <view class="quan_msg">
 	        <view class="oh4  quan_msg_text">可能这辈子都戒不掉米饭了，吃好饭的用好锅，我为苏泊尔智能电饭锅代言。</view>
 	        <view v-if="idx==2" class="quan_msg_img">
-	          <image class="one" :src="filter.imgIP('goods.png')" mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
+	          <image class="one" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')" @tap.stop="pveimg"></image>
 	        </view>
 	        <view v-else class="quan_msg_img">
-	          <image :src="filter.imgIP('goods.png')" mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
-	          <image :src="filter.imgIP('goods1.png')" mode="aspectFill" :data-src="filter.imgIP('goods1.png')" @tap.stop="pveimg"></image>
-	          <image :src="filter.imgIP('goods.png')" mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
+	          <image :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')" @tap.stop="pveimg"></image>
+	          <image :src="filter.imgIP('/static_s/51daiyan/images/goods1.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods1.png')" @tap.stop="pveimg"></image>
+	          <image :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')" @tap.stop="pveimg"></image>
 	        </view>
 	      </view>
 	      <view class="quan_goods"  @tap="jump" data-url="/pages/details/details">
-	        <image class="quan_goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
+	        <image class="quan_goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
 	        <view class="quan_goods_msg">
 	          <view class="quan_goods_name oh1">苏泊尔IH家用大容量智能电饭锅</view>
 	          <view class="quan_goods_pri">
@@ -137,7 +138,7 @@
 	          </view>
 	        </view> -->
 	        <view class="cz_li">跟随购买：6321</view>
-	        <view class="cz_li" @tap.stop="jump" data-url="/pages/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>1566</view>
+	        <view class="cz_li" @tap.stop="jump" data-url="/pages_goods/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>1566</view>
 	        <view class="cz_li" @tap.stop="zan" :data-id="idx"><text class="iconfont iconzan"></text>1566</view>
 	      </view>
 	    </view>
@@ -151,6 +152,10 @@
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import service from '../../service.js';
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -171,78 +176,7 @@
 				    url: '/pages/list/list',
 				    tp_type: '1'
 				  },
-				  {
-				    name: '巡机单',
-				    img: '/static/images/1_09.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已巡机',
-				    img: '/static/images/1_10.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '装机单',
-				    img: '/static/images/1_13.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已装机',
-				    img: '/static/images/1_14.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '维护单',
-				    img: '/static/images/1_17.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已维护',
-				    img: '/static/images/1_18.jpg',
-				    url: '/pages/list/list',
-				    type: '7'
-				  },
-				  {
-				    name: '换机单',
-				    img: '/static/images/2_09.jpg',
-				    url: '/pages/list/list',
-				    type: '8'
-				  },
-				  {
-				    name: '已换机',
-				    img: '/static/images/2_10.jpg',
-				    url: '/pages/list/list',
-				    type: '9'
-				  },
-				  {
-				    name: '撤机单',
-				    img: '/static/images/2_13.jpg',
-				    url: '/pages/list/list',
-				    type: '10'
-				  },
-				  {
-				    name: '已撤机',
-				    img: '/static/images/2_14.jpg',
-				    url: '/pages/list/list',
-				    type: '11'
-				  },
-				  {
-				    name: '终端交易查询',
-				    img: '/static/images/2_17.jpg',
-				    url: '/pages/list/list',
-				    type: '12'
-				  },
-				  {
-				    name: '应收列表',
-				    img: '/static/images/2_18.jpg',
-				    url: '/pages/list/list',
-				    type: '13'
-				  },
+				  
 				  
 				],
 				indicatorDots: true,
@@ -270,7 +204,15 @@
 		onShareAppMessage: function () {
 		
 		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
+		},
 		methods: {
+			
 			toupiao(e){
 			  var idx = e.currentTarget.dataset.idx
 			  var newdata=this.start_li

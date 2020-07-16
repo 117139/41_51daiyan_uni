@@ -1,2 +1,0 @@
-<wxs src="../../utils/filter.wxs" module="filter"></wxs>
-<view class="data-v-7b442396"><view class="container data-v-7b442396"><image class="ok_bg data-v-7b442396" src="{{filter.imgIP('fabu_ok.jpg')}}"></image><view class="okcz data-v-7b442396"><view class="btn1 data-v-7b442396">保存图片并分享</view><view data-event-opts="{{[['tap',[['goindex',['$event']]]]]}}" class="btn2 data-v-7b442396" bindtap="__e">回到首页</view></view></view></view>

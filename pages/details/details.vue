@@ -308,6 +308,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	import Dialog from '../../wxcomponents/vant-weapp/stepper/index';
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		data() {

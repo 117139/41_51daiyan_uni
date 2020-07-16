@@ -4,11 +4,11 @@
 		<form class="container" @submit="formSubmit">
 		  <view class="addmsg">
 				<view class="msgtit">收货人</view>
-				<input class="msgsrk" name="name" :value="editaddress.user_name" type="text" placeholder="请填写收货人姓名"/>
+				<input class="msgsrk" name="name" :value="uname" type="text" placeholder="请填写收货人姓名"/>
 			</view>
 		  <view class="addmsg">
 				<view class="msgtit">手机号码</view>
-				<input class="msgsrk" name="tel" :value="editaddress.phone" type="text" placeholder="请填写收货人手机号码"/>
+				<input class="msgsrk" name="tel" :value="phone" type="number" placeholder="请填写收货人手机号码"/>
 			</view>
 		  
 			 <picker class="addmsg"
@@ -26,11 +26,11 @@
 		  </picker>
 		  <view class="addmsg">
 				<view class="msgtit">详细地址</view>
-				<input class="msgsrk" name="xxaddress" :value="editaddress.address" type="text" placeholder="街道、楼牌号等" maxlength="40"/>
+				<input class="msgsrk" name="xxaddress" :value="xxaddress" type="text" placeholder="街道、楼牌号等" maxlength="40"/>
 			</view>
 		  <view class="addmsg">
 				<view class="">设置默认地址</view>
-				<switch :checked="editaddress.is_default==1" class="mrdz" @change="switch1Change" color="#F7B43B"/>
+				<switch :checked="moren" class="mrdz" @change="switch1Change" color="#F7B43B"/>
 				<input hidden type="text" name="moren"  :value="moren"/>
 			</view>
 			<!-- <view class="definebtn">保存</view> -->
@@ -51,24 +51,32 @@
 		data() {
 			return {
 				btnkg:0,   //0ok  1off
+				id:'',
+				uname:'',
+				phone:'',
 				region: ['北京市','北京市','东城区'],
 				moren:false,
-				editaddress:{
-					name: "aaa", 
-					tel: "18300000000", 
-					area: "北京市 北京市 东城区", 
-					address: "街道街道街道", 
-					moren: "true",
-				}
+				xxaddress:'',
 			}
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg'
+			])
 		},
 		onLoad: function (option) {
 		  if(option.address){
 				console.log(option.address)
-		    this.editaddress= JSON.parse(option.address)
-		    var area = this.editaddress.area.split(' ')
-		    this.region = area
-		   this.moren= this.editaddress.is_default
+		    var editaddress= JSON.parse(option.address)
+				this.id=editaddress.id
+		    this.phone =editaddress.phone
+		    this.uname =editaddress.name
+		    this.region[0] =editaddress.province
+		    this.region[1] =editaddress.city
+		    this.region[2] =editaddress.area
+		    this.xxaddress =editaddress.address
+		   this.moren= editaddress.is_default?true:false
 		    console.log(this.region)
 			}
 			
@@ -124,76 +132,79 @@
 					});
 					return false;
 				}
-				var areaz=that.region[0]+' '+that.region[1]+' '+that.region[2]
-				if(that.region[1]==undefined||that.region[2]==undefined){
-					areaz=that.region[0]
-				}
+				
 				if(that.btnkg==1){
 					return
 				}else{
 					that.btnkg=1
 				}
-			  uni.showToast({
-			    title: '操作成功'
-			  })
-			  setTimeout(function () {
-			    that.btnkg= 0
-			    uni.navigateBack()
-			
-			  }, 1000)
-			  return
-				uni.request({
-					url: app.IPurl+'/api/userAddress/'+that.editaddress.id,
-					data:  {
+				var jkurl='/user/address'
+				var data={
+					token:that.loginMsg.userToken,
+					name:formresult.name,
+					tel:formresult.tel,
+					province_id:that.region[0],
+					city_id:that.region[1],
+					area_id:that.region[2],
+					address:formresult.xxaddress,
+					is_default:that.moren?1:0
+				}
+				if(that.id){
+					jkurl='/user/address/amend'
+					data={
+						id:that.id,
+						token:that.loginMsg.userToken,
+						name:formresult.name,
+						tel:formresult.tel,
+						province_id:that.region[0],
+						city_id:that.region[1],
+						area_id:that.region[2],
+						address:formresult.xxaddress,
+						is_default:that.moren?1:0
+					}
+				}
+				service.post(jkurl, data,
+					function(res) {
+						that.btnkg=0
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							var datas = res.data.data
+							// console.log(typeof datas)
 							
-							token:uni.getStorageSync('token'),
-							area:areaz, 
-							address:formresult.xxaddress,
-							user_name: formresult.name,
-							phone:formresult.tel,
-							is_default:formresult.moren
-					},
-					header: {
-						'content-type': 'application/x-www-form-urlencoded' 
-					},
-					dataType:'json',
-					method:'PUT',
-					success(res) {
-						console.log(res.data)
-						if(res.data.code==1){
-							wx.showToast({
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							uni.showToast({
+								icon:'none',
 								title:'操作成功'
 							})
-							setTimeout(function(){
-								that.btnkg=0
+							setTimeout(()=>{
 								uni.navigateBack()
-								
 							},1000)
-						}else{
-							that.btnkg=0
-							if(res.data.msg){
+						} else {
+							if (res.data.msg) {
 								uni.showToast({
-									icon:'none',
-									title:res.data.msg
+									icon: 'none',
+									title: res.data.msg
 								})
-							}else{
+							} else {
 								uni.showToast({
-									icon:'none',
-									title:'操作失败'
+									icon: 'none',
+									title: '操作失败'
 								})
 							}
 						}
 					},
-					fail(err){
+					function(err) {
 						that.btnkg=0
-						uni.showToast({
-							icon:'none',
-							title:'操作失败'
-						})
-						console.log(err)
-					}
+						
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
 					
-				})
+					}
+				)
 			}
 		}
 	}

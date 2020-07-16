@@ -1,16 +1,17 @@
 <template>
 	<view>
 		<view class="container log-list">
-		  <view class="addressOne" v-for="(item,idx) in addresslist" @tap="xz_add" :data-idx="idx">
+			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
+		  <view class="addressOne" v-for="(item,idx) in datas" @tap="xz_add" :data-idx="idx">
 				<view class="addp1">
-					<text class="mr20">{{item.user_name}}</text>
+					<text class="mr20">{{item.name}}</text>
 					<text>{{item.phone}}</text>
 				</view>
-				<view class="addp2">{{item.area}}{{item.address}}</view>
+				<view class="addp2">{{item.province}}{{item.city}}{{item.area}} {{item.address}}</view>
 				<view class="addsetting">
-					<view class="setting1 flex_1 c3 " :class="moren==item.id?'mricon1':''" :data-id="item.id" @tap="selecmr">
-						<view class="mricon " :class="moren==item.id?'mricon1':''">
-							<icon  v-if="moren==item.id" size="13" type="success" color="#F7B43B" />
+					<view class="setting1 flex_1 c3 " :class="item.is_default==1?'mricon1':''" :data-id="item.id" @tap="selecmr">
+						<view class="mricon " :class="item.is_default==1?'mricon1':''">
+							<icon  v-if="item.is_default==1" size="13" type="success" color="#F7B43B" />
 		
 						</view>
 						默认地址
@@ -28,9 +29,9 @@
 				</view>
 			</view>
 			<view class="fixbottom">
-				<navigator class="addbtn" url="/pages/addressEdit/addressEdit">
+				<navigator class="addbtn" url="/pagesA/addressEdit/addressEdit">
 					<view class="addicon">
-						<image src="/static/images/addicon.png"></image>
+						<image :src="filter.imgIP('/static_s/51daiyan/images/addicon.png')"></image>
 					</view>
 					添加新地址
 				</navigator>
@@ -51,36 +52,9 @@
 			return {
 				btnkg:0,
 				moren:1,
-				addresslist: [
-				  {
-				    user_name: '昵称',
-				    phone: '18300000000',
-				    area: '北京 北京市 海淀区',
-				    address: '中关村e世界5层',
-				    id:1
-				  },
-				  {
-				    user_name: '昵称',
-				    phone: '18300000000',
-				    area: '北京 北京市 海淀区',
-				    address: '中关村e世界5层',
-				    id:2
-				  },
-				  {
-				    user_name: '昵称',
-				    phone: '18300000000',
-				    area: '北京 北京市 海淀区',
-				    address: '中关村e世界5层',
-				    id:3
-				  },
-				  {
-				    user_name: '昵称',
-				    phone: '18300000000',
-				    area: '北京 北京市 海淀区',
-				    address: '中关村e世界5曾',
-				    id:4
-				  },
-				],
+				page:1,
+				page_size:20,
+				datas: [],
 				mridx:0,
 				form_type:0
 			}
@@ -90,16 +64,29 @@
 		  if(option.type){
 		    that.form_type=option.type
 		  }
+			// this.getaddlist()
 		},
 		onShow(){
 		
-			// this.getaddlist()
+			this.onRetry()
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  wx.stopPullDownRefresh();
+		  this.onRetry()
+		},
+		/**
+		 * 页面上拉触底事件的处理函数
+		 */
+		onReachBottom: function () {
+			this.getaddlist()
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg'
+			])
 		},
 		methods: {
 			xz_add(e){
@@ -124,8 +111,7 @@
 			selecmr(e){
 				let that =this
 			  var id = e.currentTarget.dataset.id
-			  that.moren=id
-			  return 
+			 
 				console.log(e.currentTarget.dataset.id)
 				// let id=e.currentTarget.dataset.id
 				if(that.btnkg==1){
@@ -133,55 +119,60 @@
 				}else{
 					that.btnkg=1
 				}
-				wx.request({
-					url:  service.IPurl+'/api/userAddressDefaultStatus/'+id,
-					data:  {
-						token:wx.getStorageSync('token')
-				  },
-					header: {
-						'content-type': 'application/x-www-form-urlencoded' 
-					},
-					dataType:'json',
-					method:'put',
-					success(res) {
-						console.log(res.data)
+				///address/default
+				var jkurl='/user/address/default'
+				var data={
+					token:that.loginMsg.userToken,
+					id:id
+				}
+				service.post(jkurl, data,
+					function(res) {
 						that.btnkg=0
-						if(res.data.code==1){
-							that.getaddlist()
-						}else{
-							if(res.data.msg){
-								wx.showToast({
-									title: res.data.msg,
-									duration: 2000,
-									icon:'none'
-								});
-							}else{
-								wx.showToast({
-									title: '网络异常',
-									duration: 2000,
-									icon:'none'
-								});
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							var datas = res.data.data
+							// console.log(typeof datas)
+							
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							uni.showToast({
+								icon:'none',
+								title:'操作成功'
+							})
+							that.onRetry()
+						} else {
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
 							}
 						}
 					},
-					fail(err){
-						console.log(err)
-						wx.showToast({
-							title: '网络异常',
-							duration: 2000,
-							icon:'none'
-						});
+					function(err) {
 						that.btnkg=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+					
 					}
-				})
+				)
 			},
 			addressEdit(e){
 				
 				console.log(e.currentTarget.dataset.id)
-				let address=this.addresslist[e.currentTarget.dataset.id]
+				let address=this.datas[e.currentTarget.dataset.id]
 				 address=JSON.stringify(address)
 				wx.navigateTo({
-					url:'/pages/addressEdit/addressEdit?address='+address
+					url:'/pagesA/addressEdit/addressEdit?address='+address
 				})
 			},
 			addressDel(e){
@@ -198,55 +189,51 @@
 							}else{
 								that.btnkg=1
 							}
-			        wx.showToast({
-			          title: '删除'
-			        })
-			        return
-							wx.request({
-								url:  app.IPurl+'/api/userAddress/'+e.currentTarget.dataset.id,
-								data:  {
-										token:wx.getStorageSync('token')
-							    },
-								header: {
-									'content-type': 'application/x-www-form-urlencoded' 
-								},
-								dataType:'json',
-								method:'DELETE',
-								success(res) {
-									console.log(res.data)
-									that.btnkg=0
-									if(res.data.code==1){
-										wx.showToast({
+			        var jkurl='/user/address/del'
+			        var data={
+			        	token:that.loginMsg.userToken,
+			        	id:id
+			        }
+			        service.post(jkurl, data,
+			        	function(res) {
+			        		that.btnkg=0
+			        		// if (res.data.code == 1) {
+			        		if (res.data.code == 1) {
+			        			var datas = res.data.data
+			        			// console.log(typeof datas)
+			        			
+			        			if (typeof datas == 'string') {
+			        				datas = JSON.parse(datas)
+			        			}
+			        			uni.showToast({
+			        				icon:'none',
 											title:'操作成功'
-										})
-										setTimeout(function(){
-											that.getaddlist()
-										},1000)
-									}else{
-										if(res.data.msg){
-											wx.showToast({
-												title: res.data.msg,
-												duration: 2000,
-												icon:'none'
-											});
-										}else{
-											wx.showToast({
-												title: '网络异常',
-												duration: 2000,
-												icon:'none'
-											});
-										}
-									}
-								},
-								fail(){
-									that.btnkg=0
-									wx.showToast({
-										title: '网络异常',
-										duration: 2000,
-										icon:'none'
-									});
-								}
-							})
+			        			})
+										this.onRetry()
+			        		} else {
+			        			if (res.data.msg) {
+			        				uni.showToast({
+			        					icon: 'none',
+			        					title: res.data.msg
+			        				})
+			        			} else {
+			        				uni.showToast({
+			        					icon: 'none',
+			        					title: '操作失败'
+			        				})
+			        			}
+			        		}
+			        	},
+			        	function(err) {
+			        		that.btnkg=0
+			        		
+			        			uni.showToast({
+			        				icon: 'none',
+			        				title: '获取数据失败'
+			        			})
+			        	
+			        	}
+			        )
 							
 						} else if (res.cancel) {
 							console.log('用户点击取消')
@@ -257,31 +244,64 @@
 			getaddlist(){
 				
 				let that =this
-				//http://water5100.800123456.top/WebService.asmx/useraddress
-				wx.request({
-					url:  app.IPurl+'/api/userAddressList',
-					data:  {
-							token:wx.getStorageSync('token')
-						},
-					header: {
-						'content-type': 'application/x-www-form-urlencoded' 
-					},
-					dataType:'json',
-					method:'get',
-					success(res) {
-						console.log(res.data)
+				var jkurl='/user/address'
+				var data={
+					token:that.loginMsg.userToken,
+					page:that.page,
+					size:that.page_size
+				}
+				service.get(jkurl, data,
+					function(res) {
 						
-						if(res.data.code==1){
-							that.addresslist=res.data.data
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							var datas = res.data.data
+							// console.log(typeof datas)
+							
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							if(that.page==1){
+								that.datas=datas.address
+							}else{
+								if(datas.address.length){
+									uni.showToast({
+										icon:'none',
+										title:'到底了。。。'
+									})
+									return
+								}
+								that.datas=that.datas.concat(datas.address)
+							}
+							that.page++
+						} else {
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
+							}
 						}
-						
 					},
-					fail() {
-						 
+					function(err) {
+						that.btnkg=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+					
 					}
-				})
+				)
 			},
 			onRetry(){
+				this.btnkg=0
+				this.page=1
 				this.getaddlist()
 			}
 		}

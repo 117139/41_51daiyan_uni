@@ -7,7 +7,7 @@
 		  </view>
 		  <view class="set_name">
 		    <input class="set_int" placeholder="请填写您的姓名" confirm-type="保存" @confirm="save_val"
-				 @input="get_val" v-model="uname"></input>
+				 @input="get_val" v-model="uname" maxlength="10"></input>
 		    <view class="set_btn" @tap="reset_val">
 		      <text class="iconfont iconguanbi1" @tap="reset_val"></text>
 		    </view>
@@ -29,6 +29,15 @@
 				uname:'',
 				sname:''
 			}
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg'
+			])
+		},
+		onLoad() {
+			this.uname=this.loginMsg.nickname
 		},
 		methods: {
 			/**
@@ -66,9 +75,11 @@
 			    })
 			    return
 			  }
-			  wx.showToast({
-			    title: '保存',
-			  })
+			  var data={
+			  	token:this.loginMsg.userToken,
+			  	nickname:this.sname,
+			  }
+			  service.setUsermsg(data)
 			  setTimeout(function (){
 			    wx.navigateBack()
 			  },1000)

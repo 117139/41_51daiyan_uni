@@ -1,4 +1,9 @@
 
+.jjyy.data-v-acfececa{
+	margin-top: 40rpx;
+	font-size: 24rpx;
+	color: #999;
+}
 page.data-v-acfececa{
 	overflow-y: auto!important;
 	background: #fff;
@@ -89,6 +94,6 @@ page.data-v-acfececa{
 .sh_type image.data-v-acfececa{
   width:80rpx;
   height:80rpx;
-  margin-bottom: 20rpx;
+  margin-bottom: 40rpx;
 }
 

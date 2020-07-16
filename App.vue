@@ -1,6 +1,109 @@
 <script>
+	import service from './service.js';
 	import userlist from './commen/tim/user'
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
+		
+		onLaunch: function() {
+			var that =this
+			console.log('App Launch')
+			// 获取用户信息
+			uni.getSetting({
+			  success: res => {
+			   console.log(res)
+			    if (res.authSetting['scope.userInfo']==true) {
+			      // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+			      console.log('已经授权')
+						uni.getUserInfo({
+							success(res) {
+								var userInfo = res.userInfo
+								console.log(userInfo)
+								uni.setStorageSync('userInfo', res.userInfo)
+								if(!userInfo){
+								
+								}else{
+			            uni.login({
+			              success: function (res) {
+			                // 发送 res.code 到后台换取 openId, sessionKey, unionId
+			                var uinfo = userInfo
+			                let data = {
+			                  code: res.code,
+			                  nickname: uinfo.nickName,
+			                  avatarurl: uinfo.avatarUrl
+			                }
+			                let rcode = res.code
+			                console.log(res.code)
+											// return
+			                uni.request({
+			                  url: service.IPurl+'/login',
+			                  data: data,
+			                  header: {
+			                    'content-type': 'application/x-www-form-urlencoded'
+			                  },
+			                  dataType: 'json',
+			                  method: 'POST',
+			                  success(res) {
+			                    console.log(res.data)
+			                    if (res.data.code == 1) {
+			                      console.log('登录成功')
+			                      console.log(res.data)
+														that.login(res.data.data)
+														console.log('loginMsg----------------->')
+														// console.lo(that.loginMsg)
+			                      uni.setStorageSync('token', res.data.data.userToken)
+			                      uni.setStorageSync('loginmsg', res.data.data)
+														
+			                    } else {
+			                      uni.removeStorageSync('userInfo')
+			                      uni.removeStorageSync('token')
+			                      if(res.data.msg){
+			                      	uni.showToast({
+			                      	  icon: 'none',
+			                      	  title: res.data.msg,
+			                      	})
+			                      }else{
+			                      	uni.showToast({
+			                      	  icon: 'none',
+			                      	  title: '登录失败',
+			                      	})
+			                      }
+			                    }
+			
+			                  },
+			                  fail() {
+			                    uni.showToast({
+			                      icon: 'none',
+			                      title: '登录失败'
+			                    })
+			                  }
+			                })
+			              }
+			            })
+								}
+							}
+						})
+						
+			    }else{
+					  
+			    }
+			  }
+			})
+		},
+		onShow: function() {
+			console.log('App Show')
+		},
+		onHide: function() {
+			console.log('App Hide')
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg'
+			])
+		},
 		mounted() {
 			/**官网有很多关于关于sdk 其他的监听方法（比如：有新的消息，用户资料更新等等）
 			 * 详情可对照： https://imsdk-1252463788.file.myqcloud.com/IM_DOC/Web/SDK.html
@@ -18,6 +121,7 @@
 			// this.tim.registerPlugin({'cos-wx-sdk': this.COS});
 		},
 		methods: {
+			...mapMutations(['login','logout']),
 			onReadyStateUpdate({name}) {
 				const isSDKReady = name === this.$TIM.EVENT.SDK_READY ? true : false;
 				//自动监听并更新 sdk 的ready 状态 （未登录是 notReady  登录后是ready）
@@ -30,18 +134,9 @@
 				this.$store.commit("pushCurrentMessageList", messageList);
 			},
 			//根据消息列表请求聊天对象的用户信息 并完成数据拼接
+			
+		},
 		
-		},
-		onLaunch: function() {
-			console.log('App Launch')
-			console.log(userlist)
-		},
-		onShow: function() {
-			console.log('App Show')
-		},
-		onHide: function() {
-			console.log('App Hide')
-		}
 
 	}
 </script>
