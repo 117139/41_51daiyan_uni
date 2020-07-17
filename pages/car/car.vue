@@ -10,7 +10,7 @@
 				:data-tab="idx"
 				 >
 		     <!-- <view class="dianpu_tit" @tap="jump" data-url="/pages/dp_index/dp_index?shop_id=1">
-					 <image class="dp_logo" src="../../static/images/tx.png"></image>
+					 <image class="dp_logo" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 					 <text>石说的达开旗舰店</text>
 					 <text class="iconfont iconnext3"></text>
 				 </view>  -->

@@ -9,7 +9,7 @@
 			<view v-if="tab_type==0">
 		    <view class="daiyan_msg">
 		      <view class="dy_logo">
-		        <image class="dy_logo" :src="filter.imgIP('tx.png')"></image>
+		        <image class="dy_logo" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 		      </view>
 		      <view class="dy_msg">
 		        <!-- <view class="pd_name">体育</view> -->
@@ -28,7 +28,7 @@
 		      <view class="quan_li" v-for="(item,idx) in start_li" >
 		        <view class="quan_user_box">
 		          <image class="quan_user_tx" @tap="jump" data-url="/pages/my_index/my_index"
-							 :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+							 :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
 		          <view class="quan_user_msg">
 		            <view class="quan_user_name">倪小丫 <image src="/static/images/star_b.png"></image></view>
 		            <view class="quan_user_time"><text>10-14 18:03</text><text>演员</text></view>
@@ -83,13 +83,13 @@
 		    <view class="star_li" v-for="(item,idx) in start_li">
 							 	<view class="star_msg">
 							 		<view class="user_tx" @tap="jump" data-url="/pages/my_index/my_index">
-							 			<image class="user_tx" :src="filter.imgIP('tx.png')"></image>
-							 			<image class="user_v" src="../../static/images/star_b.png"></image>
+							 			<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							 			<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 							 		</view>
 							 		<view class="user_msg">
 							 			<view class="fwb ">张一鸣</view>
-							 			<view class="oh1 fz22"><image src="../../static/images/star_jj.png"></image>简介：一线明星，知名演员…</view>
-							 			<view class=""><image src="../../static/images/dy_num.png"></image>代言数量：20</view>
+							 			<view class="oh1 fz22"><image :src="filter.imgIP('/static_s/51daiyan/images/star_jj.png')"></image>简介：一线明星，知名演员…</view>
+							 			<view class=""><image :src="filter.imgIP('/static_s/51daiyan/images/dy_num.png')"></image>代言数量：20</view>
 							 		</view>
 							 		<view  v-if="item.tp_type==1" :data-idx="idx" @tap.stop="toupiao" class="user_btn">+关注</view>
 							 		<view wx:else class="user_btn user_btn1">已关注</view>
@@ -109,7 +109,7 @@
 					<view class="goods_li2" v-for="(item,idx) in data_list">
 						<view class="goods_li2_d1"  @tap="jump" data-url="/pages/details/details">
 							<view class="goods_img2">
-								<image class="goods_img2" src="../../static/images/goods.png"></image>
+								<image class="goods_img2" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
 							</view>
 							<view class="goods_msg">
 								<view class="goods_name2 oh1">苏泊尔IH家用大容量智能电饭锅</view>

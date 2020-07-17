@@ -19,12 +19,12 @@
 			<!-- 用户 -->
 			 <view class="ss_list" v-if="ss_cur==0">
 				 <view class="data_null" v-if="data_list.length==0">
-				 			 <image src="../../static/images/data_null.png"></image>
+				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null.png')"></image>
 				 </view>
 				 <view wx:el class="li_box" v-for="(item,id) in data_list" @tap="jump" data-url="/pages/my_index/my_index">
 						<view class="user_tx">
-							<image class="user_tx" :src="filter.imgIP('tx.png')"></image>
-							<image class="user_v" src="../../static/images/star_b.png"></image>
+							<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 						</view>
 						<view class="user_name oh1">王力宏</view>
 						<view class="user_btn">+关注</view>
@@ -34,7 +34,7 @@
 			 <!-- 商品 -->
 			 <view class="ss_list ss_list1" v-if="ss_cur==1">
 				 <view class="data_null" v-if="data_list.length==0">
-				 			 <image src="../../static/images/data_null.png"></image>
+				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null.png')"></image>
 				 </view>
 				 <view wx:el class="li_box goods_li" v-for="(item,id) in data_list" @tap="jump" data-url="/pages/details/details">
 					 <view class="ss_goods_img">
@@ -52,11 +52,11 @@
 							 </view>
 							 <view class="find_sj"  @tap="jump" data-url="/pages/daiyanren/daiyanren">
 							   <view class="sj_list">
-							     <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
-							     <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
-							     <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
-							     <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
-							     <image class="sj_li" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+							     <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
+							     <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
+							     <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
+							     <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
+							     <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
 							   </view>
 							   <text class="iconfont iconnext3"></text>
 							 </view>
@@ -67,11 +67,11 @@
 			 <!-- 品牌 -->
 			 <view class="ss_list" v-if="ss_cur==2">
 				 <view class="data_null" v-if="data_list.length==0">
-				 			 <image src="../../static/images/data_null.png"></image>
+				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null.png')"></image>
 				 </view>
 				 <view wx:el class="li_box" v-for="(item,id) in data_list" @tap="jump" data-url="/pages/dp_index/dp_index">
 					 <view class="user_tx">
-					 	<image class="user_tx" :src="filter.imgIP('tx.png')"></image>
+					 	<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 					 </view>
 					 <view class="user_name oh1">小米51代言旗舰店</view>
 					 <view class="user_btn">+关注</view>

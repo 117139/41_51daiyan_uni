@@ -6,7 +6,7 @@
 				<view class="my_index_box1">
 		      <view class="my_index">
 		        <view class="user_tx">
-		          <image class="user_tx" :src="filter.imgIP('tx.png')"></image>
+		          <image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 		          <image class="star_v" :src="filter.imgIP('star_b.png')"></image>
 		        </view>
 		        <view class="user_msg">
@@ -58,7 +58,7 @@
 						<view class="time_box">
 							<view class="dt_li" v-for="(item1,idx1) in data_list">
 								<view class="dt_li_d1">
-									<image class="dt_li_d1_img" src="../../static/images/goods.png"  :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
+									<image class="dt_li_d1_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"  :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
 									<view class="d1_msg">
 										<view class="dt_text oh3">我在参选优选代言人活动，请为我投上宝贵的一票,谢谢大家！</view>
 										<view class="dt_cz">
@@ -93,7 +93,7 @@
 							<view class="sp_li_img">
 								<image class="sp_li_img" :src="filter.imgIP('/images/goods15_02.jpg')" mode="aspectFill"></image>
 								<view class="sp_li_img_cz">
-									<image src="../../static/images/goods_play.png"></image>
+									<image :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
 								</view>
 							</view>
 							<view class="sp_li_msg" style="display: none;">

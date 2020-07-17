@@ -12,7 +12,7 @@
 		          <view class="goods1">
 		           
 		            <view class="goodsImg">
-		              <image class="goodsImg" src="../../static/images/goods.png" mode="aspectFill"></image>
+		              <image class="goodsImg" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
 		            </view>
 		            <view class="goodsinr">
 		              <!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
@@ -31,7 +31,7 @@
 		  </view>
 		  <view class="fw_list">
 				<view class="fuwu_li" @tap="jump" data-url="/pages/OrderList_sh_tk/OrderList_sh_tk">
-				  <image src="../../static/images/fuwu1.png"></image>
+				  <image :src="filter.imgIP('/static_s/51daiyan/images/fuwu1.png')"></image>
 					<view class="fw_msg">
 						<view class="d1">我要退款(无需退货)</view>
 						<view>没收到货,或与卖家协商同意不用退货只退款</view>
@@ -39,7 +39,7 @@
 					<text class="iconfont iconnext3"></text>
 				</view>
 				<view class="fuwu_li" @tap="jump" data-url="/pages/OrderList_sh_tk/OrderList_sh_tk">
-				  <image src="../../static/images/fuwu2.png"></image>
+				  <image :src="filter.imgIP('/static_s/51daiyan/images/fuwu1.png')"></image>
 					<view class="fw_msg">
 						<view class="d1">我要退货退款</view>
 						<view>已收到货,需要退换收到货物</view>
@@ -47,7 +47,7 @@
 					<text class="iconfont iconnext3"></text>
 				</view>
 				<view class="fuwu_li">
-				  <image src="../../static/images/fuwu3.png"></image>
+				  <image :src="filter.imgIP('/static_s/51daiyan/images/fuwu3.png')"></image>
 					<view class="fw_msg">
 						<view class="d1">换货</view>
 						<view>商品存在质量问题，联系卖家协商换货</view>

@@ -4,7 +4,7 @@
 			<image class="h_bg" :src="filter.imgIP('/images/find_dy_02.jpg')"></image>
 			<view class="xx_box">
 				<view class="xx_box1">
-					<image class="hd_js" src="../../static/images/hd_js.png"></image>
+					<image class="hd_js" :src="filter.imgIP('/static_s/51daiyan/images/hd_js.png')"></image>
 					<view class="hd_v1">平台合作品牌商征集代言人入围条件：</view>
 					<view class="hd_v2">1.购买品牌商制定的商品，购买并代言。</view>
 					<view class="hd_v2">2.有代言人拍摄短视频，制作代言海报，并上传。</view>
@@ -21,7 +21,7 @@
 				</view>
 
 				<view class="hd_bg_tit">
-					<image class="hd_bg_tit" src="../../static/images/hd_jl_tit.png"></image>
+					<image class="hd_bg_tit" :src="filter.imgIP('/static_s/51daiyan/images/hd_jl_tit.png')"></image>
 					<view class="hdtit_tit">他们在寻找代言人</view>
 				</view>
 				<scroll-view class="find_user" scroll-x>
@@ -34,13 +34,13 @@
 					</view>
 				</scroll-view>
 				<view class="hd_bg_tit">
-					<image class="hd_bg_tit" src="../../static/images/hd_jl_tit.png"></image>
+					<image class="hd_bg_tit" :src="filter.imgIP('/static_s/51daiyan/images/hd_jl_tit.png')"></image>
 					<view class="hdtit_tit">品牌代言人招募</view>
 				</view>
 				<view class="xx_box1 xx_box2" v-for="(item,idx) in pinpai">
 					<view class="pp_v1">
 						<view class="pp_img">
-							<image class="pp_img" :src="filter.imgIP('tx.png')"></image>
+							<image class="pp_img" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 						</view>
 						<view class="pp_msg">
 							<view class="pp_d1">

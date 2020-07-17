@@ -103,17 +103,16 @@
 			"style": {
 				"navigationBarTitleText": "搜索"
 			}
+		}, {
+			"path": "pages/xiaoxi_list/xiaoxi_list",
+			"style": {
+				"navigationBarTitleText": "消息列表",
+				"backgroundColor": "#f5f5f5",
+				"navigationBarBackgroundColor": "#F5C33D",
+				"navigationBarTextStyle": "white"
+			}
 		}
-	    ,{
-            "path" : "pages/xiaoxi_list/xiaoxi_list",
-            "style" : {
-							"navigationBarTitleText": "消息列表",
-							"backgroundColor": "#f5f5f5",
-							"navigationBarBackgroundColor": "#F5C33D",
-							"navigationBarTextStyle": "white"
-						}
-        }
-    ],
+	],
 
 	"subPackages": [{
 			"root": "pagesA",
@@ -407,6 +406,12 @@
 					"path": "activity_db/activity_db",
 					"style": {
 						"navigationBarTitleText": "活动详情"
+					}
+				}, {
+					"path": "friends_daiyan/friends_daiyan",
+					"style": {
+						"navigationBarTitleText": "好友代言",
+						"backgroundColor": "#f5f5f5"
 					}
 				}
 			]

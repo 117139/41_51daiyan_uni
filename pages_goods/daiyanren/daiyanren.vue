@@ -20,12 +20,13 @@
 			<!-- 用户 -->
 			 <view class="ss_list">
 				 <view class="data_null" v-if="data_list.length==0">
-				 			 <image src="../../static/images/data_null.png"></image>
+				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null.png')"></image>
 				 </view>
 				 <view wx:el class="li_box" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/details/details">
 						<view class="user_tx"  @tap="jump" data-url="/pages/my_index/my_index">
-							<image class="user_tx" src="../../static/images/tx.png"></image>
-							<image class="user_v" src="../../static/images/star_b.png"></image>
+							<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+							<!-- <image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image> -->
 						</view>
 						<view class="user_name">王力宏 <text>好友</text><text class="star_bq">明星</text></view>
 						<view class="user_btn">+关注</view>

@@ -18,10 +18,10 @@
 					<view class="dy_box">
 						<view class="dy_li">
 							<view class="pl_num">
-								<image class="pl_num" src="../../static/images/phicon_1.png"></image>
+								<image class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_1.png')"></image>
 							</view>
 							<view class="pl_tx"  @tap="jump" data-url="/pages/my_index/my_index">
-								<image class="pl_tx" src="../../static/images/tx.png"></image>
+								<image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 							</view>
 							<view class="ph_name">张一鸣</view>
 							<view class="ph_num"><text>97</text>件</view>
@@ -32,10 +32,10 @@
 					<view class="dy_box">
 						<view class="dy_li">
 							<view class="pl_num">
-								<image class="pl_num" src="../../static/images/phicon_2.png"></image>
+								<image class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_2.png')"></image>
 							</view>
 							<view class="pl_tx" @tap="jump" data-url="/pages/my_index/my_index">
-								<image class="pl_tx" src="../../static/images/tx.png"></image>
+								<image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 							</view>
 							<view class="ph_name">张一鸣</view>
 							<view class="ph_num"><text>97</text>件</view>
@@ -46,10 +46,10 @@
 					<view class="dy_box">
 						<view class="dy_li">
 							<view class="pl_num">
-								<image class="pl_num" src="../../static/images/phicon_3.png"></image>
+								<image class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_3.png')"></image>
 							</view>
 							<view class="pl_tx" @tap="jump" data-url="/pages/my_index/my_index">
-								<image class="pl_tx" src="../../static/images/tx.png"></image>
+								<image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 							</view>
 							<view class="ph_name">张一鸣</view>
 							<view class="ph_num"><text>97</text>件</view>
@@ -63,7 +63,7 @@
 								4
 							</view>
 							<view class="pl_tx" @tap="jump" data-url="/pages/my_index/my_index">
-								<image class="pl_tx" src="../../static/images/tx.png"></image>
+								<image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 							</view>
 							<view class="ph_name">张一鸣</view>
 							<view class="ph_num"><text>97</text>件</view>

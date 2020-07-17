@@ -16,7 +16,7 @@
       <view class="pj_d1">
         <view class="pj_ren">
           <view class="user_tx">
-            <image class="user_tx" src="../../static/images/tx.png"></image>
+            <image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
           </view> 
           Y***I
         </view>

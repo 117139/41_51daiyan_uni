@@ -14,11 +14,11 @@
 			 <!-- 品牌 -->
 			 <view class="ss_list" v-if="ss_cur==1" >
 				 <view class="data_null" v-if="data_list.length==0">
-				 			 <image src="../../static/images/data_null1.png"></image>
+				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
 				 </view>
 				 <view v-if="data_list.length>0" class="li_box" v-for="(item,idx) in data_list">
 					 <view class="user_tx" @tap="jump" data-url="/pages/dp_index/dp_index">
-					 	<image class="user_tx" src="../../static/images/tx.jpg"></image>
+					 	<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.jpg')"></image>
 					 </view>
 					 <view class="user_name oh1">小米51代言旗舰店</view>
 					 <view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view>
@@ -28,11 +28,11 @@
 			 <!-- 代言圈 -->
 			 <view class="ss_list" v-else-if="ss_cur==4" >
 				 <view class="data_null" v-if="data_list.length==0">
-				 			 <image src="../../static/images/data_null1.png"></image>
+				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
 				 </view>
 				 <view v-if="data_list.length>0" class="li_box"  v-for="(item,idx) in data_list" >
 					 <view class="user_tx" @tap="jump" data-url="/pages/daiyan_quan_xq/daiyan_quan_xq">
-					 	<image class="user_tx" src="../../static/images/tx.jpg"></image>
+					 	<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.jpg')"></image>
 					 </view>
 					 <view class="user_name oh1">国潮</view>
 					 <view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view>
@@ -42,12 +42,13 @@
 			<!-- 用户 -->
 			 <view class="ss_list"  v-else>
 				 <view class="data_null" v-if="data_list.length==0">
-				 			 <image src="../../static/images/data_null1.png"></image>
+				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
 				 </view>
 				 <view  v-if="data_list.length>0" class="li_box" v-for="(item,idx) in data_list" >
 						<view class="user_tx" @tap="jump" data-url="/pages/my_index/my_index">
-							<image class="user_tx" src="../../static/images/tx.png"></image>
-							<image class="user_v" src="../../static/images/star_b.png"></image>
+							<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<!-- <image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image> -->
 						</view>
 						<view class="user_name oh1">王力宏</view>
 						<view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view>

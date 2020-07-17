@@ -1,5 +1,5 @@
 
-.container.data-v-2e5d6a59{
+.container.data-v-2e5d6a59 {
 	width: 100%;
 	min-height: 100vh;
 	padding: 0 28rpx;
@@ -7,7 +7,7 @@
 	background-color: #fff;
 	position: relative;
 }
-.addmsg.data-v-2e5d6a59{
+.addmsg.data-v-2e5d6a59 {
 	width: 694rpx;
 	height: 90rpx;
 	border-bottom: 1px solid #e8e8e8;
@@ -23,15 +23,15 @@
 	font-size: 26rpx;
 	color: #333;
 }
-.msgtit.data-v-2e5d6a59{
+.msgtit.data-v-2e5d6a59 {
 	width: 138rpx;
 }
-.msgsrk.data-v-2e5d6a59{
+.msgsrk.data-v-2e5d6a59 {
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
 	        flex: 1;
 }
-.definebtn.data-v-2e5d6a59{
+.definebtn.data-v-2e5d6a59 {
 	position: absolute;
 	border-radius: 0;
 	bottom: 30rpx;
@@ -52,8 +52,16 @@
 	font-size: 28rpx;
 	background-color: #F7B43B;
 }
-.wx-switch-input.data-v-2e5d6a59{width:86rpx !important;height:50rpx !important;}
-.wx-switch-input.data-v-2e5d6a59::before{width:84rpx !important;height: 48rpx !important;}
-.wx-switch-input.data-v-2e5d6a59::after{width: 44rpx !important;height: 44rpx !important;}
-
+.wx-switch-input.data-v-2e5d6a59 {
+	width: 86rpx !important;
+	height: 50rpx !important;
+}
+.wx-switch-input.data-v-2e5d6a59::before {
+	width: 84rpx !important;
+	height: 48rpx !important;
+}
+.wx-switch-input.data-v-2e5d6a59::after {
+	width: 44rpx !important;
+	height: 44rpx !important;
+}
 

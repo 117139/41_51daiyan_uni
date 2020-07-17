@@ -12,7 +12,7 @@
 						<view class="goods1">
 		
 							<view class="goodsImg">
-								<image class="goodsImg" src="../../static/images/goods.png" mode="aspectFill"></image>
+								<image class="goodsImg" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
 							</view>
 							<view class="goodsinr">
 								<!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->

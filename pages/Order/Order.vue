@@ -22,13 +22,13 @@
 		  <view class="goodsBox contbox">
 		    <view class="goods" v-for="(item,idx) in goods" :data-tab="idx">
 		      <view class="dianpu_tit">
-		        <image class="dp_logo" src="../../static/images/tx.png"></image>
+		        <image class="dp_logo" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 		        <text>石说的达开旗舰店</text>
 		        <!-- <text class="iconfont iconnext3"></text> -->
 		      </view>
 		      <view class="goods1" v-for="(item1,idx1) in goods">
 		        <view class="goodsImg">
-		          <image class="goodsImg" src="../../static/images/goods.png" mode="aspectFill"></image>
+		          <image class="goodsImg" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
 		        </view>
 		        <view class="goodsinr">
 		          <!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
@@ -147,11 +147,11 @@
 		
 		  let pages = getCurrentPages();
 		  let currPage = pages[pages.length - 1];
-		  if (currPage.data.addresschose) {  
-		        //将携带的参数赋值
-		          
+		  if (currPage.data.addresschose) {  
+		        //将携带的参数赋值
+		          
 		      this.address=currPage.data.addresschose
-		      this.addressBack=true 
+		      this.addressBack=true 
 		
 		    console.log(this.address, '地址')
 		

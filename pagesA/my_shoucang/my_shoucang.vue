@@ -6,7 +6,7 @@
 					<view class="goods_li2" v-for="(item,idx) in data_list">
 						<view class="goods_li2_d1"  @tap="jump" data-url="/pages/details/details?id=1">
 							<view class="goods_img2">
-								<image class="goods_img2" src="../../static/images/goods.png"></image>
+								<image class="goods_img2" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
 							</view>
 							<view class="goods_msg">
 								<view class="goods_name2 fz30 oh1">苏泊尔IH家用大容量智能电饭锅</view>

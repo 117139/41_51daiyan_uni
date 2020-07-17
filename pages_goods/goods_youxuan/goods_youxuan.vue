@@ -2,7 +2,7 @@
 	<view>
 		<view class="container">
 			<view class="h_bg">
-				<image class="h_bg" src="../../static/images/images/youxuan_02.jpg"></image>
+				<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/youxuan_02.jpg')"></image>
 			</view>
 		  <view class='dis_flex ju_a w100 pb40 pt20 bgfff tab_box'>
 		    <block v-for="(item,idx) in datalist">
@@ -25,7 +25,7 @@
 					<view class="goods_li2" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/details/details">
 						<view class="goods_li2_d1">
 							<view class="goods_img2">
-								<image class="goods_img2" src="../../static/images/goods.png"></image>
+								<image class="goods_img2" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
 							</view>
 							<view class="goods_msg">
 								<view class="goods_name2 ">

@@ -13,7 +13,7 @@
 		  <view class="list">
 		    <view class="li_box" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/daiyan_quan_xq/daiyan_quan_xq">
 		      <view class="li_img">
-		        <image class="li_img" :src="filter.imgIP('tx.png')"></image>
+		        <image class="li_img" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 		      </view>
 		      <text class="li_name">国潮</text>
 		      <view class="li_js oh2">体验国潮文化的魅力体验国潮文化的魅力</view>

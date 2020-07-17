@@ -15,7 +15,7 @@
 		    <view class="goodsBox contbox">
 		      <view class="goods" v-for="(item,idx) in goods" :data-tab="idx" @tap="jump" data-url="'/pagesA/OrderDetails/OrderDetails?shop_id=1&type='+type}}">
 		        <!-- <view class="dianpu_tit">
-		          <image class="dp_logo" src="../../static/images/tx.png"></image>
+		          <image class="dp_logo" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 		          <text>石说的达开旗舰店</text>
 		        </view> -->
 		        <block v-for="(item1,idx1) in goods">

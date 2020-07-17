@@ -31,7 +31,7 @@
 			<view class="fixbottom">
 				<navigator class="addbtn" url="/pagesA/addressEdit/addressEdit">
 					<view class="addicon">
-						<image :src="filter.imgIP('/static_s/51daiyan/images/addicon.png')"></image>
+						<!-- <image :src="filter.imgIP('/static_s/51daiyan/images/addicon.png')"></image> -->
 					</view>
 					添加新地址
 				</navigator>

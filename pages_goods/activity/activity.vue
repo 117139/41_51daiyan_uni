@@ -93,13 +93,13 @@
 		    <view class="dy_box" v-for="(item,idx) in start_li">
 		      <view class="dy_li">
 		        <view class="pl_num">
-		          <image v-if="idx==0" class="pl_num" src="../../static/images/phicon_1.png"></image>
-		          <image v-if="idx==1" class="pl_num" src="../../static/images/phicon_2.png"></image>
-		          <image v-if="idx==2" class="pl_num" src="../../static/images/phicon_3.png"></image>
+		          <image v-if="idx==0" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_1.png')"></image>
+		          <image v-if="idx==1" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_2.png')"></image>
+		          <image v-if="idx==2" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_3.png')"></image>
 		          <text v-if="idx>2">{{idx+1}}</text>
 		        </view>
 		        <view class="pl_tx" @tap="jump" data-url="/pages/my_index/my_index">
-		          <image class="pl_tx" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+		          <image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
 		        </view>
 		        <view class="ph_name">张一鸣</view>
 		        <view class="ph_num"><text>2200</text>人气值</view>

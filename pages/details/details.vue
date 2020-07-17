@@ -108,7 +108,7 @@
 		    <view class="pj_li">
 		      <view class="pj_d1">
 		        <view class="user_tx">
-		          <image class="user_tx" src="../../static/images/tx.png"></image>
+		          <image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 		        </view> Y***I</view>
 		      <view class="pj_d2">上次就买了，感觉太好喝了，这次又来光顾一下，这次又来光顾一下，这次又来光顾一下，这次又来光顾一下。</view>
 		    </view>
@@ -127,7 +127,7 @@
 		          <view class="dyr_msg">
 		            <view class="pj_d1">
 		              <view class="user_tx">
-		                <image class="user_tx" :src="filter.imgIP('tx.png')" mode="aspectFill"></image>
+		                <image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
 		              </view> Y***I</view>
 		            <view class="dyr_d oh3"> 蛮好喝的，换了新包装，品质还以依旧刚刚的蛮好喝的，换了新包装，品质还以依旧刚刚的</view>
 		          </view>
@@ -179,7 +179,7 @@
 		    <view class="htk_text">喝过很多家的豆子，这家没得说，烘培的很新鲜，常备口粮。</view>
 		    <view class="htk_msg">
 		      <view class="htk_tx">
-		        <image class="htk_tx" :src="filter.imgIP('tx.png')"></image>
+		        <image class="htk_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 		      </view>
 		      <view class="htk_name">张佳</view>
 		      <view class="htk_num">买过14次</view>
@@ -221,9 +221,9 @@
 		          <view class="tk_dyr_li" v-for="(item,idx) in data_list"  :data-type="idx" @tap="txtype_fuc">
 		          <view class="dis_flex aic flex_1">
 		            <view class="tk_user_tx">
-		              <image class="tk_user_tx" :src="filter.imgIP('tx.png')"  mode="aspectFill"></image>
-		              <image v-if="idx==1" class="tk_user_v" src="../../static/images/star_b.png"></image>
-		              <image v-if="idx==2" class="tk_user_v" src="../../static/images/star_d.png"></image>
+		              <image class="tk_user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"  mode="aspectFill"></image>
+		              <image v-if="idx==1" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+		              <image v-if="idx==2" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
 		            </view>
 		            <view class="tk_user_name">kimi</view>
 		            <view v-if="idx==0" class="hy_bq">好友</view>

@@ -69,7 +69,8 @@
         "daiyan_quan/daiyan_quan",
         "daiyan_quan_xq/daiyan_quan_xq",
         "activity/activity",
-        "activity_db/activity_db"
+        "activity_db/activity_db",
+        "friends_daiyan/friends_daiyan"
       ]
     }
   ],
@@ -145,6 +146,5 @@
     }
   },
   "permission": {},
-  "usingComponents": {},
-  "sitemapLocation": "sitemap0.json"
+  "usingComponents": {}
 }

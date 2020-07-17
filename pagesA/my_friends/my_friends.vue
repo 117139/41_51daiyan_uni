@@ -16,8 +16,8 @@
 				<view class="box_tit box_li">
 					<view class="td1">
 						<view class="user_tx" @tap="jump" data-url="/pages/my_index/my_index">
-							<image class="user_tx" src="../../static/images/tx.png"></image>
-							<image class="user_v" src="../../static/images/star_b.png"></image>
+							<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 						</view>
 						<text>李勇</text>
 					</view>
@@ -27,8 +27,8 @@
 				<view class="box_tit box_li">
 					<view class="td1">
 						<view class="user_tx">
-							<image class="user_tx" src="../../static/images/tx.png"></image>
-							<image class="user_v" src="../../static/images/star_b.png"></image>
+							<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 						</view>
 						<text>李勇</text>
 					</view>
@@ -38,8 +38,8 @@
 				<view class="box_tit box_li">
 					<view class="td1">
 						<view class="user_tx">
-							<image class="user_tx" src="../../static/images/tx.png"></image>
-							<image class="user_v" src="../../static/images/star_b.png"></image>
+							<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 						</view>
 						<text>李勇</text>
 					</view>

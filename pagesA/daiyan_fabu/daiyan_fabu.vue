@@ -32,7 +32,7 @@
 		  <image :src="src" style="width: 375px; height: 667px;position:fixed;top:-9999999px;"></image>
 		  <view class="goodsBox w100">
 		    <view v-if="open_type>idx" class="quan_goods" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/details/details">
-		      <image class="quan_goods_img" src="/static/images/goods.png" mode="aspectFill"></image>
+		      <image class="quan_goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
 		      <view class="quan_goods_msg">
 		        <view class="quan_goods_name oh1">苏泊尔IH家用大容量智能电饭锅</view>
 		        <view class="quan_goods_pri">
@@ -72,7 +72,7 @@
 		
 		      <view v-if="imgb.length<9" class="addimg" @tap="scpic">
 		
-		        <image :src="filter.imgIP('/static_s/51daiyan/images/upimg1.png')"></image>
+		        <image :src="filter.imgIP('/static_s/51daiyan/images/upimg1.jpg')"></image>
 		      </view>
 		    </view>
 		
@@ -93,7 +93,7 @@
 		
 		      <view wx:else class="addimg" @tap="chooseVideo">
 		
-		        <image :src="filter.imgIP('/static_s/51daiyan/images/upimg1.png')"></image>
+		        <image :src="filter.imgIP('/static_s/51daiyan/images/upimg1.jpg')"></image>
 		      </view>
 		    </view>
 		
@@ -108,6 +108,10 @@
 		    <view  class="haibao_box">
 		      <!-- <image class="haibao_box" src="{{filter.imgIP(haibao)}}"></image> -->
 		      <image v-if="src" class="haibao_box" :src="src"></image>
+		    </view>
+		    <view  class="haibao_box haibao_box1">
+		      <!-- <image class="haibao_box" src="{{filter.imgIP(haibao)}}"></image> -->
+		      <image v-if="src" class="haibao_box haibao_box1" :src="src"></image>
 		    </view>
 				
 		  </view>
@@ -193,11 +197,20 @@
 				
 				
 				
-				poster: {},
+				poster: {
+					width:750,
+					height:1334
+				},
 				qrShow: false,
 				canvasId: 'default_PosterCanvasId',
 				count: 0
 			}
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg'
+			])
 		},
 		onLoad(option) {
 			var that =this
@@ -559,16 +572,17 @@
 					const d = await getSharePoster({
 						_this: _this, //若在组件中使用 必传
 						type: 'testShareType',
+						backgroundImage:'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/hbbg.jpg',
 						formData: {
 							//访问接口获取背景图携带自定义数据
 			
 						},
 						posterCanvasId: _this.canvasId, //canvasId
 						delayTimeScale: 20, //延时系数
-						background: {
-							height: 10,
-							width: 10
-						},
+						// background: {
+						// 	height: 10,
+						// 	width: 10
+						// },
 						setCanvasWH({
 							bgObj
 						}) {
@@ -584,41 +598,49 @@
 							return [{
 									type: 'image',
 									id: 'productImage',
-									url: _this.count % 2 === 0 ? '/static/1.png' : '/static/2.jpg',
-									dx: 0,
-									dy: 0,
+									// url: _this.count % 2 === 0 ? '/static/1.png' : '/static/2.jpg',
+									url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/xcxm.png',
+									dx: 254,
+									dy: 494,
 									serialNum: 0,
 									infoCallBack(imageInfo) {
 										let width;
 										let height;
-										if (imageInfo.width > imageInfo.height) {
-											width = imageInfo.width > 700 ? 700 : imageInfo.width;
-											height = width / imageInfo.width * imageInfo.height;
-										} else {
-											height = imageInfo.height > 700 ? 700 : imageInfo.height;
-											width = height / imageInfo.height * imageInfo.width;
-										}
-										if (width < 500) {
-											width = 500;
-											height = width / imageInfo.width * imageInfo.height;
-										}
-										let addHeight = height * .3;
-										if (addHeight < 150) addHeight = 150;
-										if (addHeight > 250) addHeight = 250;
-										setBgObj({
-											width,
-											height: height + addHeight
-										});
+										
+										width=244
+										height=244
+										
 										return {
 											dWidth: width,
 											dHeight: height
+										}
+									}
+								},{
+									type: 'image',
+									id: 'userImage',
+									// url: _this.count % 2 === 0 ? '/static/1.png' : '/static/2.jpg',
+									url: _this.loginMsg.avatarurl,
+									dx: 100,
+									dy: 900,
+									serialNum: 0,
+									infoCallBack(imageInfo) {
+										let width;
+										let height;
+										
+										width=120
+										height=120
+										
+										return {
+											dWidth: width,
+											dHeight: height,
+											circleSet:true
 										}
 									}
 								},
 								{
 									type: 'text',
 									id: 'productName',
-									text: '取舍',
+									text: _this.loginMsg.nickname,
 									color: '#000',
 									serialNum: 1,
 									allInfoCallback({
@@ -627,58 +649,109 @@
 										const productImage = drawArray.find(item => item.id === 'productImage')
 										const addHeight = getBgObj().height - productImage.dHeight;
 										return {
-											size: getBgObj().width * 0.05,
+											size: 30,
+												textAlign:'center',
 											lineFeed: {
-												maxWidth: getBgObj().width * 0.5,
+												maxWidth: 120,
 												lineNum: 1
 											},
-											dx: getBgObj().width * .05,
-											dy: productImage.dHeight + addHeight * .25,
+											dx: 152,
+											dy: 1044,
 										}
 									}
 								},
+								
 								{
 									type: 'text',
-									text: '棒棒哒~',
-									color: '#f1505c',
-									serialNum: 2,
+									id: 'userLv',
+									text: _this.loginMsg.advocacy_grade_value,
+									color: '#000',
+									serialNum: 1,
 									allInfoCallback({
 										drawArray
 									}) {
 										const productImage = drawArray.find(item => item.id === 'productImage')
 										const addHeight = getBgObj().height - productImage.dHeight;
 										return {
-											size: getBgObj().width * 0.05,
+											size: 20,
+											color: '#FE8735',
 											lineFeed: {
-												maxWidth: getBgObj().width * 0.5,
+												maxWidth: 120,
 												lineNum: 1
 											},
-											dx: getBgObj().width * .05,
-											dy: productImage.dHeight + addHeight * .5,
+											dx: 210,
+											dy: 1080,
 										}
 									}
 								},
+								
 								{
 									type: 'text',
-									text: '无情哈拉少',
+									text: _this.loginMsg.advocacy_goods_number+'件',
 									serialNum: 3,
 									allInfoCallback({
 										drawArray
 									}) {
-										const productImage = drawArray.find(item => item.id === 'productImage')
-										const addHeight = getBgObj().height - productImage.dHeight;
+										// const productImage = drawArray.find(item => item.id === 'productImage')
+										// const addHeight = getBgObj().height - productImage.dHeight;
 										return {
-											size: getBgObj().width * 0.05,
+											size: 30,
+											color:'#FE8735',
+											textAlign:'center',
 											lineFeed: {
-												maxWidth: getBgObj().width * 0.5,
+												maxWidth: 120,
 												lineNum: 1
 											},
-											dx: getBgObj().width * .05,
-											dy: productImage.dHeight + addHeight * .75,
+											dx: 150,
+											dy: 1210,
 										}
 									}
 								},
 								{
+									type: 'text',
+									text: _this.loginMsg.follow_buy_goods_number+'件',
+									serialNum: 3,
+									allInfoCallback({
+										drawArray
+									}) {
+										// const productImage = drawArray.find(item => item.id === 'productImage')
+										// const addHeight = getBgObj().height - productImage.dHeight;
+										return {
+											size: 30,
+											color:'#FE8735',
+											textAlign:'center',
+											lineFeed: {
+												maxWidth: 120,
+												lineNum: 1
+											},
+											dx: 360,
+											dy: 1210,
+										}
+									}
+								},
+								{
+									type: 'text',
+									text: _this.loginMsg.exceed_number+'%好友',
+									serialNum: 3,
+									allInfoCallback({
+										drawArray
+									}) {
+										// const productImage = drawArray.find(item => item.id === 'productImage')
+										// const addHeight = getBgObj().height - productImage.dHeight;
+										return {
+											size: 30,
+											color:'#FE8735',
+											textAlign:'center',
+											lineFeed: {
+												maxWidth: 120,
+												lineNum: 1
+											},
+											dx: 585,
+											dy: 1210,
+										}
+									}
+								},
+								/*{
 									type: 'qrcode',
 									text: '123456',
 									serialNum: 4,
@@ -697,13 +770,14 @@
 											dy: getBgObj().height - countSize * .95
 										}
 									}
-								}
+								}*/
 							]
 						}
 					})
 					_app.log('海报生成成功, 时间:' + new Date() + '， 临时路径: ' + d.poster.tempFilePath)
 					_this.poster.finalPath = d.poster.tempFilePath;
 					_this.qrShow = true;
+					this.src=d.poster.tempFilePath
 				} catch (e) {
 					_app.hideLoading();
 					_app.showToast(JSON.stringify(e));
@@ -1200,6 +1274,10 @@ view.haibao_box{
   width:190rpx;
   height:338rpx;
   border-radius:10rpx;
+}
+.haibao_box1{
+	width:600rpx;
+	height:1114rpx;
 }
 .zp_tip{
   font-size: 24rpx;

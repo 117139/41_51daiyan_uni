@@ -2,11 +2,11 @@
 	<view>
 		<view class="container">
 			<view class="dy_sc_bg">
-				<image class="dy_sc_bg" src="../../static/images/images/dy_sc1_02.jpg"></image>
+				<image class="dy_sc_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/dy_sc1_02.jpg')"></image>
 			</view>
 			<view class="h_main">
 				<view class="dy_sc_lj" @tap="jump" data-url="/pages/about/about">
-					<view><image class="c_bl" src="../../static/images/images/lj_bl_05.jpg"></image>1分钟了解51代言</view>
+					<view><image class="c_bl" :src="filter.imgIP('/static_s/51daiyan/images/images/lj_bl_05.jpg')"></image>1分钟了解51代言</view>
 					<text class="iconfont iconnext3"></text>
 				</view>
 				<!-- <view class="yhq_box">
@@ -36,16 +36,16 @@
 				<view class="yhq_box">
 					<view class="yhp_tit">
 						<view class="yhq_t_l">好友的代言商品</view>
-						<view class="yhq_t_r" @tap="jump" data-url="/pages/my_daiyan/my_daiyan">更多<text class="iconfont iconnext3"></text></view>
+						<view class="yhq_t_r" @tap="jump" data-url="/pages_goods/friends_daiyan/friends_daiyan?id=1">更多<text class="iconfont iconnext3"></text></view>
 					</view>
 					<view class="hy_goods">
 						<view class="hy_goods_li"  @tap="jump" data-url="/pages/details/details">
 							<view class="hy_goods_img">
-								<image class="hy_goods_img" :src="filter.imgIP('goods.png')"></image>
+								<image class="hy_goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
 							</view>
 							<view class="goods_pri">
 								<view class="goods_tximg">
-									<image class="goods_tximg" :src="filter.imgIP('tx.png')"></image>
+									<image class="goods_tximg" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 								</view>
 								<view class="goods_mon">￥688</view>
 							</view>
@@ -56,11 +56,11 @@
 						</view>
 						<view class="hy_goods_li"  @tap="jump" data-url="/pages/details/details">
 							<view class="hy_goods_img">
-								<image class="hy_goods_img" :src="filter.imgIP('goods.png')"></image>
+								<image class="hy_goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
 							</view>
 							<view class="goods_pri">
 								<view class="goods_tximg">
-									<image class="goods_tximg" :src="filter.imgIP('tx.png')"></image>
+									<image class="goods_tximg" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 								</view>
 								<view class="goods_mon">￥688</view>
 							</view>
@@ -71,11 +71,11 @@
 						</view>
 						<view class="hy_goods_li"  @tap="jump" data-url="/pages/details/details">
 							<view class="hy_goods_img">
-								<image class="hy_goods_img" :src="filter.imgIP('goods.png')"></image>
+								<image class="hy_goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
 							</view>
 							<view class="goods_pri">
 								<view class="goods_tximg">
-									<image class="goods_tximg" :src="filter.imgIP('tx.png')"></image>
+									<image class="goods_tximg" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 								</view>
 								<view class="goods_mon">￥688</view>
 							</view>
@@ -98,13 +98,13 @@
 					<view class="b_li_box">
 						<view class="b_li"  v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/details/details">
 							<view class="li_img">
-								<image class="li_img" :src="filter.imgIP('/images/goods15_02.jpg')"></image>
+								<image class="li_img" :src="filter.imgIP('/static_s/51daiyan/images//images/goods15_02.jpg')"></image>
 							</view>
 							<view class="li_msg">
 								<view class="li_name oh1">意式浓精品挂耳咖啡新款</view>
 								<view class="goods_pri">
 									<view class="goods_tximg">
-										<image class="goods_tximg" :src="filter.imgIP('tx.png')"></image>
+										<image class="goods_tximg" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 									</view>
 									<view class="goods_mon">￥688</view>
 								</view>

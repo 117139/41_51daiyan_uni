@@ -26,8 +26,8 @@
 							 		</view>
 							 		<view class="user_msg">
 							 			<view class="fwb">张一鸣</view>
-							 			<view class="oh1 fz22"><image src="../../static/images/star_jj.png"></image>简介：一线明星，知名演员…</view>
-							 			<view><image src="../../static/images/dy_num.png"></image>代言数量：20</view>
+							 			<view class="oh1 fz22"><image :src="filter.imgIP('/static_s/51daiyan/images/star_jj.png')"></image>简介：一线明星，知名演员…</view>
+							 			<view><image :src="filter.imgIP('/static_s/51daiyan/images/dy_num.png')"></image>代言数量：20</view>
 							 		</view>
 							 		<!-- <view class="user_btn">+关注</view> -->
 							 		<view class="user_btn user_btn1">已关注</view>
@@ -42,8 +42,8 @@
 							 		</view>
 							 		<view class="user_msg">
 							 			<view class="fwb">张一鸣</view>
-							 			<view class="oh1 fz22"><image src="../../static/images/star_jj.png"></image>简介：一线明星，知名演员…</view>
-							 			<view><image src="../../static/images/dy_num.png"></image>代言数量：20</view>
+							 			<view class="oh1 fz22"><image :src="filter.imgIP('/static_s/51daiyan/images/star_jj.png')"></image>简介：一线明星，知名演员…</view>
+							 			<view><image :src="filter.imgIP('/static_s/51daiyan/images/dy_num.png')"></image>代言数量：20</view>
 							 		</view>
 							 		<view class="user_btn">+关注</view>
 							 		<!-- <view class="user_btn user_btn1">已关注</view> -->
@@ -58,8 +58,8 @@
 							 		</view>
 							 		<view class="user_msg">
 							 			<view class="fwb">张一鸣</view>
-							 			<view class="oh1 fz22"><image src="../../static/images/star_jj.png"></image>简介：一线明星，知名演员…</view>
-							 			<view><image src="../../static/images/dy_num.png"></image>代言数量：20</view>
+							 			<view class="oh1 fz22"><image :src="filter.imgIP('/static_s/51daiyan/images/star_jj.png')"></image>简介：一线明星，知名演员…</view>
+							 			<view><image :src="filter.imgIP('/static_s/51daiyan/images/dy_num.png')"></image>代言数量：20</view>
 							 		</view>
 							 		<view class="user_btn">+关注</view>
 							 		<!-- <view class="user_btn user_btn1">已关注</view> -->

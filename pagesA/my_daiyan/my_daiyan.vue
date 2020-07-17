@@ -6,7 +6,7 @@
 					<view class="goods_li2" v-for="(item,idx) in data_list">
 						<view class="goods_li2_d1"  @tap="jump" data-url="/pages/details/details?id=1">
 							<view class="goods_img2">
-								<image class="goods_img2" src="../../static/images/goods.png"></image>
+								<image class="goods_img2" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
 							</view>
 							<view class="goods_msg">
 								<view class="goods_name2 fz30 oh1">苏泊尔IH家用大容量智能电饭锅</view>
@@ -21,7 +21,7 @@
 						</view>
 						<view class="goods_li2_d2">
 							<view class="dy_tx">
-								<image class="dy_tx" src="../../static/images/tx.png"></image>
+								<image class="dy_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 							</view>
 							<view class="dy_star">王力宏代言：</view>
 							<view class="dy_text oh1">穿上去特别舒服，打篮球更有感觉了感觉了感觉了感觉了</view>

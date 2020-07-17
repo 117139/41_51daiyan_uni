@@ -23,7 +23,7 @@
 					</view>
 				</view>
 				<view class="tx_type" :class="tx_type==1? 'cur':''" data-type="1" @tap="txtype_fuc">
-					<view  class="tx_type1"><image src="../../static/images/images/tx_bg_09.jpg"></image> 银行卡</view>
+					<view  class="tx_type1"><image :src="filter.imgIP('/static_s/51daiyan/images/images/tx_bg_09.jpg')"></image> 银行卡</view>
 					
 					<icon  v-if="tx_type==1" type="success" size="18" color="#F7B43B" />
 					<view v-else class="tx_type2">

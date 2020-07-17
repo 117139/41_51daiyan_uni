@@ -6,7 +6,7 @@
 		    <view class="hd_time">活动截止时间：2019/11/01-2019/11/03</view>
 		  </view>
 		  <view class="avtivity_time">
-		    <image class="avtivity_time" src="/static/images/hd_bg2.jpg"></image>
+		    <image class="avtivity_time" :src="filter.imgIP('/static_s/51daiyan/images/hd_bg2.jpg')"></image>
 		    <view class="avtivity_time_djs">
 		      活动倒计时：
 		     <text>{{hd_time.day>0?hd_time.day:0}}</text>
@@ -20,10 +20,10 @@
 		    </view>
 		  </view>
 		  <view class="hd_db_img">
-		    <image class="hd_db_img" src="/static/images/hd_db_img.jpg"></image>
+		    <image class="hd_db_img" :src="filter.imgIP('/static_s/51daiyan/images/hd_db_img.jpg')"></image>
 		  </view>
 		  <view class="hd_db_bg">
-		    <image class="hd_db_bg" src="/static/images/hd_db_bg.jpg"></image>
+		    <image class="hd_db_bg" :src="filter.imgIP('/static_s/51daiyan/images/hd_db_bg.jpg')"></image>
 		    <view class="hd_db_dp">
 		      <view class="d1">
 		        <view>人人都是代言人</view>
@@ -50,13 +50,13 @@
 		      <view class="dy_box"  v-for="(item,idx) in start_li">
 		        <view class="dy_li">
 		          <view class="pl_num">
-		            <image v-if="idx==0" class="pl_num" src="../../static/images/phicon_1.png"></image>
-		            <image v-if="idx==1" class="pl_num" src="../../static/images/phicon_2.png"></image>
-		            <image v-if="idx==2" class="pl_num" src="../../static/images/phicon_3.png"></image>
+		            <image v-if="idx==0" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_1.png')"></image>
+		            <image v-if="idx==1" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_2.png')"></image>
+		            <image v-if="idx==2" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_3.png')"></image>
 		            <text v-if="idx>2">{{idx+1}}</text>
 		          </view>
 		          <view class="pl_tx" @tap="jump" data-url="/pages/my_index/my_index">
-		            <image class="pl_tx" src="../../static/images/tx.png"></image>
+		            <image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 		          </view>
 		          <view class="ph_name">张一鸣</view>
 		          <view class="ph_num">
