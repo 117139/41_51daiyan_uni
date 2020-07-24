@@ -10,6 +10,7 @@
 		onLaunch: function() {
 			var that =this
 			console.log('App Launch')
+			// #ifdef MP-WEIXIN 
 			// 获取用户信息
 			uni.getSetting({
 			  success: res => {
@@ -91,6 +92,7 @@
 			    }
 			  }
 			})
+			// #endif
 		},
 		onShow: function() {
 			console.log('App Show')

@@ -19,6 +19,11 @@
   font-size: 30rpx;
 	background: #955a59;
 	color: #fff;
+	white-space: nowrap;
+	overflow-x: scroll;
+}
+.tab_box>view.data-v-02e5beaf{
+	display: inline-block;
 }
 .typecur.data-v-02e5beaf{
   padding-bottom: 12rpx;

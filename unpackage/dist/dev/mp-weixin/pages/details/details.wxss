@@ -862,6 +862,12 @@ padding: 0 10rpx;
   border:1px solid rgba(247,85,89,1);
 	color: #F75559;
 }
+.guigeOne.goods_null.data-v-63a67548{
+	background:rgba(250,233,234,1);
+	border:1px solid rgba(247,85,89,1);
+	color: rgba(247,85,89,1);
+	text-decoration:line-through ;
+}
 .countnum.data-v-63a67548{
 	display: -webkit-box;
 	display: -webkit-flex;

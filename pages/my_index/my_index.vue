@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="container">
-			<image class="h_bg" :src="filter.imgIP('/images/my_indexbg_02.jpg')"></image>
+			<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/my_indexbg_02.jpg')"></image>
 			<view class="h_main">
 				<view class="my_index_box1">
 		      <view class="my_index">
@@ -69,7 +69,7 @@
 								</view>
 								<view class="quan_goods" @tap="jump" data-url="/pages/details/details">
 								  <image class="quan_goods_img" src="/static/images/goods.png" mode="aspectFill" 
-									 :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
+									 :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')" @tap.stop="pveimg"></image>
 								  <view class="quan_goods_msg">
 								    <view class="quan_goods_name oh1">苏泊尔IH家用大容量智能电饭锅</view>
 								    <view class="quan_goods_pri">
@@ -91,7 +91,7 @@
 					<view class="sp_list">
 						<view class="sp_li" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/xvideo/xvideo">
 							<view class="sp_li_img">
-								<image class="sp_li_img" :src="filter.imgIP('/images/goods15_02.jpg')" mode="aspectFill"></image>
+								<image class="sp_li_img" :src="filter.imgIP('/static_s/51daiyan/images/images/goods15_02.jpg')" mode="aspectFill"></image>
 								<view class="sp_li_img_cz">
 									<image :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
 								</view>
@@ -107,7 +107,7 @@
 				<view v-if="s_type==2" class="my_list">
 		      <view class="sp_list">
 		        <view class="my_li_xc" v-for="(item,idx) in data_list">
-		          <image class="my_li_xc_img" :src="filter.imgIP('/images/goods15_02.jpg')" mode="aspectFill"  :data-src="filter.imgIP('/images/goods15_02.jpg')" @tap.stop="pveimg"></image>
+		          <image class="my_li_xc_img" :src="filter.imgIP('/static_s/51daiyan/images/images/goods15_02.jpg')" mode="aspectFill"  :data-src="filter.imgIP('/static_s/51daiyan/images/images/goods15_02.jpg')" @tap.stop="pveimg"></image>
 		          <!-- <view class="xc_gb"><text class="iconfont iconguanbi"></text></view> -->
 		          <view class="like_num"><text class="iconfont iconhongxinicon"></text>393</view>
 		        </view>
@@ -122,7 +122,7 @@
 					<view class="sp_list">
 						<view class="sp_li" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/details/details">
 							<view class="sp_li_img">
-								<image class="sp_li_img" :src="filter.imgIP('/images/goods15_02.jpg')" mode="aspectFill"></image>
+								<image class="sp_li_img" :src="filter.imgIP('/static_s/51daiyan/images/images/goods15_02.jpg')" mode="aspectFill"></image>
 							</view>
 							<view class="sp_li_msg">
 								<view class="sp_li_name oh2">三只松鼠-巨型零食大礼包 内含30包休闲食品</view>

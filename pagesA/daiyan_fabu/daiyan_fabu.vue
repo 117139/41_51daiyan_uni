@@ -135,12 +135,32 @@
 		    
 		    <view class="sq_btn" @tap="save_val">发布代言</view>
 		  </view>
+			<uni-popup ref="popup" type="center" @change="tkchange">
+				<view class="dyxy_box">
+					<view class="dyxy_tit">代言协议</view>
+					<view class="dyxy_inr">
+						甲、乙双方本着平等、自愿原则，就甲方邀请乙方 [身份证号为 （以下统称‘乙方’）为 （简称‘产品’）品牌形象代言人（或候选品牌形象代言人）事宜，达成以下协议，双方共同遵照执行：
+						<br>一、形象代言人工作内容确认
+						<br>1、 乙方同意在 年 月 日至 年 月 日：
+						<br>（1）为甲方拍摄影视广告或mtv片，拍摄次数 次，每次不超过 天。
+						<br>（2）为甲方拍摄平面（静态）照片，拍摄次数 次，每次不超过 天。
+						<br>（3）参加甲方组织的新闻发布会、订货会、经销商大会、公共促销关系活动 次（每次提前30日将具体时间、地点以书面形式通知乙方），每次三天，每天不超过 个小时。
+						<br>（4）甲方于拍摄前一周内将图片资料交付乙方，以便乙方了解代言产品之风格和功能。
+						<br>二、使用期限：
+						<br>根据本合同所制作广告使用期为自 年 月 日至 年 月 日，期满后甲方或经授权的任何第三人均无权再以任何方式使用本合同项上的广告及相关素材。期满后，甲方可与乙方重新签订协议使用，在同等条件下，甲方有优先签约权。
+						                            
+					</view>
+					<view class="dis_flex ydxy_btn" :class="xdxy_type==1?'cur':''" @tap="xdxy_type_fuc"><view class="d1 dis_flex"><icon  v-if="xdxy_type==1" type="success" size="12" color="#F47416" /></view>我已阅读并同意该协议</view>
+					<view class="next_btn dis_flex" @tap="onClose">下一步</view>
+				</view>
+			</uni-popup>
 		</view>
 	</view>
 </template>
 
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
+	
 	import service from '../../service.js';
 	import {
 		mapState,
@@ -192,8 +212,8 @@
 				width:750,
 				height: 1334,
 				
-				
-				
+				sheetshow:true,
+				xdxy_type:1,
 				
 				
 				
@@ -214,6 +234,7 @@
 		},
 		onLoad(option) {
 			var that =this
+			this.sheetshow_fuc()
 			if(option.type){
 				that.type=option.type
 			}
@@ -232,7 +253,24 @@
 			// this.getOrderList('onshow')
 		},
 		methods: {
+			xdxy_type_fuc(){
+				this.xdxy_type=this.xdxy_type==1?0:1
+			},
+			sheetshow_fuc() {
+			    this.sheetshow= true
+			    this.btnkg= 0
+					this.$refs.popup.open()
 			
+			},
+			
+			tkchange(e){
+				console.log(e)
+				this.sheetshow=e.show
+			},
+			onClose() {
+			    this.sheetshow= false
+					this.$refs.popup.close()
+			},
 			open_more(){
 			  this.open_type=10000
 			},
@@ -814,6 +852,63 @@
 </script>
 
 <style scoped>
+	.dyxy_box{
+		width:694upx;
+		max-height: 1150upx;
+		background: #fff;
+		border-radius: 18upx;
+		padding: 30upx 44upx;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		/* position: absolute; */
+		margin: 0 auto;
+		
+	}
+	.dyxy_tit{
+		text-align: center;
+		font-size: 36upx;
+		color: #000;
+		margin-bottom: 26upx;
+	}
+	.dyxy_inr{
+		font-size: 28upx;
+		color: #666;
+	}
+	.next_btn{
+		margin: 5px auto;
+		font-size: 28upx;
+		color: #fff;
+		width:330upx;
+		height:80upx;
+		background:rgba(244,116,22,1);
+		border-radius:18upx;
+		align-items: center;
+		justify-content: center;
+	}
+	.ydxy_btn{
+		align-items: center;
+		color: #F47416;
+		font-size: 24upx;
+	}
+	.ydxy_btn .d1{
+		width: 12px;
+		height: 12px;
+		border-radius:50%;
+		border:1px solid #ddd;
+		align-items: center;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		margin-right: 6upx;
+	}
+	.ydxy_btn.cur .d1{
+		border:0;
+		margin: 8upx 0;
+	}
+	.ydxy_btn.cur .d1 .icon{
+		font-size: 24upx!important;
+	}
 page{
   background: #ffffff;
 }

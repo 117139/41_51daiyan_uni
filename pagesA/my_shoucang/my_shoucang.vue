@@ -3,24 +3,24 @@
 		<view class="container">
 		  <!-- goods_li -->
 				<view class="goods_list2">
-					<view class="goods_li2" v-for="(item,idx) in data_list">
-						<view class="goods_li2_d1"  @tap="jump" data-url="/pages/details/details?id=1">
+					<view class="goods_li2" v-for="(item,idx) in datas">
+						<view class="goods_li2_d1"  @tap="jump" :data-url="'/pages/details/details?id='+item.obj_id">
 							<view class="goods_img2">
-								<image class="goods_img2" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
+								<image class="goods_img2" :src="filter.imgIP(item.obj_img)"></image>
 							</view>
 							<view class="goods_msg">
-								<view class="goods_name2 fz30 oh1">苏泊尔IH家用大容量智能电饭锅</view>
+								<view class="goods_name2 fz30 oh1">{{item.obj_name}}</view>
 								<view class="goods_pri">
-									<view class="pri1">¥668</view>
-									<view class="pri2">代言费：¥30</view>
+									<view class="pri1">¥{{item.v_current_price?item.v_current_price:0}}</view>
+									<view class="pri2">代言费：¥{{item.advocacy_price?item.advocacy_price:0}}</view>
 								</view>
 								<view class="goods_btn1">
-									<view class="goods_dy_num2"><text class="iconfont icondianzan2"></text>5200代言人</view>
+									<view class="goods_dy_num2"><text class="iconfont icondianzan2"></text>{{item.advocacy_mannumber}}代言人</view>
 								</view>
 							</view>
 						</view>
 		        
-		        <view class="sc_box" @tap="del_li" :data-id="idx">
+		        <view class="sc_box" @tap="guanzhuFuc" :data-id="item.obj_id">
 		          <view>
 		          <text class="iconfont iconguanbi1"></text>
 		          删除</view>
@@ -45,22 +45,33 @@
 				dy_mon: 0,
 				dy_num: 0,
 				dy_pri: 0,
-				data_list: [1, 1, 1, 1, 1]
+				page:1,
+				page_size:20,
+				datas: [],
+				loading_type:0
 			}
+		},
+		onLoad() {
+			this.getdata()
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg'
+			])
 		},
 		methods: {
 			/**
 			 * 页面相关事件处理函数--监听用户下拉动作
 			 */
 			onPullDownRefresh: function () {
-			  wx.stopPullDownRefresh();
+			  this.onRetry()
 			},
-			
 			/**
 			 * 页面上拉触底事件的处理函数
 			 */
 			onReachBottom: function () {
-			
+				this.getdata()
 			},
 			
 			/**
@@ -68,6 +79,129 @@
 			 */
 			onShareAppMessage: function () {
 			
+			},
+			onRetry(){
+				this.btnkg=0
+				this.page=1
+				this.getdata()
+			},
+			getdata(){
+				let that =this
+				if(that.loading_type==1){
+					return
+				}else{
+					that.loading_type=1
+				}
+				var jkurl='/attention/collectList'
+				var data={
+					token:that.loginMsg.userToken,
+					page:that.page,
+					size:that.page_size
+				}
+				service.get(jkurl, data,
+					function(res) {
+						that.loading_type=0
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							var datas = res.data.data
+							// console.log(typeof datas)
+							
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							if(that.page==1){
+								that.datas=datas
+							}else{
+								if(datas.address.length){
+									uni.showToast({
+										icon:'none',
+										title:'到底了。。。'
+									})
+									return
+								}
+								that.datas=that.datas.concat(datas)
+							}
+							that.page++
+						} else {
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
+							}
+						}
+					},
+					function(err) {
+						that.loading_type=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+					
+					}
+				)
+			},
+			guanzhuFuc(e){
+				var that =this
+				var data={
+					token:that.loginMsg.userToken,
+					type:5,
+					id:e.currentTarget.dataset.id,
+					operate:'affirm',
+				}
+				wx.showModal({
+					title: '提示',
+					content: '是否删除?',
+					success (res) {
+						if (res.confirm) {
+							console.log('用户点击确定')
+							if(that.btnkg==1){
+								return
+							}else{
+								that.btnkg=1
+							}
+							service.P_post('/attention/operation',data).then(res => {
+							  console.log(res)
+								that.btnkg=0
+								if(res.code==-1){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==0&&res.msg=='请先登录账号~'){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==1){
+									that.onRetry()
+									uni.showToast({
+										icon:'none',
+										title:'操作成功'
+									})
+								}else{
+									
+								}
+							}).catch(e => {
+								that.btnkg=0
+							  console.log(e)
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消')
+						}
+					}
+				})
+				
 			},
 			jump(e) {
 			  service.jump(e)

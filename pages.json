@@ -477,7 +477,11 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "51代言",
 		"navigationBarBackgroundColor": "#fff",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"usingComponents": {
+			"van-stepper": "./wxcomponents/vant/stepper/index",
+			"van-popup": "./wxcomponents/vant/popup/index"
+		}
 
 
 	},
@@ -486,11 +490,7 @@
 			"version": "1.0.5",
 			"provider": "wx50b5593e81dd937a"
 		}
-	},
-	"permission": {
-		"scope.userLocation": {
-			"desc": "你的位置信息将用于小程序定位"
-		}
 	}
+	
 
 }

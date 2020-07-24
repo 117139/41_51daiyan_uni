@@ -306,6 +306,112 @@ const setUsermsg=function(data){
 	)
 }
 
+
+
+
+
+
+
+
+// 配置接口请求的公共方法
+const http =({url ='',param ={},method='',header={'content-type': 'application/x-www-form-urlencoded'}}={}) =>{
+  
+  let timeStart = Date.now();
+  return new Promise((resolve,reject)=>{
+    wx.request({
+      url: getUrl(url),
+      data:param,
+      method: method,
+      header:header,
+      complete:(res)=>{
+          wx.hideLoading();//慎用hideLoading,会关闭wx.showToast弹窗
+          console.log(`耗时${Date.now() - timeStart}`);
+					console.log(res)
+          if(res.statusCode ==200){//请求成功
+						if(res.data.code==0){
+							if(res.data.msg){
+								
+								uni.showToast({
+									icon:'none',
+									title:res.data.msg
+								})
+							}else{
+								
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							}
+						}
+            resolve(res.data)
+          }else{
+            reject(res);
+          }
+      }
+    })
+  })
+}
+// 获取url
+const getUrl = (url)=>{
+  if(url.indexOf('://')== -1){
+    url = IPurl +url ;
+  }
+  return url;
+}
+//暴露出去调用的方法
+ 
+
+// get方法
+const P_get = (url, param = {}) => {
+	wx.showLoading({
+	  title: '请求中，请耐心等待...',
+	});
+    return http({
+        url,
+        param,
+				method: 'GET'
+    })
+}
+
+const P_post = (url, param = {}) => {
+    return http({
+        url,
+        param,
+        method: "POST"
+    })
+}
+
+const P_put = (url, param = {}) => {
+    return http({
+        url,
+        param,
+        method: 'put'
+    })
+}
+
+const P_delete = (url, param = {}) => {
+    return http({
+        url,
+        param,
+        method: 'put'
+    })
+}
+// // 单个请求
+// service.P_get('/cate/list').then(res => {
+// 	console.log(res)
+// }).catch(e => {
+// 	console.log(e)
+// })
+
+// // 一个页面多个请求
+// Promise.all([
+//   service.P_get('/cate/list'),
+//   service.P_get(`detail/${id}`)
+// ]).then(result => {
+//   console.log(result)
+// }).catch(e => {
+//   console.log(e)
+// })
 export default {
 	getUsers,
 	addUser,
@@ -318,5 +424,9 @@ export default {
 	pveimg,
 	call,
 	wxlogin,
-	setUsermsg
+	setUsermsg,
+	P_get,
+	P_post,
+	P_put,
+	P_delete
 }

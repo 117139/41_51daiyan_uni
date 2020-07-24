@@ -11,7 +11,15 @@
 	export default {
 		data() {
 			return {
-				
+				type:0
+			}
+		},
+		onLoad(option) {
+			if(option.type=='协议'){
+				this.type=1
+				uni.setNavigationBarTitle({
+					title:'隐私协议'
+				})
 			}
 		},
 		methods: {

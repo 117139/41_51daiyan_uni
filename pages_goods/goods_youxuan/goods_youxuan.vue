@@ -4,9 +4,19 @@
 			<view class="h_bg">
 				<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/youxuan_02.jpg')"></image>
 			</view>
-		  <view class='dis_flex ju_a w100 pb40 pt20 bgfff tab_box'>
-		    <block v-for="(item,idx) in datalist">
-		      <view :class="type==idx?'typecur':''" :data-type="idx" @tap='bindcur'>{{item}}</view>
+		  <view class=' w100 pb40 pt20 bgfff tab_box'>
+				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
+				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
+				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
+				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
+				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
+				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
+				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
+				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
+				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
+				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
+		    <block v-for="(item,idx) in catelist">
+		      <view :class="type==idx?'typecur':''" :data-type="idx" @tap='bindcur'>{{item.title}}</view>
 		    </block>
 		
 		  </view>
@@ -37,12 +47,8 @@
 									
 								</view>
 								<view class="goods_btn1">
-									<view class="sj_list"  @tap="jump" data-url="/pages/daiyanren/daiyanren">
-									  <image class="sj_li" src="/static/images/tx.png" mode="aspectFill"></image>
-									  <image class="sj_li" src="/static/images/tx.png" mode="aspectFill"></image>
-									  <image class="sj_li" src="/static/images/tx.png" mode="aspectFill"></image>
-									  <image class="sj_li" src="/static/images/tx.png" mode="aspectFill"></image>
-									  <image class="sj_li" src="/static/images/tx.png" mode="aspectFill"></image>
+									<view class="sj_list"  @tap="jump" data-url="/pages_goods/daiyanren/daiyanren">
+									  <image v-for="(item,idx) in 5" class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
 									</view>
 									<view class="goods_dy_num2">代言费：<text>¥30</text></view>
 								</view>
@@ -71,21 +77,21 @@
 				dy_num:0,
 				dy_pri:0,
 				data_list:[1,1,1,1,1],
-				datalist:[
+				catelist:[
 					'全部',
 					'日用品',
 					'化妆品',
 				  '运动品',
 					'数码产品'
 				],
-				type:0,
+				type:-1,
 			}
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
-		
+			this.getCate()
 		},
 		
 		/**
@@ -137,11 +143,58 @@
 		
 		},
 		methods: {
+			getCate(){
+				var that =this
+				var datas={
+					type:3
+				}
+				// 单个请求
+				service.P_get('/cate/list',datas).then(res => {
+				  console.log(res)
+					if(res.code==1){
+						that.catelist=res.data
+						
+					}
+				}).catch(e => {
+				  console.log(e)
+					uni.showToast({
+						icon:'none',
+						title:'获取数据失败'
+					})
+				})
+				
+				// // 一个页面多个请求
+				Promise.all([
+				  service.P_get('/cate/list',datas),
+				  service.P_get('/cate/list',datas)
+				]).then(result => {
+				  console.log(result)
+				}).catch(e => {
+				  console.log(e)
+				})
+			},
+			getdata(){
+				//获取数据
+				return
+				service.P_get('/cate/list',datas).then(res => {
+				  console.log(res)
+					if(res.code==1){
+						that.catelist=res.data
+						
+					}
+				}).catch(e => {
+				  console.log(e)
+					uni.showToast({
+						icon:'none',
+						title:'获取数据失败'
+					})
+				})
+			},
 			bindcur(e){
 				var that =this
 			  console.log(e.currentTarget.dataset.type)
 			  that.ype= e.currentTarget.dataset.type
-				// that.getOrderList()
+				that.getdata()
 				
 			},
 			jump(e){
@@ -185,6 +238,11 @@
   font-size: 30rpx;
 	background: #955a59;
 	color: #fff;
+	white-space: nowrap;
+	overflow-x: scroll;
+}
+.tab_box>view{
+	display: inline-block;
 }
 .typecur{
   padding-bottom: 12rpx;

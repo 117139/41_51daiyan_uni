@@ -5,16 +5,16 @@
 		    <swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay"
 				 :interval="interval" :duration="duration" indicator-active-color='#8e8e8e'
 					:circular="circular" @change="swiper_change">
-		      <block v-for="(item,idx) in data_list">
+		      <block v-for="(item,idx) in goodsData.img">
 		        <swiper-item>
 		          <!-- <image src="{{item}}" class="slide-image" width="355" height="150" data-curitem="{{item}}" @tap="pveimg" /> -->
-		          <image :src="filter.imgIP('goods_02.jpg')" class="slide-image" mode="aspectFill" width="355"
-							 height="150" :data-src="filter.imgIP('goods_02.jpg')" @tap.stop="pveimg" />
+		          <image :src="filter.imgIP(item)" class="slide-image" mode="aspectFill" width="355"
+							 height="150" :data-src="filter.imgIP(item)" @tap.stop="pveimg" />
 		        </swiper-item>
 		      </block>
 		
 		    </swiper>
-		    <view class="br_box">{{cur_swiper}}/{{data_list.length}}</view>
+		    <view class="br_box">{{cur_swiper}}/{{goodsData.img.length}}</view>
 		  </view>
 		  <view class="goods_msg">
 		    <view class="goods_pri">
@@ -24,7 +24,7 @@
 		    <view class="goods_pri">
 		      <view class="pri2">原价：¥66.6</view>
 		    </view>
-		    <view class="goods_name">黄金曼特宁精品咖啡/袋泡咖啡/耳挂咖啡6*10袋装</view>
+		    <view class="goods_name">{{goodsData.title}}</view>
 		
 		    <view class="goods_pri">
 		      <view class="pri2">运费10元</view>
@@ -87,7 +87,7 @@
 		  </view>
 		  <view class="mt20 goods_xmsg"  @tap="sheetshow_fuc">
 		    <view class="v1">已选择</view>
-		    <view class="v2 v21">{{guige[type1[0]].value1}},{{cnum}}件</view>
+		    <view class="v2 v21">{{'aaa'}},{{cnum}}件</view>
 		    <view class="v3">
 		      <text class="iconfont iconnext3"></text>
 		    </view>
@@ -211,7 +211,7 @@
 		      <text>-</text>
 		    </view>
 		    <view class="xq_box">
-		      <image :src="filter.imgIP('goods_02.jpg')" mode="aspectFill" style="width:750rpx;height:750rpx;display:block;" />
+		      <image :src="filter.imgIP('/static_s/51daiyan/images/goods_02.jpg')" mode="aspectFill" style="width:750rpx;height:750rpx;display:block;" />
 		    </view>
 		  </view>
 		  <!-- tk -->
@@ -244,33 +244,34 @@
 				<view class="tk_popup_box">
 					<view class="popopBox1">
 						<view class="goodsimg">
-							<image :src="filter.imgIP('goods_02.jpg')" :data-src="filter.imgIP('goods_02.jpg')" mode="aspectFill" @tap="previewImage"></image>
+							<image :src="filter.imgIP('/static_s/51daiyan/images/goods_02.jpg')" :data-src="filter.imgIP('/static_s/51daiyan/images/goods_02.jpg')" mode="aspectFill" @tap="pveimg"></image>
 						</view>
 						<view class="goodstkjg">
 							<view class="closebtn" @tap="onClose">
 								<image src="/static/images/closebtn_03.jpg"></image>
 							</view>
-							<view class="goods_pri_h">￥{{guige[0][type1[0]].pri}}</view>
-							<view class="kucun">库存{{guige[0][type1[0]].kucun}}件</view>
+							<view class="goods_pri_h">￥{{'11'}}</view>
+							<view class="kucun">库存{{'11'}}件</view>
 							<view class="tkname oh2">已选择：{{ggshow1}}</view>
-							<!-- <view class="tkname oh2">YI-DONG SPORT 屹动专业运动鞋 专业为中小学生运动打造的运动鞋</view> -->
 						</view>
 					</view>
-					<block v-for="(item,idx) in guige">
+					<block v-if="guige_arr.length>0" v-for="(item,idx) in guige_arr">
 						<view class="tkguigetit">{{item.name}}</view>
 						<view class="guigeBox">
 							<text class="guigeOne"
-							 v-for="(item1,idx1) in item.list"
-								:class="idx1==type1[idx]?'cur':''"
-								:data-gg="idx"
-								:data-gg1="idx1"
-								@tap="selegg">{{item1.value1}}</text>
+							v-if="ggShow(item.name,item1,idx)"
+							 v-for="(item1,idx1) in item.value"
+								:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':ggShow(item.name,item1,idx) }"
+								:data-ggidx="idx"
+								:data-name="item.name"
+								:data-value="item1"
+								@tap="selegg">{{item1}}</text>
 						</view>
 					</block>
 					<view class="countnum">
 						<text>购买数量</text>
 						<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" :value="cnum"
-						 :data-selec="idx" @input="onChange" @change="onChange" />
+						  @input="onChange" @change="onChange" />
 					</view>
 					<view class="b_view_o"></view>
 					<view class="czbtnG">
@@ -308,7 +309,6 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-	import Dialog from '../../wxcomponents/vant-weapp/stepper/index';
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		data() {
@@ -339,29 +339,13 @@
 				dyr_type:0,
 				showcan: false,
 				goods_total_limit: '',  //商品阶梯
-				guige: [
-				  {
-						name:'类型',
-						list:[
-							{ value1: '苏门答腊黄金曼特宁深度烘培', pri: 48, kucun:900 },
-							{ value1: '耳挂咖啡', pri: 49, kucun: 1900 },
-							{ value1: '耳挂咖啡1', pri: 41, kucun: 2900 },
-							{ value1: '耳挂咖啡2', pri: 42, kucun: 3900 },
-							{ value1: '耳挂咖啡3', pri: 43, kucun: 4900 },
-						]
-					},
-				  {
-						name:'类型2',
-						list:[
-							{ value1: '类型1', pri: 48, kucun:900 },
-							{ value1: '类型2', pri: 49, kucun: 1900 },
-							{ value1: '类型21', pri: 41, kucun: 2900 },
-							{ value1: '类型22', pri: 42, kucun: 3900 },
-							{ value1: '类型23', pri: 43, kucun: 4900 },
-						]
-					},
-				],  //规格
-				type1: [0],         //规格index
+				goodsData:'',
+				guige_arr:[],
+				
+				guige_arr_show:[],
+				guige_select:[],
+				guige: [],  //规格
+				type1: [-1],         //规格index
 				ggshow1:[],
 				cnum: 1,//数量
 				goods_sku_id: 0,  //商品id
@@ -374,7 +358,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
-		  
+		  this.getSku()
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
@@ -397,8 +381,51 @@
 		
 		},
 		methods: {
+			getSku(){
+				var that =this
+				var datas={
+					id:9
+				}
+				// 单个请求
+				service.P_get('/goods/details',datas).then(res => {
+				  console.log(res)
+					if(res.code==1){
+						// that.catelist=res.data
+						var guige_sku=JSON.stringify(res.data.attr.sku_all)
+						var guige_skuarr=JSON.stringify(res.data.attr.specification)
+						console.log(guige_sku)
+						that.guige=JSON.parse(guige_sku)
+						that.guige_arr_show=JSON.parse(guige_skuarr)
+						that.guige_arr=res.data.attr.specification
+						that.goodsData=res.data
+					}
+				}).catch(e => {
+				  console.log(e)
+					uni.showToast({
+						icon:'none',
+						title:'获取数据失败'
+					})
+				})
+				
+				
+			},
 			
-			
+			ggShow(name,value,idx){
+				var that =this
+				var newselect={
+					name:name,
+					value:value,
+				}
+				// var str=JSON.stringify(that.guige_arr_show)
+				// var a=JSON.stringify(newselect)
+				var str=that.guige_arr_show[idx].value
+				var a=value
+				if(str.indexOf(a)!=-1){
+					return true
+					
+				}
+				return false
+			},
 			swiper_change(e){
 			  // console.log(e.detail )
 			  var num = e.detail.current+1
@@ -424,28 +451,83 @@
 			//选择规格
 			selegg(e) {
 				var that=this
-			  // console.log(e.currentTarget.dataset.gg)
-			  // that.type1[e.currentTarget.dataset.gg] = e.currentTarget.dataset.gg1
+			  console.log(e.currentTarget.dataset.name)
+			  console.log(e.currentTarget.dataset.value)
+			  console.log(e.currentTarget.dataset.ggidx)
+				var newselect={
+					name:e.currentTarget.dataset.name,
+					value:e.currentTarget.dataset.value,
+				}
+			  // that.type1[e.currentTarget.dataset.ggidx] = newselect
 			
 			  // this.type1= this.type1
 			  // var ggs = this.guige
 			  // var ggidxs = this.type1
-			
-			  that.$set(that.type1,e.currentTarget.dataset.gg,e.currentTarget.dataset.gg1)
-				var ggs = this.guige
-				var ggidxs = this.type1
-				var ggshow1 = []
-				var ggshowid = []
-				for (var i = 0; i < ggs.length; i++) {
-				  console.log(ggidxs[i])
-				  if (ggidxs[i] >=0) {
-				    console.log(ggs[i].list[ggidxs[i]].value1)
-				    ggshow1.push(ggs[i].list[ggidxs[i]].value1)
-				    ggshowid.push(ggs[i])
-				    
-				  }
+				
+				
+			  that.$set(that.guige_select,e.currentTarget.dataset.ggidx,newselect)
+				var show_arr=[]
+				for(var i=0;i<that.guige.length;i++){
+					// console.log('---------------------------------------')
+					// console.log({...that.guige[i].guige,newselect})
+					// console.log('---------------------------------------')
+					// console.log(that.guige[i].guige.indexOf(newselect.value))
+					var str=JSON.stringify(that.guige[i].sku)
+					var a=JSON.stringify(newselect)
+					if(str.indexOf(a)!=-1){
+						console.log(that.guige[i].sku)
+						show_arr.push(that.guige[i])
+						
+					}
+					
 				}
-			  that.ggshow1=ggshow1.join(',')
+				console.log('show_arr---------------------->')
+				console.log(show_arr)
+				var idx=e.currentTarget.dataset.ggidx
+				
+				for(var i=0;i<	that.guige_arr.length;i++){
+					if(i!=idx){
+						var newVal=[]
+						for(var j=0;j<	show_arr.length;j++){
+							for(var s=0;s<	show_arr[j].sku.length;s++){
+								if(show_arr[j].sku[s].name==that.guige_arr[i].name){
+									var a=show_arr[j].sku[s].value
+									if(newVal.indexOf(a)==-1){
+										newVal.push(a)
+										
+									}
+								}
+							}
+						}
+						console.log(newVal)
+						that.$set(that.guige_arr_show[i],'value',newVal)
+					}else{
+						// that.$set(that.guige_arr_show[i],'value',that.guige_arr[i].value)
+					}
+				}
+				
+				// that.guige_arr_show=show_arr
+				// for(var i<0;i<guige_arr.length:i++){
+				// 	if(i!=e.currentTarget.dataset.ggidx){
+						
+				// 	}
+				// }
+				// console.log(that.guige_select)
+				
+				// var ggs = this.guige
+				// var ggidxs = this.type1
+				// var ggshow1 = []
+				// var ggshowid = []
+				// for (var i = 0; i < ggs.length; i++) {
+				//   console.log(ggidxs[i])
+				//   if (ggidxs[i] >=0) {
+				//     console.log(ggs[i].list[ggidxs[i]].value1)
+				//     ggshow1.push(ggs[i].list[ggidxs[i]].value1)
+				//     ggshowid.push(ggs[i])
+				    
+				//   }
+				// }
+			 //  that.ggshow1=ggshow1.join(',')
 			},
 			jump(e) {
 			  console.log(e.currentTarget.dataset.type)
@@ -591,9 +673,7 @@
 			},
 			
 			pveimg(e) {
-			  var curr = e.currentTarget.dataset.src
-			  var urls = e.currentTarget.dataset.array
-			  app.pveimg(curr, urls)
+			  service.pveimg(e)
 			},
 		}
 	}
@@ -1282,6 +1362,12 @@ padding: 0 10rpx;
 	background:rgba(250,233,234,1);
   border:1px solid rgba(247,85,89,1);
 	color: #F75559;
+}
+.guigeOne.goods_null{
+	background:rgba(250,233,234,1);
+	border:1px solid rgba(247,85,89,1);
+	color: rgba(247,85,89,1);
+	text-decoration:line-through ;
 }
 .countnum{
 	display: flex;
