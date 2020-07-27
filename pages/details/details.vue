@@ -244,28 +244,37 @@
 				<view class="tk_popup_box">
 					<view class="popopBox1">
 						<view class="goodsimg">
-							<image :src="filter.imgIP('/static_s/51daiyan/images/goods_02.jpg')" :data-src="filter.imgIP('/static_s/51daiyan/images/goods_02.jpg')" mode="aspectFill" @tap="pveimg"></image>
+							<image :src="filter.imgIP(show_img[0])" :data-src="filter.imgIP(show_img[0])" mode="aspectFill" @tap="pveimg"></image>
 						</view>
 						<view class="goodstkjg">
 							<view class="closebtn" @tap="onClose">
-								<image src="/static/images/closebtn_03.jpg"></image>
+								<image :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image>
 							</view>
-							<view class="goods_pri_h">￥{{'11'}}</view>
-							<view class="kucun">库存{{'11'}}件</view>
+							<view class="goods_pri_h">￥{{show_pri}}</view>
+							<view class="kucun" v-if="guige_select.length>0">库存{{show_num}}件</view>
 							<view class="tkname oh2">已选择：{{ggshow1}}</view>
 						</view>
 					</view>
 					<block v-if="guige_arr.length>0" v-for="(item,idx) in guige_arr">
 						<view class="tkguigetit">{{item.name}}</view>
 						<view class="guigeBox">
-							<text class="guigeOne"
-							v-if="ggShow(item.name,item1,idx)"
-							 v-for="(item1,idx1) in item.value"
-								:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':ggShow(item.name,item1,idx) }"
-								:data-ggidx="idx"
-								:data-name="item.name"
-								:data-value="item1"
-								@tap="selegg">{{item1}}</text>
+							<!-- :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx) }" -->
+							<block v-for="(item1,idx1) in item.value">
+								<text class="guigeOne"
+									v-if="ggShow(item.name,item1,idx)"
+									:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
+									:data-ggidx="idx"
+									:data-name="item.name"
+									:data-value="item1"
+									@tap="selegg">{{item1}}</text>
+								<text class="guigeOne"
+									v-else
+									:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
+									:data-ggidx="idx"
+									:data-name="item.name"
+									:data-value="item1"
+									>{{item1}}</text>
+							</block>
 						</view>
 					</block>
 					<view class="countnum">
@@ -345,6 +354,14 @@
 				guige_arr_show:[],
 				guige_select:[],
 				guige: [],  //规格
+				show_pri:0,
+				show_img:0,
+				show_num:0,
+				
+				
+				
+				
+				
 				type1: [-1],         //规格index
 				ggshow1:[],
 				cnum: 1,//数量
@@ -398,6 +415,9 @@
 						that.guige_arr_show=JSON.parse(guige_skuarr)
 						that.guige_arr=res.data.attr.specification
 						that.goodsData=res.data
+						that.show_img=res.data.img
+						that.show_pri=res.data.current_price
+						that.show_num=0
 					}
 				}).catch(e => {
 				  console.log(e)
@@ -416,15 +436,56 @@
 					name:name,
 					value:value,
 				}
-				// var str=JSON.stringify(that.guige_arr_show)
-				// var a=JSON.stringify(newselect)
-				var str=that.guige_arr_show[idx].value
-				var a=value
-				if(str.indexOf(a)!=-1){
-					return true
+				// var show_select=JSON.parse(JSON.stringify(that.guige_select))
+				// show_select[idx]=newselect
+				
+				
+				
+				
+				var show_arr=[]
+				for(var i=0;i<that.guige.length;i++){
+					var str=JSON.stringify(that.guige[i].sku)
+					var push_type=true
+					for(var s=0;s<that.guige_arr.length;s++){
+						var a=false
+						if(that.guige_select[s]){
+							a=JSON.stringify(that.guige_select[s])
+						}
+						if(s==idx){
+							a=JSON.stringify(newselect)
+						}
+						
+						console.log(a=='false')
+						if(!a||a=='false'){
+							push_type=true
+							// console.log('跳过'+a)
+						}else if(str.indexOf(a)==-1){
+							// console.log(that.guige[i].sku)
+							// console.log('-1'+a)
+							push_type=false
+							break
+						}
+					
+					}
+					console.log(a,push_type)
+					if(push_type){
+						show_arr.push(that.guige[i])
+					}
 					
 				}
+				console.log(show_arr)
+				// console.log(value,show_arr)
+				if(show_arr.length>0){
+					return true
+				}
 				return false
+				// var str=that.guige_arr_show[idx].value
+				// var a=value
+				// if(str.indexOf(a)!=-1){
+				// 	return true
+					
+				// }
+				// return false
 			},
 			swiper_change(e){
 			  // console.log(e.detail )
@@ -454,6 +515,7 @@
 			  console.log(e.currentTarget.dataset.name)
 			  console.log(e.currentTarget.dataset.value)
 			  console.log(e.currentTarget.dataset.ggidx)
+				
 				var newselect={
 					name:e.currentTarget.dataset.name,
 					value:e.currentTarget.dataset.value,
@@ -463,9 +525,20 @@
 			  // this.type1= this.type1
 			  // var ggs = this.guige
 			  // var ggidxs = this.type1
+				 var str=JSON.stringify(that.guige_select)
+				 var a=JSON.stringify(newselect)
 				
-				
-			  that.$set(that.guige_select,e.currentTarget.dataset.ggidx,newselect)
+				 
+				 if(str.indexOf(a)==-1){
+				 	 that.$set(that.guige_select,e.currentTarget.dataset.ggidx,newselect)
+				 	
+				 }else{
+					 // console.log(str.indexOf(a)==-1)
+					  that.$set(that.guige_select,e.currentTarget.dataset.ggidx,false)
+						// console.log(that.guige_select)
+				 }
+				 console.log(str.indexOf(a)==-1)
+			  console.log(a,str)
 				var show_arr=[]
 				for(var i=0;i<that.guige.length;i++){
 					// console.log('---------------------------------------')
@@ -473,61 +546,77 @@
 					// console.log('---------------------------------------')
 					// console.log(that.guige[i].guige.indexOf(newselect.value))
 					var str=JSON.stringify(that.guige[i].sku)
-					var a=JSON.stringify(newselect)
-					if(str.indexOf(a)!=-1){
-						console.log(that.guige[i].sku)
-						show_arr.push(that.guige[i])
+					var push_type=true
+					for(var s=0;s<that.guige_select.length;s++){
 						
+						if(!that.guige_select[s]){
+							push_type=true
+						}else{
+							var a=JSON.stringify(that.guige_select[s])
+							if(a.length>0&&str.indexOf(a)==-1){
+								// console.log(that.guige[i].sku)
+								push_type=false
+								break
+								
+							}
+						}
+						
+					}
+					if(push_type){
+						show_arr.push(that.guige[i])
 					}
 					
 				}
-				console.log('show_arr---------------------->')
-				console.log(show_arr)
+				// console.log('show_arr---------------------->')
+				// console.log(show_arr)
 				var idx=e.currentTarget.dataset.ggidx
-				
+				var kucun_num=0
+				var pri=0
+				var sku_img=''
 				for(var i=0;i<	that.guige_arr.length;i++){
+					var newVal=[]
+					
 					if(i!=idx){
-						var newVal=[]
+						
 						for(var j=0;j<	show_arr.length;j++){
 							for(var s=0;s<	show_arr[j].sku.length;s++){
+								
+								
+								
 								if(show_arr[j].sku[s].name==that.guige_arr[i].name){
 									var a=show_arr[j].sku[s].value
+									// console.log(that.guige_arr[i].name,a)
 									if(newVal.indexOf(a)==-1){
 										newVal.push(a)
-										
+										if(pri==0){
+											pri=show_arr[j].current_price
+										}
+										if(sku_img==""){
+											sku_img=show_arr[j].v_img
+										}
+										kucun_num+=show_arr[j].number
 									}
 								}
 							}
 						}
-						console.log(newVal)
+						// console.log(newVal)
 						that.$set(that.guige_arr_show[i],'value',newVal)
+						newVal=[]
+						
 					}else{
 						// that.$set(that.guige_arr_show[i],'value',that.guige_arr[i].value)
 					}
 				}
+				that.show_pri=pri
+				that.show_num=kucun_num
+				that.show_img=sku_img
+				if(that.show_img.length==0){
+					that.show_img=that.goodsData.img
+				}
+				if(that.show_pri==0){
+					that.show_pri=that.goodsData.current_price
+				}
 				
-				// that.guige_arr_show=show_arr
-				// for(var i<0;i<guige_arr.length:i++){
-				// 	if(i!=e.currentTarget.dataset.ggidx){
-						
-				// 	}
-				// }
-				// console.log(that.guige_select)
-				
-				// var ggs = this.guige
-				// var ggidxs = this.type1
-				// var ggshow1 = []
-				// var ggshowid = []
-				// for (var i = 0; i < ggs.length; i++) {
-				//   console.log(ggidxs[i])
-				//   if (ggidxs[i] >=0) {
-				//     console.log(ggs[i].list[ggidxs[i]].value1)
-				//     ggshow1.push(ggs[i].list[ggidxs[i]].value1)
-				//     ggshowid.push(ggs[i])
-				    
-				//   }
-				// }
-			 //  that.ggshow1=ggshow1.join(',')
 			},
 			jump(e) {
 			  console.log(e.currentTarget.dataset.type)
@@ -1364,9 +1453,9 @@ padding: 0 10rpx;
 	color: #F75559;
 }
 .guigeOne.goods_null{
-	background:rgba(250,233,234,1);
-	border:1px solid rgba(247,85,89,1);
-	color: rgba(247,85,89,1);
+	background:#eee!important;
+	border:1px solid #ddd!important;
+	color: #ddd!important;
 	text-decoration:line-through ;
 }
 .countnum{
