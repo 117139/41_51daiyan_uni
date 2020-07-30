@@ -13,7 +13,8 @@
     "pages/Order/Order",
     "pages/my_index/my_index",
     "pages/search/search",
-    "pages/xiaoxi_list/xiaoxi_list"
+    "pages/xiaoxi_list/xiaoxi_list",
+    "pages/xvideo/xvideo"
   ],
   "subPackages": [
     {
@@ -149,5 +150,6 @@
   "usingComponents": {
     "van-stepper": "./wxcomponents/vant/stepper/index",
     "van-popup": "./wxcomponents/vant/popup/index"
-  }
+  },
+  "sitemapLocation": "sitemap29.json"
 }

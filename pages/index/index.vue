@@ -1,133 +1,154 @@
 <template>
 	<view class="container">
-	  <view class="header_box">
-	    <view class="index_box1">
-	      <image v-if="!hasLogin" class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-	      <image v-else class="user_tx" :src="loginMsg.avatarurl"></image>
-	      <view class="sousuo_box" @tap="jump" data-url="/pages/search/search">
-	        <text class="iconfont iconsousuo"></text>搜索人名代言号/商品/品牌
-	      </view>
-	      <view class="game_js" @tap="jump" data-url="/pages_goods/game_js/game_js">
-	        <text class="iconfont iconic_help_px"></text>
-	        玩法介绍
-	      </view>
-	    </view>
-	    <view class="index_box1 index_box2">
-	      <view class="cur">代言动态<text></text></view>
-	      <view @tap="jump" data-url="/pages_goods/daiyan_sc/daiyan_sc">代言商城</view>
-	      <view  @tap="jump" data-url="/pages_goods/star_list/star_list?type=0">明星</view>
-	      <view @tap="jump" data-url="/pages_goods/star_list/star_list?type=1">达人</view>
-	      <view @tap="jump" data-url="/pagesA/my_friends/my_friends">好友</view>
-	      <view @tap="jump" data-url="/pages_goods/daiyan_ph/daiyan_ph">排行</view>
-	    </view>
-	  </view>
-	  <view class="index_box1 index_box3">
-	    <text class="iconfont iconyiping"></text>
-	    <view>您还有12件商品未代言，快来代言吧～</view>
-	  </view>
-	  <view class="index_box1 index_box4" @tap="jump" data-url="/pages_goods/star_list/star_list?type=0">
-	    <view>明星达人代言人推荐：</view>
-	    <text>各种玩法尽在明星达人代言秀</text>
-	  </view>
-	  <scroll-view class="start_list" scroll-x>
-	    <view class="start_list1">
-	      <view class="start_li" v-for="(item,index) in start_li" @tap="jump" data-url="/pages/my_index/my_index">
-	        <view class="star_tx">
-	          <image :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
-	          <view>
-	            <image :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-	          </view>
-	        </view>
-	        <view class="star_name">范冰冰</view>
-	        <view class="star_btn">关注</view>
-	      </view>
-	    </view>
-	  </scroll-view>
-	  <view class="find_star" @tap="jump" data-url="/pages_goods/daiyan_find/daiyan_find">
-	    <view class="find_tit">
-	      <view>寻找代言人:</view>
-	      <text>（赏金任务）</text>
-	    </view>
-	    <view class="find_sj">
-	      <view class="sj_list">
+		<view class="header_box">
+			<view class="index_box1">
+				<image v-if="!hasLogin" class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+				<image v-else class="user_tx" :src="loginMsg.avatarurl"></image>
+				<view class="sousuo_box" @tap="jump" data-url="/pages/search/search">
+					<text class="iconfont iconsousuo"></text>搜索人名代言号/商品/品牌
+				</view>
+				<view class="game_js" @tap="jump" data-url="/pages_goods/game_js/game_js">
+					<text class="iconfont iconic_help_px"></text>
+					玩法介绍
+				</view>
+			</view>
+			<view class="index_box1 index_box2">
+				<view class="cur">代言动态<text></text></view>
+				<view @tap="jump" data-url="/pages_goods/daiyan_sc/daiyan_sc">代言商城</view>
+				<view @tap="jump" data-url="/pages_goods/star_list/star_list?type=1">明星</view>
+				<view @tap="jump" data-url="/pages_goods/star_list/star_list?type=2">达人</view>
+				<view @tap="jump" data-url="/pagesA/my_friends/my_friends">好友</view>
+				<view @tap="jump" data-url="/pages_goods/daiyan_ph/daiyan_ph">排行</view>
+			</view>
+		</view>
+		<view class="index_box1 index_box3" v-if="datas.countAdvocacy>0" @tap="jump" data-url="/pagesA/OrderList/OrderList?type=4"
+		 data-login="true" :data-haslogin="hasLogin">
+			<text class="iconfont iconyiping"></text>
+			<view>您还有{{datas.countAdvocacy}}件商品未代言，快来代言吧～</view>
+		</view>
+		<view class="index_box1 index_box4" @tap="jump" data-url="/pages_goods/star_list/star_list?type=0">
+			<view>明星达人代言人推荐：</view>
+			<text>各种玩法尽在明星达人代言秀</text>
+		</view>
+		<scroll-view class="start_list" scroll-x>
+			<view class="start_list1">
+				<view class="start_li" v-for="(item,index) in start_li" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.id">
+					<view class="star_tx">
+						<image :src="item.head_portrait" mode="aspectFill"></image>
+						<view>
+							<image v-if="item.identity_id==1" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<image v-if="item.identity_id==2" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+						</view>
+					</view>
+					<view class="star_name">{{item.nickname}}</view>
+					<view v-if="item.identity_id==1" class="star_btn">关注</view>
+					<view v-if="item.identity_id==2" class="star_btn star_btn1">已关注</view>
+				</view>
+			</view>
+		</scroll-view>
+		<view class="find_star" @tap="jump" data-url="/pages_goods/daiyan_find/daiyan_find">
+			<view class="find_tit">
+				<view>寻找代言人:</view>
+				<text>（赏金任务）</text>
+			</view>
+			<view class="find_sj">
+				<view class="sj_list">
+					<image v-for="(item,idx) in datas.activityArr" class="sj_li" :src="filter.imgIP(item.head_portrait)" mode="aspectFill"></image>
+					<!-- <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
 	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
 	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
-	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
-	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
-	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
-	      </view>
-	      <text class="iconfont iconnext3"></text>
-	    </view>
-	  </view>
-	  <view class="goods_index">
-	    <view  @tap="jump" data-url="/pages/xvideo/xvideo">
-	      <view class="goodstype_name">代言人短视频 <image  :src="filter.imgIP('/static_s/51daiyan/images/goods_type1.png')"></image></view>
-	      <view class="goods_tip">已为您更新10个视频</view>
-	      <view class="goods_list">
-	        <view class="goods_li">
+	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image> -->
+				</view>
+				<text class="iconfont iconnext3"></text>
+			</view>
+		</view>
+		<view class="goods_index">
+			<view @tap="jump" data-url="/pages/xvideo/xvideo">
+				<view class="goodstype_name">代言人短视频 <image :src="filter.imgIP('/static_s/51daiyan/images/goods_type1.png')"></image>
+				</view>
+				<view class="goods_tip">已为您更新{{datas.advocacyVideoArr.length}}个视频</view>
+				<view class="goods_list">
+					<view class="goods_li" v-for="(item,idx) in datas.advocacyVideoArr">
+						<image class="goods_img" :src="filter.imgIP_video(item.img[0])" mode="aspectFill"></image>
+						<image class="goods_play" :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
+					</view>
+					<!-- <view class="goods_li">
 	          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
 	          <image class="goods_play" :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
-	        </view>
-	        <view class="goods_li">
+	        </view> -->
+				</view>
+				<!-- <image src="/static/images/goods_type1.png"></image> -->
+			</view>
+			<view @tap="jump" data-url="/pages_goods/goods_tj/goods_tj">
+				<view class="goodstype_name goodstype_name1">好货推荐<image :src="filter.imgIP('/static_s/51daiyan/images/goods_type2.png')"></image>
+				</view>
+				<view class="goods_tip">发现更多人气代言好货</view>
+				<view class="goods_list">
+					<view class="goods_li" v-for="(item,idx) in datas.goodStuffArr">
+						<image class="goods_img" :src="filter.imgIP(item.img[0])" mode="aspectFill"></image>
+					</view>
+					<!-- <view class="goods_li">
 	          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
-	          <image class="goods_play" :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
-	        </view>
-	      </view>
-	      <!-- <image src="/static/images/goods_type1.png"></image> -->
-	    </view>
-	    <view @tap="jump" data-url="/pages_goods/goods_tj/goods_tj">
-	      <view class="goodstype_name goodstype_name1">好货推荐<image :src="filter.imgIP('/static_s/51daiyan/images/goods_type2.png')"></image></view>
-	      <view class="goods_tip">发现更多人气代言好货</view>
-	      <view class="goods_list">
-	        <view class="goods_li">
-	          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
-	        </view>
-	        <view class="goods_li">
-	          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
-	        </view>
-	      </view>
-	      <!-- <image src="/static/images/goods_type2.png"></image> -->
-	    </view>
-	  </view>
-	  <!-- 代言圈 -->
-	  <view class="quan_list">
-	    <view class="quan_li" v-for="(item,idx) in start_li">
-	      <view class="quan_user_box">
-	        <image @tap="jump" data-url="/pages/my_index/my_index" class="quan_user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
-	        <view class="quan_user_msg">
-	          <view class="quan_user_name">倪小丫 <image :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image></view>
-	          <view class="quan_user_time"><text>10-14 18:03</text><text>演员</text></view>
-	        </view>
-	        <view v-if="item.tp_type==1" class="quan_user_btn" @tap.stop="toupiao" :data-idx="idx">为我投票</view>
-	        <view v-else class="quan_user_btn quan_user_btn1" >已投票</view>
-	      </view>
-	      <view class="quan_msg">
-	        <view class="oh4  quan_msg_text">可能这辈子都戒不掉米饭了，吃好饭的用好锅，我为苏泊尔智能电饭锅代言。</view>
-	        <view v-if="idx==2" class="quan_msg_img">
-	          <image class="one" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')" @tap.stop="pveimg"></image>
-	        </view>
-	        <view v-else class="quan_msg_img">
-	          <image :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')" @tap.stop="pveimg"></image>
-	          <image :src="filter.imgIP('/static_s/51daiyan/images/goods1.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods1.png')" @tap.stop="pveimg"></image>
-	          <image :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')" @tap.stop="pveimg"></image>
-	        </view>
-	      </view>
-	      <view class="quan_goods"  @tap="jump" data-url="/pages/details/details">
-	        <image class="quan_goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
-	        <view class="quan_goods_msg">
-	          <view class="quan_goods_name oh1">苏泊尔IH家用大容量智能电饭锅</view>
-	          <view class="quan_goods_pri">
-	            <text class="pri1">¥668</text>
-	            <text class="pri2">¥1368</text>
-	          </view>
-	          <view class="quan_goods_btn">
-	            <view class="goods_btn1">库存:11000</view>
-	            <view  class="goods_btn2"><text>5200+</text>代言人</view>
-	          </view>
-	        </view>
-	      </view>
-	      <view class="quan_li_cz">
-	        <!-- <text class="iconfont iconcaozuo" @tap.stop=""></text>
+	        </view> -->
+				</view>
+				<!-- <image src="/static/images/goods_type2.png"></image> -->
+			</view>
+		</view>
+		<!-- 代言圈 -->
+		<view class="quan_list">
+			<view class="quan_li" v-for="(item,idx) in data_list">
+				<view class="quan_user_box">
+					<image @tap="jump" data-url="/pages/my_index/my_index" class="quan_user_tx" :src="item.user_head_portrait" mode="aspectFill"></image>
+					<view class="quan_user_msg">
+						<view class="quan_user_name">{{item.user_nickname}}
+							<image v-if="item.use_identity_id==1" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<image v-if="item.use_identity_id==2" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+						</view>
+						<view class="quan_user_time">
+							<text>{{filter.getDateTime(item.create_time)}}</text>
+							<text v-if="item.use_identity_id==1">明星</text>
+							<text v-if="item.use_identity_id==2">达人</text>
+						</view>
+					</view>
+					<view v-if="item.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-idx="idx">为我投票</view>
+					<view v-else class="quan_user_btn quan_user_btn1">已投票</view>
+				</view>
+				<view class="quan_msg">
+					<view class="oh4  quan_msg_text">{{item.content}}</view>
+					<view v-if="item.img.length==1" class="quan_msg_img">
+						<image v-if="item.type==1" class="one one_one" :src="filter.imgIP(item.img[0])" mode="aspectFill" :data-src="filter.imgIP(item.img[0])"
+						 @tap.stop="pveimg"></image>
+						<image v-if="item.type==2" class="one one_one" :src="filter.imgIP_video(item.img[0])" mode="aspectFill" :data-src="filter.imgIP_video(item.img[0])"
+						 @tap.stop="jump" data-url="/pages/xvideo/xvideo"></image>
+					</view>
+					<view v-else class="quan_msg_img">
+						<image v-if="item.type==1" v-for="(item1,idx1) in item.img"
+						 :src="filter.imgIP(item1)" mode="aspectFill" :data-src="filter.imgIP(item1)" :data-array="filter.getgimgarrIP(item.img)"
+						 @tap.stop="pveimg"></image>
+						<image v-if="item.type==2" v-for="(item1,idx1) in item.img" :src="filter.imgIP_video(item1)" mode="aspectFill" 
+						 @tap.stop="jump" data-url="/pages/xvideo/xvideo"></image>
+						<!-- <image :src="filter.imgIP('/static_s/51daiyan/images/goods1.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods1.png')"
+						 @tap.stop="pveimg"></image>
+						<image :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')"
+						 @tap.stop="pveimg"></image> -->
+					</view>
+				</view>
+				<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+item1.g_id">
+					<image class="quan_goods_img" :src="filter.imgIP(item1.g_img[0])" mode="aspectFill"></image>
+					<view class="quan_goods_msg">
+						<view class="quan_goods_name oh1">{{item1.g_title}}</view>
+						<view class="quan_goods_pri">
+							<text class="pri1">¥{{item1.g_current_price}}</text>
+							<text class="pri2">¥{{item1.g_original_price}}</text>
+						</view>
+						<view class="quan_goods_btn">
+							<view class="goods_btn1">库存:{{item1.g_total_number}}</view>
+							<view class="goods_btn2"><text>{{item1.g_advocacy_mannumber}}</text>代言人</view>
+						</view>
+					</view>
+				</view>
+				<view class="quan_li_cz">
+					<!-- <text class="iconfont iconcaozuo" @tap.stop=""></text>
 	        <view class="cz_li">
 	          <view>
 	            <text class="iconfont iconhongxinicon"></text>赞
@@ -137,13 +158,13 @@
 	           <text class="iconfont iconpinglun"></text>评论
 	          </view>
 	        </view> -->
-	        <view class="cz_li">跟随购买：6321</view>
-	        <view class="cz_li" @tap.stop="jump" data-url="/pages_goods/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>1566</view>
-	        <view class="cz_li" @tap.stop="zan" :data-id="idx"><text class="iconfont iconzan"></text>1566</view>
-	      </view>
-	    </view>
-	  </view>
-	  <!-- <view class="zxkf_btn">
+					<view class="cz_li">跟随购买：6321</view>
+					<view class="cz_li" @tap.stop="jump" data-url="/pages_goods/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>1566</view>
+					<view class="cz_li" @tap.stop="zan" :data-id="idx"><text class="iconfont iconzan"></text>1566</view>
+				</view>
+			</view>
+		</view>
+		<!-- <view class="zxkf_btn">
 			<button open-type="contact" bindcontact="kffuc"></button>
 			<image src="../../static/images/zxkf.png"></image>
 		</view> -->
@@ -159,26 +180,14 @@
 	export default {
 		data() {
 			return {
+				datas: '',
+				page: 2,
 				banner: '',
 				homeSeek: '',
 				homeTeacher: '',
 				homeVideo: '',
-				start_li:[
-				  {
-				    name: '未达标商户',
-				    img: '/static/images/1_03.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '达标商户',
-				    img: '/static/images/1_05.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  
-				  
-				],
+				start_li: [], //明星达人
+				data_list: [], //代言列表
 				indicatorDots: true,
 				autoplay: true,
 				interval: 3000,
@@ -186,23 +195,38 @@
 				circular: true
 			}
 		},
-		onPullDownRefresh: function () {
-		  wx.stopPullDownRefresh();
-		  // this.getdata()
+		onLoad() {
+			var that = this
+			that.getdata()
+			that.event.on('/pages/index/index', 'test', function(args) {
+				//args为trigger中所有的参数，可自定义数据，除了type和page及success
+				console.log('testindex:' + args);
+				console.log(args);
+				that.getdata()
+				//返回数据，在trigger中success方法可以收到
+				return {
+
+				};
+
+			});
 		},
-		
+		onPullDownRefresh: function() {
+			wx.stopPullDownRefresh();
+			this.getdata()
+		},
+
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
-		onReachBottom: function () {
-		
+		onReachBottom: function() {
+			this.getdatalist()
 		},
-		
+
 		/**
 		 * 用户点击右上角分享
 		 */
-		onShareAppMessage: function () {
-		
+		onShareAppMessage: function() {
+
 		},
 		computed: {
 			...mapState([
@@ -212,554 +236,645 @@
 			])
 		},
 		methods: {
-			
-			toupiao(e){
-			  var idx = e.currentTarget.dataset.idx
-			  var newdata=this.start_li
-			  newdata[idx].tp_type=2
-			  this.start_li= newdata
+			getdata() {
+				var that = this
+				var datas = {
+					token: that.loginMsg.userToken,
+				}
+				// 单个请求
+				service.P_get('', datas).then(res => {
+					console.log(res)
+					if (res.code == 1) {
+						that.datas = res.data
+						that.start_li = res.data.publicUserArr
+						//代言数据
+						that.data_list = res.data.advocacyArr
+						that.page = 2
+					}
+				}).catch(e => {
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+
+
 			},
-			getdata(){
-			  ///api/homeIndex
-			  var that = this
-			  const htmlStatus1 = htmlStatus.default(that)
-			  wx.request({
-			    url: app.IPurl + '/api/homeIndex',
-			    data: {},
-			    header: {
-			      'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    dataType: 'json',
-			    method: 'get',
-			    success(res) {
-			      // 停止下拉动作
-			      wx.stopPullDownRefresh();
-			      htmlStatus1.finish()
-			      console.log(res.data)
-			      if (res.data.code == 1) {  //数据为空
-			
-			        that.setData({
-			          banner: res.data.data.homeBanner,
-			          homeSeek: res.data.data.homeSeek,
-			          homeTeacher: res.data.data.homeTeacher,
-			          homeVideo: res.data.data.homeVideo,
-			        })
-			      } else {
-			        htmlStatus1.error()
-			        wx.showToast({
-			          icon: 'none',
-			          title: '加载失败'
-			        })
-			
-			      }
-			    },
-			    fail() {
-			      // 停止下拉动作
-			      wx.stopPullDownRefresh();
-			      htmlStatus1.error()
-			      wx.showToast({
-			        icon: 'none',
-			        title: '加载失败'
-			      })
-			
-			    },
-			    complete() {
-			      // // 停止下拉动作
-			      // wx.stopPullDownRefresh();
-			    }
-			  })
+			getdatalist() {
+
+				let that = this
+				var jkurl = '/getAdvocacyList'
+				var datas = {
+					token: that.loginMsg.userToken,
+					page: that.page
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+
+						if (datas.length==0) {
+							uni.showToast({
+								icon: 'none',
+								title: '到底了。。。'
+							})
+							return
+						}
+						that.datas = that.datas.concat(datas)
+
+						that.page++
+					}
+				}).catch(e => {
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+				
 			},
-			zan(e){
-			  console.log(e.currentTarget.dataset.id)
+			toupiao(e) {
+				var idx = e.currentTarget.dataset.idx
+				var newdata = this.start_li
+				newdata[idx].tp_type = 2
+				this.start_li = newdata
 			},
-			jump(e){
-			  service.jump(e)
+
+			zan(e) {
+				console.log(e.currentTarget.dataset.id)
+			},
+			jump(e) {
+				service.jump(e)
 			},
 			pveimg(e) {
-			  service.pveimg(e)
+				service.pveimg(e)
 			},
-			kffuc(e){
+			kffuc(e) {
 				console.log(e)
 			},
 			retry() {
-			  this.getdata()
+				this.getdata()
 			},
 		}
 	}
 </script>
 
 <style scoped>
-	.container{
-	  width: 100%;
-	  min-height: 100vh;
-	  background: #f5f5f5;
-	  /* padding: 30rpx 47rpx; */
+	.container {
+		width: 100%;
+		min-height: 100vh;
+		background: #f5f5f5;
+		/* padding: 30rpx 47rpx; */
 	}
-	.header_box{
-	  width: 100%;
-	  background:linear-gradient(180deg,rgba(245,195,61,1),rgba(254,133,53,1));
+
+	.header_box {
+		width: 100%;
+		padding-top: 10rpx;
+		background: linear-gradient(180deg, rgba(245, 195, 61, 1), rgba(254, 133, 53, 1));
 	}
-	.index_box1{
-	  width: 100%;
-	  display: flex;
-	  justify-content: space-between;
-	  align-items: center;
-	  padding: 5rpx 29rpx 5rpx;
-	  box-sizing: border-box;
+
+	.index_box1 {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 5rpx 29rpx 5rpx;
+		box-sizing: border-box;
 	}
-	
-	.user_tx{
-	  width:74rpx;
-	  height:74rpx;
-	  border-radius:37px;
-	  margin-right: 10rpx;
+
+	.user_tx {
+		width: 74rpx;
+		height: 74rpx;
+		border-radius: 37px;
+		margin-right: 10rpx;
 	}
-	.sousuo_box{
-	  flex: 1;
-	  height:55rpx;
-	  background:rgba(255,255,255,1);
-	  border-radius:28px;
-	  font-size: 24rpx!important;
-	  color: #BBBBBB!important;
-	  box-sizing: border-box;
-	  padding: 0 20rpx;
-	  display: flex;
-	  align-items: center;
+
+	.sousuo_box {
+		flex: 1;
+		height: 55rpx;
+		background: rgba(255, 255, 255, 1);
+		border-radius: 28px;
+		font-size: 24rpx !important;
+		color: #BBBBBB !important;
+		box-sizing: border-box;
+		padding: 0 20rpx;
+		display: flex;
+		align-items: center;
 	}
-	.sousuo_box text{
-	  margin-right: 20rpx;
+
+	.sousuo_box text {
+		margin-right: 20rpx;
 		font-size: 24rpx;
 		color: #BBBBBB;
 	}
-	.game_js{
-	  width:165rpx;
-	  height:45rpx;
-	  background:linear-gradient(180deg,rgba(252,139,17,1),rgba(255,85,25,1));
-	  opacity:0.8;
-	  border-radius:0px 23px 23px 0px;
-	  margin-left: 30rpx;
-	  font-size: 24rpx;
-	  color: #fff;
-	  display: flex;
-	  align-items: center;
-	  padding-left: 50rpx;
-	  box-sizing: border-box;
-	  position: relative;
+
+	.game_js {
+		width: 165rpx;
+		height: 45rpx;
+		background: linear-gradient(180deg, rgba(252, 139, 17, 1), rgba(255, 85, 25, 1));
+		opacity: 0.8;
+		border-radius: 0px 23px 23px 0px;
+		margin-left: 30rpx;
+		font-size: 24rpx;
+		color: #fff;
+		display: flex;
+		align-items: center;
+		padding-left: 50rpx;
+		box-sizing: border-box;
+		position: relative;
 	}
-	.game_js text{
-	  position: absolute;
-	  left: -20rpx;
-	  font-size: 60rpx;
+
+	.game_js text {
+		position: absolute;
+		left: -20rpx;
+		font-size: 60rpx;
 		color: #fff;
 	}
+
 	/* index_box2 */
 	.index_box2 {
-	  padding: 5rpx 29rpx 20rpx;
+		padding: 5rpx 29rpx 20rpx;
 	}
-	.index_box2 view{
-	  color: #fff;
-	  font-size: 30rpx;
-	  position: relative;
+
+	.index_box2 view {
+		color: #fff;
+		font-size: 30rpx;
+		position: relative;
 	}
-	.index_box2  .cur text{
-	  content: '';
-	  position: absolute;
-	  bottom: -8rpx;
-	  left: 50%;
-	  margin-left: -25rpx;
-	  width:50rpx;
-	  height:6rpx;
-	  background:rgba(255,251,240,1);
-	  border-radius:3px;
+
+	.index_box2 .cur text {
+		content: '';
+		position: absolute;
+		bottom: -8rpx;
+		left: 50%;
+		margin-left: -25rpx;
+		width: 50rpx;
+		height: 6rpx;
+		background: rgba(255, 251, 240, 1);
+		border-radius: 3px;
 	}
-	.index_box3{
-	  height:52rpx;
-	  background: #FFF4EF;
-	  font-size: 22rpx;
-	  color: #f9b234;
-	  justify-content: flex-start;
-	  padding: 10rpx 28rpx;
-	  align-items: center;
+
+	.index_box3 {
+		height: 52rpx;
+		background: #FFF4EF;
+		font-size: 22rpx;
+		color: #f9b234;
+		justify-content: flex-start;
+		padding: 10rpx 28rpx;
+		align-items: center;
 	}
-	.index_box3 text{
-	  margin-right: 20rpx;
-	  font-size: 24rpx;
+
+	.index_box3 text {
+		margin-right: 20rpx;
+		font-size: 24rpx;
 		color: #f9b234;
 	}
-	.index_box4{
-	  height:82rpx;
-	  background: #fff;
-	  justify-content: space-between;
-	  font-size: 24rpx;
-	  color: #999;
+
+	.index_box4 {
+		height: 82rpx;
+		background: #fff;
+		justify-content: space-between;
+		font-size: 24rpx;
+		color: #999;
 	}
-	.index_box4 text{
-	  color: #FE8735;
+
+	.index_box4 text {
+		color: #FE8735;
 	}
-	.start_list{
-	  width: 100%;
-	  
-	  
-	  background: #fff;
-	  height: 286rpx;
-	  display: flex;
-	  white-space: nowrap;
-	  margin-bottom: 20rpx;
-	
+
+	.start_list {
+		width: 100%;
+
+
+		background: #fff;
+		height: 286rpx;
+		display: flex;
+		white-space: nowrap;
+		margin-bottom: 20rpx;
+
 	}
-	.start_list1{
-	  padding: 10rpx 29rpx 40rpx;
-	  box-sizing: border-box;
-	  height: 286rpx;
+
+	.start_list1 {
+		padding: 10rpx 29rpx 40rpx;
+		box-sizing: border-box;
+		height: 286rpx;
 	}
-	.start_li{
-	  display: inline-flex;
-	  width:198rpx;
-	  height:246rpx;
-	  background:rgba(255,255,255,1);
-	  box-shadow:0px 3rpx 20rpx 0px rgba(119,119,119,0.3);
-	  border-radius:10rpx;
-	  margin-right: 20rpx;
-	  flex-direction: column;
-	  align-items: center;
-	  padding: 17rpx;
-	  box-sizing: border-box;
+
+	.start_li {
+		display: inline-flex;
+		width: 198rpx;
+		height: 246rpx;
+		background: rgba(255, 255, 255, 1);
+		box-shadow: 0px 3rpx 20rpx 0px rgba(119, 119, 119, 0.3);
+		border-radius: 10rpx;
+		margin-right: 20rpx;
+		flex-direction: column;
+		align-items: center;
+		padding: 17rpx;
+		box-sizing: border-box;
 	}
-	
-	.star_tx{
-	  width:82rpx;
-	  height:82rpx;
-	  border-radius:50%;
-	  position: relative;
-	  margin-bottom: 20rpx;
+
+	.star_tx {
+		width: 82rpx;
+		height: 82rpx;
+		border-radius: 50%;
+		position: relative;
+		margin-bottom: 20rpx;
 	}
-	.star_tx>image{
-	  width:82rpx;
-	  height:82rpx;
-	  border-radius:50%;
-	  position: relative;
-	  z-index: 1;
-	  
+
+	.star_tx>image {
+		width: 82rpx;
+		height: 82rpx;
+		border-radius: 50%;
+		position: relative;
+		z-index: 1;
+
 	}
-	.star_tx view image{
-	  width:27rpx;
-	  height:28rpx;
-	  position: absolute;
-	  bottom: 0;
-	  right: -5rpx;
-	  z-index: 2;
+
+	.star_tx view image {
+		width: 27rpx;
+		height: 28rpx;
+		position: absolute;
+		bottom: 0;
+		right: -5rpx;
+		z-index: 2;
 	}
-	.star_name{
-	  font-size: 30rpx;
-	  line-height: 30rpx;
-	  margin-bottom: 20rpx;
-	  color: #333;
+
+	.star_name {
+		font-size: 30rpx;
+		line-height: 30rpx;
+		margin-bottom: 20rpx;
+		color: #333;
 	}
-	.star_btn{
-	  width: 100%;
-	  height:56rpx;
-	  background:rgba(254,135,53,1);
-	  border-radius:10rpx;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  font-size: 30rpx;
-	  color: #fff;
+
+	.star_btn {
+		width: 100%;
+		height: 56rpx;
+		background: rgba(254, 135, 53, 1);
+		border-radius: 10rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 30rpx;
+		color: #fff;
 	}
-	.find_star{
-	  background: #fff;
-	  padding: 19rpx 29rpx;
-	  width: 100%;
-	  box-sizing: border-box;
-	  font-size: 30rpx;
-	  display: flex;
-	  align-items: center;
-	  justify-content: space-between;
-	  margin-bottom: 20rpx;
+
+	.find_star {
+		background: #fff;
+		padding: 19rpx 29rpx;
+		width: 100%;
+		box-sizing: border-box;
+		font-size: 30rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 20rpx;
 	}
-	.find_tit{
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: space-around
+
+	.find_tit {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around
 	}
-	.find_tit text{
-	  font-size: 24rpx;
-	  color: #FE8735;
+
+	.find_tit text {
+		font-size: 24rpx;
+		color: #FE8735;
 	}
-	.find_sj{
-	 
-	  display: flex;
-	  align-items: center;
+
+	.find_sj {
+
+		display: flex;
+		align-items: center;
 	}
-	.find_sj>text{
-	  color: #EEEEEE;
-	  font-size: 24rpx;
-	  margin-left: 20rpx;
+
+	.find_sj>text {
+		color: #EEEEEE;
+		font-size: 24rpx;
+		margin-left: 20rpx;
 	}
-	.sj_list{
-	  display: flex;
-	  flex-direction: row-reverse;
+
+	.sj_list {
+		display: flex;
+		flex-direction: row-reverse;
 	}
-	.sj_li{
-	  width:96rpx;
-	  height:96rpx;
-	  background:rgba(255,255,255,1);
-	  box-shadow:0px 3rpx 10rpx 0px rgba(119,119,119,0.2);
-	  border-radius:50%;
-	  position: relative;
-	  z-index: 10;
+
+	.sj_li {
+		width: 96rpx;
+		height: 96rpx;
+		background: rgba(255, 255, 255, 1);
+		box-shadow: 0px 3rpx 10rpx 0px rgba(119, 119, 119, 0.2);
+		border-radius: 50%;
+		position: relative;
+		z-index: 10;
 	}
-	.sj_li:nth-child(2){
-	  position: relative;
-	  left: 20rpx;
-	  z-index: 9;
+
+	.sj_li:nth-child(2) {
+		position: relative;
+		left: 20rpx;
+		z-index: 9;
 	}
-	.sj_li:nth-child(3){
-	  position: relative;
-	  left: 40rpx;
-	  z-index: 8;
+
+	.sj_li:nth-child(3) {
+		position: relative;
+		left: 40rpx;
+		z-index: 8;
 	}
-	.sj_li:nth-child(4){
-	  position: relative;
-	  left: 60rpx;
-	  z-index: 7;
+
+	.sj_li:nth-child(4) {
+		position: relative;
+		left: 60rpx;
+		z-index: 7;
 	}
-	.sj_li:nth-child(5){
-	  position: relative;
-	  left: 80rpx;
-	  z-index: 6;
+
+	.sj_li:nth-child(5) {
+		position: relative;
+		left: 80rpx;
+		z-index: 6;
 	}
+
 	/* goods_index */
-	
-	.goods_index{
-	  width: 100%;
-	  background: #fff;
-	  display: flex;
-	  margin-bottom: 20rpx;
+
+	.goods_index {
+		width: 100%;
+		background: #fff;
+		display: flex;
+		margin-bottom: 20rpx;
 	}
-	.goods_index>view{
-	  flex: 1;
-	  padding: 15rpx 18rpx;
-	  box-sizing: border-box;
+
+	.goods_index>view {
+		flex: 1;
+		padding: 15rpx 18rpx;
+		box-sizing: border-box;
 	}
-	.goods_index>view+view{
-	  border-left:1rpx solid #eee;
+
+	.goods_index>view+view {
+		border-left: 1rpx solid #eee;
 	}
-	.goodstype_name{
-	  font-size: 30rpx;
-	  color: #333;
-	  font-weight: bold;
-	  display: flex;
-	  align-items: center;
+
+	.goodstype_name {
+		font-size: 30rpx;
+		color: #333;
+		font-weight: bold;
+		display: flex;
+		align-items: center;
 	}
-	.goodstype_name image{
-	  width: 142rpx;
-	  height: 40rpx;
-	  margin-left: 5rpx;
+
+	.goodstype_name image {
+		width: 142rpx;
+		height: 40rpx;
+		margin-left: 5rpx;
 	}
-	.goodstype_name1 image{
-	  width: 40rpx;
+
+	.goodstype_name1 image {
+		width: 40rpx;
 	}
-	.goods_tip{
-	  margin-top: 8rpx;
-	  font-size: 24rpx;
-	  color: #999;
+
+	.goods_tip {
+		margin-top: 8rpx;
+		font-size: 24rpx;
+		color: #999;
 	}
-	.goods_list{
-	  margin-top: 30rpx;
-	  display: flex;
-	  align-items: center;
-	  justify-content: space-around;
-	  padding-bottom: 10rpx;
+
+	.goods_list {
+		margin-top: 30rpx;
+		display: flex;
+		align-items: center;
+		/* justify-content: space-around; */
+		justify-content: space-between;
+		padding-bottom: 10rpx;
 	}
-	.goods_li{
-	  position: relative;
-	  width:156rpx;
-	  height:156rpx;
+
+	.goods_li {
+		position: relative;
+		width: 156rpx;
+		height: 156rpx;
 	}
-	.goods_img{
-	 width:156rpx;
-	  height:156rpx;
-	  border-radius:12rpx;
-	  position: relative;
-	  z-index: 1
+
+	.goods_img {
+		width: 156rpx;
+		height: 156rpx;
+		border-radius: 12rpx;
+		position: relative;
+		z-index: 1
 	}
-	.goods_play{
-	  position: absolute;
-	  bottom: 10rpx;
-	  right: 10rpx;
-	  z-index: 2;
-	  width:38rpx;
-	  height:38rpx;
+
+	.goods_play {
+		position: absolute;
+		bottom: 10rpx;
+		right: 10rpx;
+		z-index: 2;
+		width: 38rpx;
+		height: 38rpx;
 	}
+
 	/* quan */
-	.quan_list{
-	  width: 100%;
+	.quan_list {
+		width: 100%;
 	}
-	.quan_li{
-	  width: 100%;
-	  background: #fff;
-	  padding: 23rpx 28rpx 0;
-	  box-sizing: border-box;
+
+	.quan_li {
+		width: 100%;
+		background: #fff;
+		padding: 23rpx 28rpx 0;
+		box-sizing: border-box;
 	}
-	.quan_li+.quan_li{
-	  margin-top: 20rpx;
+
+	.quan_li+.quan_li {
+		margin-top: 20rpx;
 	}
-	.quan_user_box{
-	  display: flex;
-	  align-items: center;
+
+	.quan_user_box {
+		display: flex;
+		align-items: center;
 	}
-	.quan_user_tx{
-	  width:74rpx;
-	  height:74rpx;
-	  /* background:rgba(252,68,56,1); */
-	  border-radius:37rpx;
-	  margin-right: 22rpx;
+
+	.quan_user_tx {
+		width: 74rpx;
+		height: 74rpx;
+		/* background:rgba(252,68,56,1); */
+		border-radius: 37rpx;
+		margin-right: 22rpx;
 	}
-	.quan_user_btn{
-	  font-size: 28rpx;
-	  color: #fff;
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	  width:168rpx;
-	  height:56rpx;
-	  background:rgba(254,58,53,1);
-	  border-radius:10rpx;
-	  margin-left: 20rpx;
+
+	.quan_user_btn {
+		font-size: 28rpx;
+		color: #fff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 168rpx;
+		height: 56rpx;
+		background: rgba(254, 58, 53, 1);
+		border-radius: 10rpx;
+		margin-left: 20rpx;
 	}
-	.quan_user_btn1{
-	  background: #ddd;
+
+	.quan_user_btn1 {
+		background: #ddd;
 	}
-	.quan_user_msg{
-	  flex: 1;
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: space-around;
+
+	.quan_user_msg {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
 	}
-	.quan_user_name{
-	  font-size: 28rpx;
-	  color: #6876BD;
-	  display: flex;
-	  align-items: center;
+
+	.quan_user_name {
+		font-size: 28rpx;
+		color: #6876BD;
+		display: flex;
+		align-items: center;
 	}
-	.quan_user_name image{
-	  width: 28rpx;
-	  height: 28rpx;
-	  margin-left: 10rpx;
+
+	.quan_user_name image {
+		width: 28rpx;
+		height: 28rpx;
+		margin-left: 10rpx;
 	}
-	.quan_user_time{
-	  font-size: 22rpx;
-	  color: #999;
+
+	.quan_user_time {
+		font-size: 22rpx;
+		color: #999;
 	}
-	.quan_user_time text{
-	  margin-right: 20rpx;
+
+	.quan_user_time text {
+		margin-right: 20rpx;
 	}
-	.quan_msg{
-	  width: 100%;
-	  padding-left:96rpx;
-	  box-sizing: border-box; 
-	  margin-top: 16rpx;
-	  font-size: 30rpx;
-	  color: #333;
-	
+
+	.quan_msg {
+		width: 100%;
+		padding-left: 96rpx;
+		box-sizing: border-box;
+		margin-top: 16rpx;
+		font-size: 30rpx;
+		color: #333;
+
 	}
-	.quan_msg_text{
-	  line-height: 40rpx;
-	  margin-bottom: 20rpx;
+
+	.quan_msg_text {
+		line-height: 40rpx;
+		margin-bottom: 20rpx;
 	}
-	.quan_msg_img image{
-	  width:196rpx;
-	  height:196rpx;
-	  border-radius:10rpx;
-	  margin-right: 4rpx;
-	  margin-bottom: 4rpx;
+
+	.quan_msg_img image {
+		width: 196rpx;
+		height: 196rpx;
+		border-radius: 10rpx;
+		margin-right: 4rpx;
+		margin-bottom: 4rpx;
 	}
-	.quan_msg_img image:nth-child(3n){
-	  margin-right: 0;
+
+	.quan_msg_img image:nth-child(3n) {
+		margin-right: 0;
 	}
-	.quan_msg_img image.one{
-	  max-width: 100%;
-	  
-	  border-radius:10px;
+
+	.quan_msg_img image.one {
+		max-width: 100%;
+
+		border-radius: 10px;
 	}
-	.quan_goods{
-	  margin-top: 16rpx;
-	  width: 100%;
-	  height:238rpx;
-	  background:rgba(255,255,255,1);
-	  box-shadow:0px 3px 20rpx 0px rgba(119,119,119,0.3);
-	  border-radius:10rpx;
-	  padding: 20rpx;
-	  box-sizing: border-box;
-	  display: flex;
+	.quan_msg_img .one_one{
+		width: 300rpx;
+		height: 400rpx;
 	}
-	.quan_goods_img{
-	  width:196rpx;
-	  height:196rpx;
-	  border-radius:10rpx;
-	  margin-right: 20rpx;
+	.quan_goods {
+		margin-top: 16rpx;
+		width: 100%;
+		height: 238rpx;
+		background: rgba(255, 255, 255, 1);
+		box-shadow: 0px 3px 20rpx 0px rgba(119, 119, 119, 0.3);
+		border-radius: 10rpx;
+		padding: 20rpx;
+		box-sizing: border-box;
+		display: flex;
 	}
-	.quan_goods_msg{
-	  flex: 1;
+
+	.quan_goods_img {
+		width: 196rpx;
+		height: 196rpx;
+		border-radius: 10rpx;
+		margin-right: 20rpx;
 	}
-	.quan_goods_name{
-	  font-size: 30rpx;
-	  color: #333;
-	  margin-bottom: 22rpx;
+
+	.quan_goods_msg {
+		flex: 1;
 	}
-	.quan_goods_pri{
-	  color: #EB4443;
-	  font-size: 30rpx;
-	  margin-bottom: 50rpx;
+
+	.quan_goods_name {
+		font-size: 30rpx;
+		color: #333;
+		margin-bottom: 22rpx;
 	}
-	.quan_goods_pri .pri2{
-	  margin-left: 20rpx;
-	  text-decoration:line-through;
-	  color:#999;
+
+	.quan_goods_pri {
+		color: #EB4443;
+		font-size: 30rpx;
+		margin-bottom: 50rpx;
 	}
-	.quan_goods_btn{
-	  display: flex;
-	  justify-content: space-between;
-	  align-items: center;
-	  font-size: 24rpx;
-	  color:#333;
+
+	.quan_goods_pri .pri2 {
+		margin-left: 20rpx;
+		text-decoration: line-through;
+		color: #999;
 	}
-	.goods_btn1{
-	  padding: 0 9rpx;
-	  height:40rpx;
-	  line-height: 40rpx;
-	  background:rgba(254,135,53,1);
-	  border-radius:10rpx;
-	  color: #fff;
+
+	.quan_goods_btn {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 24rpx;
+		color: #333;
 	}
-	.goods_btn2 text{
-	  color: #FE8735;
+
+	.goods_btn1 {
+		padding: 0 9rpx;
+		height: 40rpx;
+		line-height: 40rpx;
+		background: rgba(254, 135, 53, 1);
+		border-radius: 10rpx;
+		color: #fff;
 	}
-	.quan_li_cz{
-	  width: 100%;
-	  margin-top: 15rpx;
-	  height: 70rpx;
-	  display: flex;
-	  /* flex-direction: row-reverse; */
-	  justify-content: space-between;
-	  align-items: center;
+
+	.goods_btn2 text {
+		color: #FE8735;
 	}
-	.quan_li_cz .iconcaozuo{
-	  font-size: 48rpx;
-	  color: #BBBBBB;
+
+	.quan_li_cz {
+		width: 100%;
+		margin-top: 15rpx;
+		height: 70rpx;
+		display: flex;
+		/* flex-direction: row-reverse; */
+		justify-content: space-between;
+		align-items: center;
 	}
-	.cz_li{
-	 
-	  display: flex;
-	  align-items: center;
-	  justify-content: space-around;
-	  color: #999;
-	  font-size: 24rpx;
+
+	.quan_li_cz .iconcaozuo {
+		font-size: 48rpx;
+		color: #BBBBBB;
 	}
-	.cz_li text{
-	  font-size: 26rpx;
-	  color: #999;
-	  margin-right: 10rpx;
+
+	.cz_li {
+
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		color: #999;
+		font-size: 24rpx;
+	}
+
+	.cz_li text {
+		font-size: 26rpx;
+		color: #999;
+		margin-right: 10rpx;
 	}
 </style>

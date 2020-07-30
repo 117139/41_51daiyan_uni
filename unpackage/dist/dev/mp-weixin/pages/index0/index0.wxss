@@ -24,11 +24,11 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.box.data-v-5fb333d6 {
+.box.data-v-404a3ff4 {
   width: 80%;
   margin: 0 auto;
 }
-.text-box input.data-v-5fb333d6 {
+.text-box input.data-v-404a3ff4 {
   height: 80rpx;
   border-bottom: 1px solid #EEEEEE;
   margin: 20rpx 0;
@@ -36,10 +36,10 @@
   color: #f66;
   line-height: 80rpx;
 }
-.text-box input.data-v-5fb333d6:focus {
+.text-box input.data-v-404a3ff4:focus {
   border-bottom: 1px solid #f06c7a;
 }
-.msg-box.data-v-5fb333d6 {
+.msg-box.data-v-404a3ff4 {
   margin: 50rpx 0;
   color: #f06c7a;
   font-size: 24rpx;

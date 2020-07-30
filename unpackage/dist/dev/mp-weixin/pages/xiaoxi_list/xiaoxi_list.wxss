@@ -1,10 +1,10 @@
 
-.container.data-v-5936c7b2{ 
+.container.data-v-b0ce103c{ 
 	width: 100%;
   min-height: 100vh;
 	background: #f5f5f5;
 }
-.xx_li.data-v-5936c7b2{
+.xx_li.data-v-b0ce103c{
 	width: 100%;
 	background: #FFF;
 	padding: 20rpx 22rpx;
@@ -17,14 +17,14 @@
 	-webkit-align-items: center;
 	        align-items: center;
 }
-.user_tx.data-v-5936c7b2{
+.user_tx.data-v-b0ce103c{
 	width:82rpx;
 	height:82rpx;
 	border-radius:50%;
 	position: relative;
 	margin-right: 20rpx;
 }
-.user_tx text.data-v-5936c7b2{
+.user_tx text.data-v-b0ce103c{
 	width:14rpx;
 	height:14rpx;
 	background:rgba(254,58,53,1);
@@ -33,12 +33,12 @@
 	top: 0;
 	right: 0;
 }
-.xx_msg.data-v-5936c7b2{
+.xx_msg.data-v-b0ce103c{
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
 	        flex: 1;
 }
-.to_name.data-v-5936c7b2{
+.to_name.data-v-b0ce103c{
 	width: 100%;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -53,11 +53,11 @@
 	-webkit-justify-content: space-between;
 	        justify-content: space-between;
 }
-.to_name .time.data-v-5936c7b2{
+.to_name .time.data-v-b0ce103c{
 	font-size: 24rpx;
 	color: #999;
 }
-.to_msg.data-v-5936c7b2{
+.to_msg.data-v-b0ce103c{
 	color: #333;
 	font-size: 30rpx;
   margin-bottom: 15rpx;

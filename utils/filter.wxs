@@ -9,6 +9,21 @@ var imgIP=function(img){
 	// console.log(newimg)
 	return newimg
 }
+var imgIP_video=function(img){
+	if(!img){
+		return
+	}
+	var newimg =imgip+img
+	var arr = []
+	arr = newimg.split(".");
+	console.log(arr[arr.length-1])
+	if(arr[arr.length-1]=='mp4'){
+		arr[arr.length-1]='jpg'
+	}
+	arr=arr.join('.')
+	// console.log(newimg)
+	return arr
+}
 var moneyFormat = function(money) {
 		money=money-1+1
     // return money.toFixed(2);
@@ -37,7 +52,8 @@ var getgimgarr = function (img) {
 }
 
 var getgimgarrIP = function (img) {
-  var img1 = img.split(",")
+  // var img1 = img.split(",")
+  var img1 = img
   // console.log(img1[0])
   for (var i = 0; i < img1.length; i++) {
     img1[i] = imgip + img1[i]
@@ -86,7 +102,7 @@ var arrtostr=function(arr){
       hour = hour < 10 ? "0" + hour : hour;
       minute = minute < 10 ? "0" + minute : minute;
       second = second < 10 ? "0" + second : second;
-      return hour + ":" + minute + ":";
+      // return hour + ":" + minute + ":";
 			if (nowYear == year) {
 						
 			  // console.log(nowDate, nowDay)
@@ -118,6 +134,7 @@ module.exports = {
 	getgimgarr:getgimgarr,
   getgimgarrIP: getgimgarrIP,
 	getDateTime: getDateTime,
-	arrtostr:arrtostr
+	arrtostr:arrtostr,
+	imgIP_video:imgIP_video
 
 }

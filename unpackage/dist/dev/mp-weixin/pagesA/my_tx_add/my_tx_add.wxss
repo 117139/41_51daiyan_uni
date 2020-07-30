@@ -1,9 +1,9 @@
 
-page.data-v-2682bfcf{
+page.data-v-40d9fd9f{
 	overflow-y: auto!important;
 	background: #fff;
 }
-.container.data-v-2682bfcf{
+.container.data-v-40d9fd9f{
 	width: 750rpx;
 	min-height: 100vh;
 	
@@ -11,7 +11,7 @@ page.data-v-2682bfcf{
   padding: 20rpx 28rpx;
 	box-sizing: border-box;
 }
-.set_name.data-v-2682bfcf{
+.set_name.data-v-40d9fd9f{
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -30,27 +30,27 @@ page.data-v-2682bfcf{
 	padding: 0 28rpx;
 	box-sizing: border-box;
 }
-.set_l.data-v-2682bfcf{
+.set_l.data-v-40d9fd9f{
   font-size: 30rpx;
   color: #BBBBBB;
 	width: 5em;
 }
-.set_btn.data-v-2682bfcf{
+.set_btn.data-v-40d9fd9f{
   font-size: 30rpx;
   color: #FE8735;
 }
-.set_int.data-v-2682bfcf{
+.set_int.data-v-40d9fd9f{
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
   font-size: 30rpx;
   text-align: center;
 }
-.set_btn text.data-v-2682bfcf{
+.set_btn text.data-v-40d9fd9f{
   color: #BBBBBB;
   font-size: 45rpx;
 }
-.msg_val.data-v-2682bfcf{
+.msg_val.data-v-40d9fd9f{
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
@@ -59,7 +59,7 @@ page.data-v-2682bfcf{
   -webkit-flex-direction: row-reverse;
           flex-direction: row-reverse
 }
-.sq_tx.data-v-2682bfcf{
+.sq_tx.data-v-40d9fd9f{
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;

@@ -6,15 +6,6 @@
 			</view>
 		  <view class=' w100 pb40 pt20 bgfff tab_box'>
 				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
-				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
-				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
-				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
-				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
-				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
-				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
-				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
-				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
-				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
 		    <block v-for="(item,idx) in catelist">
 		      <view :class="type==idx?'typecur':''" :data-type="idx" @tap='bindcur'>{{item.title}}</view>
 		    </block>
@@ -193,7 +184,7 @@
 			bindcur(e){
 				var that =this
 			  console.log(e.currentTarget.dataset.type)
-			  that.ype= e.currentTarget.dataset.type
+			  that.type= e.currentTarget.dataset.type
 				that.getdata()
 				
 			},
@@ -242,7 +233,8 @@
 	overflow-x: scroll;
 }
 .tab_box>view{
-	display: inline-block;
+	display: inline-flex;
+	margin: 0 20rpx;
 }
 .typecur{
   padding-bottom: 12rpx;

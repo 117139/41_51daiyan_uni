@@ -1,4 +1,5 @@
 <script>
+	import Vue from 'vue'
 	import service from './service.js';
 	import userlist from './commen/tim/user'
 	import {
@@ -10,6 +11,39 @@
 		onLaunch: function() {
 			var that =this
 			console.log('App Launch')
+			uni.getSystemInfo({
+				success: function(e) {
+					console.log(e.platform);
+					// that.setplatform(e.platform)
+					// #ifndef MP
+					console.log(e.statusBarHeight)
+					Vue.prototype.StatusBar = e.statusBarHeight;
+					if (e.platform == 'android') {
+						Vue.prototype.CustomBar = e.statusBarHeight + 50;
+					} else {
+						Vue.prototype.CustomBar = e.statusBarHeight + 45;
+					};
+					// #endif
+			
+					// #ifdef MP-WEIXIN || MP-QQ
+					Vue.prototype.StatusBar = e.statusBarHeight;
+					let capsule = wx.getMenuButtonBoundingClientRect();
+					if (capsule) {
+						Vue.prototype.Custom = capsule;
+						// Vue.prototype.capsuleSafe = uni.upx2px(750) - capsule.left + uni.upx2px(750) - capsule.right;
+						Vue.prototype.CustomBar = capsule.bottom + capsule.top - e.statusBarHeight;
+					} else {
+						Vue.prototype.CustomBar = e.statusBarHeight + 50;
+					}
+					// #endif		
+				
+			
+					// #ifdef MP-ALIPAY
+					Vue.prototype.StatusBar = e.statusBarHeight;
+					Vue.prototype.CustomBar = e.statusBarHeight + e.titleBarHeight;
+					// #endif
+				}
+			})
 			// #ifdef MP-WEIXIN 
 			// 获取用户信息
 			uni.getSetting({
@@ -56,7 +90,20 @@
 														// console.lo(that.loginMsg)
 			                      uni.setStorageSync('token', res.data.data.userToken)
 			                      uni.setStorageSync('loginmsg', res.data.data)
+														that.event.trigger({
+														    type:'test',
+														    page:'/pages/index/index',
+														    //obj和test是举的例子，随意啥都行，这个传过去在on中的args中都可以获取到
+														    obj:{
 														
+														    },
+														    test:{
+																	'loginmsg': res.data.data
+														    },
+														    success:function(data){
+														        //data为on中返回的数据
+														    }
+														});
 			                    } else {
 			                      uni.removeStorageSync('userInfo')
 			                      uni.removeStorageSync('token')

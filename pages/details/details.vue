@@ -226,7 +226,7 @@
 		              <image v-if="idx==2" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
 		            </view>
 		            <view class="tk_user_name">kimi</view>
-		            <view v-if="idx==0" class="hy_bq">好友</view>
+		            <view v-if="item.is_friend==2" class="hy_bq">好友</view>
 		            <view v-if="idx==1" class="hy_bq hy_bq1 ">明星</view>
 		            <view v-if="idx==2" class="hy_bq hy_bq2">达人</view>
 		          </view>

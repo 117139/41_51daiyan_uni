@@ -82,7 +82,8 @@
 
 
 			<view class="list-box" v-else>
-				<span class="msg-box">暂无聊天记录，请选择好友进行聊天</span>
+				<!-- <span class="msg-box">暂无聊天记录，请选择好友进行聊天</span> -->
+				<span class="msg-box">暂无聊天记录</span>
 			</view>
 		</view>
 

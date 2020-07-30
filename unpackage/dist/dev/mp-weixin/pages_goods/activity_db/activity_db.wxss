@@ -1,17 +1,17 @@
 
-.container.data-v-7136e50b{
+.container.data-v-0460313b{
 	width: 100%;
 	min-height: 100vh;
 	background: #fff;
   padding-bottom: 50rpx;
   position: relative;
 }
-.avtivity_box.data-v-7136e50b{
+.avtivity_box.data-v-0460313b{
   position: relative;
   width: 100%;
   height: 336rpx;
 }
-.hd_time.data-v-7136e50b{
+.hd_time.data-v-0460313b{
   width: 100%;
   position: absolute;
   bottom: 36rpx;
@@ -19,12 +19,12 @@
   font-size: 24rpx;
   color: #fff;
 }
-.avtivity_time.data-v-7136e50b{
+.avtivity_time.data-v-0460313b{
   width:750rpx;
   height:110rpx;
   position: relative;
 }
-.avtivity_time_djs.data-v-7136e50b{
+.avtivity_time_djs.data-v-0460313b{
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -42,7 +42,7 @@
   color: #fff;
   font-size: 30rpx;
 }
-.avtivity_time_djs text.data-v-7136e50b{
+.avtivity_time_djs text.data-v-0460313b{
   width:46rpx;
   height:60rpx;
   background:rgba(255,255,255,1);
@@ -60,7 +60,7 @@
   -webkit-justify-content: center;
           justify-content: center;
 }
-.hd_jd.data-v-7136e50b{
+.hd_jd.data-v-0460313b{
   width:750rpx;
   height:80rpx;
   
@@ -78,18 +78,18 @@
   color: #999999;
 }
 /* 代言人list */
-.dy_list.data-v-7136e50b{
+.dy_list.data-v-0460313b{
 	width: 100%;
 	background: #fff;
   box-shadow:0px 4px 30rpx 0px rgba(119,119,119,0.3);
   border-radius:0 0 10rpx 10rpx;
 }
-.dy_box.data-v-7136e50b{
+.dy_box.data-v-0460313b{
 	width: 100%;
 	padding-bottom: 20rpx;
 	border-bottom: 1px solid #eee;
 }
-.dy_li.data-v-7136e50b{
+.dy_li.data-v-0460313b{
 	width: 100%;
 	background: #fff;
 	display: -webkit-box;
@@ -101,7 +101,7 @@
 	padding: 20rpx 28rpx;
 	box-sizing: border-box;
 }
-.pl_num.data-v-7136e50b{
+.pl_num.data-v-0460313b{
 	width: 38rpx;
 	height: 54rpx;
 	display: -webkit-box;
@@ -117,25 +117,25 @@
 	color: #999;
 	font-weight:600;
 }
-view.pl_num.data-v-7136e50b{
+view.pl_num.data-v-0460313b{
 	margin-right: 26rpx;
 }
-.pl_tx.data-v-7136e50b{
+.pl_tx.data-v-0460313b{
 	width:72rpx;
 	height:72rpx;
 	border-radius:50%;
 }
-view.pl_tx.data-v-7136e50b{
+view.pl_tx.data-v-0460313b{
 	margin-right: 26rpx;
 }
-.ph_name.data-v-7136e50b{
+.ph_name.data-v-0460313b{
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
 	        flex: 1;
 	font-size: 26rpx;
 	color: #333;
 }
-.ph_num.data-v-7136e50b{
+.ph_num.data-v-0460313b{
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -146,12 +146,12 @@ view.pl_tx.data-v-7136e50b{
 	font-size: 24rpx;
 	color: #BBBBBB;
 }
-.ph_num text.data-v-7136e50b{
+.ph_num text.data-v-0460313b{
 	font-size: 36rpx;
   line-height: 36rpx;
 	color: #FE9B00;
 }
-.ph_btn.data-v-7136e50b{
+.ph_btn.data-v-0460313b{
 	margin-left: 20rpx;
 	width:132rpx;
 	height:63rpx;
@@ -169,10 +169,10 @@ view.pl_tx.data-v-7136e50b{
 	color: #fff;
 	font-size: 30rpx;
 }
-.ph_btn1.data-v-7136e50b{
+.ph_btn1.data-v-0460313b{
   background:#D2D2D2;
 }
-.li_dy.data-v-7136e50b{
+.li_dy.data-v-0460313b{
 	padding-left: 84rpx;
 	padding-right: 28rpx;
 	box-sizing: border-box;
@@ -180,13 +180,13 @@ view.pl_tx.data-v-7136e50b{
 	font-size: 24rpx;
 	color: #999;
 }
-.list.data-v-7136e50b{
+.list.data-v-0460313b{
 	width: 100%;
 	background:rgba(255,255,255,1);
 	border-radius:10rpx;
 	overflow: hidden;
 }
-.list_tit.data-v-7136e50b{
+.list_tit.data-v-0460313b{
 	width: 100%;
 	background:rgba(255,76,0,.5);
 	height: 85rpx;
@@ -196,15 +196,15 @@ view.pl_tx.data-v-7136e50b{
   box-shadow:0px 4px 30rpx 0px rgba(119,119,119,0.3);
   border-radius:10rpx 10rpx 0 0;
 }
-.list_tit.cur.data-v-7136e50b{
+.list_tit.cur.data-v-0460313b{
 	background:rgba(255,76,0,1);
 }
-.ph_fri.data-v-7136e50b{
+.ph_fri.data-v-0460313b{
 	width:367rpx;
 	height:85rpx;
 	position: relative;
 }
-.pl_li.data-v-7136e50b{
+.pl_li.data-v-0460313b{
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -222,7 +222,7 @@ view.pl_tx.data-v-7136e50b{
 	font-size: 30rpx;
 	color: #fff;
 }
-.pl_li1.data-v-7136e50b{
+.pl_li1.data-v-0460313b{
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
 	        flex: 1;
@@ -238,33 +238,33 @@ view.pl_tx.data-v-7136e50b{
 	font-size: 30rpx;
 	color: #fff;
 }
-.db_main.data-v-7136e50b{
+.db_main.data-v-0460313b{
   width: 100%;
   padding: 0 28rpx;
   box-sizing: border-box;
 }
 /* daiyantit */
-.hd_db_img.data-v-7136e50b{
+.hd_db_img.data-v-0460313b{
   width: 100%;
   height: 171rpx;
 }
-.hd_db_bg.data-v-7136e50b{
+.hd_db_bg.data-v-0460313b{
   width: 694rpx;
   height: 404rpx;
   margin: 20rpx auto;
   box-shadow:0px 4rpx 30rpx 0px rgba(119,119,119,0.3);
   position: relative;
 }
-image.hd_db_bg.data-v-7136e50b{
+image.hd_db_bg.data-v-0460313b{
   margin: 0;
 }
-.hd_db_dp.data-v-7136e50b{
+.hd_db_dp.data-v-0460313b{
   position: absolute;
   top: 20rpx;
   left: 20rpx;
   right: 20rpx;
 }
-.hd_db_dp .d1.data-v-7136e50b{
+.hd_db_dp .d1.data-v-0460313b{
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -277,10 +277,10 @@ image.hd_db_bg.data-v-7136e50b{
   color: #fff;
   font-size: 24rpx;
 }
-.hd_db_dp .d1 view.data-v-7136e50b:first-child{
+.hd_db_dp .d1 view.data-v-0460313b:first-child{
   font-size: 28rpx;
 }
-.dp_msg.data-v-7136e50b{
+.dp_msg.data-v-0460313b{
   margin-top: 20rpx;
   display: -webkit-box;
   display: -webkit-flex;
@@ -293,13 +293,13 @@ image.hd_db_bg.data-v-7136e50b{
   -webkit-align-items: center;
           align-items: center;
 }
-.dp_msg image.data-v-7136e50b{
+.dp_msg image.data-v-0460313b{
   width:147rpx;
   height:147rpx;
   border-radius:18rpx;
   margin-bottom: 20rpx;
 }
-.dp_msg view.data-v-7136e50b{
+.dp_msg view.data-v-0460313b{
   width:255rpx;
   height:77rpx;
   background:rgba(255,76,0,1);
@@ -317,25 +317,25 @@ image.hd_db_bg.data-v-7136e50b{
   color: #fff;
   margin-bottom: 20rpx;
 }
-.dp_msg text.data-v-7136e50b{
+.dp_msg text.data-v-0460313b{
  font-size: 24rpx;
  color: #fff;
 }
-.hd_js.data-v-7136e50b{
+.hd_js.data-v-0460313b{
   width: 100%;
   padding: 35rpx;
   box-sizing: border-box;
 }
-.dyr_tit.data-v-7136e50b{
+.dyr_tit.data-v-0460313b{
   font-size: 28rpx;
   color: #333;
 }
-.dyr_msg.data-v-7136e50b{
+.dyr_msg.data-v-0460313b{
   font-size: 28rpx;
   color: #999;
   margin: 20rpx auto;
 }
-.hd_js video.data-v-7136e50b{
+.hd_js video.data-v-0460313b{
   width:621rpx;
   height:350rpx;
   border-radius:10rpx;

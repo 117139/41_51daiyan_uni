@@ -112,7 +112,15 @@
 				"navigationBarTextStyle": "white"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/xvideo/xvideo",
+            "style" : {
+							"disableScroll": true,
+							"navigationBarTextStyle": "white",
+							"navigationStyle": "custom"
+						}
+        }
+    ],
 
 	"subPackages": [{
 			"root": "pagesA",

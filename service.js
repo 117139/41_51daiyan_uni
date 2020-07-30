@@ -161,6 +161,7 @@ const pveimg = function(e) {
 	} else {
 		urls1[0] = current
 	}
+	console.log(urls1)
 	uni.previewImage({
 		current: current, // 当前显示图片的http链接
 		urls: urls1 // 需要预览的图片http链接列表
@@ -176,7 +177,7 @@ const call=  function (e){
 }
 
 const wxlogin=function (num){
-	
+	var that =this
 	// 获取用户信息
 	uni.getSetting({
 	  success: res => {
@@ -221,6 +222,7 @@ const wxlogin=function (num){
 												store.commit('login', res.data.data)
 	                      uni.setStorageSync('token', res.data.data.userToken)
 	                      uni.setStorageSync('loginmsg', res.data.data)
+												
 												if(num==1){
 													uni.showToast({
 														icon:'none',
@@ -324,7 +326,8 @@ const http =({url ='',param ={},method='',header={'content-type': 'application/x
       method: method,
       header:header,
       complete:(res)=>{
-          wx.hideLoading();//慎用hideLoading,会关闭wx.showToast弹窗
+          uni.hideLoading();
+          uni.stopPullDownRefresh();//慎用hideLoading,会关闭wx.showToast弹窗
           console.log(`耗时${Date.now() - timeStart}`);
 					console.log(res)
           if(res.statusCode ==200){//请求成功

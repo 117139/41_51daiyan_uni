@@ -1,5 +1,5 @@
 
-.xx_li.data-v-7c881511{
+.xx_li.data-v-e929523e{
 	width: 100%;
 	background: #FFF;
 	padding: 20rpx 22rpx;
@@ -12,14 +12,14 @@
 	-webkit-align-items: center;
 	        align-items: center;
 }
-.user_tx.data-v-7c881511{
+.user_tx.data-v-e929523e{
 	width:82rpx;
 	height:82rpx;
 	border-radius:50%;
 	position: relative;
 	margin-right: 20rpx;
 }
-.user_tx text.data-v-7c881511{
+.user_tx text.data-v-e929523e{
 	width:14rpx;
 	height:14rpx;
 	background:rgba(254,58,53,1);
@@ -28,12 +28,12 @@
 	top: 0;
 	right: 0;
 }
-.xx_msg.data-v-7c881511{
+.xx_msg.data-v-e929523e{
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
 	        flex: 1;
 }
-.to_name.data-v-7c881511{
+.to_name.data-v-e929523e{
 	width: 100%;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -48,36 +48,36 @@
 	-webkit-justify-content: space-between;
 	        justify-content: space-between;
 }
-.to_name .time.data-v-7c881511{
+.to_name .time.data-v-e929523e{
 	font-size: 24rpx;
 	color: #999;
 }
-.to_msg.data-v-7c881511{
+.to_msg.data-v-e929523e{
 	color: #999;
 	font-size: 24rpx;
 }
-.list-box.data-v-7c881511 {
+.list-box.data-v-e929523e {
 	width: 100%;
 	margin: 0rpx auto;
 }
-.item-box.data-v-7c881511 {
+.item-box.data-v-e929523e {
 	width: auto;
 	height: 130rpx;
 	padding: 20rpx;
 	overflow: hidden;
 	border-bottom: 1px solid #eee;
 }
-.item-img.data-v-7c881511 {
+.item-img.data-v-e929523e {
 	float: left;
 	margin-top: 20rpx;
 	width: 80rpx;
 	height: 80rpx;
 }
-.item-img ._img.data-v-7c881511 {
+.item-img ._img.data-v-e929523e {
 	width: 80rpx;
 	height: 80rpx;
 }
-.item-text.data-v-7c881511 {
+.item-text.data-v-e929523e {
 	float: left;
 	margin-left: 30rpx;
 	width: 500rpx;
@@ -85,14 +85,14 @@
 	color: #666;
 	font-size: 28rpx;
 }
-.item-user.data-v-7c881511 {
+.item-user.data-v-e929523e {
 	width: auto;
 	height: 60rpx;
 	line-height: 60rpx;
 	color: 333;
 	font-size: 32rpx;
 }
-.item-text-info.data-v-7c881511 {
+.item-text-info.data-v-e929523e {
 	width: auto;
 	height: 60rpx;
 	line-height: 60rpx;
@@ -102,17 +102,17 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-.user-box.data-v-7c881511 {
+.user-box.data-v-e929523e {
 	width: auto;
 	height: 80rpx;
 	padding: 0 20rpx;
 }
-.nav-tab.data-v-7c881511 {
+.nav-tab.data-v-e929523e {
 	padding-top: 20rpx;
 	background: #fff;
 	height: 80rpx;
 }
-.tab-item.data-v-7c881511 {
+.tab-item.data-v-e929523e {
 	float: left;
 	height: 70rpx;
 	padding: 0 20rpx;
@@ -123,7 +123,7 @@
 	border-top-left-radius: 25rpx;
 	border-bottom-left-radius: 25rpx;
 }
-.tab-item1.data-v-7c881511 {
+.tab-item1.data-v-e929523e {
 	float: left;
 	height: 70rpx;
 	padding: 0 20rpx;
@@ -134,11 +134,11 @@
 	border-top-right-radius: 25rpx;
 	border-bottom-right-radius: 25rpx;
 }
-.tab-item-active.data-v-7c881511 {
+.tab-item-active.data-v-e929523e {
 	color: #fff;
 	background: #F56C6C;
 }
-.msg-box.data-v-7c881511 {
+.msg-box.data-v-e929523e {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -154,7 +154,7 @@
 	-webkit-justify-content: center;
 	        justify-content: center;
 }
-.user-item-box.data-v-7c881511 {
+.user-item-box.data-v-e929523e {
 	padding: 20rpx 0;
 	width: auto;
 	height: 70rpx;
@@ -162,19 +162,19 @@
 	cursor: pointer;
 	border-bottom: 1px solid #eee;
 }
-.user-img.data-v-7c881511 {
+.user-img.data-v-e929523e {
 	float: left;
 	width: 70rpx;
 	height: 70rpx;
 	border-radius: 50%;
 	overflow: hidden;
 }
-.user-img image.data-v-7c881511 {
+.user-img image.data-v-e929523e {
 	width: 70rpx;
 	height: 70rpx;
 	border-radius: 50%;
 }
-.user-name.data-v-7c881511 {
+.user-name.data-v-e929523e {
 	float: left;
 	margin-left: 20rpx;
 	width: 250rpx;
@@ -183,12 +183,12 @@
 	color: #666;
 	font-weight: 500;
 }
-.item-msg.data-v-7c881511 {
+.item-msg.data-v-e929523e {
 	float: left;
 	width: 40rpx;
 	height: 100rpx;
 }
-.item-msg-icon.data-v-7c881511 {
+.item-msg-icon.data-v-e929523e {
 	width: 40rpx;
 	height: 40rpx;
 	border-radius: 50%;
@@ -199,10 +199,10 @@
 	text-align: center;
 	font-size: 24rpx;
 }
-.clear-box.data-v-7c881511 {
+.clear-box.data-v-e929523e {
 	clear: both;
 }
-.out-login.data-v-7c881511 {
+.out-login.data-v-e929523e {
 	float: right;
 	margin-right: 20rpx;
 	height: 70rpx;
