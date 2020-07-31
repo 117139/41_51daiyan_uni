@@ -228,7 +228,8 @@
 		display: none;
 	}
 	.zanwu{
-		line-height: 140rpx;
+		width: 100%;
+		line-height: 240rpx;
 		text-align: center;
 		font-size: 28rpx;
 		color: #999;

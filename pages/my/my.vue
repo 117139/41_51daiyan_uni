@@ -150,7 +150,7 @@
 		        <view class="fx_tit">我的代言</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" @tap="jump" data-url="/pages/my_guanzhu/my_guanzhu" data-login="true" :data-haslogin="hasLogin">
+		      <view class="fx_li" @tap="jump" data-url="/pagesA/my_guanzhu/my_guanzhu" data-login="true" :data-haslogin="hasLogin">
 		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_08.png')"></image>
 		        <view class="fx_tit">我的关注</view>
 		        <text class="iconfont iconnext3"></text>

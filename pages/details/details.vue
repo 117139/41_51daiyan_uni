@@ -322,6 +322,7 @@
 	export default {
 		data() {
 			return {
+				g_id:'',
 				indicatorDots: false,
 				autoplay: false,
 				circular: true,
@@ -375,6 +376,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
+			this.g_id=options.id
 		  this.getSku()
 		},
 		/**
@@ -401,7 +403,7 @@
 			getSku(){
 				var that =this
 				var datas={
-					id:9
+					id:that.g_id
 				}
 				// 单个请求
 				service.P_get('/goods/details',datas).then(res => {

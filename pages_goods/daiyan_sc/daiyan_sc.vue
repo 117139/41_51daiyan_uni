@@ -33,7 +33,7 @@
 					</view>
 				</view> -->
 				<!-- box2 -->
-				<view v-if="datas.friendGoods" class="yhq_box">
+				<view v-if="datas.friendGoods.length>0" class="yhq_box">
 					<view class="yhp_tit">
 						<view class="yhq_t_l">好友的代言商品</view>
 						<view class="yhq_t_r" @tap="jump" data-url="/pages_goods/friends_daiyan/friends_daiyan?id=1">更多<text class="iconfont iconnext3"></text></view>
@@ -63,23 +63,24 @@
 					</view>
 					<view class="b_li_box">
 						
-						<view v-if="datas.length==0" class="zanwu">暂无数据</view>
+						<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
 						<view class="b_li"  v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 							<view class="li_img">
-								<image class="li_img" :src="filter.imgIP(item.img[0])"></image>
+								<image class="li_img" :src="filter.imgIP(item.g_img[0])" mode="aspectFill"></image>
 							</view>
 							<view class="li_msg">
 								<view class="li_name oh1">{{item.g_title}}</view>
 								<view class="goods_pri">
-									<view class="goods_tximg">
+									<view class="goods_tximg" v-if="item.user_head_portrait">
 										<image class="goods_tximg" :src="item.user_head_portrait"></image>
 									</view>
-									<view class="goods_mon">￥{{item.g_current_price}}</view>
+									<view class="goods_mon flex_1">￥{{item.g_current_price}}</view>
+									<view class="sy_xl" style="font-size: 20upx;">销量：{{item.g_sale}}</view>
 								</view>
 								<view class="hy_sy">
 										<view class="hy_sy_box">代言收益</view>
 										<view class="sy_mon">￥{{item.advocacy_earnings}}</view>
-										<view class="sy_xl">销量：99</view>
+										
 								</view>
 							</view>
 						</view>
@@ -209,7 +210,7 @@
 			getdatalist() {
 			
 				let that = this
-				var jkurl = '/getAdvocacyList'
+				var jkurl = '/goods/getGoodsList'
 				var datas = {
 					token: that.loginMsg.userToken,
 					page: that.page,

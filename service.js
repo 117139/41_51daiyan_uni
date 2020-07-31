@@ -415,6 +415,63 @@ const P_delete = (url, param = {}) => {
 // }).catch(e => {
 //   console.log(e)
 // })
+
+
+const gettime=function (mj){
+	if(!mj) {
+		return {}
+	}
+	// // console.log(mj.indexOf('今天')!=-1)
+	// if(mj.indexOf('今天')!=-1){
+	// 	return {
+	// 		type:2,
+			
+	// 		time:mj
+	// 	}
+	// }
+	// mj = mj.replace(/-/g,'/')
+	var ntime=new Date(mj*1000)
+	// console.log(ntime)
+	var n_year = ntime.getFullYear();
+	var n_month = ntime.getMonth() + 1;
+	var n_date = ntime.getDate();
+	var n_hour = ntime.getHours();
+	var n_minute = ntime.getMinutes();
+	
+	var time = new Date();
+	var year = time.getFullYear();
+	var month = time.getMonth() + 1;
+	var date = time.getDate();
+	var hour = time.getHours();
+	var minute = time.getMinutes();
+	// n_month=n_month<10? '0'+n_month:n_month
+	n_date=n_date<10? '0'+n_date:n_date
+	n_hour=n_hour<10? '0'+n_hour:n_hour
+	n_minute=n_minute<10? '0'+n_minute:n_minute
+	if(n_year==year){
+		
+		return {
+			type:1,
+			year:n_year,
+			month:n_month,
+			date:n_date,
+			hour:n_hour,
+			minute:n_minute,
+			time:'今天 '+n_hour+':'+n_minute
+		}
+	}else{
+		
+		return {
+			type:2,
+			year:n_year,
+			month:n_month,
+			date:n_date,
+			hour:n_hour,
+			minute:n_minute,
+			time:n_year+'-'+n_month+'-'+n_date
+		}
+	}
+}
 export default {
 	getUsers,
 	addUser,
@@ -431,5 +488,6 @@ export default {
 	P_get,
 	P_post,
 	P_put,
-	P_delete
+	P_delete,
+	gettime
 }

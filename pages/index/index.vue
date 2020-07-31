@@ -32,7 +32,7 @@
 		</view>
 		<scroll-view class="start_list" scroll-x>
 			<view class="start_list1">
-				<view class="start_li" v-for="(item,index) in start_li" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.id">
+				<view class="start_li" v-for="(item,index) in start_li" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
 					<view class="star_tx">
 						<image :src="item.head_portrait" mode="aspectFill"></image>
 						<view>
@@ -98,7 +98,7 @@
 		<view class="quan_list">
 			<view class="quan_li" v-for="(item,idx) in data_list">
 				<view class="quan_user_box">
-					<image @tap="jump" data-url="/pages/my_index/my_index" class="quan_user_tx" :src="item.user_head_portrait" mode="aspectFill"></image>
+					<image @tap="jump"  :data-url="'/pages/my_index/my_index?id='+item.user_id" class="quan_user_tx" :src="item.user_head_portrait" mode="aspectFill"></image>
 					<view class="quan_user_msg">
 						<view class="quan_user_name">{{item.user_nickname}}
 							<image v-if="item.use_identity_id==1" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
@@ -158,9 +158,9 @@
 	           <text class="iconfont iconpinglun"></text>评论
 	          </view>
 	        </view> -->
-					<view class="cz_li">跟随购买：6321</view>
-					<view class="cz_li" @tap.stop="jump" data-url="/pages_goods/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>1566</view>
-					<view class="cz_li" @tap.stop="zan" :data-id="idx"><text class="iconfont iconzan"></text>1566</view>
+					<view class="cz_li">跟随购买：{{item.follow_buy_number}}</view>
+					<view class="cz_li" @tap.stop="jump" data-url="/pages_goods/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>{{item.comment_number}}</view>
+					<view class="cz_li" @tap.stop="zan" :data-id="idx"><text class="iconfont iconzan"></text>{{item.praise_number}}</view>
 				</view>
 			</view>
 		</view>

@@ -11,50 +11,45 @@
 					<view :class="ss_cur==5?'cur':''" @tap="ss_type" data-type="5">其他</view>
 				</view>
 			</view>
-			 <!-- 品牌 -->
-			 <view class="ss_list" v-if="ss_cur==1" >
+			 
+			 <view class="ss_list" >
 				 <view class="data_null" v-if="data_list.length==0">
 				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
 				 </view>
-				 <view v-if="data_list.length>0" class="li_box" v-for="(item,idx) in data_list">
-					 <view class="user_tx" @tap="jump" :data-url="'/pages/dp_index/dp_index?id='+item.obj_id">
-					 	<image class="user_tx" :src="filter.imgIP(item.obj_img)"></image>
+				 <block v-for="(item,idx) in data_list">
+					 <!-- 品牌 -->
+					 <view  v-if="item.is_public==1" class="li_box">
+						 <view class="user_tx" @tap="jump" :data-url="'/pages/dp_index/dp_index?id='+item.obj_id">
+							<image class="user_tx" :src="filter.imgIP(item.obj_img)"></image>
+						 </view>
+						 <view class="user_name oh1">{{item.remark?item.remark:item.obj_nickname}}</view>
+						 <view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view>
+							<view v-else class="user_btn user_btn1">已关注</view>
 					 </view>
-					 <view class="user_name oh1">小米51代言旗舰店</view>
-					 <view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view>
-						<view v-else class="user_btn user_btn1">已关注</view>
-				 </view>
-			 </view>
-			 <!-- 代言圈 -->
-			 <view class="ss_list" v-else-if="ss_cur==4" >
-				 <view class="data_null" v-if="data_list.length==0">
-				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
-				 </view>
-				 <view v-if="data_list.length>0" class="li_box"  v-for="(item,idx) in data_list" >
-					 <view class="user_tx" @tap="jump" :data-url="'/pages/daiyan_quan_xq/daiyan_quan_xq?id='+item.obj_id">
-					 	<image class="user_tx" :src="filter.imgIP(item.obj_img)"></image>
+					 <!-- 代言圈 -->
+					 <view v-if="item.is_public==4" class="li_box">
+							 <view class="user_tx" @tap="jump" :data-url="'/pages/daiyan_quan_xq/daiyan_quan_xq?id='+item.obj_id">
+								<image class="user_tx" :src="filter.imgIP(item.obj_img)"></image>
+							 </view>
+							 <view class="user_name oh1">{{item.remark?item.remark:item.obj_nickname}}</view>
+							 <view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view>
+								<view v-else class="user_btn user_btn1">已关注</view>
 					 </view>
-					 <view class="user_name oh1">国潮</view>
-					 <view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view>
-						<view v-else class="user_btn user_btn1">已关注</view>
-				 </view>
-			 </view>
-			<!-- 用户 -->
-			 <view class="ss_list"  v-else>
-				 <view class="data_null" v-if="data_list.length==0">
-				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
-				 </view>
-				 <view  v-if="data_list.length>0" class="li_box" v-for="(item,idx) in data_list" >
+					 <!-- 用户 -->
+					 <view v-if="item.is_public==2||item.is_public==3||item.is_public==5" class="li_box">
 						<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.obj_id">
 							<image class="user_tx" :src="item.obj_img"></image>
 							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 						</view>
-						<view class="user_name oh1">{{item.remark?item.remark:''}}</view>
+						<view class="user_name oh1">{{item.remark?item.remark:item.obj_nickname}}</view>
 						<!-- <view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view> -->
-						<view class="user_btn user_btn1"  @tap="guanzhuFuc(item.id,'cancel')">已关注</view>
-				 </view>
+						<view class="user_btn user_btn1"  @tap="guanzhuFuc(item.obj_id,'cancel')">已关注</view>
+					 </view>
+				 </block>
+				 
 			 </view>
+			
 		</view>
 	</view>
 </template>

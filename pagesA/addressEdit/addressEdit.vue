@@ -77,7 +77,7 @@
 				this.region[0] = editaddress.province
 				this.region[1] = editaddress.city
 				this.region[2] = editaddress.area
-				var region_id
+				var region_id=[]
 				region_id[0]= editaddress.province_id
 				region_id[1] = editaddress.city_id
 				region_id[2] = editaddress.area_id

@@ -68,7 +68,7 @@
 			  this.sname= e.detail.value
 			},
 			save_val(){
-			  if (!this.sname){
+			  if (!this.uname){
 			    wx.showToast({
 			      icon:'none',
 			      title: '请输入您的姓名',
@@ -77,13 +77,13 @@
 			  }
 			  var data={
 			  	token:this.loginMsg.userToken,
-			  	nickname:this.sname,
+			  	nickname:this.uname,
 			  }
 			  service.setUsermsg(data)
 			  setTimeout(function (){
 			    wx.navigateBack()
 			  },1000)
-			  console.log(this.sname)
+			  console.log(this.uname)
 			}
 		}
 	}

@@ -89,6 +89,12 @@
 			])
 		},
 		methods: {
+			onRetry(){
+				this.page=1
+				this.datas=[]
+				this.btn_kg=0
+				this.getaddlist()
+			},
 			xz_add(e){
 			  var that =this
 			  if (that.form_type!=1){
@@ -209,7 +215,7 @@
 			        				icon:'none',
 											title:'操作成功'
 			        			})
-										this.onRetry()
+										that.onRetry()
 			        		} else {
 			        			if (res.data.msg) {
 			        				uni.showToast({
