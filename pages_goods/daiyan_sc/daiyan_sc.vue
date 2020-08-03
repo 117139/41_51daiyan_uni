@@ -5,7 +5,7 @@
 				<image class="dy_sc_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/dy_sc1_02.jpg')"></image>
 			</view>
 			<view class="h_main">
-				<view class="dy_sc_lj" @tap="jump" data-url="/pages/about/about">
+				<view class="dy_sc_lj" @tap="jump" data-url="/pagesA/about/about">
 					<view><image class="c_bl" :src="filter.imgIP('/static_s/51daiyan/images/images/lj_bl_05.jpg')"></image>1分钟了解51代言</view>
 					<text class="iconfont iconnext3"></text>
 				</view>

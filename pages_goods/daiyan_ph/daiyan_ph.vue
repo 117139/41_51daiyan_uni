@@ -2,34 +2,38 @@
 	<view>
 		<view class="container">
 			<view class="list">
-				<view class="list_tit" :class="ph_type==1?'cur':''">
+				<view class="list_tit" :class="ph_type==2?'cur':''">
 					<view class="ph_fri">
-						<image  class="ph_fri " :src="ph_type==0?'../../static/images/daiyan_ph1.png':'../../static/images/daiyan_ph.png'"></image>
-						<view class="pl_li" @tap="ph_fuc" data-type="0">好友排行</view>
+						<image v-if="ph_type==1" class="ph_fri " :src="filter.imgIP('/static_s/51daiyan/images/daiyan_ph1.png')"></image>
+						<image v-if="ph_type==2" class="ph_fri " :src="filter.imgIP('/static_s/51daiyan/images/daiyan_ph.png')"></image>
+						<view class="pl_li" @tap="ph_fuc" data-type="1">好友排行</view>
 					</view>
-					<view  class="pl_li1" @tap="ph_fuc" data-type="1">世界排行</view>
+					<view  class="pl_li1" @tap="ph_fuc" data-type="2">世界排行</view>
 				</view>
 				<view class="list_tit_1">
-					<view :class="ph_type1==0?'cur':''" @tap="ph_fuc1" data-type="0">代言数量排行</view>
-					<view :class="ph_type1==1?'cur':''" @tap="ph_fuc1" data-type="1">代言收益排行</view>
-					<view :class="ph_type1==2?'cur':''" @tap="ph_fuc1" data-type="2">公益之星排行</view>
+					<view :class="ph_type1==1?'cur':''" @tap="ph_fuc1" data-type="1">代言数量排行</view>
+					<view :class="ph_type1==2?'cur':''" @tap="ph_fuc1" data-type="2">代言收益排行</view>
+					<view :class="ph_type1==3?'cur':''" @tap="ph_fuc1" data-type="3">公益之星排行</view>
 				</view>
 				<view class="dy_list">
-					<view class="dy_box">
+					<view class="dy_box" v-for="(item,idx) in datas">
 						<view class="dy_li">
 							<view class="pl_num">
-								<image class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_1.png')"></image>
+								<image v-if="idx==0" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_1.png')"></image>
+								<image v-if="idx==1" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_2.png')"></image>
+								<image v-if="idx==2" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_3.png')"></image>
+								<text v-if="idx>2">{{idx}}</text>
 							</view>
-							<view class="pl_tx"  @tap="jump" data-url="/pages/my_index/my_index">
-								<image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							<view class="pl_tx"  @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.id">
+								<image class="pl_tx" :src="item.head_portrait"></image>
 							</view>
-							<view class="ph_name">张一鸣</view>
-							<view class="ph_num"><text>97</text>件</view>
-							<view class="ph_btn" @tap="jump" data-url="/pages/my_index/my_index">去看看</view>
+							<view class="ph_name">{{item.nickname}}</view>
+							<view class="ph_num"><text>{{item.number}}</text>件</view>
+							<view class="ph_btn" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.id">去看看</view>
 						</view>
-						<view class="li_dy">代言说：喜欢运动的感觉，耐克just di it！</view>
+						<view class="li_dy oh2">代言说：{{item.introduction}}</view>
 					</view>
-					<view class="dy_box">
+					<!-- <view class="dy_box">
 						<view class="dy_li">
 							<view class="pl_num">
 								<image class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_2.png')"></image>
@@ -70,12 +74,10 @@
 							<view class="ph_btn" @tap="jump" data-url="/pages/my_index/my_index">去看看</view>
 						</view>
 						<view class="li_dy">代言说：喜欢运动的感觉，耐克just di it！</view>
-					</view>
+					</view> -->
 				</view>
 			</view>
 		</view>
-		
-		
 	</view>
 </template>
 
@@ -89,76 +91,157 @@
 	export default {
 		data() {
 			return {
-				ph_type:0,
-				ph_type1:0,
+				ph_type:1,
+				ph_type1:1,
+				btn_kg:0,
+				datas:[],
+				page:1,
+				size:20,
 			}
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
+			this.onRetry()
+		},
+		/**
+		 * 生命周期函数--监听页面初次渲染完成
+		 */
+		onReady: function () {
+		
+		},
+		
+		/**
+		 * 生命周期函数--监听页面显示
+		 */
+		onShow: function () {
+		
+		},
+		
+		/**
+		 * 生命周期函数--监听页面隐藏
+		 */
+		onHide: function () {
+		
+		},
+		
+		/**
+		 * 生命周期函数--监听页面卸载
+		 */
+		onUnload: function () {
+		
+		},
+		
+		/**
+		 * 页面相关事件处理函数--监听用户下拉动作
+		 */
+		onPullDownRefresh: function () {
+		  wx.stopPullDownRefresh();
+		},
+		
+		/**
+		 * 页面上拉触底事件的处理函数
+		 */
+		onReachBottom: function () {
+		
+		},
+		
+		/**
+		 * 用户点击右上角分享
+		 */
+		onShareAppMessage: function () {
 		
 		},
 		methods: {
+			onRetry(){
+				this.page=1
+				this.datas=[]
+				this.getdatalist()
+			},
+			getdatalist() {
+				let that = this
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+				}
+				var jkurl = '/star/ranking'
+				var datas = {
+					token: that.loginMsg.userToken,
+					type:that.ph_type,    //1好友排行  2：世界排行
+					order:that.ph_type1,              //1代言数量排行  2：代言收益排行 3：公益之星排行
+					page: that.page,        
+					size:that.size
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
 			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
 			
-			/**
-			 * 生命周期函数--监听页面初次渲染完成
-			 */
-			onReady: function () {
+						if (datas.length == 0) {
+							uni.showToast({
+								icon: 'none',
+								title: '暂无更多数据'
+							})
+							that.btn_kg=0
+							return
+						}
+						if(that.page==1){
+							that.datas =datas
+						}else{
+							
+							that.datas = that.datas.concat(datas)
+						}
+						that.btn_kg=0
+						that.page++
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
 			
 			},
 			
-			/**
-			 * 生命周期函数--监听页面显示
-			 */
-			onShow: function () {
-			
-			},
-			
-			/**
-			 * 生命周期函数--监听页面隐藏
-			 */
-			onHide: function () {
-			
-			},
-			
-			/**
-			 * 生命周期函数--监听页面卸载
-			 */
-			onUnload: function () {
-			
-			},
-			
-			/**
-			 * 页面相关事件处理函数--监听用户下拉动作
-			 */
-			onPullDownRefresh: function () {
-			  wx.stopPullDownRefresh();
-			},
-			
-			/**
-			 * 页面上拉触底事件的处理函数
-			 */
-			onReachBottom: function () {
-			
-			},
-			
-			/**
-			 * 用户点击右上角分享
-			 */
-			onShareAppMessage: function () {
-			
-			},
 			ph_fuc(e){
 				var that =this
+				if(that.btn_kg==1){
+					return
+				}else{
+					// that.btn_kg=1
+				}
 				 if(that.ph_type==e.currentTarget.dataset.type) return
 				that.ph_type=e.currentTarget.dataset.type
+				that.onRetry()
 			},
 			ph_fuc1(e){
 				var that =this
+				if(that.btn_kg==1){
+					return
+				}else{
+					// that.btn_kg=1
+				}
 				 if(that.ph_type1==e.currentTarget.dataset.type) return
 				that.ph_type1=e.currentTarget.dataset.type
+				that.onRetry()
 			},
 			jump(e) {
 			  console.log(e.currentTarget.dataset.type)
@@ -171,7 +254,10 @@
 <style scoped>
 page,.container{
 	height: auto;
-	min-height: 100%;
+	min-height: 100vh;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 	background: #f5f5f5;
 }
 .container{

@@ -97,6 +97,7 @@
 	</view>
 </template>
 
+<script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import userList from '../../commen/tim/user.js'
 	import {

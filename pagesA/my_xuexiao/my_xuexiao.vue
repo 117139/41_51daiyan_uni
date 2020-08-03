@@ -51,9 +51,9 @@
 			])
 		},
 		onLoad() {
-			this.yname=this.loginMsg.school
-			this.xname=this.loginMsg.department
-			this.shengri=this.loginMsg.entrance_time
+			this.yname=this.loginMsg.school_data.school
+			this.xname=this.loginMsg.school_data.department
+			this.shengri=this.loginMsg.school_data.entrance_time
 		},
 		methods: {
 			/**

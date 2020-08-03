@@ -182,7 +182,7 @@
 		        <image class="htk_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
 		      </view>
 		      <view class="htk_name">张佳</view>
-		      <view class="htk_num">买过14次</view>
+		      <!-- <view class="htk_num">买过14次</view> -->
 		    </view>
 		  </view>
 		  <!-- 本店回头客都在买 -->
@@ -215,6 +215,33 @@
 		    </view>
 		  </view>
 		  <!-- tk -->
+			<uni-popup ref="popup_yh" type="center" @change="tkchange0">
+				<view class="hb_tk" style="background-image: url(../../static/images/get_yh.png);">
+					<scroll-view style="width: 100%;height: 100%;" scroll-y>
+						<view class="dis_flex goods_yh_li" v-for="(item,idx) in 6">
+							<view class="goods_yh_pri">
+								<view class="dis_flex d1"><text>￥</text>30</view>
+								<view class="d2">满300可用</view>
+							</view>
+							<view class="flex_1 goods_yhmsg">
+								<view class="yh_type">仅限本商品可用</view>
+								<view class="yh_time">
+									<view>有效日期</view>
+									<view>2020.7.31-2020-8-20</view>
+								</view>
+								
+							</view>
+							<view class="goods_get dis_flex">
+								<view class="goods_get_btn">领取</view>
+							</view>
+						</view>
+					</scroll-view>
+				</view>
+				<view class="dis_flex aic ju_c">
+					<!-- <image class="yh_gb_btn" :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image> -->
+					<image class="yh_gb_btn" src="../../static/images/off.png"  @tap="gb_yhtk"></image>
+				</view>
+			</uni-popup>
 		  <uni-popup ref="popup" type="bottom" @change="tkchange1">
 		    <view class="dy_box" style="padding: 0 5rpx 20rpx;height:600rpx;overflow: hidden">
 		        <scroll-view class=" dyr_scroll" style="height:600rpx;" scroll-y>
@@ -378,6 +405,7 @@
 		onLoad: function (options) {
 			this.g_id=options.id
 		  this.getSku()
+			this.$refs.popup_yh.open()
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
@@ -642,6 +670,13 @@
 			  this.btnkg= 0
 			
 			},
+			gb_yhtk(){
+				this.$refs.popup_yh.close()
+			},
+			tkchange0(e){
+				console.log(e)
+				this.sheetshow=e.show
+			},
 			tkchange(e){
 				console.log(e)
 				this.sheetshow=e.show
@@ -771,6 +806,75 @@
 </script>
 
 <style scoped>
+.hb_tk{
+	width: 750upx;
+	height: 976upx;
+	background: #f00;
+	padding: 380upx 60upx 20upx;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border-radius: 10upx;
+	margin-bottom: 20upx;
+}
+.yh_gb_btn{
+	width: 80upx;
+	height: 80upx;
+}
+.goods_yh_li{
+	width: 100%;
+	min-height: 150upx;
+	margin-bottom: 20upx;
+	color: #fff;
+	align-items: stretch;
+	background: #fff;
+}
+.goods_yh_pri{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 200upx;
+	background:linear-gradient(0deg,rgba(254,86,6,1) 0%,rgba(248,190,58,1) 100%);
+}
+.goods_yh_pri .d1{
+	align-items: baseline;
+	font-size: 40upx;
+}
+.goods_yh_pri .d1 text,.goods_yh_pri .d2{
+	align-items: baseline;
+	font-size: 20upx;
+}
+.goods_get{
+	padding: 0 20upx;
+	align-items: center;
+	justify-content: center;
+}
+.goods_get_btn{
+	padding: 5upx 10upx;
+	border: 1px solid #F8BE3A;
+	color: #F8BE3A;
+	font-size: 24upx;
+}
+.goods_yhmsg{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 20upx 0 20upx 20upx;
+}
+.yh_type{
+	font-size: 26upx;
+	color: #333;
+}
+.yh_time{
+	font-size: 22upx;
+	color: #999;
+}
+
+
+
+
+
 .container{
 	padding-bottom: 100rpx;
   background: #f5f5f5;
