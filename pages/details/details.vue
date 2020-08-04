@@ -9,7 +9,7 @@
 		        <swiper-item>
 		          <!-- <image src="{{item}}" class="slide-image" width="355" height="150" data-curitem="{{item}}" @tap="pveimg" /> -->
 		          <image :src="filter.imgIP(item)" class="slide-image" mode="aspectFill" width="355"
-							 height="150" :data-src="filter.imgIP(item)" @tap.stop="pveimg" />
+							 height="150" :data-src="filter.imgIP(item)" :data-array="filter.getgimgarrIP(goodsData.img)" @tap.stop="pveimg" />
 		        </swiper-item>
 		      </block>
 		
@@ -18,19 +18,20 @@
 		  </view>
 		  <view class="goods_msg">
 		    <view class="goods_pri">
-		      <view class="pri1">¥48</view>
-		      <view class="pri2">代言费：¥5</view>
+		      <view class="pri1">¥{{goodsData.current_price}}</view>
+		      <view class="pri2">代言费：¥{{goodsData.advocacy_price}}</view>
 		    </view>
-		    <view class="goods_pri">
-		      <view class="pri2">原价：¥66.6</view>
+		    <view class="goods_pri" v-if="goodsData.original_price>0">
+		      <view class="pri2">原价：¥{{goodsData.original_price}}</view>
 		    </view>
 		    <view class="goods_name">{{goodsData.title}}</view>
 		
 		    <view class="goods_pri">
-		      <view class="pri2">运费10元</view>
-		      <view class="pri2">销量8280</view>
+		      <view class="pri2" v-if="goodsData.freight_type==1">运费{{goodsData.freight}}元</view>
+		      <view class="pri2" v-if="goodsData.freight_type==2">{{goodsData.freight>0?'满'+goodsData.freight+'元包邮':''}}包邮</view>
+		      <view class="pri2">销量{{goodsData.sales_volume}}</view>
 		      <view class="pri2">
-		        <text class="iconfont icondizhi"></text> 北京</view>
+		        <text class="iconfont icondizhi"></text> {{goodsData.ship_address}}</view>
 		    </view>
 		    <view class="goods_bz">
 		      <view class="g_bz_1">
@@ -71,8 +72,9 @@
 		  </view>
 		  <view class="goods_xmsg">
 		    <view class="v1">促 销</view>
-		    <view class="v2">
-		      <text class="yhq_box">满包邮</text>全店满118.00元包邮，偏远地区除外；</view>
+		    <view class="v2" v-if="goodsData.freight_type==2&&goodsData.freight>0">
+		      <text class="yhq_box">满包邮</text>全店满{{goodsData.freight}}元包邮，偏远地区除外；
+				</view>
 		    <view class="v3">
 		      <text class="iconfont iconcaozuo"></text>
 		    </view>
@@ -80,37 +82,35 @@
 		  <view class="goods_xmsg"  @tap="jump" data-url="/pages/myaddress/myaddress?type=1">
 		    <view class="v1">配 送</view>
 		    <view class="v2">
-		      <text class="yhq_box">同城</text>北京市五环内下单可享受商家配送服务；</view>
+		      <text class="yhq_box">同城</text>{{goodsData.distribution}}</view>
 		    <view class="v3">
 		      <text class="iconfont iconcaozuo"></text>
 		    </view>
 		  </view>
 		  <view class="mt20 goods_xmsg"  @tap="sheetshow_fuc">
 		    <view class="v1">已选择</view>
-		    <view class="v2 v21">{{'aaa'}},{{cnum}}件</view>
+		    <view class="v2 v21">{{ggshow1}},{{cnum}}件</view>
 		    <view class="v3">
 		      <text class="iconfont iconnext3"></text>
 		    </view>
 		  </view>
 		  <!-- 评价 -->
-		  <view class="pj_box mt20">
+		  <view class="pj_box mt20" v-if="goodsData.comment_count>0">
 		    <view class="pj_box_tit">
-		      <view class="p_tit_l">商品评价（233）</view>
+		      <view class="p_tit_l">商品评价（{{goodsData.comment_count>0?goodsData.comment_count:0}}）</view>
 		      <view class="p_tit_r" data-url="/pages/details_pl/details_pl" @tap="jump">查看全部
 		        <text class="iconfont iconnext3"></text>
 		      </view>
 		    </view>
 		    <view class="pj_bq">
-		      <view>质量很好（111）</view>
-		      <view>性价比高（62）</view>
-		      <view>发货快（53）</view>
+		      <view v-for="(item,idx) in goodsData.comment.tag">{{item.name}}（{{item.number}}）</view>
 		    </view>
-		    <view class="pj_li">
+		    <view class="pj_li"  v-for="(item,idx) in goodsData.comment.comment">
 		      <view class="pj_d1">
 		        <view class="user_tx">
-		          <image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-		        </view> Y***I</view>
-		      <view class="pj_d2">上次就买了，感觉太好喝了，这次又来光顾一下，这次又来光顾一下，这次又来光顾一下，这次又来光顾一下。</view>
+		          <image class="user_tx" :src="filter.imgIP(item.head_portrait)"></image>
+		        </view> {{item.nickname}}</view>
+		      <view class="pj_d2">{{item.comment}}</view>
 		    </view>
 		  </view>
 		  <!-- 代言人 -->
@@ -142,46 +142,44 @@
 		    </scroll-view>
 		  </view>
 		  <!-- 店铺 -->
-		  <view class="dp_box">
+		  <view class="dp_box" v-if="goodsData.merchant">
 		    <view class="dp_b1">
 		      <view class="dp_logo">
-		        <image :src="filter.imgIP('goods_02.jpg')" mode="aspectFill"></image>
+		        <image :src="filter.imgIP(goodsData.merchant.head_portrait)" mode="aspectFill"></image>
 		      </view>
 		      <view class="dp_msg">
-		        <view class="dp_name oh2">弥翼咖啡 MIYI COFFEE ROSASTERS</view>
+		        <view class="dp_name oh2">{{goodsData.merchant.store_name}}</view>
 		        <view class="dp_lv">
-		          <image :src="filter.imgIP('dp_zuan.png')"></image>
-		          <image :src="filter.imgIP('dp_zuan.png')"></image>
-		          <image :src="filter.imgIP('dp_zuan.png')"></image>
-		          <image :src="filter.imgIP('dp_zuan.png')"></image>
+		          <image v-for="(item,idx) in goodsData.merchant.rank" :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
 		        </view>
 		        <view class="dp_bq">
-		          <text>代言 835</text>
-		          <text>回头率  21%</text>
+		          <text>代言 {{goodsData.merchant.advocacy_number}}</text>
+		          <text>回头率  {{goodsData.merchant.look_back}}%</text>
 		          <!-- <text class="bq">高</text> -->
 		        </view>
 		
 		      </view>
 		    </view>
 		    <view class="dp_cz">
-		      <view>+ 关注店铺</view>
-		      <view @tap="jump" data-url="/pages/dp_index/dp_index">进店逛逛</view>
+		      <view v-if="goodsData.merchant.isAttention==1" @tap.stop="guanzhuFuc(goodsData.merchant.group_code,'affirm')">+ 关注店铺</view>
+		      <view v-if="goodsData.merchant.isAttention==2" @tap.stop="guanzhuFuc(goodsData.merchant.group_code,'cancel')">已关注</view>
+		      <view @tap="jump" :data-url="'/pages/dp_index/dp_index?id='+goodsData.merchant.group_code">进店逛逛</view>
 		    </view>
 		  </view>
 		  <!-- 回头客 -->
-		  <view class="htk" >
+		  <view class="htk"  v-if="goodsData.later_data.comment.length>0">
 		    <view class="pj_box_tit">
-		      <image class="htk_img" :src="filter.imgIP('htk.png')"></image>
-		      <view class="p_tit_r"  data-url="/pages/details_pl/details_pl" @tap="jump">8人在说
+		      <image class="htk_img" :src="filter.imgIP('/static_s/51daiyan/images/htk.png')"></image>
+		      <view class="p_tit_r"  data-url="/pages/details_pl/details_pl" @tap="jump">{{goodsData.later_data.count}}人在说
 		        <text class="iconfont iconnext3"></text>
 		      </view>
 		    </view>
-		    <view class="htk_text">喝过很多家的豆子，这家没得说，烘培的很新鲜，常备口粮。</view>
+		    <view class="htk_text">{{goodsData.later_data.comment[0].comment}}</view>
 		    <view class="htk_msg">
 		      <view class="htk_tx">
-		        <image class="htk_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+		        <image class="htk_tx" :src="goodsData.later_data.comment[0].head_portrait"></image>
 		      </view>
-		      <view class="htk_name">张佳</view>
+		      <view class="htk_name">{{goodsData.later_data.comment[0].nickname}}</view>
 		      <!-- <view class="htk_num">买过14次</view> -->
 		    </view>
 		  </view>
@@ -196,7 +194,7 @@
 		    <view class="goods_list">
 		      <view v-if="idx<3" class="goods_li" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/details/details">
 		        <view class="goods_img">
-		          <image class="goods_img" :src="filter.imgIP('goods_02.jpg')" mode="aspectFill"></image>
+		          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods_02.jpg')" mode="aspectFill"></image>
 		        </view>
 		        <view class="htk_goods_name oh2">FISHER 意式浓精品挂耳咖啡202020202020……</view>
 		        <view class="htk_goods_pri">¥<text>60</text></view>
@@ -210,7 +208,7 @@
 		      商品详情
 		      <text>-</text>
 		    </view>
-		    <view class="xq_box">
+		    <view class="xq_box" v-html="goodsData.content">
 		      <image :src="filter.imgIP('/static_s/51daiyan/images/goods_02.jpg')" mode="aspectFill" style="width:750rpx;height:750rpx;display:block;" />
 		    </view>
 		  </view>
@@ -306,7 +304,7 @@
 					</block>
 					<view class="countnum">
 						<text>购买数量</text>
-						<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" :value="cnum"
+						<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="show_num"
 						  @input="onChange" @change="onChange" />
 					</view>
 					<view class="b_view_o"></view>
@@ -391,13 +389,32 @@
 				
 				
 				type1: [-1],         //规格index
-				ggshow1:[],
+				ggshow1_jjj:[],
 				cnum: 1,//数量
 				goods_sku_id: 0,  //商品id
 			}
 		},
 		components: {
 				uniPopup
+		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			]),
+			ggshow1(){
+				var arr=this.guige_select
+				if(!arr){
+					return
+				}
+				var  newarr=[]
+				for(var i=0;i<arr.length;i++){
+					newarr.push(arr[i].value)
+				}
+				console.log(newarr.join(','))
+				return newarr.join(',')
+			}
 		},
 		/**
 		 * 生命周期函数--监听页面加载
@@ -428,9 +445,96 @@
 		
 		},
 		methods: {
+			
+			guanzhuFuc(id,key){
+				var that =this
+				var data={
+					token:that.loginMsg.userToken,
+					type:1,
+					id:id,
+					operate:key,
+				}
+				if(key=='affirm'){
+					service.P_post('/attention/operation',data).then(res => {
+					  console.log(res)
+						that.btnkg=0
+						if(res.code==-1){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==0&&res.msg=='请先登录账号~'){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==1){
+							that.getSku()
+							uni.showToast({
+								icon:'none',
+								title:'操作成功'
+							})
+						}else{
+							
+						}
+					}).catch(e => {
+						that.btnkg=0
+					  console.log(e)
+						uni.showToast({
+							icon:'none',
+							title:'操作失败'
+						})
+					})
+					return
+				}
+				wx.showModal({
+					title: '提示',
+					content: '是否取消关注?',
+					success (res) {
+						if (res.confirm) {
+							console.log('用户点击确定')
+							service.P_post('/attention/operation',data).then(res => {
+							  console.log(res)
+								that.btnkg=0
+								if(res.code==-1){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==0&&res.msg=='请先登录账号~'){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==1){
+									that.getSku()
+									uni.showToast({
+										icon:'none',
+										title:'操作成功'
+									})
+								}else{
+									
+								}
+							}).catch(e => {
+								that.btnkg=0
+							  console.log(e)
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消')
+						}
+					}
+				})
+				
+				
+			},
 			getSku(){
 				var that =this
 				var datas={
+					token:that.loginMsg.userToken,
 					id:that.g_id
 				}
 				// 单个请求
@@ -497,13 +601,13 @@
 						}
 					
 					}
-					console.log(a,push_type)
+					// console.log(a,push_type)
 					if(push_type){
 						show_arr.push(that.guige[i])
 					}
 					
 				}
-				console.log(show_arr)
+				// console.log(show_arr)
 				// console.log(value,show_arr)
 				if(show_arr.length>0){
 					return true
@@ -524,8 +628,21 @@
 			},
 			//数量
 			onChange(e) {
+				var that =this
 			  let idx = e.currentTarget.dataset.selec
-			  console.log(e.detail)
+			  // console.log(e.detail)
+				if(that.guige_select.length==0){
+					uni.showToast({
+						icon:'none',
+						title:'请先选择规格'
+					})
+					this.cnum=0
+					return
+				}
+				if(this.cnum>this.show_num){
+					this.cnum=this.show_num
+					return
+				}
 			  // this.data.goods_sele[idx].num=e.detail
 			  this.cnum= e.detail
 				
@@ -542,9 +659,9 @@
 			//选择规格
 			selegg(e) {
 				var that=this
-			  console.log(e.currentTarget.dataset.name)
+			  // console.log(e.currentTarget.dataset.name)
 			  console.log(e.currentTarget.dataset.value)
-			  console.log(e.currentTarget.dataset.ggidx)
+			  // console.log(e.currentTarget.dataset.ggidx)
 				
 				var newselect={
 					name:e.currentTarget.dataset.name,
@@ -567,8 +684,8 @@
 					  that.$set(that.guige_select,e.currentTarget.dataset.ggidx,false)
 						// console.log(that.guige_select)
 				 }
-				 console.log(str.indexOf(a)==-1)
-			  console.log(a,str)
+				 // console.log(str.indexOf(a)==-1)
+			  // console.log(a,str)
 				var show_arr=[]
 				for(var i=0;i<that.guige.length;i++){
 					// console.log('---------------------------------------')
@@ -639,6 +756,12 @@
 				}
 				that.show_pri=pri
 				that.show_num=kucun_num
+				if(kucun_num<that.cnum){
+					that.cnum=kucun_num
+				}
+				if(kucun_num>0&&that.cnum==0){
+					that.cnum=1
+				}
 				that.show_img=sku_img
 				if(that.show_img.length==0){
 					that.show_img=that.goodsData.img
@@ -807,15 +930,21 @@
 
 <style scoped>
 .hb_tk{
-	width: 750upx;
-	height: 976upx;
-	background: #f00;
-	padding: 380upx 60upx 20upx;
+	/* width: 750upx;
+	height: 976upx; */
+	width: 639rpx;
+	height: 763rpx;
+
+	/* background: #f00; */
+	padding: 320upx 80upx 20upx;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	border-radius: 10upx;
 	margin-bottom: 20upx;
+	background-position: top;
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 .yh_gb_btn{
 	width: 80upx;
@@ -823,7 +952,7 @@
 }
 .goods_yh_li{
 	width: 100%;
-	min-height: 150upx;
+	min-height: 100upx;
 	margin-bottom: 20upx;
 	color: #fff;
 	align-items: stretch;
@@ -834,7 +963,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	width: 200upx;
+	width: 120upx;
 	background:linear-gradient(0deg,rgba(254,86,6,1) 0%,rgba(248,190,58,1) 100%);
 }
 .goods_yh_pri .d1{

@@ -32,17 +32,17 @@
 		</view>
 		<scroll-view class="start_list" scroll-x>
 			<view class="start_list1">
-				<view class="start_li" v-for="(item,index) in start_li" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
-					<view class="star_tx">
-						<image :src="item.head_portrait" mode="aspectFill"></image>
+				<view class="start_li" v-for="(item,index) in start_li">
+					<view class="star_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
+						<image :src="item.head_portrait" mode="aspectFill" ></image>
 						<view>
 							<image v-if="item.identity_id==1" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 							<image v-if="item.identity_id==2" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
 						</view>
 					</view>
 					<view class="star_name">{{item.nickname}}</view>
-					<view v-if="item.identity_id==1" class="star_btn">关注</view>
-					<view v-if="item.identity_id==2" class="star_btn star_btn1">已关注</view>
+					<view v-if="item.is_attention==1" class="star_btn" @tap.stop="guanzhuFuc(item.user_id,'affirm')">关注</view>
+					<view v-if="item.is_attention==2" class="star_btn star_btn1" @tap.stop="guanzhuFuc(item.user_id,'cancel')">已关注</view>
 				</view>
 			</view>
 		</scroll-view>
@@ -236,6 +236,91 @@
 			])
 		},
 		methods: {
+			guanzhuFuc(id,key){
+				var that =this
+				var data={
+					token:that.loginMsg.userToken,
+					type:2,
+					id:id,
+					operate:key,
+				}
+				if(key=='affirm'){
+					service.P_post('/attention/operation',data).then(res => {
+					  console.log(res)
+						that.btnkg=0
+						if(res.code==-1){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==0&&res.msg=='请先登录账号~'){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==1){
+							that.getdata()
+							uni.showToast({
+								icon:'none',
+								title:'操作成功'
+							})
+						}else{
+							
+						}
+					}).catch(e => {
+						that.btnkg=0
+					  console.log(e)
+						uni.showToast({
+							icon:'none',
+							title:'操作失败'
+						})
+					})
+					return
+				}
+				wx.showModal({
+					title: '提示',
+					content: '是否取消关注?',
+					success (res) {
+						if (res.confirm) {
+							console.log('用户点击确定')
+							service.P_post('/attention/operation',data).then(res => {
+							  console.log(res)
+								that.btnkg=0
+								if(res.code==-1){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==0&&res.msg=='请先登录账号~'){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==1){
+									that.getdata()
+									uni.showToast({
+										icon:'none',
+										title:'操作成功'
+									})
+								}else{
+									
+								}
+							}).catch(e => {
+								that.btnkg=0
+							  console.log(e)
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消')
+						}
+					}
+				})
+				
+				
+			},
 			getdata() {
 				var that = this
 				var datas = {
