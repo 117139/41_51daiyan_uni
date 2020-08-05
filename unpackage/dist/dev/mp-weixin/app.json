@@ -46,7 +46,8 @@
         "my_rz2/my_rz2",
         "my_rz3/my_rz3",
         "daiyan_fabu/daiyan_fabu",
-        "daiyan_fabu_ok/daiyan_fabu_ok"
+        "daiyan_fabu_ok/daiyan_fabu_ok",
+        "my_setBeizhu/my_setBeizhu"
       ]
     },
     {
@@ -151,5 +152,5 @@
     "van-stepper": "./wxcomponents/vant/stepper/index",
     "van-popup": "./wxcomponents/vant/popup/index"
   },
-  "sitemapLocation": "sitemap90.json"
+  "sitemapLocation": "sitemap44.json"
 }

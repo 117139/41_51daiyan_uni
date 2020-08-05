@@ -4,27 +4,31 @@
 		
 		  <!-- 代言圈 -->
 		  <view class="quan_list">
-		    <view class="quan_li" v-for="(item,idx) in start_li">
+		    <view class="quan_li" v-for="(item,idx) in StarText_list">
 		      <view class="quan_user_box">
-		        <image @tap="jump" data-url="/pages/my_index/my_index" class="quan_user_tx" src="/static/images/tx.png" mode="aspectFill"></image>
+		        <image @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id" class="quan_user_tx" :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
 		        <view class="quan_user_msg">
-		          <view class="quan_user_name">倪小丫 <image src="/static/images/star_b.png"></image></view>
-		          <view class="quan_user_time"><text>10-14 18:03</text><text>演员</text></view>
+		          <view class="quan_user_name">{{item.user_nickname}} <image src="/static/images/star_b.png"></image></view>
+		          <view class="quan_user_time">
+								<text>10-14 18:03</text><text>演员</text>
+								<!-- <text>{{filter.getDateTime(item.create_time)}}</text>
+								<text v-if="item.use_identity_id==1">明星</text>
+								<text v-if="item.use_identity_id==2">达人</text> -->
+							</view>
 		        </view>
 		        <!-- <view class="quan_user_btn">为我投票</view> -->
 		      </view>
 		      <view class="quan_msg">
-		        <view class="oh4  quan_msg_text">可能这辈子都戒不掉米饭了，吃好饭的用好锅，我为苏泊尔智能电饭锅代言。</view>
-		        <view v-if="idx==2" class="quan_msg_img">
-		          <image class="one" src="/static/images/goods.png" mode="aspectFill"></image>
+		        <view class="oh4  quan_msg_text">{{item.content}}</view>
+		        <view v-if="item.img.length==1" class="quan_msg_img">
+		          <image class="one" :src="filter.imgIP(item.img[0])" :data-src="filter.imgIP(item.img[0])" @tap.stop="pveimg" mode="aspectFill"></image>
 		        </view>
 		        <view v-else class="quan_msg_img">
-		          <image :src="filter.imgIP('goods.png')"  mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
-		          <image :src="filter.imgIP('goods.png')"  mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
-		          <image :src="filter.imgIP('goods.png')"  mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
+		          <image v-for="(item1,idx1) in item.img" :src="filter.imgIP(item1)"  mode="aspectFill" :data-src="filter.imgIP(item1)" @tap.stop="pveimg"></image>
+		          
 		        </view>
 		      </view>
-		      <view class="quan_goods"  @tap="jump" data-url="/pages/details/details">
+		      <view class="quan_goods"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 		        <image class="quan_goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
 		        <view class="quan_goods_msg">
 		          <view class="quan_goods_name oh1">苏泊尔IH家用大容量智能电饭锅</view>
@@ -77,106 +81,36 @@
 				homeSeek: '',
 				homeTeacher: '',
 				homeVideo: '',
-				start_li:[
-				  {
-				    name: '未达标商户',
-				    img: '/static/images/1_03.jpg',
-				    url: '/pages/list/list',
-				    type: '1'
-				  },
-				  {
-				    name: '达标商户',
-				    img: '/static/images/1_05.jpg',
-				    url: '/pages/list/list',
-				    type: '2'
-				  },
-				  {
-				    name: '巡机单',
-				    img: '/static/images/1_09.jpg',
-				    url: '/pages/list/list',
-				    type: '2'
-				  },
-				  {
-				    name: '已巡机',
-				    img: '/static/images/1_10.jpg',
-				    url: '/pages/list/list',
-				    type: '3'
-				  },
-				  {
-				    name: '装机单',
-				    img: '/static/images/1_13.jpg',
-				    url: '/pages/list/list',
-				    type: '4'
-				  },
-				  {
-				    name: '已装机',
-				    img: '/static/images/1_14.jpg',
-				    url: '/pages/list/list',
-				    type: '5'
-				  },
-				  {
-				    name: '维护单',
-				    img: '/static/images/1_17.jpg',
-				    url: '/pages/list/list',
-				    type: '6'
-				  },
-				  {
-				    name: '已维护',
-				    img: '/static/images/1_18.jpg',
-				    url: '/pages/list/list',
-				    type: '7'
-				  },
-				  {
-				    name: '换机单',
-				    img: '/static/images/2_09.jpg',
-				    url: '/pages/list/list',
-				    type: '8'
-				  },
-				  {
-				    name: '已换机',
-				    img: '/static/images/2_10.jpg',
-				    url: '/pages/list/list',
-				    type: '9'
-				  },
-				  {
-				    name: '撤机单',
-				    img: '/static/images/2_13.jpg',
-				    url: '/pages/list/list',
-				    type: '10'
-				  },
-				  {
-				    name: '已撤机',
-				    img: '/static/images/2_14.jpg',
-				    url: '/pages/list/list',
-				    type: '11'
-				  },
-				  {
-				    name: '终端交易查询',
-				    img: '/static/images/2_17.jpg',
-				    url: '/pages/list/list',
-				    type: '12'
-				  },
-				  {
-				    name: '应收列表',
-				    img: '/static/images/2_18.jpg',
-				    url: '/pages/list/list',
-				    type: '13'
-				  },
-				  
-				],
+				start_li:[],
 				indicatorDots: true,
 				autoplay: true,
 				interval: 3000,
 				duration: 1000,
-				circular: true
+				circular: true,
+				
+				
+				g_id:'',
+				btn_kg:0,
+				size:20,
+				
+				StarText_list:[],					//代言人说列表
+				StarText_page:1,
 			}
+		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			]),
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
-		  var that =this
-		  // that.getdata()
+		 
+		  this.g_id=options.id
+		  this.onRetry()
 		},
 		
 		/**
@@ -184,9 +118,6 @@
 		 */
 		onReady: function () {
 		
-		},
-		retry() {
-		  this.getdata()
 		},
 		/**
 		 * 生命周期函数--监听页面显示
@@ -213,15 +144,14 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  uni.stopPullDownRefresh();
-		  // this.getdata()
+		 this.onRetry()
 		},
 		
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
-		
+			this.getStarTextlist()
 		},
 		
 		/**
@@ -231,55 +161,65 @@
 		
 		},
 		methods: {
-			getdata(){
-			  ///api/homeIndex
-			  var that = this
-			  const htmlStatus1 = htmlStatus.default(that)
-			  wx.request({
-			    url: app.IPurl + '/api/homeIndex',
-			    data: {},
-			    header: {
-			      'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    dataType: 'json',
-			    method: 'get',
-			    success(res) {
-			      // 停止下拉动作
-			      wx.stopPullDownRefresh();
-			      htmlStatus1.finish()
-			      console.log(res.data)
-			      if (res.data.code == 1) {  //数据为空
+			onRetry(){
+				this.StarText_page=1
+				this.getStarTextlist()
+			},
+			//获取代言人说列表
+			getStarTextlist() {
+				let that = this
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+				}
+				var jkurl = '/goods/advocacySay'
+				var datas = {
+					gid:that.g_id,
+					token: that.loginMsg.userToken,
+					page: that.StarText_page,
+					size:that.size
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
 			
-			        that.setData({
-			          banner: res.data.data.homeBanner,
-			          homeSeek: res.data.data.homeSeek,
-			          homeTeacher: res.data.data.homeTeacher,
-			          homeVideo: res.data.data.homeVideo,
-			        })
-			      } else {
-			        htmlStatus1.error()
-			        wx.showToast({
-			          icon: 'none',
-			          title: '加载失败'
-			        })
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
 			
-			      }
-			    },
-			    fail() {
-			      // 停止下拉动作
-			      wx.stopPullDownRefresh();
-			      htmlStatus1.error()
-			      wx.showToast({
-			        icon: 'none',
-			        title: '加载失败'
-			      })
+						if (datas.length == 0) {
+							if(that.StarText_page>1){
+								uni.showToast({
+									icon: 'none',
+									title: '暂无更多数据'
+								})
+							}
+							that.btn_kg=0
+							return
+						}
+						if(that.StarText_page==1){
+							that.StarText_list =datas
+						}else{
+							
+							that.StarText_list = that.StarText_list.concat(datas)
+						}
+						that.btn_kg=0
+						that.StarText_page++
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
 			
-			    },
-			    complete() {
-			      // // 停止下拉动作
-			      // wx.stopPullDownRefresh();
-			    }
-			  })
 			},
 			zan(e){
 			  console.log(e.currentTarget.dataset.id)

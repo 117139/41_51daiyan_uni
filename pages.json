@@ -111,16 +111,15 @@
 				"navigationBarBackgroundColor": "#F5C33D",
 				"navigationBarTextStyle": "white"
 			}
+		}, {
+			"path": "pages/xvideo/xvideo",
+			"style": {
+				"disableScroll": true,
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
 		}
-	    ,{
-            "path" : "pages/xvideo/xvideo",
-            "style" : {
-							"disableScroll": true,
-							"navigationBarTextStyle": "white",
-							"navigationStyle": "custom"
-						}
-        }
-    ],
+	],
 
 	"subPackages": [{
 			"root": "pagesA",
@@ -285,6 +284,11 @@
 				}, {
 					"path": "daiyan_fabu_ok/daiyan_fabu_ok",
 					"style": {}
+				}, {
+					"path": "my_setBeizhu/my_setBeizhu",
+					"style": {
+						"navigationBarTitleText": "设置备注"
+					}
 				}
 			]
 		},
@@ -499,6 +503,6 @@
 			"provider": "wx50b5593e81dd937a"
 		}
 	}
-	
+
 
 }

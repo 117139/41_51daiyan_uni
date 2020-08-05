@@ -5,46 +5,17 @@
 			<view class="h_main">
 			
 				<view class="goods_list">
-					<view class="goods_li" @tap="jump" data-url="/pages/details/details">
-						<image class="goods_img" :src="filter.imgIP('/images/goods15_02.jpg')"  mode="aspectFill"></image>
+					<view v-for="(item,idx) in LaterBuy_list" class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
+						<image class="goods_img" :src="filter.imgIP(item.img[0])"  mode="aspectFill"></image>
 						<view class="goods_msg">
-							<view class="oh1">奶油碧根果 整箱</view>
+							<view class="oh2">{{item.title}}</view>
 							<view class="goods_pri">
-								<text>￥27</text>
-								<text class="pr2">￥37</text>
+								<text>￥{{item.v_current_price}}</text>
+								<text class="pr2">￥{{item.v_original_price}}</text>
 							</view>
 						</view>
 					</view>
-					<view class="goods_li"  @tap="jump" data-url="/pages/details/details">
-						<image class="goods_img" :src="filter.imgIP('/images/goods15_02.jpg')"  mode="aspectFill"></image>
-						<view class="goods_msg">
-							<view class="oh1">奶油碧根果 整箱</view>
-							<view class="goods_pri">
-								<text>￥27</text>
-								<text class="pr2">￥37</text>
-							</view>
-						</view>
-					</view>
-					<view class="goods_li"  @tap="jump" data-url="/pages/details/details">
-						<image class="goods_img" :src="filter.imgIP('/images/goods15_02.jpg')"  mode="aspectFill"></image>
-						<view class="goods_msg">
-							<view class="oh1">奶油碧根果 整箱</view>
-							<view class="goods_pri">
-								<text>￥27</text>
-								<text class="pr2">￥37</text>
-							</view>
-						</view>
-					</view>
-					<view class="goods_li"  @tap="jump" data-url="/pages/details/details">
-						<image class="goods_img" :src="filter.imgIP('/images/goods15_02.jpg')"  mode="aspectFill"></image>
-						<view class="goods_msg">
-							<view class="oh2">奶油碧根果奶油碧根果奶油碧根果 整箱</view>
-							<view class="goods_pri">
-								<text>￥27</text>
-								<text class="pr2">￥37</text>
-							</view>
-						</view>
-					</view>
+					
 				</view>
 				
 			</view>
@@ -63,71 +34,146 @@
 	export default {
 		data() {
 			return {
+				btn_kg:0,
+				g_id:'',
 				dy_mon:0,
 				dy_num:0,
 				dy_pri:0,
 				
+				LaterBuy_list:[],					//回头客都在买列表
+				LaterBuy_page:1,
+				size:20,
 				
 				s_type: 0,
 				data_list:[1,1,1,1,1]
 			}
 		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			]),
+		},
+		/**
+		 * 生命周期函数--监听页面加载
+		 */
+		onLoad: function (options) {
+			this.g_id=options.id
+			this.onRetry()
+		},
+		
+		/**
+		 * 生命周期函数--监听页面初次渲染完成
+		 */
+		onReady: function () {
+		
+		},
+		
+		/**
+		 * 生命周期函数--监听页面显示
+		 */
+		onShow: function () {
+		
+		},
+		
+		/**
+		 * 生命周期函数--监听页面隐藏
+		 */
+		onHide: function () {
+		
+		},
+		
+		/**
+		 * 生命周期函数--监听页面卸载
+		 */
+		onUnload: function () {
+		
+		},
+		
+		/**
+		 * 页面相关事件处理函数--监听用户下拉动作
+		 */
+		onPullDownRefresh: function () {
+			this.onRetry()
+		},
+		
+		/**
+		 * 页面上拉触底事件的处理函数
+		 */
+		onReachBottom: function () {
+			this.getLaterBuylist()
+		},
+		
+		/**
+		 * 用户点击右上角分享
+		 */
+		onShareAppMessage: function () {
+			
+		},
 		methods: {
-			/**
-			 * 生命周期函数--监听页面加载
-			 */
-			onLoad: function (options) {
+			onRetry(){
+				
+				this.LaterBuy_page=1
+				this.getLaterBuylist()
+			},
+			//获取回头客都在买
+			getLaterBuylist() {
+				let that = this
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+				}
+				var jkurl = '/goods/LaterBuy'
+				var datas = {
+					gid:that.g_id,
+					token: that.loginMsg.userToken,
+					page: that.LaterBuy_page,
+					size:that.size
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+			
+						if (datas.length == 0) {
+							if(that.LaterBuy_page>1){
+								uni.showToast({
+									icon: 'none',
+									title: '暂无更多数据'
+								})
+							}
+							that.btn_kg=0
+							return
+						}
+						if(that.LaterBuy_page==1){
+							that.LaterBuy_list =datas
+						}else{
+							
+							that.LaterBuy_list = that.LaterBuy_list.concat(datas)
+						}
+						that.btn_kg=0
+						that.LaterBuy_page++
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
 			
 			},
 			
-			/**
-			 * 生命周期函数--监听页面初次渲染完成
-			 */
-			onReady: function () {
-			
-			},
-			
-			/**
-			 * 生命周期函数--监听页面显示
-			 */
-			onShow: function () {
-			
-			},
-			
-			/**
-			 * 生命周期函数--监听页面隐藏
-			 */
-			onHide: function () {
-			
-			},
-			
-			/**
-			 * 生命周期函数--监听页面卸载
-			 */
-			onUnload: function () {
-			
-			},
-			
-			/**
-			 * 页面相关事件处理函数--监听用户下拉动作
-			 */
-			onPullDownRefresh: function () {
-			  wx.stopPullDownRefresh();
-			},
-			
-			/**
-			 * 页面上拉触底事件的处理函数
-			 */
-			onReachBottom: function () {
-			
-			},
-			
-			/**
-			 * 用户点击右上角分享
-			 */
-			onShareAppMessage: function () {
-			
-			},
 			ss_type: function (e) {
 			  var that = this
 			  if (that.s_type == e.currentTarget.dataset.type) return
@@ -236,6 +282,7 @@
 	  font-family: "PingFangSC";
 	  color: rgb(153, 153, 153);
 	  text-decoration: line-through;
+		margin-left: 5upx;
 }
 /* list_tab */
 .list_tab{

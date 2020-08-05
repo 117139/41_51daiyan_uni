@@ -12,7 +12,10 @@
 							<image v-if="item.identity_id==2" class="star_v" :src="filter.imgIP('/static_s/51daiyan/images/images/star_d.png')"></image>
 						</view>
 						<view class="user_msg">
-							<view class="user_name"><text>{{datas.nickname}}</text> </view>
+							<view class="user_name">
+								<text>{{datas.remark?datas.remark:datas.nickname}}</text> 
+								<text v-if="loginMsg.id!=datas.id" @tap="jump" :data-url="'/pagesA/my_setBeizhu/my_setBeizhu?id='+datas.id+'&name='+datas.remark" class="iconfont iconbeizhu" style="margin-left: 10upx;"></text>
+							</view>
 							<view class="daiyan_lv"><text class="iconfont iconxingzhuang60kaobei2"></text>代言星级 {{datas.advocacy_grade_value}}</view>
 						</view>
 						<view v-if="loginMsg.id!=datas.id" class="gz_btn gz_btn1" @tap="jump" data-url="/pages/lts/lts">私信</view>
@@ -20,6 +23,7 @@
 						<view v-if="loginMsg.id!=datas.id&&datas.is_attention==1" class="gz_btn" @tap="guanzhuFuc(datas.id,'affirm')">+关注</view>
 					</view>
 					<view class="dy_id">
+						<text v-if="datas.remark">昵称：{{datas.nickname}}</text>
 						<text>代言号：{{datas.identification_id}}</text>
 						<text>粉丝：{{datas.fans_number}}</text>
 					</view>
@@ -161,6 +165,7 @@
 	export default {
 		data() {
 			return {
+				uid:'',
 				btn_kg: 0,
 				s_type: 1,
 				datas: '',
@@ -196,7 +201,7 @@
 		 * 生命周期函数--监听页面显示
 		 */
 		onShow: function() {
-
+			this.getdata()
 		},
 
 		/**
@@ -449,6 +454,15 @@
 				service.pveimg(e)
 			},
 			jump(e) {
+				var that =this
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+					setTimeout(function(){
+						that.btn_kg=0
+					},2000)
+				}
 				service.jump(e)
 			}
 		}

@@ -89,6 +89,7 @@
 	  font-family: "PingFangSC";
 	  color: rgb(153, 153, 153);
 	  text-decoration: line-through;
+		margin-left: 5rpx;
 }
 /* list_tab */
 .list_tab.data-v-0c8e61fd{

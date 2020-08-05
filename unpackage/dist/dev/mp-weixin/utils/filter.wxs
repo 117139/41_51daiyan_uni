@@ -5,9 +5,15 @@ var dateFormat = function(date) {
     return dates[0] + "年" + dates[1] + "月" + dates[2] + "日";
 }
 var imgIP=function(img){
-	var newimg =imgip+img
+	if(!img){
+		return
+	}
+	if(img.indexOf('://')== -1){
+	  img = imgip+img
+	}
+	// var newimg =imgip+img
 	// console.log(newimg)
-	return newimg
+	return img
 }
 var imgIP_video=function(img){
 	if(!img){

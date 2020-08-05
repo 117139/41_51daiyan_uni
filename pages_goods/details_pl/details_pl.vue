@@ -6,35 +6,34 @@
 		  <view class="pj_box">
 		
 		    <view class="pj_bq">
-		      <view :class="pl_type==0?'cur':''" data-idx="0" @tap="qh_pl">全部</view>
-		      <view :class="pl_type==1?'cur':''" data-idx="1" @tap="qh_pl">有图（111）</view>
-		      <view :class="pl_type==2?'cur':''" data-idx="2" @tap="qh_pl">质量很好（111）</view>
-		      <view :class="pl_type==3?'cur':''" data-idx="3" @tap="qh_pl">性价比高（62）</view>
-		      <view :class="pl_type==4?'cur':''" data-idx="4" @tap="qh_pl">发货快（53）</view>
+		      <view :class="pl_type==-1?'cur':''" data-idx="-1" @tap="qh_pl">全部</view>
+		      <view v-for="(item,idx) in comment_tag" :class="pl_type==idx?'cur':''" data-idx="idx" @tap="qh_pl">{{item.name}}（{{item.number}}）</view>
 		    </view>
-		    <view class="pj_li" v-for="(item,idx) in data_list">
+				<view v-if="star_list.length==0" class="zanwu">暂无数据</view>
+		    <view class="pj_li" v-for="(item,idx) in star_list">
 		      <view class="pj_d1">
 		        <view class="pj_ren">
 		          <view class="user_tx">
-		            <image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+		            <image class="user_tx" :src="filter.imgIP(item.head_portrait)"></image>
 		          </view>
-		          Y***I
+		          {{item.nickname}}
 		        </view>
-		        <view class="pj_time">17小时前</view>
+		        <view class="pj_time">{{item.create_time}}</view>
 		      </view>
-		      <view class="pj_d2">上次就买了，感觉太好喝了，这次又来光顾一下，这次又来光顾一下，这次又来光顾一下，这次又来光顾一下。</view>
-		      <view v-if="idx==2&&idx!=3" class="quan_msg_img">
-		        <image class="one" :src="filter.imgIP('goods.png')" mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
+		      <view class="pj_d2">{{item.comment}}</view>
+		      <view v-if="item.comment_pic.length==1" class="quan_msg_img">
+		        <image class="one" :src="filter.imgIP(item.comment_pic[0])" mode="aspectFill" :data-src="filter.imgIP(item.comment_pic[0])" @tap.stop="pveimg"></image>
 		      </view>
-		      <view v-if="idx!=2&&idx!=3" class="quan_msg_img">
-		        <image :src="filter.imgIP('goods.png')" mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
-		        <image :src="filter.imgIP('goods.png')" mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
-		        <image :src="filter.imgIP('goods.png')" mode="aspectFill" :data-src="filter.imgIP('goods.png')" @tap.stop="pveimg"></image>
+		      <view v-if="item.comment_pic.length>1" class="quan_msg_img">
+		        <image v-for="(item1,idx1) in item.comment_pic" 
+						:src="filter.imgIP(item1)" mode="aspectFill"
+						 :data-src="filter.imgIP(item1)" :data-array="filter.getgimgarrIP(item.comment_pic)" @tap.stop="pveimg"></image>
+		        
 		      </view>
 		      <view class="quan_li_cz">
 		
 		        <view class="cz_li" @tap.stop="zan" data-id="idx">
-		          <text class="iconfont iconzan"></text>1566</view>
+		          <text class="iconfont iconzan"></text>{{item.like_sum}}</view>
 		      </view>
 		    </view>
 		  </view>
@@ -44,33 +43,43 @@
 		  	<view class="tk_popup_box">
 		  		<view class="popopBox1">
 		  			<view class="goodsimg">
-		  				<image :src="filter.imgIP('goods_02.jpg')" :data-src="filter.imgIP('goods_02.jpg')" mode="aspectFill" @tap="previewImage"></image>
+		  				<image :src="filter.imgIP(show_img[0])" :data-src="filter.imgIP(show_img[0])" mode="aspectFill" @tap="pveimg"></image>
 		  			</view>
 		  			<view class="goodstkjg">
 		  				<view class="closebtn" @tap="onClose">
-		  					<image src="/static/images/closebtn_03.jpg"></image>
+		  					<image :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image>
 		  				</view>
-		  				<view class="goods_pri_h">￥{{guige[type1[0]].pri}}</view>
-		  				<view class="kucun">库存{{guige[type1[0]].kucun}}件</view>
-		  				<view class="tkname oh2">已选择：{{guige[type1[0]].value1}}</view>
-		  				<!-- <view class="tkname oh2">YI-DONG SPORT 屹动专业运动鞋 专业为中小学生运动打造的运动鞋</view> -->
+		  				<view class="goods_pri_h">￥{{show_pri}}</view>
+		  				<view class="kucun" v-if="guige_select.length>0">库存{{show_num}}件</view>
+		  				<view class="tkname oh2">已选择：{{ggshow1}}</view>
 		  			</view>
 		  		</view>
-		  		<block >
-		  			<view class="tkguigetit">类型</view>
+		  		<block v-if="guige_arr.length>0" v-for="(item,idx) in guige_arr">
+		  			<view class="tkguigetit">{{item.name}}</view>
 		  			<view class="guigeBox">
-		  				<text class="guigeOne" :class="idx1==type1[0]?'cur':''"
-		  					v-for="(item1,idx1) in guige"
-		  									
-		  									:data-gg="'0'"
-		  									:data-gg1="idx1"
-		  									@tap="selegg">{{item1.value1}}</text>
+		  				<!-- :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx) }" -->
+		  				<block v-for="(item1,idx1) in item.value">
+		  					<text class="guigeOne"
+		  						v-if="ggShow(item.name,item1,idx)"
+		  						:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
+		  						:data-ggidx="idx"
+		  						:data-name="item.name"
+		  						:data-value="item1"
+		  						@tap="selegg">{{item1}}</text>
+		  					<text class="guigeOne"
+		  						v-else
+		  						:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
+		  						:data-ggidx="idx"
+		  						:data-name="item.name"
+		  						:data-value="item1"
+		  						>{{item1}}</text>
+		  				</block>
 		  			</view>
 		  		</block>
 		  		<view class="countnum">
 		  			<text>购买数量</text>
-		  			<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" :value="cnum"
-		  			 :data-selec="idx" @input="onChange" @change="onChange" />
+		  			<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="show_num"
+		  			  @input="onChange" @change="onChange" />
 		  		</view>
 		  		<view class="b_view_o"></view>
 		  		<view class="czbtnG">
@@ -116,7 +125,7 @@
 		},
 		data() {
 			return {
-				pl_type:0,
+				pl_type:-1,
 				data_list:[
 				  { value1: '苏门答腊黄金曼特宁深度烘培' },
 				  { value1: '耳挂咖啡' },
@@ -126,32 +135,59 @@
 				
 				cur_swiper:1,
 				
-				
-				
+				btn_kg:0,
+				g_id:'',
 				sheetshow: false,         //规格弹框控制
-				sheetshow1: false,        
+				sheetshow1: false,  
 				
-				dyr_type:0,
-				showcan: false,
-				goods_total_limit: '',  //商品阶梯
-				guige: [
-				  { value1: '苏门答腊黄金曼特宁深度烘培', pri: 48, kucun:900 },
-				  { value1: '耳挂咖啡', pri: 49, kucun: 1900 },
-				  { value1: '耳挂咖啡1', pri: 41, kucun: 2900 },
-				  { value1: '耳挂咖啡2', pri: 42, kucun: 3900 },
-				  { value1: '耳挂咖啡3', pri: 43, kucun: 4900 },
-				],  //规格
-				type1: [0],         //规格index
+				goodsData:'',
+				guige_arr:[],
+				
+				guige_arr_show:[],
+				guige_select:[],
+				
+				show_pri:0,
+				show_img:0,
+				show_num:0,
+				
+				
+				type1: [-1],         //规格index
+				ggshow1_jjj:[],
 				cnum: 1,//数量
-				goods_sku_id: 0,  //商品id
+				
+				star_list:[],
+				star_page:1,
+				size:20,
+				comment_tag:[]
 			}
 		},
-		methods: {
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			]),
+			ggshow1(){
+				var arr=this.guige_select
+				if(!arr){
+					return
+				}
+				var  newarr=[]
+				for(var i=0;i<arr.length;i++){
+					if(arr[i].value){
+						newarr.push(arr[i].value)
+					}
+				}
+				console.log(newarr.join(','))
+				return newarr.join(',')
+			}
+		},
 			/**
 			 * 生命周期函数--监听页面加载
 			 */
 			onLoad: function (options) {
-			  
+			  this.g_id=options.id
+			  this.onRetry()
 			},
 			
 			/**
@@ -188,14 +224,14 @@
 			 * 页面相关事件处理函数--监听用户下拉动作
 			 */
 			onPullDownRefresh: function () {
-			  wx.stopPullDownRefresh();
+			  this.onRetry()
 			},
 			
 			/**
 			 * 页面上拉触底事件的处理函数
 			 */
 			onReachBottom: function () {
-			
+				this.getStarlist()
 			},
 			
 			/**
@@ -204,103 +240,319 @@
 			onShareAppMessage: function () {
 			
 			},
-			qh_pl(e){
-			  console.log(e.currentTarget.dataset.idx)
-			  this.setData({
-			    pl_type: e.currentTarget.dataset.idx
-			  })
+		methods: {
+			onRetry(){
+				this.getSku()
+				this.star_page=1
+				this.getStarlist()
 			},
-			swiper_change(e){
-			  console.log(e.detail )
-			  var num = e.detail.current+1
-			  this.setData({
-			    cur_swiper:num
-			  })
+			//获取代言人列表
+			getStarlist() {
+				let that = this
+				// if(that.btn_kg==1){
+				// 	return
+				// }else{
+				// 	that.btn_kg=1
+				// }
+				var jkurl = '/goods/goodsAppraise'
+				var datas = {
+					gid:that.g_id,
+					tag:that.tag,
+					is_later:1,     ////1是全部的评论  2：是回头客说 不是第一次购买评论的
+					token: that.loginMsg.userToken,
+					page: that.star_page,
+					size:that.size
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data.comment
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+			
+						if (datas.length == 0) {
+							if(that.star_page>1){
+								uni.showToast({
+									icon: 'none',
+									title: '暂无更多数据'
+								})
+							}
+							
+							that.btn_kg=0
+							return
+						}
+						if(that.star_page==1){
+							that.star_list =datas
+						}else{
+							
+							that.star_list = that.star_list.concat(datas)
+						}
+						that.btn_kg=0
+						that.star_page++
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
 			},
-			//数量
-			onChange(e) {
-			  let idx = e.currentTarget.dataset.selec
-			  console.log(e.detail)
-			  // this.data.goods_sele[idx].num=e.detail
-			  this.setData({
-			    cnum: e.detail
-			  });
+			
+			getSku(){
+				var that =this
+				var datas={
+					token:that.loginMsg.userToken,
+					id:that.g_id
+				}
+				// 单个请求
+				service.P_get('/goods/details',datas).then(res => {
+				  console.log(res)
+					if(res.code==1){
+						// that.catelist=res.data
+						var guige_sku=JSON.stringify(res.data.attr.sku_all)
+						var guige_skuarr=JSON.stringify(res.data.attr.specification)
+						console.log(guige_sku)
+						that.guige=JSON.parse(guige_sku)
+						that.guige_arr_show=JSON.parse(guige_skuarr)
+						that.guige_arr=res.data.attr.specification
+						that.goodsData=res.data
+						that.comment_tag=res.data.comment.tag
+						
+						that.show_img=res.data.img
+						that.show_pri=res.data.current_price
+						that.show_num=0
+					}
+				}).catch(e => {
+				  console.log(e)
+					uni.showToast({
+						icon:'none',
+						title:'获取数据失败'
+					})
+				})
+				
+				
 			},
-			txtype_fuc(e) {
-			  console.log(e.currentTarget.dataset.type)
-			  this.setData({
-			    dyr_type: e.currentTarget.dataset.type
-			  })
+			
+			ggShow(name,value,idx){
+				var that =this
+				var newselect={
+					name:name,
+					value:value,
+				}
+				// var show_select=JSON.parse(JSON.stringify(that.guige_select))
+				// show_select[idx]=newselect
+				
+				
+				
+				
+				var show_arr=[]
+				for(var i=0;i<that.guige.length;i++){
+					var str=JSON.stringify(that.guige[i].sku)
+					var push_type=true
+					for(var s=0;s<that.guige_arr.length;s++){
+						var a=false
+						if(that.guige_select[s]){
+							a=JSON.stringify(that.guige_select[s])
+						}
+						if(s==idx){
+							a=JSON.stringify(newselect)
+						}
+						
+						console.log(a=='false')
+						if(!a||a=='false'){
+							push_type=true
+							// console.log('跳过'+a)
+						}else if(str.indexOf(a)==-1){
+							// console.log(that.guige[i].sku)
+							// console.log('-1'+a)
+							push_type=false
+							break
+						}
+					
+					}
+					// console.log(a,push_type)
+					if(push_type){
+						show_arr.push(that.guige[i])
+					}
+					
+				}
+				// console.log(show_arr)
+				// console.log(value,show_arr)
+				if(show_arr.length>0){
+					return true
+				}
+				return false
+				// var str=that.guige_arr_show[idx].value
+				// var a=value
+				// if(str.indexOf(a)!=-1){
+				// 	return true
+					
+				// }
+				// return false
 			},
-			xz_dyr(){
-			  console.log(this.data.dyr_type)
-			  this.setData({
-			    sheetshow1: false
-			  })
-			},
+			
 			//选择规格
 			selegg(e) {
-			  
-			  this.type1[e.currentTarget.dataset.gg] = e.currentTarget.dataset.gg1
+				var that=this
+			  // console.log(e.currentTarget.dataset.name)
+			  console.log(e.currentTarget.dataset.value)
+			  // console.log(e.currentTarget.dataset.ggidx)
+				
+				var newselect={
+					name:e.currentTarget.dataset.name,
+					value:e.currentTarget.dataset.value,
+				}
+			  // that.type1[e.currentTarget.dataset.ggidx] = newselect
 			
-			  this.type1= this.type1
-				console.log(this.type1)
-			  var ggs = this.guige
-			  var ggidxs = this.type1
-			
-			  var ggshow1 = []
-			  var ggshowid = []
-				return
-			  // var ggjson = '{'
-			  // for (var i = 0; i < ggs.length; i++) {
-			  //   console.log(ggidxs[i])
-			  //   if (ggidxs[i] != -1) {
-			  //     console.log(ggs[i].values)
-			  //     ggshow1.push(ggs[i].values[ggidxs[i]].attr_value)
-			  //     ggshowid.push(ggs[i].values[ggidxs[i]].id)
-			  //     ggjson += '"' + ggs[i].name + '":"' + ggs[i].values[ggidxs[i]].attr_value + '"'
-			  //     if (i != ggs.length - 1) {
-			  //       ggjson += ','
-			  //     }
-			  //   }
-			  // }
-			  // var ggshow2 = ggshow1.join('，')
-			  // ggjson += "}"
-			  // // ggjson=JSON.parse(ggjson)
-			  var newpri = this.bSort(ggshowid)
-			  newpri = newpri.join('_')
-			  console.log(newpri)
-			  var json1 = this.goods.sku_data
-			  var mrpri = this.goods.goods_real_price
-			  var mrpimg = this.goods.goods_pic
-			  this.newprice= mrpri
-			   this.newimg= mrpimg
-			   this.sku_id= 0
-			  for (var key in json1) {
-			    // console.log(key, newpri, newpri == key);     //获取key值
-			    if (key == newpri) {
-			      console.log(json1[key])
-			        this.newprice= json1[key].sku_price
-			        this.sku_id= json1[key].sku_id
-			        this.newimg= json1[key].sku_images
-			      
-			    }
-			    // console.log(json1[key]); //获取对应的value值
-			  }
-			  // console.log(this.goods.sku_data['"'+newpri+'"'])
-			  
-			    this.ggshow= ggshow2
-			    this.ggjson= ggjson
-			  
+			  // this.type1= this.type1
+			  // var ggs = this.guige
+			  // var ggidxs = this.type1
+				 var str=JSON.stringify(that.guige_select)
+				 var a=JSON.stringify(newselect)
+				
+				 
+				 if(str.indexOf(a)==-1){
+				 	 that.$set(that.guige_select,e.currentTarget.dataset.ggidx,newselect)
+				 	
+				 }else{
+					 // console.log(str.indexOf(a)==-1)
+					  that.$set(that.guige_select,e.currentTarget.dataset.ggidx,false)
+						// console.log(that.guige_select)
+				 }
+				 // console.log(str.indexOf(a)==-1)
+			  // console.log(a,str)
+				var show_arr=[]
+				for(var i=0;i<that.guige.length;i++){
+					// console.log('---------------------------------------')
+					// console.log({...that.guige[i].guige,newselect})
+					// console.log('---------------------------------------')
+					// console.log(that.guige[i].guige.indexOf(newselect.value))
+					var str=JSON.stringify(that.guige[i].sku)
+					var push_type=true
+					for(var s=0;s<that.guige_select.length;s++){
+						
+						if(!that.guige_select[s]){
+							push_type=true
+						}else{
+							var a=JSON.stringify(that.guige_select[s])
+							if(a.length>0&&str.indexOf(a)==-1){
+								// console.log(that.guige[i].sku)
+								push_type=false
+								break
+								
+							}
+						}
+						
+					}
+					if(push_type){
+						show_arr.push(that.guige[i])
+					}
+					
+				}
+				// console.log('show_arr---------------------->')
+				// console.log(show_arr)
+				var idx=e.currentTarget.dataset.ggidx
+				var kucun_num=0
+				var pri=0
+				var sku_img=''
+				for(var i=0;i<	that.guige_arr.length;i++){
+					var newVal=[]
+					
+					if(i!=idx){
+						
+						for(var j=0;j<	show_arr.length;j++){
+							for(var s=0;s<	show_arr[j].sku.length;s++){
+								
+								
+								
+								if(show_arr[j].sku[s].name==that.guige_arr[i].name){
+									var a=show_arr[j].sku[s].value
+									// console.log(that.guige_arr[i].name,a)
+									if(newVal.indexOf(a)==-1){
+										newVal.push(a)
+										if(pri==0){
+											pri=show_arr[j].current_price
+										}
+										if(sku_img==""){
+											sku_img=show_arr[j].v_img
+										}
+										kucun_num+=show_arr[j].number
+									}
+								}
+							}
+						}
+						// console.log(newVal)
+						that.$set(that.guige_arr_show[i],'value',newVal)
+						newVal=[]
+						
+					}else{
+						// that.$set(that.guige_arr_show[i],'value',that.guige_arr[i].value)
+					}
+				}
+				that.show_pri=pri
+				that.show_num=kucun_num
+				if(kucun_num<that.cnum){
+					that.cnum=kucun_num
+				}
+				if(kucun_num>0&&that.cnum==0){
+					that.cnum=1
+				}
+				that.show_img=sku_img
+				if(that.show_img.length==0){
+					that.show_img=that.goodsData.img
+				}
+				if(that.show_pri==0){
+					that.show_pri=that.goodsData.current_price
+				}
+				
 			},
+			
+			//数量
+			onChange(e) {
+				var that =this
+			  let idx = e.currentTarget.dataset.selec
+			  // console.log(e.detail)
+				if(that.guige_select.length==0){
+					uni.showToast({
+						icon:'none',
+						title:'请先选择规格'
+					})
+					this.cnum=0
+					return
+				}
+				if(this.cnum>this.show_num){
+					this.cnum=this.show_num
+					return
+				}
+			  // this.data.goods_sele[idx].num=e.detail
+			  this.cnum= e.detail
+				
+			},
+			
 			jump(e) {
+				if(this.btn_kg==1){
+					return
+				}else{
+					this.btn_kg=1
+					setTimeout(function(){
+						this.btn_kg=0
+					},1000)
+				}
 			  console.log(e.currentTarget.dataset.type)
 			  service.jump(e)
 			},
 			onClose() {
 			    this.sheetshow= false
 			    this.sheetshow1= false
-					// this.$refs.popup.close()
+					this.$refs.popup.close()
 					this.$refs.popup_goods.close()
 			},
 			sheetshow_fuc() {
@@ -315,6 +567,13 @@
 			  this.btnkg= 0
 			
 			},
+			gb_yhtk(){
+				this.$refs.popup_yh.close()
+			},
+			tkchange0(e){
+				console.log(e)
+				this.sheetshow=e.show
+			},
 			tkchange(e){
 				console.log(e)
 				this.sheetshow=e.show
@@ -323,6 +582,32 @@
 				console.log(e)
 				this.sheetshow1=e.show
 			},
+			qh_pl(e){
+			  console.log(e.currentTarget.dataset.idx)
+			  this.setData({
+			    pl_type: e.currentTarget.dataset.idx
+			  })
+			},
+			swiper_change(e){
+			  console.log(e.detail )
+			  var num = e.detail.current+1
+			  this.setData({
+			    cur_swiper:num
+			  })
+			},
+			txtype_fuc(e) {
+			  console.log(e.currentTarget.dataset.type)
+			  this.setData({
+			    dyr_type: e.currentTarget.dataset.type
+			  })
+			},
+			xz_dyr(){
+			  console.log(this.data.dyr_type)
+			  this.setData({
+			    sheetshow1: false
+			  })
+			},
+			
 		
 			//加入购物车
 			addwgc() {
@@ -1121,6 +1406,12 @@ padding: 0 10rpx;
 	background:rgba(250,233,234,1);
   border:1px solid rgba(247,85,89,1);
 	color: #F75559;
+}
+.guigeOne.goods_null{
+	background:#eee!important;
+	border:1px solid #ddd!important;
+	color: #ddd!important;
+	text-decoration:line-through ;
 }
 .countnum{
 	display: flex;

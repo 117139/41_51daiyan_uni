@@ -51,17 +51,15 @@
 		    <view class="v1">代言人</view>
 		    <view class="v2">
 		      <view class="sj_list">
-		        <image class="sj_li" src="/static/images/tx.png" mode="aspectFill"></image>
-		        <image class="sj_li" src="/static/images/tx.png" mode="aspectFill"></image>
-		        <image class="sj_li" src="/static/images/tx.png" mode="aspectFill"></image>
-		        <image class="sj_li" src="/static/images/tx.png" mode="aspectFill"></image>
+		        <image v-if="idx<5" v-for="(item,idx) in star_list" class="sj_li" :src="filter.imgIP(item.head_portrait)" mode="aspectFill"></image>
 		      </view>
 		    优先显示您的好友</view>
 		    <view class="v3">
 		      <text class="iconfont iconnext3"></text>
 		    </view>
 		  </view>
-		  <view class="goods_xmsg" @tap="jump" data-url="/pages/my_yhq/my_yhq">
+		  <!-- <view class="goods_xmsg" @tap="jump" data-url="/pagesA/my_yhq/my_yhq"> -->
+		  <view class="goods_xmsg" @tap="yhq_get">
 		    <view class="v1">优惠券</view>
 		    <view class="v2">
 		      <text class="yhq_box">领券</text>
@@ -79,7 +77,7 @@
 		      <text class="iconfont iconcaozuo"></text>
 		    </view>
 		  </view>
-		  <view class="goods_xmsg"  @tap="jump" data-url="/pages/myaddress/myaddress?type=1">
+		  <view class="goods_xmsg"  @tap="jump" data-url="/pagesA/myaddress/myaddress?type=1">
 		    <view class="v1">配 送</view>
 		    <view class="v2">
 		      <text class="yhq_box">同城</text>{{goodsData.distribution}}</view>
@@ -95,10 +93,10 @@
 		    </view>
 		  </view>
 		  <!-- 评价 -->
-		  <view class="pj_box mt20" v-if="goodsData.comment_count>0">
+		  <view class="pj_box mt20" v-if="goodsData.comment.comment.length>0">
 		    <view class="pj_box_tit">
 		      <view class="p_tit_l">商品评价（{{goodsData.comment_count>0?goodsData.comment_count:0}}）</view>
-		      <view class="p_tit_r" data-url="/pages/details_pl/details_pl" @tap="jump">查看全部
+		      <view class="p_tit_r" :data-url="'/pages_goods/details_pl/details_pl?id='+g_id" @tap="jump">查看全部
 		        <text class="iconfont iconnext3"></text>
 		      </view>
 		    </view>
@@ -114,28 +112,30 @@
 		    </view>
 		  </view>
 		  <!-- 代言人 -->
-		  <view class="pj_box ">
+		  <view class="pj_box " v-if="StarText_list.length>0">
 		    <view class="pj_box_tit">
-		      <view class="p_tit_l">代言人说（8）</view>
-		      <view class="p_tit_r" @tap="jump" data-url="/pages/dyr_text/dyr_text">查看全部
+		      <view class="p_tit_l">代言人说（{{StarText_list.length}}）</view>
+		      <view class="p_tit_r" @tap="jump" :data-url="'/pages_goods/dyr_text/dyr_text?id='+g_id">查看全部
 		        <text class="iconfont iconnext3"></text>
 		      </view>
 		    </view>
-		    <scroll-view scroll-x class="dyr_text">
+		    <scroll-view scroll-x class="dyr_text"  @lower-threshold="getStarTextlist">
 		      <view class="dyr_text1">
-		        <view class="dyr_li" v-for="(item,idx) in data_list">
+		        <view class="dyr_li"  v-for="(item,idx) in StarText_list">
 		          <view class="dyr_msg">
 		            <view class="pj_d1">
 		              <view class="user_tx">
-		                <image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
-		              </view> Y***I</view>
-		            <view class="dyr_d oh3"> 蛮好喝的，换了新包装，品质还以依旧刚刚的蛮好喝的，换了新包装，品质还以依旧刚刚的</view>
+		                <image class="user_tx" :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
+		              </view>{{item.user_nickname}}</view>
+		            <view class="dyr_d oh3">{{item.content}}</view>
 		          </view>
 		
 		          <view class="dyr_img">
-		            <image class="dyr_img" :src="filter.imgIP('goods_02.jpg')"  mode="aspectFill"
-								 :data-src="filter.imgIP('goods_02.jpg')" @tap.stop="pveimg"></image>
-		            <view class="dyr_imgnum"><text class="iconfont iconicontupian"></text> 4</view>
+		            <image v-if="item.type!=3" class="dyr_img" :src="filter.imgIP(item.img[0])"  mode="aspectFill"
+								 :data-src="filter.imgIP(item.img[0])" :data-array="filter.getgimgarrIP(item.img)" @tap.stop="pveimg"></image>
+		            <image v-if="item.type==3" class="dyr_img" :src="filter.imgIP_video(item.img[0])"  mode="aspectFill"
+								 :data-src="filter.imgIP_video(item.img[0])" @tap.stop="pveimg"></image>
+		            <view class="dyr_imgnum"><text class="iconfont iconicontupian"></text>{{item.img.length}}</view>
 		          </view>
 		        </view>
 		      </view>
@@ -187,17 +187,17 @@
 		  <view class="htk mt20">
 		    <view class="pj_box_tit">
 		      <view  class="p_tit_l">本店回头客都在买</view>
-		      <view class="p_tit_r" @tap="jump" data-url="/pages/goods_list/goods_list">更多
+		      <view class="p_tit_r" @tap="jump" :data-url="'/pages_goods/goods_list/goods_list?id='+g_id">更多
 		        <text class="iconfont iconnext3"></text>
 		      </view>
 		    </view>
 		    <view class="goods_list">
-		      <view v-if="idx<3" class="goods_li" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/details/details">
+		      <view v-if="idx<3" class="goods_li" v-for="(item,idx) in LaterBuy_list" @tap="jump" :data-url="'/pages/details/details?id'+gid">
 		        <view class="goods_img">
-		          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods_02.jpg')" mode="aspectFill"></image>
+		          <image class="goods_img" :src="filter.imgIP(item.img[0])" mode="aspectFill"></image>
 		        </view>
-		        <view class="htk_goods_name oh2">FISHER 意式浓精品挂耳咖啡202020202020……</view>
-		        <view class="htk_goods_pri">¥<text>60</text></view>
+		        <view class="htk_goods_name oh2">{{item.title}}</view>
+		        <view class="htk_goods_pri">¥<text>{{item.v_current_price}}</text></view>
 		      </view>
 		    </view>
 		  </view>
@@ -215,7 +215,8 @@
 		  <!-- tk -->
 			<uni-popup ref="popup_yh" type="center" @change="tkchange0">
 				<view class="hb_tk" style="background-image: url(../../static/images/get_yh.png);">
-					<scroll-view style="width: 100%;height: 100%;" scroll-y>
+					<image class="hb_tk_img" src="../../static/images/get_yh.png" mode="scaleToFill"></image>
+					<scroll-view style="width: 100%;height: 100%;position: relative;z-index: 9999;" scroll-y>
 						<view class="dis_flex goods_yh_li" v-for="(item,idx) in 6">
 							<view class="goods_yh_pri">
 								<view class="dis_flex d1"><text>￥</text>30</view>
@@ -242,11 +243,11 @@
 			</uni-popup>
 		  <uni-popup ref="popup" type="bottom" @change="tkchange1">
 		    <view class="dy_box" style="padding: 0 5rpx 20rpx;height:600rpx;overflow: hidden">
-		        <scroll-view class=" dyr_scroll" style="height:600rpx;" scroll-y>
-		          <view class="tk_dyr_li" v-for="(item,idx) in data_list"  :data-type="idx" @tap="txtype_fuc">
+		        <scroll-view class=" dyr_scroll" style="height:600rpx;" scroll-y @lower-threshold="getStarlist">
+		          <view class="tk_dyr_li" v-for="(item,idx) in star_list"  :data-type="item.lower-threshold" @tap="txtype_fuc">
 		          <view class="dis_flex aic flex_1">
 		            <view class="tk_user_tx">
-		              <image class="tk_user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"  mode="aspectFill"></image>
+		              <image class="tk_user_tx" :src="filter.imgIP(item.head_portrait)"  mode="aspectFill"></image>
 		              <image v-if="idx==1" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 		              <image v-if="idx==2" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
 		            </view>
@@ -321,9 +322,13 @@
 		      <text >客服</text>
 		    </view>
 		    <view class="sg"></view>
-		    <view class="kf_btn">
+		    <view v-if="goodsData.is_collect==1" class="kf_btn" @tap="scFuc(g_id,'affirm')">
 		      <text class="iconfont iconhongxinicon"></text>
 		      <text>收藏</text>
+		    </view>
+		    <view  v-if="goodsData.is_collect==2" class="kf_btn" @tap="scFuc(g_id,'cancel')">
+		      <text class="iconfont iconhongxinicon1" style="color: #f00;"></text>
+		      <text style="color: #f00;">已收藏</text>
 		    </view>
 		    <view class="sg"></view>
 		    <view class="kf_btn">
@@ -347,6 +352,7 @@
 	export default {
 		data() {
 			return {
+				btn_kg:0,
 				g_id:'',
 				indicatorDots: false,
 				autoplay: false,
@@ -366,10 +372,16 @@
 				],
 				
 				cur_swiper:1,
+				star_list:[],					//代言人列表
+				star_page:1,
+				size:20,
 				
+				StarText_list:[],					//代言人说列表
+				StarText_page:1,
+				LaterBuy_list:[],					//回头客都在买列表
+				LaterBuy_page:1,
 				
-				
-				sheetshow: false,         //规格弹框控制
+				sheetshow: false,			//规格弹框控制
 				sheetshow1: false,
 				dyr_type:0,
 				showcan: false,
@@ -410,7 +422,11 @@
 				}
 				var  newarr=[]
 				for(var i=0;i<arr.length;i++){
-					newarr.push(arr[i].value)
+					if(arr[i].value){
+						newarr.push(arr[i].value)
+					}
+						
+					
 				}
 				console.log(newarr.join(','))
 				return newarr.join(',')
@@ -421,21 +437,20 @@
 		 */
 		onLoad: function (options) {
 			this.g_id=options.id
-		  this.getSku()
+		  this.onRetry()
 			this.$refs.popup_yh.open()
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  wx.stopPullDownRefresh();
+			this.onRetry()
 		},
 		
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
-		
 		},
 		
 		/**
@@ -445,7 +460,276 @@
 		
 		},
 		methods: {
+			yhq_get(){
+				
+				this.$refs.popup_yh.open()
+			},
+			onRetry(){
+				this.getSku()
+				this.star_page=1
+				this.getStarlist()
+				this.StarText_page=1
+				this.getStarTextlist()
+				this.LaterBuy_page=1
+				this.getLaterBuylist()
+			},
+			//获取代言人列表
+			getStarlist() {
+				let that = this
+				// if(that.btn_kg==1){
+				// 	return
+				// }else{
+				// 	that.btn_kg=1
+				// }
+				var jkurl = '/goods/goodsAdvoacyUser'
+				var datas = {
+					gid:that.g_id,
+					token: that.loginMsg.userToken,
+					page: that.star_page,
+					size:that.size
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
 			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+			
+						if (datas.length == 0) {
+							if(that.star_page>1){
+								uni.showToast({
+									icon: 'none',
+									title: '暂无更多数据'
+								})
+							}
+							
+							that.btn_kg=0
+							return
+						}
+						if(that.star_page==1){
+							that.star_list =datas
+						}else{
+							
+							that.star_list = that.star_list.concat(datas)
+						}
+						that.btn_kg=0
+						that.star_page++
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			},
+			
+			
+			//获取代言人说列表
+			getStarTextlist() {
+				let that = this
+				// if(that.btn_kg==1){
+				// 	return
+				// }else{
+				// 	that.btn_kg=1
+				// }
+				var jkurl = '/goods/advocacySay'
+				var datas = {
+					gid:that.g_id,
+					token: that.loginMsg.userToken,
+					page: that.StarText_page,
+					size:that.size
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+			
+						if (datas.length == 0) {
+							if(that.StarText_page>1){
+								uni.showToast({
+									icon: 'none',
+									title: '暂无更多数据'
+								})
+							}
+							that.btn_kg=0
+							return
+						}
+						if(that.StarText_page==1){
+							that.StarText_list =datas
+						}else{
+							
+							that.StarText_list = that.StarText_list.concat(datas)
+						}
+						that.btn_kg=0
+						that.StarText_page++
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			},
+			
+			//获取回头客都在买
+			getLaterBuylist() {
+				let that = this
+				// if(that.btn_kg==1){
+				// 	return
+				// }else{
+				// 	that.btn_kg=1
+				// }
+				var jkurl = '/goods/LaterBuy'
+				var datas = {
+					gid:that.g_id,
+					token: that.loginMsg.userToken,
+					page: that.LaterBuy_page,
+					size:that.size
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+			
+						if (datas.length == 0) {
+							if(that.LaterBuy_page>1){
+								uni.showToast({
+									icon: 'none',
+									title: '暂无更多数据'
+								})
+							}
+							that.btn_kg=0
+							return
+						}
+						if(that.LaterBuy_page==1){
+							that.LaterBuy_list =datas
+						}else{
+							
+							that.LaterBuy_list = that.LaterBuy_list.concat(datas)
+						}
+						that.btn_kg=0
+						that.LaterBuy_page++
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			},
+			scFuc(id,key){
+				var that =this
+				var data={
+					token:that.loginMsg.userToken,
+					type:5,
+					id:id,
+					operate:key,
+				}
+				if(key=='affirm'){
+					service.P_post('/attention/operation',data).then(res => {
+					  console.log(res)
+						that.btnkg=0
+						if(res.code==-1){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==0&&res.msg=='请先登录账号~'){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==1){
+							that.getSku()
+							uni.showToast({
+								icon:'none',
+								title:'操作成功'
+							})
+						}else{
+							
+						}
+					}).catch(e => {
+						that.btnkg=0
+					  console.log(e)
+						uni.showToast({
+							icon:'none',
+							title:'操作失败'
+						})
+					})
+					return
+				}
+				wx.showModal({
+					title: '提示',
+					content: '是否取消收藏?',
+					success (res) {
+						if (res.confirm) {
+							console.log('用户点击确定')
+							service.P_post('/attention/operation',data).then(res => {
+							  console.log(res)
+								that.btnkg=0
+								if(res.code==-1){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==0&&res.msg=='请先登录账号~'){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==1){
+									that.getSku()
+									uni.showToast({
+										icon:'none',
+										title:'操作成功'
+									})
+								}else{
+									
+								}
+							}).catch(e => {
+								that.btnkg=0
+							  console.log(e)
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消')
+						}
+					}
+				})
+				
+				
+			},
 			guanzhuFuc(id,key){
 				var that =this
 				var data={
@@ -589,7 +873,7 @@
 							a=JSON.stringify(newselect)
 						}
 						
-						console.log(a=='false')
+						// console.log(a=='false')
 						if(!a||a=='false'){
 							push_type=true
 							// console.log('跳过'+a)
@@ -621,41 +905,7 @@
 				// }
 				// return false
 			},
-			swiper_change(e){
-			  // console.log(e.detail )
-			  var num = e.detail.current+1
-			  this.cur_swiper=num
-			},
-			//数量
-			onChange(e) {
-				var that =this
-			  let idx = e.currentTarget.dataset.selec
-			  // console.log(e.detail)
-				if(that.guige_select.length==0){
-					uni.showToast({
-						icon:'none',
-						title:'请先选择规格'
-					})
-					this.cnum=0
-					return
-				}
-				if(this.cnum>this.show_num){
-					this.cnum=this.show_num
-					return
-				}
-			  // this.data.goods_sele[idx].num=e.detail
-			  this.cnum= e.detail
-				
-			},
-			txtype_fuc(e) {
-			  console.log(e.currentTarget.dataset.type)
-			  this.dyr_type= e.currentTarget.dataset.type
-			},
-			xz_dyr(){
-			  console.log(this.dyr_type)
-			  this.sheetshow1= false
-				this.$refs.popup.close()
-			},
+			
 			//选择规格
 			selegg(e) {
 				var that=this
@@ -715,20 +965,27 @@
 					
 				}
 				// console.log('show_arr---------------------->')
-				// console.log(show_arr)
+				console.log(show_arr)
 				var idx=e.currentTarget.dataset.ggidx
 				var kucun_num=0
 				var pri=0
 				var sku_img=''
-				for(var i=0;i<	that.guige_arr.length;i++){
+				for	(var i=0;i<show_arr.length;i++){
+					kucun_num+=show_arr[i].number
+					if(pri==0){
+						pri=show_arr[i].current_price
+					}
+					if(sku_img==""){
+						sku_img=show_arr[i].v_img
+					}
+				}
+				/*for(var i=0;i<	that.guige_arr.length;i++){
 					var newVal=[]
 					
 					if(i!=idx){
 						
 						for(var j=0;j<	show_arr.length;j++){
 							for(var s=0;s<	show_arr[j].sku.length;s++){
-								
-								
 								
 								if(show_arr[j].sku[s].name==that.guige_arr[i].name){
 									var a=show_arr[j].sku[s].value
@@ -742,6 +999,7 @@
 											sku_img=show_arr[j].v_img
 										}
 										kucun_num+=show_arr[j].number
+										console.log(kucun_num)
 									}
 								}
 							}
@@ -753,7 +1011,7 @@
 					}else{
 						// that.$set(that.guige_arr_show[i],'value',that.guige_arr[i].value)
 					}
-				}
+				}*/
 				that.show_pri=pri
 				that.show_num=kucun_num
 				if(kucun_num<that.cnum){
@@ -771,7 +1029,39 @@
 				}
 				
 			},
+			
+			//数量
+			onChange(e) {
+				var that =this
+			  let idx = e.currentTarget.dataset.selec
+			  // console.log(e.detail)
+				if(that.guige_select.length==0){
+					uni.showToast({
+						icon:'none',
+						title:'请先选择规格'
+					})
+					this.cnum=0
+					return
+				}
+				if(this.cnum>this.show_num){
+					this.cnum=this.show_num
+					return
+				}
+			  // this.data.goods_sele[idx].num=e.detail
+			  this.cnum= e.detail
+				
+			},
+			
 			jump(e) {
+				var that =this
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+					setTimeout(function(){
+						that.btn_kg=0
+					},2000)
+				}
 			  console.log(e.currentTarget.dataset.type)
 			  service.jump(e)
 			},
@@ -807,6 +1097,21 @@
 			tkchange1(e){
 				console.log(e)
 				this.sheetshow1=e.show
+			},
+			swiper_change(e){
+			  // console.log(e.detail )
+			  var num = e.detail.current+1
+			  this.cur_swiper=num
+			},
+			
+			txtype_fuc(e) {
+			  console.log(e.currentTarget.dataset.type)
+			  this.dyr_type= e.currentTarget.dataset.type
+			},
+			xz_dyr(){
+			  console.log(this.dyr_type)
+			  this.sheetshow1= false
+				this.$refs.popup.close()
 			},
 			//加入购物车
 			addwgc() {
@@ -945,6 +1250,16 @@
 	background-position: top;
 	background-size: contain;
 	background-repeat: no-repeat;
+	position: relative;
+	z-index: 9999;
+}
+.hb_tk_img{
+	position: absolute;
+	z-index: 9998;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
 .yh_gb_btn{
 	width: 80upx;

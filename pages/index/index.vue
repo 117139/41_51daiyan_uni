@@ -931,6 +931,7 @@
 
 	.goods_btn2 text {
 		color: #FE8735;
+		margin-right: 5upx;
 	}
 
 	.quan_li_cz {

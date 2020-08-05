@@ -556,6 +556,7 @@
 }
 .goods_btn2 text.data-v-57280228 {
 	color: #FE8735;
+	margin-right: 5rpx;
 }
 .quan_li_cz.data-v-57280228 {
 	width: 100%;
