@@ -1,21 +1,21 @@
 <template>
 	<view>
 		<view class="container">
-			<image class="h_bg" :src="filter.imgIP('/images/find_dy_02.jpg')"></image>
+			<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/find_dy_02.jpg')"></image>
 			<view class="xx_box">
 				<view class="xx_box1">
 					<image class="hd_js" :src="filter.imgIP('/static_s/51daiyan/images/hd_js.png')"></image>
 					<view class="hd_v1">平台合作品牌商征集代言人入围条件：</view>
 					<view class="hd_v2">1.购买品牌商制定的商品，购买并代言。</view>
-					<view class="hd_v2">2.有代言人拍摄短视频，制作代言海报，并上传。</view>
-					<view class="hd_v2">3.有代言人所得票数，决定代言人排位。</view>
+					<view class="hd_v2">2.由代言人拍摄短视频，制作代言海报，并上传。</view>
+					<view class="hd_v2">3.由代言人所得票数，决定代言人排位。</view>
 					<view class="hd_jl">
 						<view class="hd_jl_tit">奖励：</view>
 						<view class="hd_jl_li">
-							<image class="" :src="filter.imgIP('hd_jl1.png')"></image>
+							<image class="" :src="filter.imgIP('/static_s/51daiyan/images/hd_jl1.png')"></image>
 						</view>
 						<view class="hd_jl_li">
-							<image class="" :src="filter.imgIP('hd_jl2.png')"></image>
+							<image class="" :src="filter.imgIP('/static_s/51daiyan/images/hd_jl2.png')"></image>
 						</view>
 					</view>
 				</view>
@@ -26,10 +26,10 @@
 				</view>
 				<scroll-view class="find_user" scroll-x>
 					<view class="find_user1">
-						<view class="find_uimg" v-for="(item,idx) in data_list" @tap="jump"
-						 data-url="/pages_goods/activity/activity">
-							<image class="find_uimg" :src="filter.imgIP('goods.png')"></image>
-							<view class="find_zcc">曼特宁咖啡</view>
+						<view class="find_uimg" v-for="(item,idx) in store" @tap="jump"
+						 :data-url="'/pages_goods/activity/activity?id='+item.group_code">
+							<image class="find_uimg" :src="filter.imgIP(item.head_portrait)" mode="aspectFit"></image>
+							<view class="find_zcc">{{item.store_name}}</view>
 						</view>
 					</view>
 				</scroll-view>
@@ -37,43 +37,34 @@
 					<image class="hd_bg_tit" :src="filter.imgIP('/static_s/51daiyan/images/hd_jl_tit.png')"></image>
 					<view class="hdtit_tit">品牌代言人招募</view>
 				</view>
-				<view class="xx_box1 xx_box2" v-for="(item,idx) in pinpai">
+				<view class="xx_box1 xx_box2" v-for="(item,idx) in activity">
 					<view class="pp_v1">
 						<view class="pp_img">
-							<image class="pp_img" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+							<image class="pp_img" :src="filter.imgIP(item.head_portrait)"></image>
 						</view>
 						<view class="pp_msg">
 							<view class="pp_d1">
-								<view class="pp_name oh1">耐克代言人优选招募</view>
-								<view class="pp_to" @tap="jump" data-url="/pages_goods/activity/activity">活动详情<text class="iconfont iconnext3"></text></view>
+								<view class="pp_name oh1">{{item.title}}</view>
+								<view class="pp_to" @tap="jump" :data-url="'/pages_goods/activity/activity?id='+item.id">活动详情<text class="iconfont iconnext3"></text></view>
 							</view>
-							<view class="pp_d2">招募<text>60</text>人</view>
+							<view class="pp_d2">招募<text>{{item.recruit_number}}</text>人</view>
 						</view>
 					</view>
 					<view class="pp_jjc">
 						<view class="pp_jjc_tit">奖金池</view>
 						<view class="pp_ph_list">
-							<view class="pp_ph_li">
-								<view>一等奖</view>
-								<view>第1～10名</view>
-								<view>¥10000</view>
+							<view v-for="(item1,idx1) in item.award" class="pp_ph_li">
+								<view>{{item1.title}}</view>
+								<view>第{{item1.ranking}}名</view>
+								<view>¥{{item1.bonus}}</view>
 							</view>
-							<view class="pp_ph_li">
-								<view>二等奖</view>
-								<view>第11～25名</view>
-								<view>¥500</view>
-							</view>
-							<view class="pp_ph_li">
-								<view>三等奖</view>
-								<view>第26～60名</view>
-								<view>¥300</view>
-							</view>
+							
 						</view>
 					</view>
 					<view class="pp_tip">
-						<view class="tip_text">活动起止时间：2019年1月1日</view>
-						<view v-if="item.bm=='1'" class="tip_btn" :data-idx="idx" @tap="bm_fuc">报名</view>
-						<view v-else class="tip_btn">已报名</view>
+						<view class="tip_text">活动起止时间：{{filter.getDate_ymd(item.start_time)}}-{{filter.getDate_ymd(item.end_time)}}</view>
+						<view v-if="item.is_apply=='1'" class="tip_btn" :data-id="item.id" @tap="bm_fuc">报名</view>
+						<view v-else class="tip_btn" style="background-color: #ddd;">已报名</view>
 					</view>
 				</view>
 			</view>
@@ -85,11 +76,16 @@
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import service from '../../service.js';
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		data() {
 			return {
-				data_list: [1, 1, 1, 1],
-				pinpai: [{
+				btnkg:0,
+				store: [1, 1, 1, 1],
+				activity: [{
 						bm: 1
 					},
 					{
@@ -101,11 +97,18 @@
 				]
 			}
 		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
+		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
-
+				this.getdata()
 		},
 
 		/**
@@ -140,7 +143,7 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function() {
-			uni.stopPullDownRefresh();
+			this.getdata()
 		},
 
 		/**
@@ -157,12 +160,71 @@
 
 		},
 		methods: {
-
+			getdata() {
+				var that = this
+				var datas = {
+					token: that.loginMsg.userToken,
+				}
+				// 单个请求
+				service.P_get('/activity', datas).then(res => {
+					console.log(res)
+					if (res.code == 1) {
+						that.datas = res.data
+						that.store = res.data.store
+						//代言数据
+						that.activity = res.data.activity
+					}
+				}).catch(e => {
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			
+			},
 			bm_fuc(e) {
-				var idx = e.currentTarget.dataset.idx
-				var newdata = this.pinpai
-				newdata[idx].bm = 2
-				this.pinpai= newdata
+				var id = e.currentTarget.dataset.id
+				// var newdata = this.pinpai
+				// newdata[idx].bm = 2
+				// this.pinpai= newdata
+				var that=this
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+				}
+				var datas = {
+					token: that.loginMsg.userToken,
+					id:id
+				}
+				// 单个请求
+				service.P_post('/activity/join', datas).then(res => {
+					console.log(res)
+					if (res.code == 1) {
+						that.btnkg=0
+						
+						that.getdata()
+						uni.showToast({
+							title:'报名成功'
+						})
+					}else{
+						that.btnkg=0
+						// that.getdata()
+						uni.showToast({
+							icon:'none',
+							title:res.msg
+						})
+					}
+				}).catch(e => {
+						that.btnkg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
+				})
 			},
 			jump(e) {
 				service.jump(e)
@@ -294,6 +356,7 @@
 		display: inline-flex;
 		width: 274rpx;
 		height: 164rpx;
+		background: #fff;
 
 		border-radius: 10rpx;
 		position: relative;
@@ -323,7 +386,7 @@
 	/* xx_box2 */
 	.xx_box2 {
 
-		padding-top: 36rpx;
+		padding: 36rpx 22rpx 35rpx;
 	}
 
 	.xx_box2+.xx_box2 {
@@ -440,8 +503,8 @@
 	}
 
 	.tip_btn {
-		margin-left: 10rpx;
-		width: 142rpx;
+		margin-left: 5rpx;
+		width: 128rpx;
 		height: 52rpx;
 		background: rgba(254, 102, 5, 1);
 		border-radius: 10rpx;

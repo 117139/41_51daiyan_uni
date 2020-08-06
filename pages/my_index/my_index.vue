@@ -28,7 +28,10 @@
 						<text>粉丝：{{datas.fans_number}}</text>
 					</view>
 					<view class="dy_bq">
-						<view><text class="iconfont iconnv"></text> {{datas.age?datas.age:0}}岁</view>
+						<view>
+							<!-- <text class="iconfont iconnv"></text> -->
+							{{datas.age?datas.age:0}}岁
+						</view>
 						<view>{{datas.school}}</view>
 						<view>{{datas.province}}{{datas.province==datas.city?'':datas.city}}{{datas.county}}</view>
 					</view>

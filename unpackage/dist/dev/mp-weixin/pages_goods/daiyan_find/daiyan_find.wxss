@@ -117,6 +117,7 @@ view.hd_bg_tit.data-v-83b6de4a {
 	display: inline-flex;
 	width: 274rpx;
 	height: 164rpx;
+	background: #fff;
 
 	border-radius: 10rpx;
 	position: relative;
@@ -150,7 +151,7 @@ view.find_uimg.data-v-83b6de4a {
 /* xx_box2 */
 .xx_box2.data-v-83b6de4a {
 
-	padding-top: 36rpx;
+	padding: 36rpx 22rpx 35rpx;
 }
 .xx_box2+.xx_box2.data-v-83b6de4a {
 	margin-top: 20rpx;
@@ -301,8 +302,8 @@ view.pp_img.data-v-83b6de4a {
 	        flex: 1;
 }
 .tip_btn.data-v-83b6de4a {
-	margin-left: 10rpx;
-	width: 142rpx;
+	margin-left: 5rpx;
+	width: 128rpx;
 	height: 52rpx;
 	background: rgba(254, 102, 5, 1);
 	border-radius: 10rpx;

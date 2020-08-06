@@ -331,7 +331,17 @@ const http =({url ='',param ={},method='',header={'content-type': 'application/x
           console.log(`耗时${Date.now() - timeStart}`);
 					console.log(res)
           if(res.statusCode ==200){//请求成功
-						if(res.data.code==0){
+						if(res.code==-1){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==0&&res.msg=='请先登录账号~'){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.data.code==0){
 							if(res.data.msg){
 								
 								uni.showToast({

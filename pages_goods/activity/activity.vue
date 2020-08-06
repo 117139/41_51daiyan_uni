@@ -2,11 +2,11 @@
 	<view>
 		<view class="container">
 		  <view class="avtivity_box">
-		    <image  class="avtivity_box" :src="filter.imgIP('hd_banner.jpg')"></image>
-		    <view class="hd_time">活动截止时间：2019/11/01-2019/11/03</view>
+		    <image  class="avtivity_box" :src="filter.imgIP(datas.img[0])"></image>
+		    <view class="hd_time">活动截止时间：{{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>
 		  </view>
 		  <view class="avtivity_time">
-		    <image  class="avtivity_time" src="/static/images/hd_bg2.jpg"></image>
+		    <image  class="avtivity_time" :src="filter.imgIP('/static_s/51daiyan/images/hd_bg2.jpg')"></image>
 		    <view class="avtivity_time_djs">
 		      活动倒计时：
 		      <text>{{hd_time.day>0?hd_time.day:0}}</text>
@@ -20,77 +20,45 @@
 		    </view>
 		  </view>
 		  <view class="hd_jl">
-		    <view>
-		      <image :src="filter.imgIP('hdxq_jl2.png')"></image>
-		      <view class="j_lv">二等奖 <text>300人</text></view>
-		      <view class="j_mon">¥500/人</view>
+		    <view v-if="datas.award[1]">
+		      <image :src="filter.imgIP('/static_s/51daiyan/images/hdxq_jl2.png')"></image>
+		      <view class="j_lv">{{datas.award[1].title}} <text>{{datas.award[1].number}}人</text></view>
+		      <view class="j_mon">¥{{datas.award[1].bonus}}/人</view>
 		    </view>
-		    <view>
-		      <image :src="filter.imgIP('hdxq_jl1.png')"></image>
-		      <view class="j_lv">一等奖 <text>300人</text></view>
-		      <view class="j_mon">¥1000/人</view>
+		    <view v-if="datas.award[0]">
+		      <image :src="filter.imgIP('/static_s/51daiyan/images/hdxq_jl1.png')"></image>
+		      <view class="j_lv">{{datas.award[0].title}} <text>{{datas.award[0].number}}人</text></view>
+		      <view class="j_mon">¥{{datas.award[0].bonus}}/人</view>
 		    </view>
-		    <view>
-		      <image :src="filter.imgIP('hdxq_jl3.png')"></image>
-		      <view class="j_lv">三等奖 <text>300人</text></view>
-		      <view class="j_mon">¥300/人</view>
+		    <view v-if="datas.award[2]">
+		      <image :src="filter.imgIP('/static_s/51daiyan/images/hdxq_jl3.png')"></image>
+		      <view class="j_lv">{{datas.award[2].title}} <text>{{datas.award[2].number}}人</text></view>
+		      <view class="j_mon">¥{{datas.award[2].bonus}}/人</view>
 		    </view>
 		  </view>
 		  <!-- 活动商品 -->
 		  <view class="box_tit">参选商品</view>
 		  <view class="goods_list">
-		    <view class="goods_li" @tap="jump" data-url="/pages/details/details">
-		      <image class="goods_img" :src="filter.imgIP('/images/goods15_02.jpg')"></image>
+		    <view v-for="(item,idx) in datas.goods" class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.g_id+'&ad_id='+ad_id">
+		      <image class="goods_img" :src="filter.imgIP(item.g_img[0])"></image>
 		      <view class="goods_msg">
-		        <view class="goods_name oh1">耐克跑鞋</view>
+		        <view class="goods_name oh1">{{item.g_title}}</view>
 		        <view class="goods_pri">
-		          <view class="pri1 ">¥456</view>
-		          <view class="pri2">代言费<text>¥26</text></view>
+		          <view class="pri1 ">¥{{item.g_current_price}}</view>
+		          <view class="pri2">代言费<text>¥{{item.advocacy_earnings}}</text></view>
 		        </view>
-		        <view class="goods_btn" @tap.stop="jump" data-url="/pages/daiyan_fabu/daiyan_fabu">我要代言</view>
+		        <view class="goods_btn" @tap.stop="jump" :data-url="'/pages/details/details?id='+item.g_id+'&ad_id='+ad_id">我要代言</view>
 		      </view>
 		    </view>
-		    <view class="goods_li" @tap="jump" data-url="/pages/details/details">
-		      <image class="goods_img" :src="filter.imgIP('/images/goods15_02.jpg')"></image>
-		      <view class="goods_msg">
-		        <view class="goods_name oh1">耐克跑鞋</view>
-		        <view class="goods_pri">
-		          <view class="pri1 ">¥456</view>
-		          <view class="pri2">代言费<text>¥26</text></view>
-		        </view>
-		        <view class="goods_btn" @tap.stop="jump" data-url="/pages/daiyan_fabu/daiyan_fabu">我要代言</view>
-		      </view>
-		    </view>
-		    <view class="goods_li" @tap="jump" data-url="/pages/details/details">
-		      <image class="goods_img" :src="filter.imgIP('/images/goods15_02.jpg')"></image>
-		      <view class="goods_msg">
-		        <view class="goods_name oh1">耐克跑鞋</view>
-		        <view class="goods_pri">
-		          <view class="pri1 ">¥456</view>
-		          <view class="pri2">代言费<text>¥26</text></view>
-		        </view>
-		        <view class="goods_btn" @tap.stop="jump" data-url="/pages/daiyan_fabu/daiyan_fabu">我要代言</view>
-		      </view>
-		    </view>
-		    <view class="goods_li" @tap="jump" data-url="/pages/details/details">
-		      <image class="goods_img" :src="filter.imgIP('/images/goods15_02.jpg')"></image>
-		      <view class="goods_msg">
-		        <view class="goods_name oh1">耐克跑鞋</view>
-		        <view class="goods_pri">
-		          <view class="pri1 ">¥456</view>
-		          <view class="pri2">代言费<text>¥26</text></view>
-		        </view>
-		        <view class="goods_btn" @tap.stop="jump" data-url="/pages/daiyan_fabu/daiyan_fabu">我要代言</view>
-		      </view>
-		    </view>
+		    
 		  </view>
 		  <view class="hd_tip">提示！活动开始前完成购买代言，即刻开始拉票！</view>
 		  <view class="hd_db">
 		    <view>本期优选代言人排行榜</view>
-		    <view class="jump_btn" @tap="jump" data-url="/pages_goods/activity_db/activity_db">进入打榜页<text class="iconfont iconnext3"></text></view>
+		    <view class="jump_btn" @tap="jump" :data-url="'/pages_goods/activity_db/activity_db?id='+item.ad_id">进入打榜页<text class="iconfont iconnext3"></text></view>
 		  </view>
 		  <view class="dy_list">
-		    <view class="dy_box" v-for="(item,idx) in start_li">
+		    <view class="dy_box" v-for="(item,idx) in datas">
 		      <view class="dy_li">
 		        <view class="pl_num">
 		          <image v-if="idx==0" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_1.png')"></image>
@@ -98,15 +66,15 @@
 		          <image v-if="idx==2" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_3.png')"></image>
 		          <text v-if="idx>2">{{idx+1}}</text>
 		        </view>
-		        <view class="pl_tx" @tap="jump" data-url="/pages/my_index/my_index">
-		          <image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
+		        <view class="pl_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
+		          <image class="pl_tx" :src="filter.imgIP(item.head_portrait)" mode="aspectFill"></image>
 		        </view>
-		        <view class="ph_name">张一鸣</view>
-		        <view class="ph_num"><text>2200</text>人气值</view>
-		        <view v-if="item.tp_type==1" @tap.stop="toupiao" :data-idx="idx" class="ph_btn">投票</view>
+		        <view class="ph_name">{{item.nickname}}</view>
+		        <view class="ph_num"><text>{{item.popularity}}</text>人气值</view>
+		        <view v-if="item.is_vote==1" @tap.stop="toupiao" :data-idx="item.id" class="ph_btn">投票</view>
 		        <view  v-else class="ph_btn ph_btn1">已投票</view>
 		      </view>
-		      <view class="li_dy">代言说：喜欢运动的感觉，耐克just di it！</view>
+		      <view class="li_dy">代言说：{{item.say}}</view>
 		    </view>
 		  </view>
 		</view>
@@ -117,114 +85,41 @@
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import service from '../../service.js';
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	var djs_fuc
 	export default {
 		data() {
 			return {
+				ad_id:'',
 				hd_time:{
 				  day: 0,
 				  hh: 0,
 				  mm: 0,
 				  min:0,
 				},
-				start_li: [
-				  {
-				    name: '未达标商户',
-				    img: '/static/images/1_03.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '达标商户',
-				    img: '/static/images/1_05.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '巡机单',
-				    img: '/static/images/1_09.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已巡机',
-				    img: '/static/images/1_10.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '装机单',
-				    img: '/static/images/1_13.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已装机',
-				    img: '/static/images/1_14.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '维护单',
-				    img: '/static/images/1_17.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已维护',
-				    img: '/static/images/1_18.jpg',
-				    url: '/pages/list/list',
-				    type: '7'
-				  },
-				  {
-				    name: '换机单',
-				    img: '/static/images/2_09.jpg',
-				    url: '/pages/list/list',
-				    type: '8'
-				  },
-				  {
-				    name: '已换机',
-				    img: '/static/images/2_10.jpg',
-				    url: '/pages/list/list',
-				    type: '9'
-				  },
-				  {
-				    name: '撤机单',
-				    img: '/static/images/2_13.jpg',
-				    url: '/pages/list/list',
-				    type: '10'
-				  },
-				  {
-				    name: '已撤机',
-				    img: '/static/images/2_14.jpg',
-				    url: '/pages/list/list',
-				    type: '11'
-				  },
-				  {
-				    name: '终端交易查询',
-				    img: '/static/images/2_17.jpg',
-				    url: '/pages/list/list',
-				    type: '12'
-				  },
-				  {
-				    name: '应收列表',
-				    img: '/static/images/2_18.jpg',
-				    url: '/pages/list/list',
-				    type: '13'
-				  },
-				
-				],
+				page:1,
+				size:20,
+				datas: "",
 			}
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
 		  var that =this
-		  djs_fuc=setInterval(function () {
-		    that.hd_time= that.djs()
-		    console.log(that.djs())
-		  }, 1000);
+			that.ad_id=options.id
+			that.getdata()
+		  
 		},
 		
 		/**
@@ -259,14 +154,16 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  wx.stopPullDownRefresh();
+			
+			
+		 this.getdata()
 		},
 		
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
-		
+			this.getdatalist()
 		},
 		
 		/**
@@ -276,15 +173,95 @@
 		
 		},
 		methods: {
+		
+			getdata() {
+				var that = this
+				var datas = {
+					token: that.loginMsg.userToken,
+					id:that.ad_id
+				}
+				// 单个请求
+				service.P_get('/activity/details', datas).then(res => {
+					console.log(res)
+					if (res.code == 1) {
+						that.datas = res.data
+						that.page=1
+						that.getdatalist()
+						djs_fuc=setInterval(function () {
+						  that.hd_time= that.djs(res.data.end_time*1000)
+						  console.log(that.djs())
+						}, 1000);
+					}
+				}).catch(e => {
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
 			
-			djs(){
-			  var nowtime = new Date(),  //获取当前时间
-			    endtime = new Date("2020/9/8");  //定义结束时间
-			  var lefttime = endtime.getTime() - nowtime.getTime(),  //距离结束时间的毫秒数
-			    leftd = Math.floor(lefttime / (1000 * 60 * 60 * 24)),  //计算天数
-			    lefth = Math.floor(lefttime / (1000 * 60 * 60) % 24),  //计算小时数
-			    leftm = Math.floor(lefttime / (1000 * 60) % 60),  //计算分钟数
-			    lefts = Math.floor(lefttime / 1000 % 60);  //计算秒数
+			
+			},
+			
+			getdatalist() {
+			
+				let that = this
+				var jkurl = '/activity/activityHit'
+				var datas = {
+					token: that.loginMsg.userToken,
+					page: that.page,
+					size:that.size,
+					id:that.ad_id
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					console.log(res)
+					
+					that.btn_kg=0
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						if (datas.length==0) {
+							uni.showToast({
+								icon: 'none',
+								title: '到底了。。。'
+							})
+							return
+						}
+						if(that.page==1){
+							that.datas =datas
+						}else{
+							
+							that.datas = that.datas.concat(datas)
+						}
+			
+						that.page++
+					}
+				}).catch(e => {
+					
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+				
+			},
+			
+			djs(end_time){
+			  var nowtime = new Date() //获取当前时间
+			    // endtime = new Date("2020/9/8");  //定义结束时间
+			  // var lefttime = endtime.getTime() - nowtime.getTime(),  //距离结束时间的毫秒数
+			  var lefttime =end_time - nowtime.getTime()  //距离结束时间的毫秒数
+				var leftd = Math.floor(lefttime / (1000 * 60 * 60 * 24))  //计算天数
+				var lefth = Math.floor(lefttime / (1000 * 60 * 60) % 24)  //计算小时数
+				var leftm = Math.floor(lefttime / (1000 * 60) % 60)  //计算分钟数
+				var lefts = Math.floor(lefttime / 1000 % 60)  //计算秒数
 			  var djstime={
 			    day: leftd,
 			    hh: lefth,
