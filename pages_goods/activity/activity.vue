@@ -58,7 +58,7 @@
 		    <view class="jump_btn" @tap="jump" :data-url="'/pages_goods/activity_db/activity_db?id='+item.ad_id">进入打榜页<text class="iconfont iconnext3"></text></view>
 		  </view>
 		  <view class="dy_list">
-		    <view class="dy_box" v-for="(item,idx) in datas">
+		    <view class="dy_box" v-for="(item,idx) in star_list">
 		      <view class="dy_li">
 		        <view class="pl_num">
 		          <image v-if="idx==0" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_1.png')"></image>
@@ -71,7 +71,7 @@
 		        </view>
 		        <view class="ph_name">{{item.nickname}}</view>
 		        <view class="ph_num"><text>{{item.popularity}}</text>人气值</view>
-		        <view v-if="item.is_vote==1" @tap.stop="toupiao" :data-idx="item.id" class="ph_btn">投票</view>
+		        <view v-if="item.is_vote==1" @tap.stop="toupiao" :data-id="item.id" class="ph_btn">投票</view>
 		        <view  v-else class="ph_btn ph_btn1">已投票</view>
 		      </view>
 		      <view class="li_dy">代言说：{{item.say}}</view>
@@ -103,6 +103,7 @@
 				page:1,
 				size:20,
 				datas: "",
+				star_list:[]
 			}
 		},
 		computed: {
@@ -219,24 +220,24 @@
 					
 					that.btn_kg=0
 					if (res.code == 1) {
-						var datas = res.data
+						var datas = res.data.user_data
 						// console.log(typeof datas)
 			
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-						if (datas.length==0) {
-							uni.showToast({
-								icon: 'none',
-								title: '到底了。。。'
-							})
-							return
-						}
+						
 						if(that.page==1){
-							that.datas =datas
+							that.star_list =datas
 						}else{
-							
-							that.datas = that.datas.concat(datas)
+							if (datas.length==0) {
+								uni.showToast({
+									icon: 'none',
+									title: '到底了。。。'
+								})
+								return
+							}
+							that.star_list = that.star_list.concat(datas)
 						}
 			
 						that.page++
@@ -272,10 +273,30 @@
 			  // return leftd + "天" + lefth + ":" + leftm + ":" + lefts;  //返回倒计时的字符串
 			},
 			toupiao(e) {
-			  var idx = e.currentTarget.dataset.idx
-			  var newdata = this.start_li
-			  newdata[idx].tp_type = 2
-			  this.start_li= newdata
+			  var id = e.currentTarget.dataset.id
+				var that =this
+			  var datas = {
+			  	token: that.loginMsg.userToken,
+			  	aau_id:id
+			  }
+			  // 单个请求
+			  service.P_post('/activity/vote', datas).then(res => {
+			  	console.log(res)
+			  	if (res.code == 1) {
+			  		that.page=1
+			  		that.getdatalist()
+			  		uni.showToast({
+			  			icon: 'none',
+			  			title: '操作成功'
+			  		})
+			  	}
+			  }).catch(e => {
+			  	console.log(e)
+			  	uni.showToast({
+			  		icon: 'none',
+			  		title: '操作失败'
+			  	})
+			  })
 			},
 			jump(e) {
 			  service.jump(e)

@@ -200,18 +200,18 @@
 							datas = JSON.parse(datas)
 						}
 
-						if (datas.length == 0) {
-							uni.showToast({
-								icon: 'none',
-								title: '暂无更多数据'
-							})
-							that.btn_kg=0
-							return
-						}
+						
 						if(that.page==1){
 							that.datas =datas
 						}else{
-							
+							if (datas.length == 0) {
+								uni.showToast({
+									icon: 'none',
+									title: '暂无更多数据'
+								})
+								that.btn_kg=0
+								return
+							}
 							that.datas = that.datas.concat(datas)
 						}
 						that.btn_kg=0
