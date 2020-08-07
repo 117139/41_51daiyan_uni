@@ -68,15 +68,15 @@
 								<text >{{gettime(item.create_time,1)}}</text><text class="month">{{gettime(item.create_time,2)}}月</text>
 							</view>
 							<view v-if="gettime1(idx)" style="font-size: 30rpx;">
-								<text v-if="gettime(item.create_time,4)==1">{{gettime(item.create_time,3)}}</text>
+								<text v-if="gettime(item.create_time,4)!=1">{{gettime(item.create_time,3)}}</text>
 							</view>
 						</view>
 						<view class="time_box">
 							<view class="dt_li">
 								<view class="dt_li_d1">
-									<image v-if="item.type==2" class="dt_li_d1_img" :src="filter.imgIP_video(item.img[0])" :data-src="filter.imgIP_video(item.img[0])"
-									 @tap.stop="pveimg"></image>
-									<image v-if="item.type!=2" class="dt_li_d1_img" :src="filter.imgIP(item.img[0])" :data-src="filter.imgIP(item.img[0])" :data-array="filter.getgimgarrIP(item.img)"
+									<image v-if="item.type==2" class="dt_li_d1_img"  mode="aspectFill" :src="filter.imgIP_video(item.img[0])" :data-src="filter.imgIP_video(item.img[0])"
+									  @tap.stop="jump" :data-url="'/pages/my_video/my_video?uid='+uid+'&idx='+item.g_id"></image>
+									<image v-if="item.type!=2" class="dt_li_d1_img"  mode="aspectFill" :src="filter.imgIP(item.img[0])" :data-src="filter.imgIP(item.img[0])" :data-array="filter.getgimgarrIP(item.img)"
 									 @tap.stop="pveimg"></image>
 									<view class="d1_msg">
 										<view class="dt_text oh3">{{item.content}}</view>
@@ -109,7 +109,7 @@
 				<!-- 视频 -->
 				<view v-if="s_type==2" class="my_list">
 					<view class="sp_list">
-						<view class="sp_li sp_li_v" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/xvideo/xvideo">
+						<view class="sp_li sp_li_v" v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages/my_video/my_video?uid='+uid+'&idx='+item.g_id">
 							<view class="sp_li_img">
 								<image class="sp_li_img" :src="filter.imgIP_video(item.img[0])" mode="aspectFill"></image>
 								<view class="sp_li_img_cz">
@@ -126,12 +126,16 @@
 				<!-- 相册 -->
 				<view v-if="s_type==3" class="my_list">
 					<view class="sp_list">
-						<view class="my_li_xc" v-for="(item,idx) in data_list">
-							<image class="my_li_xc_img" :src="filter.imgIP(item.img[0])" mode="aspectFill"
-							 :data-src="filter.imgIP(item.img[0])" :data-array="filter.getgimgarrIP(item.img)" @tap.stop="pveimg"></image>
-							<!-- <view class="xc_gb"><text class="iconfont iconguanbi"></text></view> -->
-							<view class="like_num"><text class="iconfont iconhongxinicon"></text>393</view>
-						</view>
+							
+							<view class="my_li_xc" v-for="(item1,idx1) in data_list">
+								<!-- <image class="my_li_xc_img" :src="filter.imgIP(item1.img[0])" mode="aspectFill"
+								 :data-src="filter.imgIP(item1.img[0])" :data-array="filter.getgimgarrIP(item1.img)" @tap.stop="pveimg"></image> -->
+								<image class="my_li_xc_img" :src="filter.imgIP(item1.img[0])" mode="aspectFill"
+								 :data-src="filter.imgIP(item1.img[0])" @tap.stop="pveimg"></image>
+								<!-- <view class="xc_gb"><text class="iconfont iconguanbi"></text></view> -->
+								<view class="like_num"><text class="iconfont iconhongxinicon"></text>{{item1.praise_number}}</view>
+							</view>
+
 					</view>
 					<!-- <view class="b_box">
 						<view>管理</view>

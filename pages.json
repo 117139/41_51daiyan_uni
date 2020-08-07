@@ -119,7 +119,15 @@
 				"navigationStyle": "custom"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/my_video/my_video",
+            "style": {
+            	"disableScroll": true,
+            	"navigationBarTextStyle": "white",
+            	"navigationStyle": "custom"
+            }
+        }
+    ],
 
 	"subPackages": [{
 			"root": "pagesA",

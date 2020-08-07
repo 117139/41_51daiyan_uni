@@ -1,66 +1,67 @@
 <template>
 	<view>
 			<swiper :vertical="true" :circular="true" :current="current" :skip-hidden-item-layout="true" @change="changeCurrent" @animationfinish="changeItem">
-			   <swiper-item :item-id="oneItemParam.a_id">
-			       <video title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(oneItemParam.video[0])"  :poster="filter.imgIP_video(oneItemParam.video[0])" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
-			   </swiper-item>
-			   			
-			   <swiper-item :item-id="twoItemParam.a_id">
-			       <video title="2222222" id="myVideo1"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(twoItemParam.video[0])"  :poster="filter.imgIP_video(twoItemParam.video[0])" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
-			   </swiper-item>
-			   			
-			   <swiper-item :item-id="threeItemParam.a_id">
-			       <video title="3333333" id="myVideo2"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(threeItemParam.video[0])" :poster="filter.imgIP_video(threeItemParam.video[0])" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
-			   </swiper-item>
+			    <swiper-item :item-id="oneItemParam.a_id">
+			        <video title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(oneItemParam.img[0])"  :poster="filter.imgIP_video(oneItemParam.img[0])" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			    </swiper-item>
+			
+			    <swiper-item :item-id="twoItemParam.a_id">
+			        <video title="2222222" id="myVideo1"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(twoItemParam.img[0])"  :poster="filter.imgIP_video(twoItemParam.img[0])" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			    </swiper-item>
+			
+			    <swiper-item :item-id="threeItemParam.a_id">
+			        <video title="3333333" id="myVideo2"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(threeItemParam.img[0])" :poster="filter.imgIP_video(threeItemParam.img[0])" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			    </swiper-item>
+			
 			</swiper>
 			<cover-view class="back_btn" :style="style" @tap="back()">
-				<cover-image  :src="filter.imgIP('/static_s/51daiyan/images/back.png')" class="head"></cover-image>
+				<cover-image :src="filter.imgIP('/static_s/51daiyan/images/back.png')" class="head"></cover-image>
 			</cover-view>
 			<!-- 用户 -->
-			<cover-view :hidden="isFull" class="user flex flex-alignItems">
+			<!-- <cover-view :hidden="isFull" class="user flex flex-alignItems">
 			    <cover-view class="user-rf">
 			        <cover-view class="flex flex-alignItems name">
-			            <cover-view class="name-child hide1">{{videoParam.nickname}}</cover-view>
+			            <cover-view class="name-child hide1">寻味</cover-view>
 			            <cover-image :src="filter.imgIP('/static_s/51daiyan/images/dizhi.png')" class="v_address" ></cover-image>
-			            <cover-view class="fz22 ">{{videoParam.a_ship_address}}</cover-view>
+			            <cover-view class="fz22 ">{{videoParam.site}}</cover-view>
 			        </cover-view>
 			    </cover-view>
-			</cover-view>
+			</cover-view> -->
 			
 			<!-- 代言商品 -->
-			<cover-view class="tag" @tap="jump" data-url="/pages/details/details">
-			   <cover-image :src="filter.imgIP(videoParam.g_pic[0])" class="v_goods_img" ></cover-image>
+			<!-- <cover-view class="tag" @tap="jump" data-url="/pages/details/details">
+			   <cover-image :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" class="v_goods_img" ></cover-image>
 			   <cover-view class="goods_msg">
-			      <cover-view class="oh2">{{videoParam.g_title}}</cover-view>
-			      <cover-view class="goods_Pri1"><cover-view class="pri1">¥{{videoParam.g_price}}</cover-view><cover-view class="pri2">销量{{videoParam.gd_virtual_sales}}</cover-view></cover-view>
+			      <cover-view class="oh2">{{videoParam.description}}</cover-view>
+			      <cover-view class="goods_Pri1"><cover-view class="pri1">¥{{videoParam.topic}}</cover-view><cover-view class="pri2">销量191</cover-view></cover-view>
 			   </cover-view>
-			</cover-view>
+			</cover-view> -->
 			
 			<cover-image :src="filter.imgIP('/static_s/51daiyan/images/bofang.png')" class="play" v-if="playMark==1" @tap="tabVideo"></cover-image>
 			<!-- <view class="fullBtn"  @tap="asdasd">
 			  <cover-image src="{{filter.imgIP('tx.png')}}" class="head"></cover-image>
 			  <cover-view class="sp_gz">+关注</cover-view>
 			</view> -->
-			<view class="fullBtn"  @tap="guanzhu_fuc">
-			  <cover-image :src="filter.imgIP(videoParam.user_head)" class="head"></cover-image>
+			<!-- <view class="fullBtn"  @tap="guanzhu_fuc">
+			  <cover-image :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" class="head"></cover-image>
 			  <cover-view class="sp_gz">+关注</cover-view>
-			</view>
-			<view class="fullBtn fullBtn1"  @tap="videoLike">
+			</view> -->
+			<!-- <view class="fullBtn fullBtn1"  @tap="videoLike">
 			  <cover-view class="dianzan_cion">
 			    <cover-image :src="filter.imgIP('/static_s/51daiyan/images/dianzan.png')" class="dianzan_image"></cover-image>
 			  </cover-view>
-			  <cover-view class="dianzan_num">{{videoParam.praise_number}}</cover-view>
+			  <cover-view class="dianzan_num">{{videoParam.likeCount}}</cover-view>
 			</view>
 			<view class="fullBtn fullBtn2"  @tap="jump" data-url="/pages/details/details">
 			  <cover-image :src="filter.imgIP('/static_s/51daiyan/images/v_goods.png')" class="head"></cover-image>
-			</view>
+			</view> -->
 	</view>
 </template>
 
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import service from '../../service.js';
-
+	
 	let videoContext = null; //video实例
 	let time = null
 	import {
@@ -74,6 +75,7 @@
 				CustomBar: this.CustomBar,
 				v_type:1,
 				uid:'',
+				idx:'',
 				btn_kg: 0,
 				data_list: [],
 				page: 1,
@@ -102,14 +104,8 @@
 				isFull: false
 			}
 		},
-		computed: {
-			...mapState([
-				'hasLogin',
-				'loginMsg',
-				'wxlogin'
-			])
-		},
 		onLoad: function (e) {
+			this.uid=e.uid
 			this.idx=e.idx
 		  // 拿到当前视频的实例
 		  this.videoContext0 = wx.createVideoContext('myVideo0')
@@ -117,13 +113,9 @@
 		  this.videoContext1 = wx.createVideoContext('myVideo1')
 		  // 拿到当前视频的实例
 		  this.videoContext2 = wx.createVideoContext('myVideo2')
-		
-		  /* 初始化页面视频id 及 视频下标 */
-		  this.videoId= e.idx || 1,
+			/* 初始化页面视频id 及 视频下标 */
+			this.videoId= e.idx || 1,
 		  this.getdatalist()
-		  
-		
-		 
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName',
@@ -147,9 +139,11 @@
 			getdatalist() {
 			
 				let that = this
-				var jkurl = '/shortVideo'
+				var jkurl = '/star/getHomepageData'
 				var datas = {
 					token: that.loginMsg.userToken,
+					user_id: that.uid,
+					type: 2,
 					page: that.page,
 					size: that.size
 				}
@@ -227,6 +221,7 @@
 				})
 			
 			},
+			
 			changeCurrent(e) {
 			  console.log(e.detail.current)
 			  if (e.detail.current == 0) {

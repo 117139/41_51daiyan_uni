@@ -87,7 +87,7 @@
 		  </view>
 		  <view class="mt20 goods_xmsg"  @tap="sheetshow_fuc">
 		    <view class="v1">已选择</view>
-		    <view class="v2 v21">{{ggshow1}},{{cnum}}件</view>
+		    <view class="v2 v21">{{ggshow1?ggshow1+',':''}}{{cnum>0?cnum+'件':''}}</view>
 		    <view class="v3">
 		      <text class="iconfont iconnext3"></text>
 		    </view>
@@ -214,19 +214,27 @@
 		  </view>
 		  <!-- tk -->
 			<uni-popup ref="popup_yh" type="center" @change="tkchange0">
-				<view class="hb_tk" style="background-image: url(../../static/images/get_yh.png);">
-					<image class="hb_tk_img" src="../../static/images/get_yh.png" mode="scaleToFill"></image>
+				<!-- <view class="hb_tk" style="background-image: url(../../static/images/get_yh.png);"> -->
+				<view class="hb_tk">
+					<image class="hb_tk_img" :src="filter.imgIP('/static_s/51daiyan/images/get_yh.png')" mode="scaleToFill"></image>
 					<scroll-view style="width: 100%;height: 100%;position: relative;z-index: 9999;" scroll-y>
-						<view class="dis_flex goods_yh_li" v-for="(item,idx) in 6">
-							<view class="goods_yh_pri">
-								<view class="dis_flex d1"><text>￥</text>30</view>
-								<view class="d2">满300可用</view>
+						<view class="dis_flex goods_yh_li" v-for="(item,idx) in yh_list">
+							<view class="goods_yh_pri" v-if="item.coupon_setting_type==1">
+								<view class="dis_flex d1"><text>￥</text>{{item.c_money*1}}</view>
+								<view class="d2">满{{item.condition*1}}可用</view>
+							</view>
+							<view class="goods_yh_pri" v-if="item.coupon_setting_type==2">
+								<view class="dis_flex d1">{{item.discount_ratio}}<text>折</text></view>
+							</view>
+							<view class="goods_yh_pri" v-if="item.coupon_setting_type==3">
+								<view class="dis_flex d1">全额</view>
+								<view class="dis_flex d1">抵扣</view>
 							</view>
 							<view class="flex_1 goods_yhmsg">
-								<view class="yh_type">仅限本商品可用</view>
+								<view class="yh_type">{{item.name}}</view>
 								<view class="yh_time">
 									<view>有效日期</view>
-									<view>2020.7.31-2020-8-20</view>
+									<view>{{filter.getDate_ymd(item.use_start_time,'-')}}-{{filter.getDate_ymd(item.use_end_time,'-')}}</view>
 								</view>
 								
 							</view>
@@ -238,7 +246,7 @@
 				</view>
 				<view class="dis_flex aic ju_c">
 					<!-- <image class="yh_gb_btn" :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image> -->
-					<image class="yh_gb_btn" src="../../static/images/off.png"  @tap="gb_yhtk"></image>
+					<image class="yh_gb_btn" :src="filter.imgIP('/static_s/51daiyan/images/off.png')"  @tap="gb_yhtk"></image>
 				</view>
 			</uni-popup>
 		  <uni-popup ref="popup" type="bottom" @change="tkchange1">
@@ -248,13 +256,13 @@
 		          <view class="dis_flex aic flex_1">
 		            <view class="tk_user_tx">
 		              <image class="tk_user_tx" :src="filter.imgIP(item.head_portrait)"  mode="aspectFill"></image>
-		              <image v-if="idx==1" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-		              <image v-if="idx==2" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+		              <image v-if="item.identity_id==1" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+		              <image v-if="item.identity_id==2" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
 		            </view>
 		            <view class="tk_user_name">kimi</view>
 		            <view v-if="item.is_friend==2" class="hy_bq">好友</view>
-		            <view v-if="idx==1" class="hy_bq hy_bq1 ">明星</view>
-		            <view v-if="idx==2" class="hy_bq hy_bq2">达人</view>
+		            <view v-if="item.identity_id==1" class="hy_bq hy_bq1 ">明星</view>
+		            <view v-if="item.identity_id==2" class="hy_bq hy_bq2">达人</view>
 		          </view>
 		          <icon  v-if="dyr_type==idx" type="success" size="18" color="#F7B43B" />
 		          <view wx:else class="tx_type2">
@@ -354,6 +362,7 @@
 			return {
 				btn_kg:0,
 				g_id:'',
+				v_id:'',     //sku_id
 				indicatorDots: false,
 				autoplay: false,
 				circular: true,
@@ -371,6 +380,9 @@
 				  { value1:'耳挂咖啡1'},
 				],
 				
+				
+				
+				yh_list:[],         //优惠券列表
 				cur_swiper:1,
 				star_list:[],					//代言人列表
 				star_page:1,
@@ -402,7 +414,7 @@
 				
 				type1: [-1],         //规格index
 				ggshow1_jjj:[],
-				cnum: 1,//数量
+				cnum: 0,//数量
 				goods_sku_id: 0,  //商品id
 			}
 		},
@@ -466,6 +478,7 @@
 			},
 			onRetry(){
 				this.getSku()
+				this.getyhlist()
 				this.star_page=1
 				this.getStarlist()
 				this.StarText_page=1
@@ -473,6 +486,64 @@
 				this.LaterBuy_page=1
 				this.getLaterBuylist()
 			},
+			//获取代言人列表
+			getyhlist() {
+				let that = this
+				// if(that.btn_kg==1){
+				// 	return
+				// }else{
+				// 	that.btn_kg=1
+				// }
+				var jkurl = '/goods/goodsCoupon'
+				var datas = {
+					gid:that.g_id,
+					token: that.loginMsg.userToken,
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+			
+						// if (datas.length == 0) {
+						// 	if(that.star_page>1){
+						// 		uni.showToast({
+						// 			icon: 'none',
+						// 			title: '暂无更多数据'
+						// 		})
+						// 	}
+							
+						// 	that.btn_kg=0
+						// 	return
+						// }
+						that.yh_list =datas
+						// if(that.star_page==1){
+						// 	that.star_list =datas
+						// }else{
+							
+						// 	that.star_list = that.star_list.concat(datas)
+						// }
+						that.btn_kg=0
+						// that.star_page++
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			},
+			
+			
 			//获取代言人列表
 			getStarlist() {
 				let that = this
@@ -973,6 +1044,7 @@
 				for	(var i=0;i<show_arr.length;i++){
 					kucun_num+=show_arr[i].number
 					if(pri==0){
+						that.v_id=show_arr[i].v_id
 						pri=show_arr[i].current_price
 					}
 					if(sku_img==""){
@@ -1122,6 +1194,22 @@
 			  //   return
 			  // }
 			  let that = this
+				for(var i;i<that.guige_arr.length;i++){
+					if(!that.guige_select[i]){
+						uni.showToast({
+							icon:'none',
+							title:'请选择'+that.guige_arr[i].name
+						})
+						return
+					}
+				}
+				if(that.cnum==0){
+					uni.showToast({
+						icon:'none',
+						title:'请添加购买数量'
+					})
+					return
+				}
 				console.log(that.cnum)
 			  that.onClose()
 			  wx.showToast({
@@ -1839,7 +1927,7 @@ padding: 0 10rpx;
   margin-bottom: 5rpx;
 }
 .sg{
-  width:1rpx;
+  width:1px;
   height:48rpx;
   background:rgba(238,238,238,1);
 }
@@ -2172,6 +2260,7 @@ button {
   align-items: center;
   justify-content: center;
   font-size: 22rpx;
+	line-height: 22rpx;
   margin-right: 5rpx;
 }
 .hy_bq1{

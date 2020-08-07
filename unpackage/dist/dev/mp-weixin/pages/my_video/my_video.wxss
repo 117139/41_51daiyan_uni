@@ -1,14 +1,32 @@
-/* pages/xvideo/xvideo.wxss */
 
-
-
-swiper {
+.back_btn.data-v-410f8386{
+	position: fixed;
+	top: 50px;
+	left: 15px;
+	width: 74rpx;
+	height: 74rpx;
+	background: rgba(0,0,0,.5);
+	border-radius: 50%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+}
+.back_btn cover-image.data-v-410f8386{
+	width: 40rpx;
+	height: 40rpx;
+}
+swiper.data-v-410f8386 {
   width: 100vw;
   height: 100vh;
   background: #756C69;
 }
-
-swiper video {
+swiper video.data-v-410f8386 {
   width: 100vw;
   height: 100vh;
   /* margin-top: 100rpx; */
@@ -16,64 +34,65 @@ swiper video {
   height:727rpx; */
   display: block;
 }
-
-.play {
+.play.data-v-410f8386 {
   position: fixed;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
   width: 128rpx;
   height: 128rpx;
 }
-
-.fullBtn {
+.fullBtn.data-v-410f8386 {
   position: fixed;
   right: 50rpx;
   color: #fff;
   top: 50%;
   height: 128rpx;
   /* background-color: pink; */
+  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
 }
-
-.video-pic{
+.video-pic.data-v-410f8386{
   width: 100vw;
   height: 100vh;
   display: block;
 }
-
-
 /**index.wxss**/
-.index{
+.index.data-v-410f8386{
   width: 100vw;
   height: 100vh;
   overflow: hidden;
 }
-
-.video-box {
+.video-box.data-v-410f8386 {
   width: 100vw;
   height: 100vh;
+  -webkit-transition: all 0.4s cubic-bezier(1, 1, 0, 0.42);
   transition: all 0.4s cubic-bezier(1, 1, 0, 0.42);
-  transform: translate(0%, 0%);
+  -webkit-transform: translate(0%, 0%);
+          transform: translate(0%, 0%);
   position: relative;
 }
-
-.video-box .video-list {
+.video-box .video-list.data-v-410f8386 {
   position: absolute;
   left: 0;
   width: 100vw;
   height: 100vh;
 }
-
-.video-box .video-list video {
+.video-box .video-list video.data-v-410f8386 {
   display: block;
   width: 100vw;
   height: 100vh;
 }
-
-.user {
+.user.data-v-410f8386 {
   color: #fff;
   /* border-radius: 48rpx; */
   /* height: 90rpx; */
@@ -83,12 +102,10 @@ swiper video {
   z-index: 13;
   font-size: 30rpx;
 }
-
-.user .user-rf {
+.user .user-rf.data-v-410f8386 {
   min-width: 500rpx;
 }
-
-.yiguanzhu {
+.yiguanzhu.data-v-410f8386 {
   width: 114rpx;
   text-align: center;
   line-height: 40rpx;
@@ -98,50 +115,42 @@ swiper video {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 4px;
 }
-
-.name {
+.name.data-v-410f8386 {
 }
-
-.name  .name-child {
+.name  .name-child.data-v-410f8386 {
   margin-right: 20rpx;
   max-width: 360rpx;
 }
-
-.site {
+.site.data-v-410f8386 {
   font-size: 24rpx;
   margin-top: 10rpx;
 }
-
-.site .address {
+.site .address.data-v-410f8386 {
   width: 24rpx;
   height: 26rpx;
   margin-right: 10rpx;
   display: inline-block;
 }
-
-.head {
+.head.data-v-410f8386 {
   width: 90rpx;
   height: 90rpx;
   border-radius: 50%;
   /* margin-right: 18rpx; */
 }
-
-.label {
+.label.data-v-410f8386 {
   min-width: 90rpx;
   height: 44rpx;
   border-radius: 28rpx;
   background: #ff6619;
   font-size: 22rpx;
 }
-
-.label .zhengque {
+.label .zhengque.data-v-410f8386 {
   width: 20rpx;
   height: 20rpx;
   margin-right: 6rpx;
   display: inline-block;
 }
-
-.icon-box {
+.icon-box.data-v-410f8386 {
   width: 80rpx;
   position: absolute;
   right: 20rpx;
@@ -150,8 +159,7 @@ swiper video {
   text-align: center;
   font-size: 22rpx;
 }
-
-.icon-box  .icon-list {
+.icon-box  .icon-list.data-v-410f8386 {
   margin-top: 40rpx;
   padding: 0;
   background: rgba(0, 0, 0, 0);
@@ -161,41 +169,33 @@ swiper video {
   color: #fff;
   font-size: 24rpx;
 }
-
-.icon-box  .icon-list image {
+.icon-box  .icon-list image.data-v-410f8386 {
   margin-bottom: 6rpx;
 }
-
-.icon-box  .icon-list	.dianzan {
+.icon-box  .icon-list	.dianzan.data-v-410f8386 {
   width: 56rpx;
   height: 58rpx;
 }
-
-.icon-box  .icon-list	.pinglun {
+.icon-box  .icon-list	.pinglun.data-v-410f8386 {
   width: 60rpx;
   height: 56rpx;
 }
-
-.icon-box  .icon-list	.fenxiang {
+.icon-box  .icon-list	.fenxiang.data-v-410f8386 {
   width: 60rpx;
   height: 46rpx;
 }
-
-.icon-box  .icon-list	.schu {
+.icon-box  .icon-list	.schu.data-v-410f8386 {
   width: 44rpx;
   height: 58rpx;
 }
-
-.icon-box  .icon-list	.font-list {
+.icon-box  .icon-list	.font-list.data-v-410f8386 {
   font-size: 24rpx;
   line-height: 1.1;
 }
-
-.icon-box  .icon-list:after {
+.icon-box  .icon-list.data-v-410f8386:after {
   border: none;
 }
-
-.tag {
+.tag.data-v-410f8386 {
   position: absolute;
   color: #fff;
   max-width: 520rpx;
@@ -211,10 +211,11 @@ swiper video {
   border-radius:10rpx;
   padding: 20rpx;
   box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
 }
-
-.tag .tag-child {
+.tag .tag-child.data-v-410f8386 {
   padding: 0 20rpx;
   height: 42rpx;
   background: rgba(0, 0, 0, 0.3);
@@ -222,15 +223,13 @@ swiper video {
   font-size: 24rpx;
   margin-bottom: 14rpx;
 }
-
-.tag .jinghao {
+.tag .jinghao.data-v-410f8386 {
   display: inline-block;
   width: 18rpx;
   height: 18rpx;
   margin-right: 8rpx;
 }
-
-.progress-bar-box {
+.progress-bar-box.data-v-410f8386 {
   width: 750rpx;
   height: 6rpx;
   background: #bebebe;
@@ -240,8 +239,7 @@ swiper video {
   bottom: 0;
   left: 0;
 }
-
-.progress-bar-box  .progress {
+.progress-bar-box  .progress.data-v-410f8386 {
   width: "0%";
   height: 6rpx;
   background: #f26624;
@@ -252,7 +250,7 @@ swiper video {
   left: 0;
 }
 /*修改 */
-.sp_gz{
+.sp_gz.data-v-410f8386{
   background:rgba(244,92,126,1);
   border-radius:18rpx;
   /* display: flex;
@@ -264,66 +262,87 @@ swiper video {
   position: relative;
   top: -10rpx;
 }
-.dianzan_cion{
+.dianzan_cion.data-v-410f8386{
   width:74rpx;
   height:74rpx;
   background:rgba(0,0,0,1);
   border-radius:50%;
   font-size: 22rpx;
   color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
 }
-.dianzan_image{
+.dianzan_image.data-v-410f8386{
   width:36rpx;
   height:37rpx;
 }
-.dianzan_num{
+.dianzan_num.data-v-410f8386{
   font-size: 20rpx;
   margin-top: 10rpx;
 }
-
-.fullBtn1{
+.fullBtn1.data-v-410f8386{
   margin-top: 160rpx;
   margin-right: 10rpx;
 }
-.fullBtn2{
+.fullBtn2.data-v-410f8386{
   margin-top: 320rpx;
 }
-.v_address{
+.v_address.data-v-410f8386{
   width:18rpx;
   height:20rpx;
   margin-right: 8rpx;
 }
-.v_goods_img{
-  flex: none;
+.v_goods_img.data-v-410f8386{
+  -webkit-box-flex: 0;
+  -webkit-flex: none;
+          flex: none;
   width:160rpx;
   height:160rpx;
   border-radius:10rpx;
   margin-right: 20rpx;
 }
-.goods_msg{
-  flex: 1;
+.goods_msg.data-v-410f8386{
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
   font-size: 30rpx;
   color: #333;
 }
-.goods_msg .oh2{
+.goods_msg .oh2.data-v-410f8386{
   width: 100%;
   white-space:pre-wrap;
 }
-.goods_Pri1{
+.goods_Pri1.data-v-410f8386{
+  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
   font-size: 24rpx;
   color: #999;
 }
-.goods_Pri1 .pri1{
+.goods_Pri1 .pri1.data-v-410f8386{
   color: #EB4443;
   font-size: 30rpx;
   width: 50%;
   font-weight: bold;
 }
+

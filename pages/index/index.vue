@@ -68,7 +68,8 @@
 				</view>
 				<view class="goods_tip">已为您更新{{datas.advocacyVideoArr.length}}个视频</view>
 				<view class="goods_list">
-					<view class="goods_li" v-for="(item,idx) in datas.advocacyVideoArr">
+					<view v-if="idx<2" class="goods_li" v-for="(item,idx) in datas.advocacyVideoArr" 
+					 @tap.stop="jump" :data-url="'/pages/xvideo/xvideo?idx='+item.id">
 						<image class="goods_img" :src="filter.imgIP_video(item.img[0])" mode="aspectFill"></image>
 						<image class="goods_play" :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
 					</view>
@@ -110,7 +111,7 @@
 							<text v-if="item.use_identity_id==2">达人</text>
 						</view>
 					</view>
-					<view v-if="item.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-idx="idx">为我投票</view>
+					<view v-if="item.is_vote==1" class="quan_user_btn" @tap.stop="toupiao" :data-id="item.id" :data-idx="idx">为我投票</view>
 					<view v-else class="quan_user_btn quan_user_btn1">已投票</view>
 				</view>
 				<view class="quan_msg">
@@ -386,10 +387,32 @@
 				
 			},
 			toupiao(e) {
-				var idx = e.currentTarget.dataset.idx
-				var newdata = this.start_li
-				newdata[idx].tp_type = 2
-				this.start_li = newdata
+			  var id = e.currentTarget.dataset.id
+			  var idx = e.currentTarget.dataset.idx
+				var that =this
+			  var datas = {
+			  	token: that.loginMsg.userToken,
+			  	aau_id:id
+			  }
+			  // 单个请求
+			  service.P_post('/activity/vote', datas).then(res => {
+			  	console.log(res)
+			  	if (res.code == 1) {
+			  		// that.page=1
+			  		// that.getdatalist()
+						that.data_list[idx].is_vote=2
+			  		uni.showToast({
+			  			icon: 'none',
+			  			title: '操作成功'
+			  		})
+			  	}
+			  }).catch(e => {
+			  	console.log(e)
+			  	uni.showToast({
+			  		icon: 'none',
+			  		title: '操作失败'
+			  	})
+			  })
 			},
 
 			zan(e) {

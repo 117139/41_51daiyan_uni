@@ -136,7 +136,10 @@
 				cur_swiper:1,
 				
 				btn_kg:0,
+				
+				
 				g_id:'',
+				v_id:'',   //sku_id
 				sheetshow: false,         //规格弹框控制
 				sheetshow1: false,  
 				
@@ -153,7 +156,7 @@
 				
 				type1: [-1],         //规格index
 				ggshow1_jjj:[],
-				cnum: 1,//数量
+				cnum: 0,//数量
 				
 				star_list:[],
 				star_page:1,
@@ -463,7 +466,19 @@
 				var kucun_num=0
 				var pri=0
 				var sku_img=''
-				for(var i=0;i<	that.guige_arr.length;i++){
+				console.log(show_arr)
+				
+				for	(var i=0;i<show_arr.length;i++){
+					kucun_num+=show_arr[i].number
+					if(pri==0){
+						that.v_id=show_arr[i].v_id
+						pri=show_arr[i].current_price
+					}
+					if(sku_img==""){
+						sku_img=show_arr[i].v_img
+					}
+				}
+				/*for(var i=0;i<	that.guige_arr.length;i++){
 					var newVal=[]
 					
 					if(i!=idx){
@@ -479,6 +494,7 @@
 									if(newVal.indexOf(a)==-1){
 										newVal.push(a)
 										if(pri==0){
+											that.v_id=show_arr[j].v_id
 											pri=show_arr[j].current_price
 										}
 										if(sku_img==""){
@@ -496,7 +512,7 @@
 					}else{
 						// that.$set(that.guige_arr_show[i],'value',that.guige_arr[i].value)
 					}
-				}
+				}*/
 				that.show_pri=pri
 				that.show_num=kucun_num
 				if(kucun_num<that.cnum){

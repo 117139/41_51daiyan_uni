@@ -10,10 +10,10 @@
 		        <view class="quan_user_msg">
 		          <view class="quan_user_name">{{item.user_nickname}} <image src="/static/images/star_b.png"></image></view>
 		          <view class="quan_user_time">
-								<text>10-14 18:03</text><text>演员</text>
-								<!-- <text>{{filter.getDateTime(item.create_time)}}</text>
+								<!-- <text>10-14 18:03</text><text>演员</text> -->
+								<text>{{filter.getDateTime(item.create_time)}}</text>
 								<text v-if="item.use_identity_id==1">明星</text>
-								<text v-if="item.use_identity_id==2">达人</text> -->
+								<text v-if="item.use_identity_id==2">达人</text>
 							</view>
 		        </view>
 		        <!-- <view class="quan_user_btn">为我投票</view> -->
@@ -28,7 +28,7 @@
 		          
 		        </view>
 		      </view>
-		      <view class="quan_goods"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+		      <!-- <view class="quan_goods"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 		        <image class="quan_goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
 		        <view class="quan_goods_msg">
 		          <view class="quan_goods_name oh1">苏泊尔IH家用大容量智能电饭锅</view>
@@ -41,7 +41,7 @@
 		            <view  class="goods_btn2"><text>5200+</text>代言人</view>
 		          </view>
 		        </view>
-		      </view>
+		      </view> -->
 		      <view class="quan_li_cz">
 		        <!-- <text class="iconfont iconcaozuo" @tap.stop=""></text>
 		        <view class="cz_li">
@@ -53,9 +53,9 @@
 		           <text class="iconfont iconpinglun"></text>评论
 		          </view>
 		        </view> -->
-		        <view class="cz_li">跟随购买：6321</view>
-		        <view class="cz_li" @tap.stop="jump" data-url="/pages/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>1566</view>
-		        <view class="cz_li" @tap.stop="zan" data-id="idx"><text class="iconfont iconzan"></text>1566</view>
+		        <view class="cz_li">跟随购买：{{item.follow_buy_number}}</view>
+		        <view class="cz_li" @tap.stop="jump" data-url="/pages/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>{{item.comment_number}}</view>
+		        <view class="cz_li" @tap.stop="zan" data-id="idx"><text class="iconfont iconzan"></text>{{item.praise_number}}</view>
 		      </view>
 		    </view>
 		  </view>

@@ -14,7 +14,8 @@
     "pages/my_index/my_index",
     "pages/search/search",
     "pages/xiaoxi_list/xiaoxi_list",
-    "pages/xvideo/xvideo"
+    "pages/xvideo/xvideo",
+    "pages/my_video/my_video"
   ],
   "subPackages": [
     {
@@ -151,6 +152,5 @@
   "usingComponents": {
     "van-stepper": "./wxcomponents/vant/stepper/index",
     "van-popup": "./wxcomponents/vant/popup/index"
-  },
-  "sitemapLocation": "sitemap99.json"
+  }
 }
