@@ -106,6 +106,10 @@ page.data-v-1387f7e1{
 	border:1rpx solid #FEC335;
 	color: #FEC335;
 }
+.user_name text.star_bq1.data-v-1387f7e1{
+	color: #3598FE;
+	border: 1px solid #3598FE;
+}
 .goods_xx.data-v-1387f7e1{
 	width: 100%;
 	padding: 0 28rpx 20rpx;

@@ -31,7 +31,7 @@
 			<cover-view class="tag" @tap="jump" data-url="/pages/details/details">
 			   <cover-image :src="filter.imgIP(videoParam.g_pic[0])" class="v_goods_img" ></cover-image>
 			   <cover-view class="goods_msg">
-			      <cover-view class="oh2">{{videoParam.g_title}}</cover-view>
+			      <cover-view class="oh2">{{filter.textOh(videoParam.g_title)}}</cover-view>
 			      <cover-view class="goods_Pri1"><cover-view class="pri1">¥{{videoParam.g_price}}</cover-view><cover-view class="pri2">销量{{videoParam.gd_virtual_sales}}</cover-view></cover-view>
 			   </cover-view>
 			</cover-view>
@@ -41,9 +41,9 @@
 			  <cover-image src="{{filter.imgIP('tx.png')}}" class="head"></cover-image>
 			  <cover-view class="sp_gz">+关注</cover-view>
 			</view> -->
-			<view class="fullBtn"  @tap="guanzhu_fuc">
-			  <cover-image :src="filter.imgIP(videoParam.user_head)" class="head"></cover-image>
-			  <cover-view class="sp_gz">+关注</cover-view>
+			<view class="fullBtn" >
+			  <cover-image @tap="jump" :data-url="'/pages/my_index/my_index?id='+videoParam.user_id" :src="filter.imgIP(videoParam.user_head)" class="head"></cover-image>
+			  <cover-view class="sp_gz" v-if="!videoParam.is_motion" @tap.stop="guanzhuFuc(videoParam.user_id,'affirm')">+关注</cover-view>
 			</view>
 			<view class="fullBtn fullBtn1"  @tap="videoLike">
 			  <cover-view class="dianzan_cion">
@@ -401,11 +401,96 @@
 			    this.isFull= false
 			  }
 			},
-			guanzhu_fuc(){
-			  wx.showToast({
-			    title: '关注成功',
-			  })
-			  return
+			//关注
+			guanzhuFuc(id,key){
+				var that =this
+				var data={
+					token:that.loginMsg.userToken,
+					type:2,
+					id:id,
+					operate:key,
+				}
+				if(key=='affirm'){
+					service.P_post('/attention/operation',data).then(res => {
+					  console.log(res)
+						that.btnkg=0
+						if(res.code==-1){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==0&&res.msg=='请先登录账号~'){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==1){
+							for(var i=0;i<that.videoList.length;i++){
+								if(that.videoList[i].user_id==id){
+									that.$set(that.videoList[i],'is_motion',1)
+								}
+							}
+							that.videoParam.is_motion=1
+							uni.showToast({
+								icon:'none',
+								title:'操作成功'
+							})
+						}else{
+							
+						}
+					}).catch(e => {
+						that.btnkg=0
+					  console.log(e)
+						uni.showToast({
+							icon:'none',
+							title:'操作失败'
+						})
+					})
+					return
+				}
+				wx.showModal({
+					title: '提示',
+					content: '是否取消关注?',
+					success (res) {
+						if (res.confirm) {
+							console.log('用户点击确定')
+							service.P_post('/attention/operation',data).then(res => {
+							  console.log(res)
+								that.btnkg=0
+								if(res.code==-1){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==0&&res.msg=='请先登录账号~'){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==1){
+									that.getdata()
+									uni.showToast({
+										icon:'none',
+										title:'操作成功'
+									})
+								}else{
+									
+								}
+							}).catch(e => {
+								that.btnkg=0
+							  console.log(e)
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消')
+						}
+					}
+				})
+				
+				
 			},
 			jump(e) {
 			 service.jump(e)

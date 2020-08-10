@@ -2,17 +2,17 @@
 	<view>
 		<view class="container">
 			<view class="goods_xx">
-				<view class="quan_goods" @tap="jump" data-url="/pages/details/details">
-				  <image class="quan_goods_img" src="/static/images/goods1.png" mode="aspectFill"></image>
+				<view class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+g_id">
+				  <image class="quan_goods_img" :src="filter.imgIP(goodsdata.photo[0])" mode="aspectFill"></image>
 				  <view class="quan_goods_msg">
-				    <view class="quan_goods_name oh1">苏泊尔IH家用大容量智能电饭锅</view>
+				    <view class="quan_goods_name oh1">{{goodsdata.g_title}}</view>
 				    <view class="quan_goods_pri">
-				      <text class="pri1">¥668</text>
-				      <text class="pri2">¥1368</text>
+				      <text class="pri1">¥{{goodsdata.basics_price}}</text>
+				      <text class="pri2">¥{{goodsdata.basics_original_price}}</text>
 				    </view>
 				    <view class="quan_goods_btn">
-				      <view class="goods_btn1">库存:11000</view>
-				      <view  class="goods_btn2"><text>5200+</text>代言人</view>
+				      <view class="goods_btn1">库存:{{goodsdata.total_number}}</view>
+				      <view  class="goods_btn2"><text>{{goodsdata.advocacy_mannumber}}</text>代言人</view>
 				    </view>
 				  </view>
 				</view>
@@ -22,15 +22,20 @@
 				 <view class="data_null" v-if="data_list.length==0">
 				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null.png')"></image>
 				 </view>
-				 <view wx:el class="li_box" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/details/details">
-						<view class="user_tx"  @tap="jump" data-url="/pages/my_index/my_index">
-							<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
-							<!-- <image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image> -->
+				 <view v-else class="li_box" v-for="(item,idx) in data_list">
+						<view class="user_tx"  @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
+							<image class="user_tx" :src="filter.imgIP(item.head_portrait)"></image>
+							<image v-if="item.identity_id==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<image v-if="item.identity_id==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+						
 						</view>
-						<view class="user_name">王力宏 <text>好友</text><text class="star_bq">明星</text></view>
-						<view class="user_btn">+关注</view>
-						<view class="user_btn user_btn1">已关注</view>
+						<view class="user_name">{{item.nickname}} 
+							<text v-if="item.is_friend==2">好友</text>
+							<text v-if="item.identity_id==1" class="star_bq">明星</text>
+							<text v-if="item.identity_id==2" class="star_bq star_bq1">达人</text>
+						</view>
+						<view v-if="item.is_attention==1" @tap.stop="guanzhuFuc(item.user_id,'affirm')" class="user_btn">+关注</view>
+						<view v-if="item.is_attention==2" @tap.stop="guanzhuFuc(item.user_id,'cancel')" class="user_btn user_btn1">已关注</view>
 				 </view>
 			 </view>
 			 
@@ -49,10 +54,22 @@
 	export default {
 		data() {
 			return {
+				btnkg:0,
+				g_id:'',
 				type:'',
 				ss_cur:1,
-				data_list:[1,1,1,1]
+				page:1,
+				size:20,
+				data_list:[1,1,1,1],
+				goodsdata:''
 			}
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
 		},
 		/**
 		 * 生命周期函数--监听页面加载
@@ -60,12 +77,11 @@
 		onLoad: function (options) {
 			var that =this
 			console.log(that.options)
-			that.setData({
-				type: that.options.type
-			})
-			if (that.options.name){
+			that.g_id=options.id
+			this.onRetry()
+			if (options.name){
 				wx.setNavigationBarTitle({
-					title: that.options.name,
+					title: options.name,
 				})
 			}
 		},
@@ -102,14 +118,14 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-			uni.stopPullDownRefresh();
+			this.onRetry()
 		},
 	
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
-	
+			this.getStarlist()
 		},
 	
 		/**
@@ -119,13 +135,156 @@
 	
 		},
 		methods: {
-			ss_type(e){
-				
+			guanzhuFuc(id,key){
 				var that =this
-				if(that.ss_cur==e.currentTarget.dataset.type) return
-				console.log(e.currentTarget.dataset.type)
-				that.s_cur=e.currentTarget.dataset.type
+				var data={
+					token:that.loginMsg.userToken,
+					type:2,
+					id:id,
+					operate:key,
+				}
+				if(key=='affirm'){
+					service.P_post('/attention/operation',data).then(res => {
+					  console.log(res)
+						that.btnkg=0
+						if(res.code==-1){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==0&&res.msg=='请先登录账号~'){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==1){
+							that.getdata()
+							uni.showToast({
+								icon:'none',
+								title:'操作成功'
+							})
+						}else{
+							
+						}
+					}).catch(e => {
+						that.btnkg=0
+					  console.log(e)
+						uni.showToast({
+							icon:'none',
+							title:'操作失败'
+						})
+					})
+					return
+				}
+				wx.showModal({
+					title: '提示',
+					content: '是否取消关注?',
+					success (res) {
+						if (res.confirm) {
+							console.log('用户点击确定')
+							service.P_post('/attention/operation',data).then(res => {
+							  console.log(res)
+								that.btnkg=0
+								if(res.code==-1){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==0&&res.msg=='请先登录账号~'){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==1){
+									that.onRetry()
+									uni.showToast({
+										icon:'none',
+										title:'操作成功'
+									})
+								}else{
+									
+								}
+							}).catch(e => {
+								that.btnkg=0
+							  console.log(e)
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消')
+						}
+					}
+				})
+				
+				
 			},
+			
+			onRetry(){
+				this.page=1
+				this.getStarlist()
+			},
+			//获取代言人列表
+			getStarlist() {
+				let that = this
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+				}
+				var jkurl = '/goods/goodsAdvoacyUser'
+				var datas = {
+					gid:that.g_id,
+					token: that.loginMsg.userToken,
+					page: that.page,
+					size:that.size
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						var datas1 = res.goods_info
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+			
+						if (datas.length == 0) {
+							if(that.page>1){
+								uni.showToast({
+									icon: 'none',
+									title: '暂无更多数据'
+								})
+							}
+							
+							that.btn_kg=0
+							return
+						}
+						if(that.page==1){
+							that.data_list =datas
+							that.goodsdata=datas1
+						}else{
+							
+							that.data_list = that.data_list.concat(datas)
+						}
+						that.btn_kg=0
+						that.page++
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			},
+			
 			jump(e) {
 			 service.jump(e)
 			}
@@ -226,6 +385,10 @@ page{
 .user_name text.star_bq{
 	border:1rpx solid #FEC335;
 	color: #FEC335;
+}
+.user_name text.star_bq1{
+	color: #3598FE;
+	border: 1px solid #3598FE;
 }
 
 .goods_xx{

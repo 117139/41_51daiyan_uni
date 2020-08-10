@@ -11,12 +11,12 @@
 		    </view>
 		  </view>
 		  <view class="list">
-		    <view class="li_box" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/daiyan_quan_xq/daiyan_quan_xq">
+		    <view class="li_box" v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages_goods/daiyan_quan_xq/daiyan_quan_xq?id='+item.id">
 		      <view class="li_img">
-		        <image class="li_img" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+		        <image class="li_img" :src="filter.imgIP(item.img)"></image>
 		      </view>
-		      <text class="li_name">国潮</text>
-		      <view class="li_js oh2">体验国潮文化的魅力体验国潮文化的魅力</view>
+		      <text class="li_name">{{item.title}}</text>
+		      <view class="li_js oh2">{{item.synopsis}}</view>
 		    </view>
 		  </view>
 		</view>
@@ -34,9 +34,19 @@
 		data() {
 			return {
 				type:'',
-				data_list:[1,1,1,1],
+				btn_kg:0,
+				page:1,
+				size:20,
+				data_list:[],
 				daiyan_ss:''
 			}
+		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
 		},
 		/**
 		 * 生命周期函数--监听页面加载
@@ -49,6 +59,7 @@
 		      title: options.name,
 		    })
 		  }
+			that.onRetry()
 		},
 		
 		/**
@@ -83,14 +94,14 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  uni.stopPullDownRefresh();
+		  that.onRetry()
 		},
 		
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
-		
+			that.getdata()
 		},
 		
 		/**
@@ -100,6 +111,61 @@
 		
 		},
 		methods: {
+			onRetry(){
+				this.page=1
+				this.getdata()
+			},
+			
+			getdata(){
+				let that = this
+				console.log(that.btn_kg)
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+				}
+				var datas={
+					token: that.loginMsg.userToken,
+					page:that.page,
+					size:that.size
+				
+				}
+				service.P_get('/circle',datas).then(res => {
+				  console.log(res)
+					that.btn_kg=0
+					
+					if(res.code==1){
+						var datas = res.data
+						if (datas.length == 0) {
+							if(that.page>1){
+								uni.showToast({
+									icon: 'none',
+									title: '暂无更多数据'
+								})
+							}
+							
+							that.btn_kg=0
+							return
+						}
+						if(that.page==1){
+							that.data_list =datas
+						}else{
+							
+							that.data_list = that.data_list.concat(datas)
+						}
+						that.btn_kg=0
+						that.page++
+					}
+				}).catch(e => {
+				  console.log(e)
+					that.btn_kg=0
+					uni.showToast({
+						icon:'none',
+						title:'获取数据失败'
+					})
+				})
+			},
+			
 			daiyan_sousuo(e){
 				console.log(e.detail.value)
 				this.daiyan_ss=e.detail.value

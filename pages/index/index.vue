@@ -111,8 +111,8 @@
 							<text v-if="item.use_identity_id==2">达人</text>
 						</view>
 					</view>
-					<view v-if="item.is_vote==1" class="quan_user_btn" @tap.stop="toupiao" :data-id="item.id" :data-idx="idx">为我投票</view>
-					<view v-else class="quan_user_btn quan_user_btn1">已投票</view>
+					<view v-if="item.a_activity_id>0&&item.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-id="item.id" :data-idx="idx">为我投票</view>
+					<view v-if="item.a_activity_id>0&&item.is_vote==1" class="quan_user_btn quan_user_btn1">已投票</view>
 				</view>
 				<view class="quan_msg">
 					<view class="oh4  quan_msg_text">{{item.content}}</view>

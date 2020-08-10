@@ -320,6 +320,10 @@ const http =({url ='',param ={},method='',header={'content-type': 'application/x
   
   let timeStart = Date.now();
   return new Promise((resolve,reject)=>{
+		console.log('请求url：' + getUrl(url));
+		
+		console.log("请求头：", header)
+		console.log("param：", param)
     wx.request({
       url: getUrl(url),
       data:param,

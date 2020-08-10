@@ -1,4 +1,3 @@
-137549
 <template>
 	<view>
 		<view class="container">
@@ -14,7 +13,7 @@
 						<view class="user_msg">
 							<view class="user_name">
 								<text>{{datas.remark?datas.remark:datas.nickname}}</text> 
-								<text v-if="loginMsg.id!=datas.id" @tap="jump" :data-url="'/pagesA/my_setBeizhu/my_setBeizhu?id='+datas.id+'&name='+datas.remark" class="iconfont iconbeizhu" style="margin-left: 10upx;"></text>
+								<text v-if="loginMsg.id!=datas.id&&datas.is_attention==2" @tap="jump" :data-url="'/pagesA/my_setBeizhu/my_setBeizhu?id='+datas.id+'&name='+datas.remark" class="iconfont iconbeizhu" style="margin-left: 10upx;"></text>
 							</view>
 							<view class="daiyan_lv"><text class="iconfont iconxingzhuang60kaobei2"></text>代言星级 {{datas.advocacy_grade_value}}</view>
 						</view>
@@ -32,8 +31,8 @@
 							<!-- <text class="iconfont iconnv"></text> -->
 							{{datas.age?datas.age:0}}岁
 						</view>
-						<view>{{datas.school}}</view>
-						<view>{{datas.province}}{{datas.province==datas.city?'':datas.city}}{{datas.county}}</view>
+						<view v-if="datas.school">{{datas.school}}</view>
+						<view  v-if="datas.province">{{datas.province}}{{datas.province==datas.city?'':datas.city}}{{datas.county}}</view>
 					</view>
 					<view class="inr_box">
 						<view class="yue_li">
@@ -82,8 +81,8 @@
 										<view class="dt_text oh3">{{item.content}}</view>
 										<view class="dt_cz">
 											<view>共{{item.img.length>0?item.img.length:0}}张</view>
-											<view v-if="item.is_vote==2" class="tp_btn">投票</view>
-											<view v-if="item.is_vote==1" class="tp_btn tp_btn1">已投票</view>
+											<view v-if="item.a_activity_id>0&&item.is_vote==2" class="tp_btn">投票</view>
+											<view v-if="item.a_activity_id>0&&item.is_vote==1" class="tp_btn tp_btn1">已投票</view>
 										</view>
 									</view>
 								</view>

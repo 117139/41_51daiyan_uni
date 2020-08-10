@@ -53,11 +53,11 @@
 		    
 		  </view>
 		  <view class="hd_tip">提示！活动开始前完成购买代言，即刻开始拉票！</view>
-		  <view class="hd_db">
+		  <view class="hd_db" v-if="hd_type==2">
 		    <view>本期优选代言人排行榜</view>
 		    <view class="jump_btn" @tap="jump" :data-url="'/pages_goods/activity_db/activity_db?id='+item.ad_id">进入打榜页<text class="iconfont iconnext3"></text></view>
 		  </view>
-		  <view class="dy_list">
+		  <view class="dy_list" v-if="hd_type==2">
 		    <view class="dy_box" v-for="(item,idx) in star_list">
 		      <view class="dy_li">
 		        <view class="pl_num">
@@ -71,7 +71,7 @@
 		        </view>
 		        <view class="ph_name">{{item.nickname}}</view>
 		        <view class="ph_num"><text>{{item.popularity}}</text>人气值</view>
-		        <view v-if="item.is_vote==1" @tap.stop="toupiao" :data-id="item.id" class="ph_btn">投票</view>
+		        <view v-if="item.is_vote==2" @tap.stop="toupiao" :data-id="item.id" class="ph_btn">投票</view>
 		        <view  v-else class="ph_btn ph_btn1">已投票</view>
 		      </view>
 		      <view class="li_dy">代言说：{{item.say}}</view>
@@ -103,6 +103,7 @@
 				page:1,
 				size:20,
 				datas: "",
+				hd_type:1,
 				star_list:[]
 			}
 		},
@@ -190,7 +191,7 @@
 						that.getdatalist()
 						djs_fuc=setInterval(function () {
 						  that.hd_time= that.djs(res.data.end_time*1000)
-						  console.log(that.djs())
+						  // console.log(that.djs())
 						}, 1000);
 					}
 				}).catch(e => {
@@ -226,7 +227,7 @@
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-						
+						that.hd_type=res.data.is_act_open
 						if(that.page==1){
 							that.star_list =datas
 						}else{
@@ -283,12 +284,15 @@
 			  service.P_post('/activity/vote', datas).then(res => {
 			  	console.log(res)
 			  	if (res.code == 1) {
-			  		that.page=1
-			  		that.getdatalist()
+			  		
 			  		uni.showToast({
 			  			icon: 'none',
 			  			title: '操作成功'
 			  		})
+						setTimeout(function(){
+							that.page=1
+							that.getdatalist()
+						},1000)
 			  	}
 			  }).catch(e => {
 			  	console.log(e)

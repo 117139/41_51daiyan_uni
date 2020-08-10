@@ -5,9 +5,9 @@
 				<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/youxuan_02.jpg')"></image>
 			</view>
 		  <view class=' w100 pb40 pt20 bgfff tab_box'>
-				<view :class="type==-1?'typecur':''" :data-type="-1" @tap='bindcur'>全部</view>
+				<view :class="type==0?'typecur':''" :data-type="0" @tap='bindcur'>全部</view>
 		    <block v-for="(item,idx) in catelist">
-		      <view :class="type==idx?'typecur':''" :data-type="idx" @tap='bindcur'>{{item.title}}</view>
+		      <view :class="type==item.id?'typecur':''" :data-type="item.id" @tap='bindcur'>{{item.title}}</view>
 		    </block>
 		
 		  </view>
@@ -23,25 +23,28 @@
 				</view> -->
 				<!-- goods_li -->
 				<view class="goods_list2">
-					<view class="goods_li2" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/details/details">
+					<view class="goods_li2" v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
 						<view class="goods_li2_d1">
 							<view class="goods_img2">
-								<image class="goods_img2" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')"></image>
+								<image class="goods_img2" :src="filter.imgIP(item.g_pic[0])"></image>
 							</view>
 							<view class="goods_msg">
 								<view class="goods_name2 ">
-									<view class="flex_1 oh1">苏泊尔IH家用大容量智能电饭锅</view>
+									<view class="flex_1 oh1">{{item.g_title}}</view>
 									<view class="yx_icon">严选</view>
 								</view>
 								<view class="goods_pri">
-									<view class="pri1">¥668</view>
+									<view class="pri1">¥{{item.g_price}}</view>
 									
 								</view>
 								<view class="goods_btn1">
-									<view class="sj_list"  @tap="jump" data-url="/pages_goods/daiyanren/daiyanren">
-									  <image v-for="(item,idx) in 5" class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
+									<view  class="sj_list" >
+									  <image  @tap.stop="jump" 
+										:data-url="'/pages_goods/daiyanren/daiyanren?id='+item.id" 
+										v-for="(item1,idx1) in item.adv_user" class="sj_li" :src="filter.imgIP(item1.head_portrait)"
+										 mode="aspectFill"></image>
 									</view>
-									<view class="goods_dy_num2">代言费：<text>¥30</text></view>
+									<view class="goods_dy_num2">代言费：<text>¥{{item.basics_advocacy_price}}</text></view>
 								</view>
 							</view>
 						</view>
@@ -64,25 +67,27 @@
 	export default {
 		data() {
 			return {
-				dy_mon:0,
-				dy_num:0,
-				dy_pri:0,
-				data_list:[1,1,1,1,1],
-				catelist:[
-					'全部',
-					'日用品',
-					'化妆品',
-				  '运动品',
-					'数码产品'
-				],
-				type:-1,
+				btn_kg:0,
+				data_list:[],
+				catelist:[],
+				type:0,
+				page:1,
+				size:20
 			}
+		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
 			this.getCate()
+			this.onRetry()
 		},
 		
 		/**
@@ -117,14 +122,14 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  wx.stopPullDownRefresh();
+		 this.onRetry()
 		},
 		
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
-		
+		this.getdata()
 		},
 		
 		/**
@@ -134,6 +139,10 @@
 		
 		},
 		methods: {
+			onRetry(){
+				this.page=1
+				this.getdata()
+			},
 			getCate(){
 				var that =this
 				var datas={
@@ -153,28 +162,61 @@
 						title:'获取数据失败'
 					})
 				})
-				
+				return
 				// // 一个页面多个请求
-				Promise.all([
+				/*Promise.all([
 				  service.P_get('/cate/list',datas),
 				  service.P_get('/cate/list',datas)
 				]).then(result => {
 				  console.log(result)
 				}).catch(e => {
 				  console.log(e)
-				})
+				})*/
 			},
 			getdata(){
-				//获取数据
-				return
-				service.P_get('/cate/list',datas).then(res => {
+				let that = this
+				console.log(that.btn_kg)
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+				}
+				var datas={
+					token: that.loginMsg.userToken,
+					c_id:that.type,
+					page:that.page,
+					size:that.size
+	
+				}
+				service.P_get('/baseAdvocacy/lst',datas).then(res => {
 				  console.log(res)
+					that.btn_kg=0
+					
 					if(res.code==1){
-						that.catelist=res.data
-						
+						var datas = res.data
+						if (datas.length == 0) {
+							if(that.page>1){
+								uni.showToast({
+									icon: 'none',
+									title: '暂无更多数据'
+								})
+							}
+							
+							that.btn_kg=0
+							return
+						}
+						if(that.page==1){
+							that.data_list =datas
+						}else{
+							
+							that.data_list = that.data_list.concat(datas)
+						}
+						that.btn_kg=0
+						that.page++
 					}
 				}).catch(e => {
 				  console.log(e)
+					that.btn_kg=0
 					uni.showToast({
 						icon:'none',
 						title:'获取数据失败'
@@ -185,25 +227,13 @@
 				var that =this
 			  console.log(e.currentTarget.dataset.type)
 			  that.type= e.currentTarget.dataset.type
-				that.getdata()
-				
+				// that.getdata()
+				that.onRetry()
 			},
 			jump(e){
 			  service.jump(e)
 			},
-			px_fuc(e){
-				var that=this
-				var type=e.currentTarget.dataset.type
-				if(type==0){
-					that.dy_mon=!that.data.dy_mon
-				}
-				if(type==1){
-					that.dy_num=!that.data.dy_num
-				}
-				if(type==2){
-					that.dy_pri=!that.data.dy_pri
-				}
-			}
+			
 		}
 	}
 </script>

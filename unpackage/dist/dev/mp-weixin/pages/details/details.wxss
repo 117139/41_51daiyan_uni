@@ -2,7 +2,7 @@
 .hb_tk.data-v-39cbb4e8{
 	/* width: 750upx;
 	height: 976upx; */
-	width: 639rpx;
+	width: 660rpx;
 	height: 763rpx;
 
 	/* background: #f00; */
@@ -82,6 +82,10 @@
 	border: 1px solid #F8BE3A;
 	color: #F8BE3A;
 	font-size: 24rpx;
+}
+.goods_get_btn1.data-v-39cbb4e8{
+	border: 1px solid #ddd;
+	color: #ddd;
 }
 .goods_yhmsg.data-v-39cbb4e8{
 	display: -webkit-box;

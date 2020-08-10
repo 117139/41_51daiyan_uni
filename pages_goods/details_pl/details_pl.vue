@@ -249,7 +249,7 @@
 				this.star_page=1
 				this.getStarlist()
 			},
-			//获取代言人列表
+			//获取评论的
 			getStarlist() {
 				let that = this
 				// if(that.btn_kg==1){

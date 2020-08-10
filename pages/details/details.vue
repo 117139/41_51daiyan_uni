@@ -239,7 +239,8 @@
 								
 							</view>
 							<view class="goods_get dis_flex">
-								<view class="goods_get_btn">领取</view>
+								<view v-if="item.is_get==2" class="goods_get_btn" @tap="get_yh(item.id)">领取</view>
+								<view v-if="item.is_get==1" class="goods_get_btn goods_get_btn1">已领取</view>
 							</view>
 						</view>
 					</scroll-view>
@@ -259,7 +260,7 @@
 		              <image v-if="item.identity_id==1" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 		              <image v-if="item.identity_id==2" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
 		            </view>
-		            <view class="tk_user_name">kimi</view>
+		            <view class="tk_user_name">{{item.nickname}}</view>
 		            <view v-if="item.is_friend==2" class="hy_bq">好友</view>
 		            <view v-if="item.identity_id==1" class="hy_bq hy_bq1 ">明星</view>
 		            <view v-if="item.identity_id==2" class="hy_bq hy_bq2">达人</view>
@@ -450,7 +451,7 @@
 		onLoad: function (options) {
 			this.g_id=options.id
 		  this.onRetry()
-			this.$refs.popup_yh.open()
+			
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
@@ -476,6 +477,43 @@
 				
 				this.$refs.popup_yh.open()
 			},
+			get_yh(id){
+				var that =this
+				var data={
+					token:that.loginMsg.userToken,
+					id:id
+				}
+				service.P_post('/goods/getCoupon',data).then(res => {
+					console.log(res)
+					that.btnkg=0
+					if(res.code==-1){
+						uni.navigateTo({
+							url:'/pages/login/login'
+						})
+						return
+					}else if(res.code==0&&res.msg=='请先登录账号~'){
+						uni.navigateTo({
+							url:'/pages/login/login'
+						})
+						return
+					}else if(res.code==1){
+						that.getyhlist()
+						uni.showToast({
+							icon:'none',
+							title:'领取成功'
+						})
+					}else{
+						
+					}
+				}).catch(e => {
+					that.btnkg=0
+					console.log(e)
+					uni.showToast({
+						icon:'none',
+						title:'操作失败'
+					})
+				})
+			},
 			onRetry(){
 				this.getSku()
 				this.getyhlist()
@@ -486,7 +524,7 @@
 				this.LaterBuy_page=1
 				this.getLaterBuylist()
 			},
-			//获取代言人列表
+			//获取优惠列表
 			getyhlist() {
 				let that = this
 				// if(that.btn_kg==1){
@@ -523,6 +561,15 @@
 						// 	return
 						// }
 						that.yh_list =datas
+						var tk_kg=true
+						for(var i=0;i<datas.length;i++){
+							if(datas[i].is_get==1){
+								tk_kg=false
+							}
+						}
+						if(tk_kg){
+							this.$refs.popup_yh.open()
+						}
 						// if(that.star_page==1){
 						// 	that.star_list =datas
 						// }else{
@@ -1325,7 +1372,7 @@
 .hb_tk{
 	/* width: 750upx;
 	height: 976upx; */
-	width: 639rpx;
+	width: 660rpx;
 	height: 763rpx;
 
 	/* background: #f00; */
@@ -1387,6 +1434,10 @@
 	border: 1px solid #F8BE3A;
 	color: #F8BE3A;
 	font-size: 24upx;
+}
+.goods_get_btn1{
+	border: 1px solid #ddd;
+	color: #ddd;
 }
 .goods_yhmsg{
 	display: flex;

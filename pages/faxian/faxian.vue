@@ -5,7 +5,7 @@
 		    <image class="li_icon"  :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_02.jpg')"></image>
 				<view class="fx_tit">寻找代言人</view>
 				<view class="fx_r_img">
-					<image  :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+					<image v-if="datas.length>0" :src="filter.imgIP(datas[0].head_portrait)"></image>
 					<!-- <text></text> -->
 				</view>
 		    <text class="iconfont iconnext3"></text>
@@ -15,7 +15,7 @@
 				<view class="fx_tit">代言商城</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
-		  <view class="fx_li" @tap="jump" data-url="/pages_goods/star_list/star_list?type=0">
+		  <view class="fx_li" @tap="jump" data-url="/pages_goods/star_list/star_list?type=1">
 		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_07.jpg')"></image>
 				<view class="fx_tit">明星达人秀</view>
 		    <text class="iconfont iconnext3"></text>
@@ -25,27 +25,28 @@
 				<view class="fx_tit">代言圈</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
-		  <view class="fx_li mt20" @tap="jump" data-url="/pagesA/my_friends/my_friends">
+		  <view class="fx_li mt20" @tap="jump" data-url="/pagesA/my_friends/my_friends" data-login="true" :data-haslogin="hasLogin">
 		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_11.jpg')"></image>
 				<view class="fx_tit">我的好友</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
-		  <view class="fx_li"  @tap="jump" data-url="/pagesA/my_guanzhu/my_guanzhu">
+		  <view class="fx_li"  @tap="jump" data-url="/pagesA/my_guanzhu/my_guanzhu" data-login="true" :data-haslogin="hasLogin">
 		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_13.jpg')"></image>
 				<view class="fx_tit">我的关注</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
-		  <view class="fx_li" @tap="jump" data-url="/pagesA/my_fans/my_fans">
+		  <view class="fx_li" @tap="jump" data-url="/pagesA/my_fans/my_fans" data-login="true" :data-haslogin="hasLogin">
 		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_15.jpg')"></image>
 				<view class="fx_tit">我的粉丝</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
-		  <view class="fx_li mt20" @tap="jump" data-url="/pages_goods/daiyan_ph/daiyan_ph">
+		  <view class="fx_li mt20" @tap="jump" data-url="/pages_goods/daiyan_ph/daiyan_ph" data-login="true" :data-haslogin="hasLogin">
 		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_17.jpg')"></image>
 				<view class="fx_tit">代言排行</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
-		  <view class="fx_li mt20" @tap="jump" data-url="/pages_goods/goods_youxuan/goods_youxuan">
+		  <view v-if="loginMsg.identity_id==1||loginMsg.identity_id==2" class="fx_li mt20" 
+				@tap="jump" data-url="/pages_goods/goods_youxuan/goods_youxuan"  data-login="true" :data-haslogin="hasLogin">
 		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/fx_02.jpg')"></image>
 				<view class="fx_tit">优选代言池</view>
 		    <text class="iconfont iconnext3"></text>
@@ -55,14 +56,49 @@
 </template>
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	import service from '../../service.js';
 	export default {
 		data() {
 			return {
-				
+				datas:''
 			}
 		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
+		},
+		onLoad() {
+			this.getdata()
+		},
 		methods: {
+			getdata() {
+				var that = this
+				var datas = {
+					token: that.loginMsg.userToken,
+				}
+				// 单个请求
+				service.P_get('', datas).then(res => {
+					console.log(res)
+					if (res.code == 1) {
+						that.datas = res.data.activityArr
+					}
+				}).catch(e => {
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			
+			},
 			jump(e){
 			  service.jump(e)
 			},

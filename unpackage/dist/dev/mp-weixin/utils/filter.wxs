@@ -89,7 +89,7 @@ var arrtostr=function(arr){
 	 // }
     //不能使用 new Date()
       var tim_now = getDate();
-     console.log(tim_now)
+     // console.log(tim_now)
       var time = getDate(value);
       var year = time.getFullYear();
       var month = time.getMonth() + 1;
@@ -131,7 +131,7 @@ var arrtostr=function(arr){
 	 // }
     //不能使用 new Date()
       var tim_now = getDate();
-     console.log(tim_now)
+     // console.log(tim_now)
       var time = getDate(value);
       var year = time.getFullYear();
       var month = time.getMonth() + 1;
@@ -161,7 +161,18 @@ var arrtostr=function(arr){
       // return year + "年" + month + "月" + date + "日"+ " " + hour + ":" + minute + ":" + second;
   }
 
-
+function textOh(str){
+	if(!str){
+		return
+	}
+	if(str.length>30){
+		str=str.slice(0,27)
+		return str+'...'
+	}else{
+		return str
+	}
+	
+}
 
 /*
  * 导出
@@ -177,6 +188,7 @@ module.exports = {
 	getDateTime: getDateTime,
 	getDate_ymd:getDate_ymd,
 	arrtostr:arrtostr,
-	imgIP_video:imgIP_video
+	imgIP_video:imgIP_video,
+	textOh:textOh
 
 }
