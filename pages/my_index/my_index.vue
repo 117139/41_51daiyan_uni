@@ -81,7 +81,7 @@
 										<view class="dt_text oh3">{{item.content}}</view>
 										<view class="dt_cz">
 											<view>共{{item.img.length>0?item.img.length:0}}张</view>
-											<view v-if="item.a_activity_id>0&&item.is_vote==2" class="tp_btn">投票</view>
+											<view v-if="item.a_activity_id>0&&item.is_vote==2" @tap.stop="toupiao" :data-id="item.id" :data-idx="idx" class="tp_btn">投票</view>
 											<view v-if="item.a_activity_id>0&&item.is_vote==1" class="tp_btn tp_btn1">已投票</view>
 										</view>
 									</view>
@@ -299,6 +299,35 @@
 				})
 
 
+			},
+			
+			toupiao(e) {
+			  var id = e.currentTarget.dataset.id
+			  var idx = e.currentTarget.dataset.idx
+				var that =this
+			  var datas = {
+			  	token: that.loginMsg.userToken,
+			  	aau_id:id
+			  }
+			  // 单个请求
+			  service.P_post('/activity/vote', datas).then(res => {
+			  	console.log(res)
+			  	if (res.code == 1) {
+			  		// that.page=1
+			  		// that.getdatalist()
+						that.data_list[idx].is_vote=2
+			  		uni.showToast({
+			  			icon: 'none',
+			  			title: '操作成功'
+			  		})
+			  	}
+			  }).catch(e => {
+			  	console.log(e)
+			  	uni.showToast({
+			  		icon: 'none',
+			  		title: '操作失败'
+			  	})
+			  })
 			},
 			onRetry() {
 				this.page = 1

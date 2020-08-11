@@ -23,8 +23,8 @@
 							<image class="user_tx" :src="filter.imgIP(item.obj_img)"></image>
 						 </view>
 						 <view class="user_name oh1">{{item.remark?item.remark:item.obj_nickname}}</view>
-						 <view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view>
-							<view v-else class="user_btn user_btn1">已关注</view>
+						 <!-- <view  v-if="item.tp_type==1"  @tap="guanzhuFuc(1,item.obj_id,'affirm')" :data-idx="idx" class="user_btn">+关注</view> -->
+							<view  class="user_btn user_btn1" @tap="guanzhuFuc(1,item.obj_id,'cancel')">{{item.is_friend==1?'已关注':'互相关注'}}</view>
 					 </view>
 					 <!-- 代言圈 -->
 					 <view v-if="item.is_public==4" class="li_box">
@@ -32,8 +32,8 @@
 								<image class="user_tx" :src="filter.imgIP(item.obj_img)"></image>
 							 </view>
 							 <view class="user_name oh1">{{item.remark?item.remark:item.obj_nickname}}</view>
-							 <view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view>
-								<view v-else class="user_btn user_btn1">已关注</view>
+							 <!-- <view  v-if="item.tp_type==1"  @tap="guanzhuFuc(3,item.obj_id,'affirm')" :data-idx="idx" class="user_btn">+关注</view> -->
+								<view  class="user_btn user_btn1" @tap="guanzhuFuc(3,item.obj_id,'cancel')">{{item.is_friend==1?'已关注':'互相关注'}}</view>
 					 </view>
 					 <!-- 用户 -->
 					 <view v-if="item.is_public==2||item.is_public==3||item.is_public==5" class="li_box">
@@ -43,8 +43,8 @@
 							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 						</view>
 						<view class="user_name oh1">{{item.remark?item.remark:item.obj_nickname}}</view>
-						<!-- <view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view> -->
-						<view class="user_btn user_btn1"  @tap="guanzhuFuc(item.obj_id,'cancel')">已关注</view>
+						<!-- <view  v-if="item.tp_type==1"   @tap="guanzhuFuc(2,item.obj_id,'affirm')" :data-idx="idx" class="user_btn">+关注</view> -->
+						<view class="user_btn user_btn1"  @tap="guanzhuFuc(2,item.obj_id,'cancel')">{{item.is_friend==1?'已关注':'互相关注'}}</view>
 					 </view>
 				 </block>
 				 
@@ -165,11 +165,11 @@
 				})
 				
 			},
-			guanzhuFuc(id,key){
+			guanzhuFuc(type,id,key){
 				var that =this
 				var data={
 					token:that.loginMsg.userToken,
-					type:2,
+					type:type,
 					id:id,
 					operate:key,
 				}

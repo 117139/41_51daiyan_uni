@@ -5,6 +5,7 @@
 		    <view class="sousuo_box">
 		      <text class="iconfont iconsousuo"></text> 
 					<input class="flex_1 c3" type="text" placeholder="搜索代言圈"
+					v-model="daiyan_ss"
 					 @input="daiyan_sousuo" 
 					 confirm-type='搜索' 
 					 @confirm="dy_ss_fuc"/>
@@ -30,6 +31,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var inputt
 	export default {
 		data() {
 			return {
@@ -54,11 +56,7 @@
 		onLoad: function (options) {
 		  var that =this
 		  that.type= options.type
-		  if (options.name){
-		    uni.setNavigationBarTitle({
-		      title: options.name,
-		    })
-		  }
+		  
 			that.onRetry()
 		},
 		
@@ -126,6 +124,7 @@
 				}
 				var datas={
 					token: that.loginMsg.userToken,
+					content:that.daiyan_ss,
 					page:that.page,
 					size:that.size
 				
@@ -167,8 +166,22 @@
 			},
 			
 			daiyan_sousuo(e){
+				var that=this
 				console.log(e.detail.value)
-				this.daiyan_ss=e.detail.value
+				// this.daiyan_ss=e.detail.value
+				clearInterval(inputt)
+				inputt = setTimeout(function() {
+					var kw = that.daiyan_ss
+					console.log(kw.length)
+					if (kw.length > 0) {
+						
+						that.onRetry()
+					
+					} else {
+						that.onRetry()
+						// that.qy_show = that.qy_arr3
+					}
+				}, 1000)
 			},
 			dy_ss_fuc(e){
 				console.log('sousuo')

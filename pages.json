@@ -298,7 +298,11 @@
 						"navigationBarTitleText": "设置备注"
 					}
 				}
-			]
+			    ,{
+                    "path" : "ysxy/ysxy",
+                    "style" : {}
+                }
+            ]
 		},
 		{
 			"root": "pages_goods",

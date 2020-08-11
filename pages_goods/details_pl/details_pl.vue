@@ -83,7 +83,7 @@
 		  		</view>
 		  		<view class="b_view_o"></view>
 		  		<view class="czbtnG">
-		  			<view class="jrgwc" @tap="addwgc">加入购物车</view>
+		  			<view  v-if="goodsData.activity_id==0" class="jrgwc" @tap="addwgc">加入购物车</view>
 		  			<view class="buybtn" @tap="nowbuy">立即购买</view>
 		  		</view>
 		  	</view>
@@ -104,7 +104,7 @@
 		      <text class="iconfont iconstore"></text>
 		      <text  @tap="jump" data-url="/pages/dp_index/dp_index">店铺</text>
 		    </view>
-		    <view class="buy_btn"  @tap="sheetshow_fuc">加入购物车</view>
+		    <view class="buy_btn"  v-if="goodsData.activity_id==0" @tap="sheetshow_fuc">加入购物车</view>
 		    <view class="buy_btn buy_btn1"  @tap="sheetshow_fuc">立即购买</view>
 		  </view>
 		</view>

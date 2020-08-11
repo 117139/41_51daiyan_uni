@@ -1,12 +1,12 @@
 <template>
 	<view>
 		<view class="container" v-if="htmlReset==0">
-			<view class="zanwu_box" v-if="goods.length==0">
+			<view class="zanwu_box" v-if="data_list.length==0">
 				<image  :src="filter.imgIP('/static_s/51daiyan/images/car_null.png')"></image>
 				<text>购物车空空如也，快去挑好货咯～</text>
-				<view>逛逛代言商城</view>
+				<view @tap="jump" data-url="/pages_goods/daiyan_sc/daiyan_sc">逛逛代言商城</view>
 			</view>
-		  <view class="goods" v-for="(item,idx) in goods"
+		  <view class="goods" v-for="(item,idx) in data_list"
 				:data-tab="idx"
 				 >
 		     <!-- <view class="dianpu_tit" @tap="jump" data-url="/pages/dp_index/dp_index?shop_id=1">
@@ -14,28 +14,29 @@
 					 <text>石说的达开旗舰店</text>
 					 <text class="iconfont iconnext3"></text>
 				 </view>  -->
-				<view class="goods1" v-for="(item1,idx1) in item" @tap="jump" data-url="/pages/details/details?shop_id=1">
+				<!-- <view class="goods1" v-for="(item1,idx1) in item" @tap="jump" data-url="/pages/details/details?shop_id=1"> -->
+				<view class="goods1" @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 					<!-- <view class="scbg" data-id="{{item.id}}" @tap.stop="cardel">
 						<text class="iconfont iconshanchu fz26"></text>
 					</view> -->
-					<view class="xuanze" :data-selec="idx" :data-selec1="idx1" @tap.stop="select">
-						<view class="xuanze1 " :class="goods_sele[idx][idx1].xuan==true? 'xuanze2':''">
-							<icon  v-if="goods_sele[idx][idx1].xuan==true" type="success" size="16" color="#F7B43B" />
+					<view class="xuanze"  @tap.stop="select(idx)">
+						<view class="xuanze1 " :class="item.xuan==true? 'xuanze2':''">
+							<icon  v-if="item.xuan==true" type="success" size="16" color="#F7B43B" />
 						</view>
 					</view>
 					<!-- <view class="goodsImg" wx:if="{{item.goods_pic}}"> -->
 					<view class="goodsImg">
 						<!-- <image src="{{filter.getgimg(item.order_cart.goods_img)}}"></image> -->
 						<!-- <image src="{{filter.getgimg(item.goods_pic)}}"></image> -->
-						<image class="goodsImg"  :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
+						<image class="goodsImg"  :src="filter.imgIP(item.g_pic[0])" mode="aspectFill"></image>
 					</view>
 					<view class="goodsinr">
 						<!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
-						<view class="goodsname fz30 c30 oh1">{{'黄金曼特宁精品咖啡/袋泡咖啡/耳挂 咖啡6*10袋装'}}</view>
+						<view class="goodsname fz30 c30 oh2">{{item.g_title}} <text v-for="(item1,dix) in item.attr">{{item1.value}}</text></view>
 						<!-- <view class="goodspri">{{'已选择：苏门答腊黄金曼特宁深度烘培'}}</view> -->
 						<view class="goodspri1">
 							<!-- <text class="fz36 cf6377a fwb">￥{{filter.moneyFormat('48')}}</text> -->
-							<text class="fz36 cf6377a fwb">￥{{'48'}}</text>
+							<text class="fz36 cf6377a fwb">￥{{item.g_price}}</text>
 						
 						</view>
 		        <view class="goodspri1">
@@ -43,9 +44,9 @@
 							<text class="fz36 cf6377a fwb"></text>
 						
 							<view class="vstepper steppera">
-								<view @tap.stop="onNum" :data-idx="idx" :data-idx1="idx1" data-ad="-" :data-id="item.id" class="vantjian c9">-</view>
-								<input class="vanipt c6" disabled :value="goods_sele[idx][idx1].num "></input>
-								<view @tap.stop="onNum" :data-idx="idx" :data-idx1="idx1" data-ad="+" :data-id="item.id" class="vantjia c9">+</view>
+								<view @tap.stop="onNum" :data-idx="idx" data-ad="-" :data-id="item.g_id" class="vantjian c9">-</view>
+								<input class="vanipt c6" disabled :value="item.number "></input>
+								<view @tap.stop="onNum" :data-idx="idx" data-ad="+" :data-id="item.g_id" class="vantjia c9">+</view>
 							</view>
 						</view>
 					</view>
@@ -58,13 +59,13 @@
 					<text></text>猜你喜欢<text></text>
 				</view>
 				<view class="goods_list">
-					<view class="goods_li" @tap="jump" data-url="/pages/details/details" v-for="(item,index) in you_like">
-						<image class="goods_img"  :src="filter.imgIP('/static_s/51daiyan/images//images/goods15_02.jpg')"  mode="aspectFill"></image>
+					<view class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id" v-for="(item,index) in rand_data">
+						<image class="goods_img"  :src="filter.imgIP(item.g_pic[0])"  mode="aspectFill"></image>
 						<view class="goods_msg">
-							<view class="oh1">奶油碧根果 整箱</view>
+							<view class="oh1">{{item.g_title}}</view>
 							<view class="goods_pri">
-								<text>￥27</text>
-								<text class="pr2">￥37</text>
+								<text>￥{{item.g_price}}</text>
+								<text class="pr2">￥{{item.g_original_price}}</text>
 							</view>
 						</view>
 					</view>
@@ -93,11 +94,17 @@
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import service from '../../service.js';
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		data() {
 			return {
 				btnkg: 0,     //0  ok       1 off
 				htmlReset: 0,
+				data_list:[],
+				rand_data:[],
 				goods: [
 				  [{ "num": 1, xuan: false },
 				    { "num": 1, xuan: false },]
@@ -115,14 +122,34 @@
 				sum: '0.00'
 			}
 		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
+		},
+		onLoad() {
+			this.onRetry()
+		},
+		
+		/**
+		 * 页面相关事件处理函数--监听用户下拉动作
+		 */
+		onPullDownRefresh: function () {
+		 this.onRetry()
+		},
+		
+		/**
+		 * 页面上拉触底事件的处理函数
+		 */
+		onReachBottom: function () {
+			// this.getdatalist()
+		},
+		
 		methods: {
-			/**
-			 * 页面相关事件处理函数--监听用户下拉动作
-			 */
-			onPullDownRefresh: function () {
-			  wx.stopPullDownRefresh();
-			},
-			cload() {
+		
+			onRetry() {
 			  var that = this
 			  that.getcar()
 			},
@@ -132,30 +159,19 @@
 			onfocus() {
 			  return false;
 			},
-			select(e) {
+			select(idx) {
 			  let that = this
-			  // console.log(e.currentTarget.dataset.selec)
-			  let sid = e.currentTarget.dataset.selec
-			  let sid1 = e.currentTarget.dataset.selec1
-			  // console.log(this.data.goods_sele[sid].xuan)
-			  if (that.goods_sele[sid][sid1].xuan == false) {
-			    that.goods_sele[sid][sid1].xuan = true
-			    // that.setData({
-			    //   goods_sele: that.goods_sele
-			    // });
+			  
+			  if (!that.data_list[idx].xuan) {
+						that.$set(that.data_list[idx],'xuan',true)
 			  } else {
-			    that.goods_sele[sid][sid1].xuan = false
-			    // that.setData({
-			    //   goods_sele: that.goods_sele
-			    // });
+					that.$set(that.data_list[idx],'xuan',false)
 			  }
 			  let qx = true
-			  for (let i in that.goods_sele) {
-			    for (let j in that.goods_sele[i]) {
-			      if (that.goods_sele[i][j].xuan == false) {
-			        qx = false
-			        break
-			      }
+			  for (let i in that.data_list) {
+			    if (!that.data_list[i].xuan) {
+			      qx = false
+			      break
 			    }
 			  }
 			  console.log(qx)
@@ -188,18 +204,16 @@
 			},
 			selecAll() {
 			  let kg
+				var that =this
 			  if (this.all == false) {
 			    kg = true
 			  } else {
 			    kg = false
 			  }
-			  this.all= kg
+			  that.all= kg
 			  // this.data.goods_sele[sid].xuan=true
-			  for (let i in this.goods_sele) {
-			
-			    for (let j in this.goods_sele[i]) {
-			      this.goods_sele[i][j].xuan = kg
-			    }
+			  for (var i=0;i<that.data_list.length;i++) {
+						that.$set(that.data_list[i],'xuan',kg)
 			  }
 			  // this.setData({
 			  //   goods_sele: this.goods_sele
@@ -210,19 +224,16 @@
 			/*计算价格*/
 			countpri() {
 			  let heji = 0
-			  let var2 = this.goods_sele
+			  let var2 = this.data_list
 			  for (let i in var2) {
 			    if (var2[i].xuan == true) {
-			      heji += var2[i].num * (var2[i].pri * 100)
+			      heji += var2[i].number * (var2[i].g_price * 100)
 			
 			    }
 			  }
 			
-			  heji = (heji / 100).toFixed(0)
+			  heji = (heji / 100).toFixed(2)
 				this.sum=heji
-			  // this.setData({
-			  //   sum: heji
-			  // })
 			},
 			openOrder() {
 			  wx.navigateTo({
@@ -262,78 +273,83 @@
 			  let thisidx = e.currentTarget.dataset.idx
 			  let thisidx1 = e.currentTarget.dataset.idx1
 			
-			  if (that.goods_sele[thisidx][thisidx1].num < 2 && ad == '-') {
+			  if (that.data_list[thisidx].number < 2 && ad == '-') {
 			    console.log('禁止')
 			    return false;
 			
 			  }
-				if (ad == '-') {
-			    that.goods_sele[thisidx][thisidx1].num--
-			    that.goods[thisidx][thisidx1].num--
-				} else {
-			    that.goods_sele[thisidx][thisidx1].num++
-			    that.goods[thisidx][thisidx1].num++
-				}
-				// that.setData({
-				//   goods_sele: that.goods_sele,
-				//   goods: that.goods
-				// })
-				return
-			  //http://water5100.800123456.top/WebService.asmx/shopcar
+			
 			
 			  // return
-			  var jkurl
-			  if (ad == '-') {
-			    jkurl = '/api/shoppingGoodsNumDown/' + id
-			  } else {
-			    jkurl = '/api/shoppingGoodsNumUp/' + id
-			  }
-			  wx.request({
-			    url: app.IPurl + jkurl,
-			    data: {
-			      token: wx.getStorageSync('token')
-			    },
-			    header: {
-			      'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    dataType: 'json',
-			    method: 'PUT',
-			    success(res) {
-			      // console.log(res.data)
-			
-			      if (res.data.error == -2) {
-			        app.checktoken(res.data.error)
-			        that.onLoad()
-			      }
-			      if (res.data.code == 1) {
-			        let resultd = res.data
-			        console.log(res)
-			        console.log(resultd)
-			        if (ad == '-') {
-			          that.data.goods_sele[thisidx].num--
-			          that.data.goods[thisidx].num--
-			        } else {
-			          that.data.goods_sele[thisidx].num++
-			          that.data.goods[thisidx].num++
-			        }
-			
-			        that.setData({
-			          goods_sele: that.data.goods_sele,
-			          goods: that.data.goods
-			        })
-			        console.log(thisidx)
-			
-			        //计算总价
-			        that.countpri()
-			      }
-			    }
-			  })
+			  var jkurl= '/cart/incOrDec'
+				var datas={
+					token: that.loginMsg.userToken,
+					g_id:that.data_list[thisidx].g_id,
+					v_id:that.data_list[thisidx].v_id,
+					type:ad == '-'?'dec':'inc',
+					sum:1
+				}
+			 service.P_post(jkurl, datas).then(res => {
+			 	that.btn_kg=0
+			 	console.log(res)
+			 	if (res.code == 1) {
+			 		var datas = res.data
+			 		// console.log(typeof datas)
+			 			
+			 		if (typeof datas == 'string') {
+			 			datas = JSON.parse(datas)
+			 		}
+			 	
+			 		if (ad == '-') {
+			 		  that.data_list[thisidx].number--
+			 		} else {
+			 		  that.data_list[thisidx].number++
+			 		}
+			 	
+			 	}
+			 }).catch(e => {
+			 	that.btn_kg=0
+			 	console.log(e)
+			 	uni.showToast({
+			 		icon: 'none',
+			 		title: '获取数据失败'
+			 	})
+			 })
+	
 			},
 			//获取购物车
 			getcar() {
 			  // const pageState1 = pageState.default(this)
-			  // pageState1.loading()    // 切换为loading状态
+			  // /cart
 			  let that = this
+				var jkurl = '/cart'
+				var datas = {
+					token: that.loginMsg.userToken
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+					
+							that.data_list =datas
+							that.rand_data=res.rand_data
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+				return
 			  wx.request({
 			    url: app.IPurl + '/api/shopping',
 			    data: {
@@ -367,11 +383,7 @@
 			            order_cart_id: resultd[i].id
 			          })
 			        }
-			        that.setData({
-			          goods_sele: arra,
-			          all: false,
-			          sum: '0'
-			        })
+			        
 			        that.countpri()
 			        wx.setNavigationBarTitle({
 			          title: '购物车'
@@ -413,75 +425,76 @@
 			  service.pveimg(e)
 			},
 			cardel(e) {
-			  wx.showToast({
-			    title: '删除成功',
-			  })
-			  return
+			  // wx.showToast({
+			  //   title: '删除成功',
+			  // })
+			  // return
 			  var that = this
-			  if (that.data.btnkg == 1) {
-			    return
-			  } else {
-			    that.setData({
-			      btnkg: 1
-			    })
-			  }
-			  let id = e.currentTarget.dataset.id
-			  wx.request({
-			    url: app.IPurl + '/api/shopping/' + id,
-			    data: {
-			      token: wx.getStorageSync('token')
-			    },
-			    header: {
-			      'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    dataType: 'json',
-			    method: 'DELETE',
-			    success(res) {
-			
-			      if (res.data.code == 1) {
-			        let resultd = res.data
-			        console.log(res)
-			        wx.showToast({
-			          icon: 'none',
-			          title: '删除成功'
-			        })
-			        setTimeout(function () {
-			          that.setData({
-			            btnkg: 0
-			          })
-			          that.getcar()
-			        }, 1000);
-			      } else {
-			        that.setData({
-			          btnkg: 0
-			        })
-			        if (res.data.msg) {
-			          wx.showToast({
-			            title: res.data.msg,
-			            duration: 2000,
-			            icon: 'none'
-			          });
-			        } else {
-			          wx.showToast({
-			            title: '网络异常',
-			            duration: 2000,
-			            icon: 'none'
-			          });
-			        }
-			      }
-			    },
-			    fail() {
-			      that.setData({
-			        btnkg: 0
-			      })
-			      wx.hideLoading()
-			      wx.showToast({
-			        title: '网络异常',
-			        duration: 2000,
-			        icon: 'none'
-			      });
-			    }
-			  })
+			  
+			  let var2 = this.data_list
+				var c_ids=[]
+				for (let i in var2) {
+				  if (var2[i].xuan == true) {
+				    c_ids.push(var2[i].c_id)
+							
+				  }
+				}
+				if(c_ids.length==0){
+					uni.showToast({
+						icon:'none',
+						title:'请选择商品'
+					})
+					return
+				}
+				uni.showModal({
+				    title: '提示',
+				    content: '是否删除这些商品？',
+				    success: function (res) {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+										if (that.btnkg == 1) {
+										  return
+										} else {
+										  that.btnkg= 1
+										}
+										c_ids=c_ids.join(',')
+										var jkurl = '/cart/del'
+										var datas = {
+											token: that.loginMsg.userToken,
+											c_ids:c_ids
+										}
+										// 单个请求
+										service.P_post(jkurl, datas).then(res => {
+											that.btn_kg=0
+											console.log(res)
+											if (res.code == 1) {
+												var datas = res.data
+												// console.log(typeof datas)
+													
+												if (typeof datas == 'string') {
+													datas = JSON.parse(datas)
+												}
+											
+													that.getcar()
+													uni.showToast({
+														icon: 'none',
+														title: '操作成功'
+													})
+											}
+										}).catch(e => {
+											that.btn_kg=0
+											console.log(e)
+											uni.showToast({
+												icon: 'none',
+												title: '操作失败'
+											})
+										})
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+				
 			}
 		}
 	}

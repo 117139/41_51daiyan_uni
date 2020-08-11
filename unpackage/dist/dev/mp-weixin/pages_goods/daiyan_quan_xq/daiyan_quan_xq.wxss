@@ -235,6 +235,10 @@
   max-width: 100%;
   border-radius:10px;
 }
+.quan_msg_img .one_one.data-v-159b569d{
+	width: 300rpx;
+	height: 400rpx;
+}
 .quan_goods.data-v-159b569d{
   margin-top: 16rpx;
   width: 100%;

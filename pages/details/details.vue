@@ -253,7 +253,7 @@
 		  <uni-popup ref="popup" type="bottom" @change="tkchange1">
 		    <view class="dy_box" style="padding: 0 5rpx 20rpx;height:600rpx;overflow: hidden">
 		        <scroll-view class=" dyr_scroll" style="height:600rpx;" scroll-y @lower-threshold="getStarlist">
-		          <view class="tk_dyr_li" v-for="(item,idx) in star_list"  :data-type="item.lower-threshold" @tap="txtype_fuc">
+		          <view class="tk_dyr_li" v-for="(item,idx) in star_list" @tap="txtype_fuc(item.user_id)">
 		          <view class="dis_flex aic flex_1">
 		            <view class="tk_user_tx">
 		              <image class="tk_user_tx" :src="filter.imgIP(item.head_portrait)"  mode="aspectFill"></image>
@@ -265,7 +265,7 @@
 		            <view v-if="item.identity_id==1" class="hy_bq hy_bq1 ">明星</view>
 		            <view v-if="item.identity_id==2" class="hy_bq hy_bq2">达人</view>
 		          </view>
-		          <icon  v-if="dyr_type==idx" type="success" size="18" color="#F7B43B" />
+		          <icon  v-if="dyr_type==item.user_id" type="success" size="18" color="#F7B43B" />
 		          <view wx:else class="tx_type2">
 		            
 		          </view>
@@ -319,7 +319,7 @@
 					</view>
 					<view class="b_view_o"></view>
 					<view class="czbtnG">
-						<view class="jrgwc" @tap="addwgc">加入购物车</view>
+						<view  v-if="goodsData.activity_id==0" class="jrgwc" @tap="addwgc">加入购物车</view>
 						<view class="buybtn" @tap="nowbuy">立即购买</view>
 					</view>
 				</view>
@@ -344,7 +344,7 @@
 		      <text class="iconfont iconstore"></text>
 		      <text  @tap="jump" data-url="/pages/dp_index/dp_index">店铺</text>
 		    </view>
-		    <view class="buy_btn"  @tap="sheetshow_fuc">加入购物车</view>
+		    <view v-if="goodsData.activity_id==0" class="buy_btn"  @tap="sheetshow_fuc">加入购物车</view>
 		    <view class="buy_btn buy_btn1"  @tap="sheetshow_fuc">立即购买</view>
 		  </view>
 		</view>
@@ -450,8 +450,11 @@
 		 */
 		onLoad: function (options) {
 			this.g_id=options.id
-		  this.onRetry()
+		  
 			
+		},
+		onShow() {
+			this.onRetry()
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
@@ -599,7 +602,7 @@
 				// }else{
 				// 	that.btn_kg=1
 				// }
-				var jkurl = '/goods/goodsAdvoacyUser'
+				var jkurl = '/goods/goodsAdvoacyUserDetail'
 				var datas = {
 					gid:that.g_id,
 					token: that.loginMsg.userToken,
@@ -631,6 +634,7 @@
 						}
 						if(that.star_page==1){
 							that.star_list =datas
+							// that.dyr_type=datas[0].user_id
 						}else{
 							
 							that.star_list = that.star_list.concat(datas)
@@ -1043,13 +1047,14 @@
 				 var str=JSON.stringify(that.guige_select)
 				 var a=JSON.stringify(newselect)
 				
-				 
+				 var id_kg=false
 				 if(str.indexOf(a)==-1){
 				 	 that.$set(that.guige_select,e.currentTarget.dataset.ggidx,newselect)
 				 	
 				 }else{
 					 // console.log(str.indexOf(a)==-1)
 					  that.$set(that.guige_select,e.currentTarget.dataset.ggidx,false)
+						id_kg=true
 						// console.log(that.guige_select)
 				 }
 				 // console.log(str.indexOf(a)==-1)
@@ -1092,6 +1097,9 @@
 					kucun_num+=show_arr[i].number
 					if(pri==0){
 						that.v_id=show_arr[i].v_id
+						if(id_kg){
+							that.v_id=0
+						}
 						pri=show_arr[i].current_price
 					}
 					if(sku_img==""){
@@ -1223,9 +1231,13 @@
 			  this.cur_swiper=num
 			},
 			
-			txtype_fuc(e) {
-			  console.log(e.currentTarget.dataset.type)
-			  this.dyr_type= e.currentTarget.dataset.type
+			txtype_fuc(id) {
+			  if(this.dyr_type== id){
+					this.dyr_type= 0
+				}else{
+					this.dyr_type= id
+				}
+				console.log(this.dyr_type)
 			},
 			xz_dyr(){
 			  console.log(this.dyr_type)
@@ -1241,8 +1253,15 @@
 			  //   return
 			  // }
 			  let that = this
+				if(!that.v_id||that.guige_select.length!=that.guige_arr.length){
+					uni.showToast({
+						icon:'none',
+						title:'请选择规格'
+					})
+					return
+				}
 				for(var i;i<that.guige_arr.length;i++){
-					if(!that.guige_select[i]){
+					if(that.guige_select[i]=='false'){
 						uni.showToast({
 							icon:'none',
 							title:'请选择'+that.guige_arr[i].name
@@ -1258,73 +1277,47 @@
 					return
 				}
 				console.log(that.cnum)
-			  that.onClose()
-			  wx.showToast({
-			  	title:"加入成功"
-			  })
-			  return
-			  ///api/shopping
+			 
 			  console.log('addwgc')
 			  if (that.btnkg == 1) {
 			    return
 			  } else {
 			    that.btnkg= 1
 			  }
-			  wx.request({
-			    url: service.IPurl + '/api/shopping',
-			    data: {
-			      token: wx.getStorageSync('token'),
-			      goods_id: that.goods_id,						//(商品id) 
-			      num: that.cnum,															//（数量） 
-			      attr_set: that.ggjson,//(规格名称)
-			      sku_id: that.sku_id,
-			    },
-			    header: {
-			      'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    dataType: 'json',
-			    method: 'POST',
-			    success(res) {
-			      console.log(res.data)
-			      if (res.data.code == 1) {
-			        let resultd = res.data
-			        // console.log(res.data)
-			        that.onClose()
-			        wx.showToast({
-			          title: '添加成功'
-			        })
-			        that.addshow= true
-			        // that.setData({
-			        //   btnkg: 0
-			        // })
-			
-			      } else {
-			        that.sbtnkg= 0
-			        if (res.data.msg) {
-			          wx.showToast({
-			            title: res.data.msg,
-			            duration: 2000,
-			            icon: 'none'
-			          });
-			        } else {
-			          wx.showToast({
-			            title: '网络异常',
-			            duration: 2000,
-			            icon: 'none'
-			          });
-			        }
-			      }
-			
-			    },
-			    fail(err) {
-			      that.sbtnkg= 0
-			      wx.showToast({
-			        title: '网络异常',
-			        duration: 2000,
-			        icon: 'none'
-			      });
-			    }
-			  })
+				var jkurl = '/cart/add'
+				var datas = {
+					token: that.loginMsg.userToken,
+					g_id:that.g_id,
+					v_id:that.v_id,
+					sum:that.cnum,
+					advocacy_user_id:that.dyr_type
+				}
+				// 单个请求
+				service.P_post(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+							
+						that.onClose()
+						wx.showToast({
+						  title: '添加成功'
+						})
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
+				})
+			  
 			},
 			nowbuy() {
 			  // if (!wx.getStorageSync('userWxmsg')) {

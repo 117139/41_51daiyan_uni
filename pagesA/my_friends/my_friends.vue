@@ -13,38 +13,20 @@
 						<text v-else class="iconfont iconXSJ-copy"></text>
 					</view>
 				</view>
-				<view class="box_tit box_li">
-					<view class="td1">
-						<view class="user_tx" @tap="jump" data-url="/pages/my_index/my_index">
-							<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-						</view>
-						<text>李勇</text>
-					</view>
-					<view class="td2">55</view>
-					<view class="td2">1255件</view>
+				<view class="data_null" v-if="data_list.length==0">
+							 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
 				</view>
-				<view class="box_tit box_li">
+				<view class="box_tit box_li" v-for="(item,idx) in data_list">
 					<view class="td1">
-						<view class="user_tx">
-							<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+						<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.u_id">
+							<image class="user_tx" :src="filter.imgIP(item.head_portrait)"></image>
+							<image v-if="item.identity_id==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<image v-if="item.identity_id==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
 						</view>
-						<text>李勇</text>
+						<text>{{item.nickname}}</text>
 					</view>
-					<view class="td2">55</view>
-					<view class="td2">1255件</view>
-				</view>
-				<view class="box_tit box_li">
-					<view class="td1">
-						<view class="user_tx">
-							<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-						</view>
-						<text>李勇</text>
-					</view>
-					<view class="td2">55</view>
-					<view class="td2">1255件</view>
+					<view class="td2">{{item.interact}}</view>
+					<view class="td2">{{item.goods_sum}}件</view>
 				</view>
 			</view>
 		</view>
@@ -62,27 +44,37 @@
 	export default {
 		data() {
 			return {
+				btn_kg:0,
 				list_type:0,
 				list_type1:0,
+				data_list:[],
+				page:1,
+				size:20
 			}
 		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
+		},
+		onLoad() {
+			this.onRetry()
+		},
 		methods: {
-			retry() {
-			  this.getdata()
-			},
 			/**
 			 * 页面相关事件处理函数--监听用户下拉动作
 			 */
 			onPullDownRefresh: function () {
-			  uni.stopPullDownRefresh();
-			  // this.getdata()
+			  this.onRetry()
 			},
 			
 			/**
 			 * 页面上拉触底事件的处理函数
 			 */
 			onReachBottom: function () {
-			
+				this.getdatalist()
 			},
 			
 			/**
@@ -91,60 +83,163 @@
 			onShareAppMessage: function () {
 			
 			},
+			onRetry(){
+				this.page=1
+				this.data_list=[]
+				this.btn_kg=0
+				this.getdatalist()
+			},
+			getdatalist() {
+			
+				let that = this
+				var jkurl = '/user/friends'
+				var datas = {
+					token: that.loginMsg.userToken,
+					page: that.page,
+					size:that.size,
+					interact:that.list_type?'up':'down',
+					goods_sum:that.list_type1?'up':'down',
+				}
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						if (datas.length==0) {
+							uni.showToast({
+								icon: 'none',
+								title: '暂无更多数据'
+							})
+							return
+						}
+						if(that.page==1){
+							that.data_list=datas
+						}else{
+							
+							that.data_list = that.datas.concat(datas)
+						}
+			
+						that.page++
+					}
+				}).catch(e => {
+						that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+				
+			},
+			guanzhuFuc(type,id,key){
+				var that =this
+				var data={
+					token:that.loginMsg.userToken,
+					type:type,
+					id:id,
+					operate:key,
+				}
+				if(key=='affirm'){
+					service.P_post('/attention/operation',data).then(res => {
+					  console.log(res)
+						that.btnkg=0
+						if(res.code==-1){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==0&&res.msg=='请先登录账号~'){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==1){
+							that.onRetry()
+							uni.showToast({
+								icon:'none',
+								title:'操作成功'
+							})
+						}else{
+							
+						}
+					}).catch(e => {
+						that.btnkg=0
+					  console.log(e)
+						uni.showToast({
+							icon:'none',
+							title:'操作失败'
+						})
+					})
+					return
+				}
+				wx.showModal({
+					title: '提示',
+					content: '是否取消关注?',
+					success (res) {
+						if (res.confirm) {
+							console.log('用户点击确定')
+							service.P_post('/attention/operation',data).then(res => {
+							  console.log(res)
+								that.btnkg=0
+								if(res.code==-1){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==0&&res.msg=='请先登录账号~'){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==1){
+									that.onRetry()
+									uni.showToast({
+										icon:'none',
+										title:'操作成功'
+									})
+								}else{
+									
+								}
+							}).catch(e => {
+								that.btnkg=0
+							  console.log(e)
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消')
+						}
+					}
+				})
+				
+				
+				
+				
+			},
 			
 			paixun1(){
 				var that =this
 				that.list_type1=!that.list_type1
+				this.onRetry()
 			},
 			paixun(){
 				var that =this
 				that.list_type=!that.list_type
-			},
-			getdata(){
-			  ///api/homeIndex
-			  var that = this
-			  uni.request({
-			    url: service.IPurl + '/api/homeIndex',
-			    data: {},
-			    header: {
-			      'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    dataType: 'json',
-			    method: 'get',
-			    success(res) {
-			      // 停止下拉动作
-			      wx.stopPullDownRefresh();
-			      console.log(res.data)
-			      if (res.data.code == 1) {  //数据为空
-			
-			        that.setData({
-			          banner: res.data.data.homeBanner,
-			          homeSeek: res.data.data.homeSeek,
-			          homeTeacher: res.data.data.homeTeacher,
-			          homeVideo: res.data.data.homeVideo,
-			        })
-			      } else {
-			        wx.showToast({
-			          icon: 'none',
-			          title: '加载失败'
-			        })
-			
-			      }
-			    },
-			    fail() {
-			      // 停止下拉动作
-			      wx.stopPullDownRefresh();
-			      wx.showToast({
-			        icon: 'none',
-			        title: '加载失败'
-			      })
-			
-			    },
-			    complete() {
-			      // // 停止下拉动作
-			      // wx.stopPullDownRefresh();
-			    }
-			  })
+				this.onRetry()
 			},
 			zan(e){
 			  console.log(e.currentTarget.dataset.id)

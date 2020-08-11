@@ -17,13 +17,14 @@
 				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
 				 </view>
 				 <view  v-if="data_list.length>0" class="li_box" v-for="(item,idx) in data_list">
-						<view class="user_tx" @tap="jump" data-url="/pages/my_index/my_index">
-							<image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+						<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.u_id">
+							<image  class="user_tx" :src="filter.imgIP(item.head_portrait)"></image>
+							<image v-if="item.identity_id==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<image v-if="item.identity_id==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
 						</view>
-						<view class="user_name oh1">王力宏</view>
-						<view  v-if="item.tp_type==1"  @tap.stop="toupiao" :data-idx="idx" class="user_btn">+关注</view>
-						<view v-else class="user_btn user_btn1">已关注</view>
+						<view class="user_name oh1">{{item.nickname}}</view>
+						<view  v-if="item.is_friend==1"  @tap="guanzhuFuc(2,item.u_id,'affirm')" :data-idx="idx" class="user_btn">+关注</view>
+						<view v-if="item.is_friend==2" class="user_btn user_btn1" @tap="guanzhuFuc(2,item.u_id,'cancel')">互相关注</view>
 				 </view>
 			 </view>
 			 
@@ -40,96 +41,20 @@
 	export default {
 		data() {
 			return {
+				btn_kg:0,
 				type:'',
 				ss_cur:0,
-				data_list: [
-				  {
-				    name: '未达标商户',
-				    img: '/static/images/1_03.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '达标商户',
-				    img: '/static/images/1_05.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '巡机单',
-				    img: '/static/images/1_09.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已巡机',
-				    img: '/static/images/1_10.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '装机单',
-				    img: '/static/images/1_13.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已装机',
-				    img: '/static/images/1_14.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '维护单',
-				    img: '/static/images/1_17.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已维护',
-				    img: '/static/images/1_18.jpg',
-				    url: '/pages/list/list',
-				    type: '7'
-				  },
-				  {
-				    name: '换机单',
-				    img: '/static/images/2_09.jpg',
-				    url: '/pages/list/list',
-				    type: '8'
-				  },
-				  {
-				    name: '已换机',
-				    img: '/static/images/2_10.jpg',
-				    url: '/pages/list/list',
-				    type: '9'
-				  },
-				  {
-				    name: '撤机单',
-				    img: '/static/images/2_13.jpg',
-				    url: '/pages/list/list',
-				    type: '10'
-				  },
-				  {
-				    name: '已撤机',
-				    img: '/static/images/2_14.jpg',
-				    url: '/pages/list/list',
-				    type: '11'
-				  },
-				  {
-				    name: '终端交易查询',
-				    img: '/static/images/2_17.jpg',
-				    url: '/pages/list/list',
-				    type: '12'
-				  },
-				  {
-				    name: '应收列表',
-				    img: '/static/images/2_18.jpg',
-				    url: '/pages/list/list',
-				    type: '13'
-				  },
-				  
-				],
+				page:1,
+				size:20,
+				data_list: [],
 			}
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
 		},
 		/**
 		 * 生命周期函数--监听页面加载
@@ -137,26 +62,21 @@
 		onLoad: function (options) {
 		  var that =this
 		  console.log(options)
-		  that.type= options.type
-		  if (options.name){
-		    wx.setNavigationBarTitle({
-		      title: options.name,
-		    })
-		  }
+		  that.onRetry()
 		},
 		methods: {
 			/**
 			   * 页面相关事件处理函数--监听用户下拉动作
 			   */
 			  onPullDownRefresh: function () {
-					uni.stopPullDownRefresh();
+					 this.onRetry()
 			  },
 			
 			  /**
 			   * 页面上拉触底事件的处理函数
 			   */
 			  onReachBottom: function () {
-			
+					this.getdatalist()
 			  },
 			
 			  /**
@@ -165,19 +85,153 @@
 			  onShareAppMessage: function () {
 			
 			  },
-			  toupiao(e) {
-			    var idx = e.currentTarget.dataset.idx
-			    var newdata = this.data_list
-			    newdata[idx].tp_type = 2
-			    this.data_list= newdata
-			  },
-				ss_type(e){
-					
-					var that =this
-					if(that.ss_cur==e.currentTarget.dataset.type) return
-					console.log(e.currentTarget.dataset.type)
-					that.ss_cur=e.currentTarget.dataset.type
+				onRetry(){
+					this.page=1
+					this.data_list=[]
+					this.btn_kg=0
+					this.getdatalist()
 				},
+				getdatalist() {
+				
+					let that = this
+					var jkurl = '/user/fans'
+					var datas = {
+						token: that.loginMsg.userToken,
+						page: that.page,
+						size:that.size
+					}
+					if(that.btn_kg==1){
+						return
+					}else{
+						that.btn_kg=1
+					}
+					// 单个请求
+					service.P_get(jkurl, datas).then(res => {
+						
+						that.btn_kg=0
+						console.log(res)
+						if (res.code == 1) {
+							var datas = res.data
+							// console.log(typeof datas)
+				
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							if (datas.length==0) {
+								uni.showToast({
+									icon: 'none',
+									title: '暂无更多数据'
+								})
+								return
+							}
+							if(that.page==1){
+								that.data_list=datas
+							}else{
+								
+								that.data_list = that.datas.concat(datas)
+							}
+				
+							that.page++
+						}
+					}).catch(e => {
+							that.btn_kg=0
+						console.log(e)
+						uni.showToast({
+							icon: 'none',
+							title: '获取数据失败'
+						})
+					})
+					
+				},
+				guanzhuFuc(type,id,key){
+					var that =this
+					var data={
+						token:that.loginMsg.userToken,
+						type:type,
+						id:id,
+						operate:key,
+					}
+					if(key=='affirm'){
+						service.P_post('/attention/operation',data).then(res => {
+						  console.log(res)
+							that.btnkg=0
+							if(res.code==-1){
+								uni.navigateTo({
+									url:'/pages/login/login'
+								})
+								return
+							}else if(res.code==0&&res.msg=='请先登录账号~'){
+								uni.navigateTo({
+									url:'/pages/login/login'
+								})
+								return
+							}else if(res.code==1){
+								that.onRetry()
+								uni.showToast({
+									icon:'none',
+									title:'操作成功'
+								})
+							}else{
+								
+							}
+						}).catch(e => {
+							that.btnkg=0
+						  console.log(e)
+							uni.showToast({
+								icon:'none',
+								title:'操作失败'
+							})
+						})
+						return
+					}
+					wx.showModal({
+						title: '提示',
+						content: '是否取消关注?',
+						success (res) {
+							if (res.confirm) {
+								console.log('用户点击确定')
+								service.P_post('/attention/operation',data).then(res => {
+								  console.log(res)
+									that.btnkg=0
+									if(res.code==-1){
+										uni.navigateTo({
+											url:'/pages/login/login'
+										})
+										return
+									}else if(res.code==0&&res.msg=='请先登录账号~'){
+										uni.navigateTo({
+											url:'/pages/login/login'
+										})
+										return
+									}else if(res.code==1){
+										that.onRetry()
+										uni.showToast({
+											icon:'none',
+											title:'操作成功'
+										})
+									}else{
+										
+									}
+								}).catch(e => {
+									that.btnkg=0
+								  console.log(e)
+									uni.showToast({
+										icon:'none',
+										title:'操作失败'
+									})
+								})
+							} else if (res.cancel) {
+								console.log('用户点击取消')
+							}
+						}
+					})
+					
+					
+					
+					
+				},
+				
+
 			  jump(e) {
 			    service.jump(e)
 			  }
