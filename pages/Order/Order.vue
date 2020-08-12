@@ -2,15 +2,15 @@
 	<view>
 		<view class="hengxian"></view>
 		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
-		<view class="container" v-if="htmlReset==0">
+		<view class="container" v-if="data_list.length>0">
 		
 		  <view class="address" data-url="/pagesA/myaddress/myaddress?type=1" @tap="jump">
 		    <view class="add_l">
-		      <view v-if="address.user_name" class="al_1">{{address.user_name}}
+		      <view v-if="address.name" class="al_1">{{address.name}}
 		        <text class="l_tel">{{address.phone}}</text>
 		      </view>
-		      <view v-if="address.user_name" class="al_2">{{address.area}}{{address.address}}</view>
-		      <view v-if="!address.user_name" class="fz30">请选择地址</view>
+		      <view v-if="address.name" class="al_2">{{address.province}}{{address.city}}{{address.area}}{{address.address}}</view>
+		      <view v-if="!address.name" class="fz30">请选择地址</view>
 		    </view>
 		    <!-- <view class="add_r"> -->
 		    <text class="iconfont iconnext"></text>
@@ -20,32 +20,54 @@
 		    <image src="/static/images/orderborder.png"></image>
 		  </view>
 		  <view class="goodsBox contbox">
-		    <view class="goods" v-for="(item,idx) in goods" :data-tab="idx">
+		    <view class="goods" v-for="(item,idx) in data_list" :data-tab="idx">
 		      <view class="dianpu_tit">
-		        <image class="dp_logo" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-		        <text>石说的达开旗舰店</text>
+		        <image class="dp_logo" :src="filter.imgIP(item.head_portrait)"></image>
+		        <text>{{item.store_name}}</text>
 		        <!-- <text class="iconfont iconnext3"></text> -->
 		      </view>
-		      <view class="goods1" v-for="(item1,idx1) in goods">
+		      <view class="goods1" v-for="(item1,idx1) in item.goods">
 		        <view class="goodsImg">
-		          <image class="goodsImg" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
+		          <image class="goodsImg" :src="filter.imgIP(item1.photo[0])" mode="aspectFill"></image>
 		        </view>
 		        <view class="goodsinr">
-		          <!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
-		          <view class="goodsname fz30 c30 oh1">{{'黄金曼特宁精品咖啡/袋泡咖啡/耳挂 咖啡6*10袋装'}}</view>
-		          <view class="goodspri">{{'已选择：苏门答腊黄金曼特宁深度烘培'}}</view>
+		          <!-- <view class="goodsname fz30 c30 oh1">{{item1.goods_name}}</view> -->
+		          <view class="goodsname fz30 c30 oh1">{{item1.title}}</view>
+		          <view class="goodspri">已选择：<text style="margin-right: 4rpx;" v-for="(item2,idx2) in item1.attr">{{item2.value}}</text>{{' X'+item1.number}}</view>
 		          <view class="goodspri1">
 		            <!-- <text class="fz36 cf6377a fwb">￥{{filter.moneyFormat('48')}}</text> -->
-		            <text class="fz36 cf6377a fwb">￥{{'48'}}</text>
+		            <text class="fz36 cf6377a fwb">￥{{item1.price}}</text>
 		
 		
 		          </view>
 		        </view>
 		      </view>
+					
+					<view class="guige" :data-url="'/pagesA/my_yhq/my_yhq?type=1&idx='+idx" @tap="jump">
+					  <view class="guige_l">
+					    <view class="guige_l_name">优惠券</view>
+					    <!-- <view>10元</view> -->
+					  </view>
+					  <view class="dis_flex aic">
+					    <view class="fz26 c9">{{item.coupon.length==0?'无可用':order_ls_data[idx].yhidx==-1? '不使用':item.coupon[order_ls_data[idx].yhidx].coupon_setting_type==1?'-￥'+item.coupon[order_ls_data[idx].yhidx].c_money:item.coupon[order_ls_data[idx].yhidx].discount_ratio+'折'}}</view>
+					    <text class="iconfont iconnext3 fz30 c9"></text>
+					  </view>
+					</view>
+					
+					<view class="guige">
+					  <view class="guige_l">
+					    <view class="guige_l_name">运费</view>
+					    <!-- <view>10元</view> -->
+					  </view>
+					  <!-- <view class="guige_r"> -->
+					  <view class="fz26 c9">{{yunfei.length==0? '':yunfei[idx].postage==0? '免运费':'+￥'+yunfei[idx].postage}}</view>
+					  <!-- <text class="iconfont iconsangedian fz36 c9"></text> -->
+					  <!-- </view> -->
+					</view>
 		      <view class="o_xj">
 		        <view></view>
-		        <view>共3件，小记
-		          <text>¥144</text>
+		        <view>共{{item.sum_number}}件，小记
+		          <text>¥{{getxj(idx)}}</text>
 		        </view>
 		
 		      </view>
@@ -72,26 +94,7 @@
 		      微信支付
 		    </view>
 		  </view>
-		  <view class="guige">
-		    <view class="guige_l">
-		      <view class="guige_l_name">运费</view>
-		      <!-- <view>10元</view> -->
-		    </view>
-		    <!-- <view class="guige_r"> -->
-		    <view class="fz26 c9">{{yunfei==0? '免运费':'+￥'+yunfei}}</view>
-		    <!-- <text class="iconfont iconsangedian fz36 c9"></text> -->
-		    <!-- </view> -->
-		  </view>
-		  <view class="guige" data-url="/pagesA/my_yhq/my_yhq?type=1" @tap="jump">
-		    <view class="guige_l">
-		      <view class="guige_l_name">优惠券</view>
-		      <!-- <view>10元</view> -->
-		    </view>
-		    <view class="dis_flex aic">
-		      <view class="fz26 c9">{{!yhmsg? '无可用':'-￥'+yhmsg.arg1}}</view>
-		      <text class="iconfont iconnext3 fz30 c9"></text>
-		    </view>
-		  </view>
+		  
 		  <view class="guige">
 		    <view class="guige_l">
 		      <view class="guige_l_name">代言豆抵扣</view>
@@ -129,10 +132,16 @@
 				btnkg: 0,
 				htmlReset: 0,
 				type: 0, ///1 单品下单  2 购物车下单
-				goods: [1, 1],
-				yunfei: 0, //运费
-				yhlist: [], //优惠
 				sku_id: '', //新单价
+				sku_number: '', //数量
+				
+				
+				g_data:'',    //1,2（type=2）购物车 c_id
+				data_list:[],
+				
+				goods: [1, 1],
+				yunfei: [], //运费
+				yhlist: [], //优惠
 				yhidx: 0,
 				addresslist: [], //地址列表
 				paykg: true, //按钮开关
@@ -143,8 +152,31 @@
 				zsum: 1000
 			}
 		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin',
+				'order_ls_data'
+			]),
+			
+		},
+		onLoad(option) {
+			var that =this
+			if(option.type==1){
+				that.type=option.type
+				that.sku_id=option.v_id
+				that.sku_number=option.number
+				that.advocacy_user_id=option.v_id
+			}else{
+				that.type=option.type
+				that.g_data=option.g_data
+				
+			}
+			that.getdata()
+		},
 		onShow() {
-		
+			var that =this
 		  let pages = getCurrentPages();
 		  let currPage = pages[pages.length - 1];
 		  if (currPage.data.addresschose) {  
@@ -168,6 +200,7 @@
 		    this.yhmsg= currPage.data.yhmsg
 		    this.jisuan()
 		  }
+			that.jisuan()
 		},
 		onReady() {
 		
@@ -176,18 +209,157 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function() {
-		  uni.stopPullDownRefresh();
+		  that.getdata()
 		},
 		methods: {
-			cload() {
-			  var that = this
-			  that.countpri()
-			  that.getyunfei()
-			  that.getyhlist()
+			...mapMutations(['order_ls']),
 			
-			  that.getadd()
+			getxj(idx){
+				var that = this
+				if(that.data_list.length==0){
+					return 
+				}
+				var zj=that.data_list[idx].sum_price
+				var yunfei=0
+				if(that.yunfei[idx]){
+					yunfei=that.yunfei[idx].postage
+				}
+				var yh=0
+				if(that.data_list[idx].yhidx>-1){
+					var yhq_data=that.data_list[idx].coupon[that.data_list[idx].yhidx]
+					if(yhq_data.coupon_setting_type==1){
+						yh=yhq_data.c_money
+					}
+					if(yhq_data.coupon_setting_type==2||yhq_data.coupon_setting_type==3){
+						var  goods_list=that.data_list[idx].goods
+						for(var i in goods_list){
+							if(yhq_data.coupon_use_obj_id==goods_list[i].g_id){
+								var zk_pri=goods_list[i].price*yhq_data.discount_ratio/100
+								zk_pri=goods_list[i].price-zk_pri
+								// zk_pri=zk_pri
+							}
+						}
+						yh=zk_pri
+					}
+				}
+				
+				zj=zj-yh*1+yunfei*1
+				if(zj>0){
+					zj=zj*1
+					zj=zj.toFixed(2)
+				}
+				 that.$set(that.data_list[idx],'js_price',zj)
+				return zj
 			},
-			
+			//获取订单
+			getdata() {
+			  // const pageState1 = pageState.default(this)
+			  // /cart
+			  let that = this
+				var jkurl = '/makeOrder/show'
+				var datas = {
+					token: that.loginMsg.userToken
+				}
+				if(that.type==1){
+					datas = {
+						token: that.loginMsg.userToken,
+						type:that.type,
+						v_id:that.sku_id,
+						number:that.sku_number
+					}
+				}
+				if(that.type==2){
+					datas = {
+						token: that.loginMsg.userToken,
+						type:that.type,
+						g_data:that.g_data
+					}
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+					
+							that.data_list =datas
+							that.order_ls(datas)
+							var address={
+								"id":res.address.id,
+								"name": res.address.a_name,
+								"phone": res.address.a_phone,
+								"province": res.address.province,
+								"city": res.address.city,
+								"area": res.address.area,
+								"address": res.address.address,
+							}
+							that.address=address
+							that.my_dou=res.common_data.bean
+							that.jisuan()
+							console.log(address)
+							that.getyf()
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+				
+			},
+			//获取运费
+			getyf() {
+			  // const pageState1 = pageState.default(this)
+			  // /cart
+			  let that = this
+				var jkurl = '/makeOrder/calculatePrice'
+				var newarr=[]
+				for(var i=0;i<that.data_list.length;i++){
+					var new_i={
+						price:that.data_list[i].sum_price,
+						number:that.data_list[i].sum_number,
+						manager_id:that.data_list[i].group_code,
+					}
+					newarr.push(new_i)
+				}
+				var datas = {
+					token: that.loginMsg.userToken,
+					data:JSON.stringify(newarr),
+					address_id:that.address.id
+				}
+				
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+					
+							that.yunfei =datas
+							that.jisuan()
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+				
+			},
 			select() {
 			  var that = this
 			  that.my_dou_xuan= !that.my_dou_xuan
@@ -195,51 +367,54 @@
 			},
 			jisuan() {
 			  var that = this
-			  var yhnum = that.yhmsg ? that.yhmsg.arg1 : ''
-			  if (that.my_dou_xuan) {
-			    var zsum = that.sum - yhnum
-			    var my_dou_new = that.my_dou
-			    if (zsum > that.my_dou) {
-			      zsum = zsum - that.my_dou
-			      my_dou_new = 0
-			    } else {
-			      my_dou_new = that.my_dou - zsum
-			      zsum = 0
-			    }
-			    console.log(zsum)
-			    console.log('我的代言豆还有：' + my_dou_new + '个')
-			    that.zsum= zsum
+				var zsum=0
+				for(var i=0;i<that.data_list.length;i++){
+					if(!that.data_list[i].js_price&&that.data_list[i].js_price!=0){
+						zsum+=that.data_list[i].sum_price*1
+					}else{
+						zsum+=that.data_list[i].js_price*1
+					}
+				}
+				if (that.my_dou_xuan) {
+				 var my_d = that.my_dou*1
+				 var my_dou_new =that.my_dou*1
+				 if (zsum >my_d) {
+					zsum = zsum - my_d
+					my_dou_new = 0
+				 } else {
+					my_dou_new = my_d - zsum
+					zsum = 0
+				 }
+					console.log('我的代言豆还有：' + my_dou_new + '个')
+					// that.zsum= zsum
 			
-			  } else {
-			    var zsum = that.sum - yhnum
-			    that.zsum= zsum
-			  }
+				} else {
+					// var zsum = that.sum - yhnum
+					// that.zsum= zsum
+				}
+				
+				that.zsum= zsum.toFixed(2)
+			//   var yhnum = that.yhmsg ? that.yhmsg.arg1 : ''
+			//   if (that.my_dou_xuan) {
+			//     var zsum = that.sum - yhnum
+			//     var my_dou_new = that.my_dou
+			//     if (zsum > that.my_dou) {
+			//       zsum = zsum - that.my_dou
+			//       my_dou_new = 0
+			//     } else {
+			//       my_dou_new = that.my_dou - zsum
+			//       zsum = 0
+			//     }
+			//     console.log(zsum)
+			//     console.log('我的代言豆还有：' + my_dou_new + '个')
+			//     that.zsum= zsum
+			
+			//   } else {
+			//     var zsum = that.sum - yhnum
+			//     that.zsum= zsum
+			//   }
 			},
-			bindPickerChange(e) {
-			  console.log('picker发送选择改变，携带值为', e.detail.value)
-			  this.show0= e.detail.value
-			},
-			//address
-			bchange1(e) {
-			  console.log('picker发送选择改变，携带值为', e.detail.value)
-			  
-			    this.show1= e.detail.value
-			    this.ztaddress= this.columns1[e.detail.value].id
-			    this.zttime= this.columns2[e.detail.value][0].id
-			  
-			  // that.setData({
-			  // 	ztaddress:that.columns1[0].id,
-			  // 	zttime:that.columns2[0][0].id
-			  // })
-			},
-			//time
-			bchange2(e) {
-			  console.log('picker发送选择改变，携带值为', e.detail.value)
-			  
-			    this.show2= e.detail.value
-			    this.zttime= this.columns2[this.show1][e.detail.value].id
-			  
-			},
+			
 			/*计算价格*/
 			countpri() {
 			  var that = this
@@ -259,130 +434,7 @@
 			
 			  this.sum= heji
 			},
-			//运费
-			getyunfei() {
-			  let that = this
-			  wx.request({
-			    url: app.IPurl + '/api/carriage',
-			    data: {
-			
-			    },
-			    header: {
-			      'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    dataType: 'json',
-			    method: 'get',
-			    success(res) {
-			      // console.log(res.data)
-			      if (res.data.code == 1) {
-			
-			        that.yunfei= res.data.data.carriage
-			
-			
-			      } else {
-			        wx.showToast({
-			          icon: 'none',
-			          title: res.data.msg
-			        })
-			      }
-			
-			    },
-			    fail() {
-			      wx.showToast({
-			        icon: 'none',
-			        title: '获取失败'
-			      })
-			      console.log('失败')
-			    }
-			  })
-			},
-			//获取默认地址
-			getadd() {
-			  let that = this
-			  wx.request({
-			    url: app.IPurl + '/api/userAddressDefault',
-			    data: {
-			      token: wx.getStorageSync('token')
-			    },
-			    // header: {
-			    // 	'content-type': 'application/x-www-form-urlencoded' 
-			    // },
-			    dataType: 'json',
-			    method: 'get',
-			    success(res) {
-			      // console.log(res.data)
-			      if (res.data.code == 1) {
-			        wx.setNavigationBarTitle({
-			          title: '提交订单'
-			        })
-			        that.address= res.data.data
-			        that.ahtmlReset= 0
-			
-			
-			      } else {
-			        // wx.showToast({
-			        // 	icon:'none',
-			        // 	title:res.data.msg
-			        // })
-			        that.htmlReset= 1
-			      }
-			
-			    },
-			    fail(err) {
-			      wx.showToast({
-			        icon: 'none',
-			        title: '获取默认地址失败'
-			      })
-			      that.htmlReset= 1
-			      console.log(err)
-			    }
-			  })
-			},
-			//获取优惠
-			getyhlist() {
-			  var that = this
-			  wx.request({
-			    url: app.IPurl + '/api/userCouponList',
-			    data: {
-			      token: wx.getStorageSync('token')
-			    },
-			    header: {
-			      'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    dataType: 'json',
-			    method: 'get',
-			    success(res) {
-			      console.log(res.data)
-			      if (res.data.code == 1) {
-			
-			        that.yhlist= res.data.data
-			
-			        var zsum
-			        if (res.data.data[0]) {
-			          zsum = that.sum - res.data.data[0].coupon_money + Number(that.yunfei)
-			        } else {
-			          zsum = Number(that.sum) + Number(that.yunfei)
-			        }
-			        that.zsum= zsum
-			      } else {
-			        wx.showToast({
-			          icon: 'none',
-			          title: ''
-			        })
-			      }
-			
-			    },
-			    fail() {
-			      wx.showToast({
-			        icon: 'none',
-			        // title:res.data.msg
-			        title: '获取优惠券信息失败'
-			      })
-			      console.log('失败')
-			    }
-			  })
-			
-			},
+		
 			subbtn() {
 			
 			  console.log(app.IPurl1)
@@ -500,88 +552,6 @@
 			},
 			goaddress() {
 			  service.goaddress()
-			},
-			//单品
-			getGoodsDetails(id) {
-			  // const pageState1 = pageState.default(this)
-			  // pageState1.loading()    // 切换为loading状态
-			  let that = this
-			  wx.request({
-			    url: app.IPurl1 + 'shopinfo',
-			    data: {
-			      key: app.jkkey,
-			      tokenstr: wx.getStorageSync('tokenstr'),
-			      goods_sku_id: id
-			    },
-			    header: {
-			      'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    dataType: 'json',
-			    method: 'POST',
-			    success(res) {
-			      // console.log(res.data)
-			
-			      if (res.data.error == -2) {
-			        app.checktoken(res.data.error)
-			        that.onLoad()
-			      }
-			      if (res.data.error == 0) {
-			        let resultd = res.data
-			        console.log(res.data)
-			        that.data.goodslist.push(res.data)
-			        that.setData({
-			          goodslist: that.data.goodslist,
-			        })
-			
-			        let shopimg = resultd.data.goods_img.split(",")
-			        // let guige=resultd.data.goods_unit.split(",")
-			        // // that.data.spimg = that.data.spimg.concat(rlb)
-			        console.log(shopimg[0])
-			        that.data.spimg.push(shopimg[0])
-			        that.setData({
-			          spimg: that.data.spimg
-			        })
-			        let arra = []
-			        if (that.data.goodslist[0].goods_total_limit != '') {
-			
-			          arra.push({
-			            xuan: true,
-			            // pri:res.data.shopinfo_sku_price_list[dbggidx].goods_sku_info.internal_price,
-			            num: that.data.goodsnum,
-			            // order_cart_id:that.data.goodslist[0].order_cart.order_cart_id,
-			            laddermsgs: that.ladderpri(0)
-			          })
-			        } else {
-			          var dbggidx = that.data.dbggtype
-			          console.log(dbggidx)
-			          let ss = res.data.shopinfo_sku_price_list[dbggidx].goods_sku_info.internal_price * that.data.goodsnum
-			
-			          let Totalpri = ss.toFixed(2)
-			
-			          arra.push({
-			            xuan: true,
-			            pri: res.data.shopinfo_sku_price_list[dbggidx].goods_sku_info.internal_price,
-			            num: that.data.goodsnum,
-			            Totalpri: Totalpri
-			          })
-			        }
-			        that.setData({
-			          goods_sele: arra
-			        })
-			        that.countpri()
-			      }
-			      // pageState1.finish()    // 切换为finish状态
-			      // pageState1.error()    // 切换为error状态
-			    },
-			    fail(err) {
-			      wx.showToast({
-			        icon: 'none',
-			        title: '获取失败'
-			      })
-			      console.log(err)
-			      // pageState1.error()    // 切换为error状态
-			    }
-			  })
 			},
 			jump(e) {
 			  service.jump(e)
@@ -874,7 +844,7 @@ image{
 	text-overflow:ellipsis;
 	word-break:break-all;
 	-webkit-box-orient:vertical;
-	-webkit-line-clamp:2;
+	-webkit-line-clamp:3;
 }
 .goodspri{
 	font-size: 26rpx;

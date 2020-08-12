@@ -20,7 +20,8 @@ const store = new Vuex.Store({
 		userName: "游客",
 		loginMsg: '',
 		wxlogin: 0,
-		renzheng:''
+		renzheng:'',
+		order_ls_data:''
 	},
 	mutations: {
 		saverz(state,renzheng){
@@ -28,6 +29,9 @@ const store = new Vuex.Store({
 		},
 		wxlogin(state, num) {
 			state.wxlogin = num++
+		},
+		order_ls(state,order_ls){
+			state.order_ls_data=order_ls || ''
 		},
 		login(state, loginMsg) {
 			// state.userName = userName || '新用户';

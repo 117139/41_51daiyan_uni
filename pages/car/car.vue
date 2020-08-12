@@ -15,7 +15,7 @@
 					 <text class="iconfont iconnext3"></text>
 				 </view>  -->
 				<!-- <view class="goods1" v-for="(item1,idx1) in item" @tap="jump" data-url="/pages/details/details?shop_id=1"> -->
-				<view class="goods1" @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+				<view class="goods1">
 					<!-- <view class="scbg" data-id="{{item.id}}" @tap.stop="cardel">
 						<text class="iconfont iconshanchu fz26"></text>
 					</view> -->
@@ -24,20 +24,13 @@
 							<icon  v-if="item.xuan==true" type="success" size="16" color="#F7B43B" />
 						</view>
 					</view>
-					<!-- <view class="goodsImg" wx:if="{{item.goods_pic}}"> -->
-					<view class="goodsImg">
-						<!-- <image src="{{filter.getgimg(item.order_cart.goods_img)}}"></image> -->
-						<!-- <image src="{{filter.getgimg(item.goods_pic)}}"></image> -->
+					<view class="goodsImg"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 						<image class="goodsImg"  :src="filter.imgIP(item.g_pic[0])" mode="aspectFill"></image>
 					</view>
 					<view class="goodsinr">
-						<!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
-						<view class="goodsname fz30 c30 oh2">{{item.g_title}} <text v-for="(item1,dix) in item.attr">{{item1.value}}</text></view>
-						<!-- <view class="goodspri">{{'已选择：苏门答腊黄金曼特宁深度烘培'}}</view> -->
-						<view class="goodspri1">
-							<!-- <text class="fz36 cf6377a fwb">￥{{filter.moneyFormat('48')}}</text> -->
+						<view class="goodsname fz30 c30 oh2"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">{{item.g_title}} <text v-for="(item1,dix) in item.attr">{{item1.value}}</text></view>
+						<view class="goodspri1"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 							<text class="fz36 cf6377a fwb">￥{{item.g_price}}</text>
-						
 						</view>
 		        <view class="goodspri1">
 							
@@ -103,23 +96,14 @@
 			return {
 				btnkg: 0,     //0  ok       1 off
 				htmlReset: 0,
+				data_list_d:[],
 				data_list:[],
 				rand_data:[],
-				goods: [
-				  [{ "num": 1, xuan: false },
-				    { "num": 1, xuan: false },]
-				],
-				// goods: [],
-				spimg: [],
-				goods_sele: [
-				  [{ "num": 1, xuan: false },
-				    { "num": 1, xuan: false },],
-				],
-				// goods_sele: [],
-				you_like:[1,1,1,1],
+
 				xuan: false,
 				all: false,
-				sum: '0.00'
+				sum: '0.00',
+				data_list_ls:[]
 			}
 		},
 		computed:{
@@ -129,7 +113,7 @@
 				'wxlogin'
 			])
 		},
-		onLoad() {
+		onShow() {
 			this.onRetry()
 		},
 		
@@ -236,33 +220,41 @@
 				this.sum=heji
 			},
 			openOrder() {
-			  wx.navigateTo({
-			    url: '/pages/Order/Order'
-			  })
-			  return
+			  // wx.navigateTo({
+			  //   url: '/pages/Order/Order'
+			  // })
+			  // return
 			  let that = this
-			  let xuanG = that.goods_sele
+			  let xuanG = that.data_list
 			  let idG = ''
 			  var xzarr = []
-			  for (let i in xuanG) {
+			  // for (let i in xuanG) {
+				for(var i=0; i<xuanG.length;i++){
 			    if (xuanG[i].xuan) {
 			      if (idG == '') {
-			        idG = xuanG[i].id
+			        idG = xuanG[i].c_id
 			
 			      } else {
-			        idG += ',' + xuanG[i].id
+			        idG += ',' + xuanG[i].c_id
 			      }
-			      xzarr.push(that.goods[i])
+			      // xzarr.push(that.goods[i])
 			    }
 			
 			    // console.log(idG)
 			  }
-			  xzarr = JSON.stringify(xzarr)
-			  console.log(xzarr)
+			  // xzarr = JSON.stringify(xzarr)
+			  // console.log(xzarr)
 			  console.log(idG)
 			  if (idG !== '') {
-			    app.openOrder(idG, xzarr, 1)
-			  }
+			   wx.navigateTo({
+			     url: '/pages/Order/Order?type=2&g_data='+idG
+			   })
+			  }else{
+					uni.showToast({
+						icon:'none',
+						title:'请选择商品'
+					})
+				}
 			},
 			//加减
 			onNum(e) {
@@ -337,8 +329,14 @@
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-					
-							that.data_list =datas
+						that.data_list_ls=JSON.parse(JSON.stringify(datas))
+							if(that.data_list_ls!==that.data_list_d){
+								
+								that.all=false
+								that.data_list =JSON.parse(JSON.stringify(datas))
+								that.data_list_d =JSON.parse(JSON.stringify(datas))
+							}
+							that.data_list_ls=[]
 							that.rand_data=res.rand_data
 					}
 				}).catch(e => {

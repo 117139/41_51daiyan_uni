@@ -212,9 +212,9 @@
 				}
 				var jkurl = '/bestGoods'
 				var datas = {
-					b:that.dy_mon?'duwn':'up',
-					sum:that.dy_num?'duwn':'up',
-					p:that.dy_pri?'duwn':'up',
+					b:that.dy_mon?'down':'up',
+					sum:that.dy_num?'down':'up',
+					p:that.dy_pri?'down':'up',
 					page:that.page,
 					size:that.size
 				}

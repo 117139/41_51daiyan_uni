@@ -152,9 +152,14 @@
 						operate:key,
 					}
 					if(key=='affirm'){
+						if(that.btn_kg==1){
+							return
+						}else{
+							that.btn_kg=1
+						}
 						service.P_post('/attention/operation',data).then(res => {
 						  console.log(res)
-							that.btnkg=0
+							that.btn_kg=0
 							if(res.code==-1){
 								uni.navigateTo({
 									url:'/pages/login/login'
@@ -166,7 +171,15 @@
 								})
 								return
 							}else if(res.code==1){
-								that.onRetry()
+								// that.onRetry()
+								for(var i=0; i<that.data_list.length;i++){
+									if(that.data_list[i].u_id==id){
+										
+										// that.data_list[i].is_friend=2
+										// that.$set(that.data_list,i,that.data_list[i])
+										that.$set(that.data_list[i],'is_friend',2)
+									}
+								}
 								uni.showToast({
 									icon:'none',
 									title:'操作成功'
@@ -175,7 +188,7 @@
 								
 							}
 						}).catch(e => {
-							that.btnkg=0
+							that.btn_kg=0
 						  console.log(e)
 							uni.showToast({
 								icon:'none',
@@ -192,7 +205,7 @@
 								console.log('用户点击确定')
 								service.P_post('/attention/operation',data).then(res => {
 								  console.log(res)
-									that.btnkg=0
+									that.btn_kg=0
 									if(res.code==-1){
 										uni.navigateTo({
 											url:'/pages/login/login'
@@ -204,7 +217,16 @@
 										})
 										return
 									}else if(res.code==1){
-										that.onRetry()
+										// that.onRetry()
+										for(var i=0; i<that.data_list.length;i++){
+											console.log(i)
+											if(that.data_list[i].u_id==id){
+												console.log(that.data_list[i].user_id,id)
+												// that.data_list[i].is_friend=1
+												// that.$set(that.data_list,i,that.data_list[i])
+												that.$set(that.data_list[i],'is_friend',1)
+											}
+										}
 										uni.showToast({
 											icon:'none',
 											title:'操作成功'
@@ -213,7 +235,7 @@
 										
 									}
 								}).catch(e => {
-									that.btnkg=0
+									that.btn_kg=0
 								  console.log(e)
 									uni.showToast({
 										icon:'none',

@@ -193,7 +193,13 @@
 									})
 									return
 								}else if(res.code==1){
-									that.onRetry()
+									// that.onRetry()
+									for(var i=0; i<that.data_list.length;i++){
+										if(that.data_list[i].obj_id==id){
+											// that.$set(that.data_list[i],'is_friend',1)
+											that.data_list.splice(i, 1)
+										}
+									}
 									uni.showToast({
 										icon:'none',
 										title:'操作成功'

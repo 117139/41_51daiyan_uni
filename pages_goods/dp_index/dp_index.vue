@@ -4,20 +4,19 @@
 		  <view class="dp_box">
 		    <view class="dp_b1">
 		      <view class="dp_logo">
-		        <image :src="filter.imgIP('/static_s/51daiyan/images/goods_02.jpg')" mode="aspectFill"></image>
+		        <image :src="filter.imgIP(datas.head_portrait)" mode="aspectFill"></image>
 		      </view>
 		      <view class="dp_msg">
-		        <view class="dp_name oh2">弥翼咖啡 MIYI COFFEE ROSASTERS</view>
+		        <view class="dp_name oh2">{{datas.store_name}}</view>
 		        <view class="dp_lv">
-		          <image :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
-		          <image :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
-		          <image :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
-		          <image :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
+		          <image v-if="idx<5" v-for="(item,idx) in datas.rank" :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
+		         
 		        </view>
 		        <view class="dp_bq">
-		          <text>代言 835</text>
-		          <text class="flex_1">粉丝数</text>
-		          <view class="guanzhu_btn">关注</view>
+		          <text>代言 {{datas.advocacy_number}}</text>
+		          <text class="flex_1">粉丝数{{datas.fans_number}}</text>
+		          <view v-if="!datas.is_follow" @tap.stop="guanzhuFuc(dpid,'affirm')" class="guanzhu_btn">关注</view>
+		          <view v-else @tap.stop="guanzhuFuc(dpid,'cancel')" class="guanzhu_btn">已关注</view>
 		        </view>
 		
 		      </view>
@@ -39,65 +38,36 @@
 				</view> -->
 				<!-- goods_li -->
 				<view v-if="s_type==0" class="goods_list">
-					<view class="goods_li" @tap="jump" data-url="/pages/details/details">
-						<image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images//images/goods15_02.jpg')"  mode="aspectFill"></image>
+					<view v-for="(item,idx) in data_list" class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
+						<image class="goods_img" :src="filter.imgIP(item.photo[0])"  mode="aspectFill"></image>
 						<view class="goods_msg">
-							<view class="oh1">奶油碧根果 整箱</view>
+							<view class="oh1">{{item.title}}</view>
 							<view class="goods_pri">
-								<text>￥27</text>
-								<text class="pr2">￥37</text>
-							</view>
-						</view>
-					</view>
-					<view class="goods_li"  @tap="jump" data-url="/pages/details/details">
-						<image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images//images/goods15_02.jpg')"  mode="aspectFill"></image>
-						<view class="goods_msg">
-							<view class="oh1">奶油碧根果 整箱</view>
-							<view class="goods_pri">
-								<text>￥27</text>
-								<text class="pr2">￥37</text>
-							</view>
-						</view>
-					</view>
-					<view class="goods_li"  @tap="jump" data-url="/pages/details/details">
-						<image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images//images/goods15_02.jpg')"  mode="aspectFill"></image>
-						<view class="goods_msg">
-							<view class="oh1">奶油碧根果 整箱</view>
-							<view class="goods_pri">
-								<text>￥27</text>
-								<text class="pr2">￥37</text>
-							</view>
-						</view>
-					</view>
-					<view class="goods_li"  @tap="jump" data-url="/pages/details/details">
-						<image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images//images/goods15_02.jpg')"  mode="aspectFill"></image>
-						<view class="goods_msg">
-							<view class="oh2">奶油碧根果奶油碧根果奶油碧根果 整箱</view>
-							<view class="goods_pri">
-								<text>￥27</text>
-								<text class="pr2">￥37</text>
+								<text>￥{{item.basics_price}}</text>
+								<text class="pr2">￥{{item.basics_original_price}}</text>
 							</view>
 						</view>
 					</view>
 				</view>
 				<view v-if="s_type==1" class="my_list">
 					<view class="sp_list" >
-						<view class="sp_li" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/details/details">
+						<view class="sp_li" v-for="(item,idx) in data_list"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 							<view class="sp_li_img">
-								<image class="sp_li_img" :src="filter.imgIP('/static_s/51daiyan/images//images/goods15_02.jpg')" mode="aspectFill"></image>
+								<image v-if="item.type==2" class="sp_li_img" :src="filter.imgIP_video(item.obj_pic[0])" mode="aspectFill"></image>
+								<image v-else class="sp_li_img" :src="filter.imgIP(item.obj_pic[0])" mode="aspectFill"></image>
 								<view class="sp_li_img_cz">
 									<image :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
 								</view>
 							</view>
 							<view class="sp_li_msg">
-								<view class="sp_li_name oh2">三只松鼠-巨型零食大礼包 内含30包休闲食品</view>
+								<view class="sp_li_name oh2">{{item.content}}</view>
 								<view class="sp_li_time">
 		              <view class="user_tximg">
-		                <image :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-		                王力宏
+		                <image :src="filter.imgIP(item.head_portrait)"></image>
+		                {{item.nickname}}
 		              </view>
-		              <view v-if="idx==2"><text class="iconfont iconhongxinicon"></text> 390</view>
-		              <view v-else class="yzan"><text class="iconfont iconhongxinicon1"></text> 390</view>
+		              <view v-if="!item.is_like"><text class="iconfont iconhongxinicon" style="margin-right: 8rpx;"></text> {{item.praise_number}}</view>
+		              <view v-else class="yzan"><text class="iconfont iconhongxinicon1" style="margin-right: 8rpx;"></text> {{item.praise_number}}</view>
 		            </view>
 							</view>
 						</view>
@@ -118,20 +88,30 @@
 	export default {
 		data() {
 			return {
-				dy_mon:0,
-				dy_num:0,
-				dy_pri:0,
-				
+				btn_kg:0,
+				dpid:0,
+				page:1,
+				size:20,
 				
 				s_type: 0,
-				data_list:[1,1,1,1,1]
+				datas:[],
+				data_list:[]
 			}
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
-		
+			this.dpid=options.id
+			this.getdata()
+			this.onRetry()
 		},
 		
 		/**
@@ -166,7 +146,8 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  uni.stopPullDownRefresh();
+			this.getdata()
+		  this.onRetry()
 		},
 		
 		/**
@@ -183,25 +164,185 @@
 		
 		},
 		methods: {
+			onRetry(){
+				this.page=1
+				this.data_list=[]
+				this.getdatalist()
+			},
+			getdata() {
+				var that = this
+				var datas = {
+					token: that.loginMsg.userToken,
+					group_code: that.dpid
+				}
+				// 单个请求
+				service.P_get('/store', datas).then(res => {
+					console.log(res)
+					if (res.code == 1) {
+						that.datas = res.data.store
+						that.onRetry()
+					}
+				}).catch(e => {
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			
+			},
+			//列表
+			getdatalist() {
+			
+				let that = this
+				var jkurl = '/store/goods'
+				var datas = {
+					token: that.loginMsg.userToken,
+					group_code: that.dpid,
+					page: that.page,
+					size: that.size
+				}
+				if(that.s_type==1){
+					jkurl='/store/adv'
+				}
+				if (that.btn_kg == 1) {
+					return
+				} else {
+					that.btn_kg = 1
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+			
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						if (datas.length == 0) {
+							uni.showToast({
+								icon: 'none',
+								title: '暂无更多数据'
+							})
+							return
+						}
+						if (that.page == 1) {
+							that.data_list = datas
+						} else {
+			
+							that.data_list = that.datas.concat(datas)
+						}
+			
+						that.page++
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			},
+			
+			//关注
+			guanzhuFuc(id,key){
+				var that =this
+				var data={
+					token:that.loginMsg.userToken,
+					type:1,
+					id:id,
+					operate:key,
+				}
+				if(key=='affirm'){
+					service.P_post('/attention/operation',data).then(res => {
+					  console.log(res)
+						that.btnkg=0
+						if(res.code==-1){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==0&&res.msg=='请先登录账号~'){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==1){
+							that.getdata()
+							uni.showToast({
+								icon:'none',
+								title:'操作成功'
+							})
+						}else{
+							
+						}
+					}).catch(e => {
+						that.btnkg=0
+					  console.log(e)
+						uni.showToast({
+							icon:'none',
+							title:'操作失败'
+						})
+					})
+					return
+				}
+				wx.showModal({
+					title: '提示',
+					content: '是否取消关注?',
+					success (res) {
+						if (res.confirm) {
+							console.log('用户点击确定')
+							service.P_post('/attention/operation',data).then(res => {
+							  console.log(res)
+								that.btnkg=0
+								if(res.code==-1){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==0&&res.msg=='请先登录账号~'){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==1){
+									that.getdata()
+									uni.showToast({
+										icon:'none',
+										title:'操作成功'
+									})
+								}else{
+									
+								}
+							}).catch(e => {
+								that.btnkg=0
+							  console.log(e)
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消')
+						}
+					}
+				})
+				
+				
+			},
 			
 			ss_type(e) {
 			  var that = this
 			  if (that.s_type == e.currentTarget.dataset.type) return
 			  console.log(e.currentTarget.dataset.type)
 			  that.s_type= e.currentTarget.dataset.type
-			},
-			px_fuc(e){
-				var that=this
-				var type=e.currentTarget.dataset.type
-				if(type==0){
-					that.dy_mon=!that.data.dy_mon
-				}
-				if(type==1){
-					that.dy_num=!that.data.dy_num
-				}
-				if(type==2){
-					that.dy_pri=!that.data.dy_pri
-				}
+				that.onRetry()
 			},
 			jump(e) {
 			  service.jump(e)
@@ -261,7 +402,7 @@
 }
 .goods_li{
 	width:338rpx;
-	height:494rpx;
+	/* height:494rpx; */
 	background:rgba(255,255,255,1);
 	box-shadow:0px 3rpx 20rpx 0px rgba(119,119,119,0.3);
 	border-radius:10rpx;

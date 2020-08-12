@@ -100,9 +100,9 @@
 		      <text>收藏</text>
 		    </view>
 		    <view class="sg"></view>
-		    <view class="kf_btn">
+		    <view class="kf_btn"  @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+goodsData.merchant.group_code">
 		      <text class="iconfont iconstore"></text>
-		      <text  @tap="jump" data-url="/pages/dp_index/dp_index">店铺</text>
+		      <text  >店铺</text>
 		    </view>
 		    <view class="buy_btn"  v-if="goodsData.activity_id==0" @tap="sheetshow_fuc">加入购物车</view>
 		    <view class="buy_btn buy_btn1"  @tap="sheetshow_fuc">立即购买</view>

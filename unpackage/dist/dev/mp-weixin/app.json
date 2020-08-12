@@ -153,5 +153,6 @@
   "usingComponents": {
     "van-stepper": "./wxcomponents/vant/stepper/index",
     "van-popup": "./wxcomponents/vant/popup/index"
-  }
+  },
+  "sitemapLocation": "sitemap5.json"
 }

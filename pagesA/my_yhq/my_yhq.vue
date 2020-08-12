@@ -2,10 +2,10 @@
 	<view>
 		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
 		<view class="container" v-if="htmlReset==0">
-			<view class="data_null" v-if="goods.length==0">
+			<view class="data_null" v-if="order_ls.length==0">
 						 <image  :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
 			</view>
-		  <view class="goods" v-for="(item,idx) in goods"
+		  <view v-if="order_ls.length>0" class="goods" v-for="(item,idx) in order_ls[yhlist_idx]"
 				:data-tab="idx"
 				>
 		     
@@ -61,34 +61,24 @@
 			return {
 				btnkg: 0,     //0  ok       1 off
 				htmlReset: 0,
-				data_list:[
-				  { arg1: 10, type: 1 },
-				  { arg1: 20, type: 2 },
-				  {arg1:10,type:1},
-				],
-				goods: [
-				  { "num": 1, xuan: false },
-				    { "num": 1, xuan: false },
-				    { "num": 1, xuan: false },
-				],
-				// goods: [],
-				spimg: [],
-				goods_sele: [
-				 { "num": 1, xuan: false },
-				  { "num": 1, xuan: false },
-				   { "num": 1, xuan: false },
-				],
-				// goods_sele: [],
-				xuan: false,
-				all: false,
-				sum: '0.00',
+				yhlist_idx:0,
+				
 				form_type:''
 			}
+		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin',
+				'order_ls_data'
+			])
 		},
 		onLoad: function (option) {
 		  var that = this
 		  if (option.type) {
 		    that.form_type= option.type
+				that.yhlist_idx=option.idx
 		  }
 		},
 		methods: {
@@ -109,24 +99,28 @@
 			  }
 			  console.log(e.currentTarget.dataset.idx)
 			  var idx = e.currentTarget.dataset.idx
-			  var pages = getCurrentPages();   //当前页面
-			  var prevPage = pages[pages.length - 2];   //上一页面
-			  prevPage.setData({
-			    //直接给上一个页面赋值
-					yhmsg: that.data_list[idx]
-				});	
+				that.$set(that.order_ls_data[yhlist_idx],'yh_idx',idx)
+			 //  var pages = getCurrentPages();   //当前页面
+			 //  var prevPage = pages[pages.length - 2];   //上一页面
+			 //  prevPage.setData({
+			 //    //直接给上一个页面赋值
+				// 	yhmsg: that.data_list[idx]
+				// });	
 			  wx.navigateBack({
 			    //返回
 			    delta: 1
 			  })
+				
 			},
 			nouse(){
-			  var pages = getCurrentPages();   //当前页面
-			  var prevPage = pages[pages.length - 2];   //上一页面
-			  prevPage.setData({
-			    //直接给上一个页面赋值
-			    yhmsg:'',
-			  });
+				var that =this
+				that.$set(that.order_ls_data[yhlist_idx],'yh_idx',-1)
+			  // var pages = getCurrentPages();   //当前页面
+			  // var prevPage = pages[pages.length - 2];   //上一页面
+			  // prevPage.setData({
+			  //   //直接给上一个页面赋值
+			  //   yhmsg:'',
+			  // });
 			
 			  wx.navigateBack({
 			    //返回

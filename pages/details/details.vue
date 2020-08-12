@@ -144,11 +144,11 @@
 		  <!-- 店铺 -->
 		  <view class="dp_box" v-if="goodsData.merchant">
 		    <view class="dp_b1">
-		      <view class="dp_logo">
+		      <view class="dp_logo" :data-url="'/pages_goods/dp_index/dp_index?id='+goodsData.merchant.group_code">
 		        <image :src="filter.imgIP(goodsData.merchant.head_portrait)" mode="aspectFill"></image>
 		      </view>
 		      <view class="dp_msg">
-		        <view class="dp_name oh2">{{goodsData.merchant.store_name}}</view>
+		        <view class="dp_name oh2" :data-url="'/pages_goods/dp_index/dp_index?id='+goodsData.merchant.group_code">{{goodsData.merchant.store_name}}</view>
 		        <view class="dp_lv">
 		          <image v-for="(item,idx) in goodsData.merchant.rank" :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
 		        </view>
@@ -163,7 +163,7 @@
 		    <view class="dp_cz">
 		      <view v-if="goodsData.merchant.isAttention==1" @tap.stop="guanzhuFuc(goodsData.merchant.group_code,'affirm')">+ 关注店铺</view>
 		      <view v-if="goodsData.merchant.isAttention==2" @tap.stop="guanzhuFuc(goodsData.merchant.group_code,'cancel')">已关注</view>
-		      <view @tap="jump" :data-url="'/pages/dp_index/dp_index?id='+goodsData.merchant.group_code">进店逛逛</view>
+		      <view @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+goodsData.merchant.group_code">进店逛逛</view>
 		    </view>
 		  </view>
 		  <!-- 回头客 -->
@@ -340,9 +340,9 @@
 		      <text style="color: #f00;">已收藏</text>
 		    </view>
 		    <view class="sg"></view>
-		    <view class="kf_btn">
+		    <view class="kf_btn" @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+goodsData.merchant.group_code">
 		      <text class="iconfont iconstore"></text>
-		      <text  @tap="jump" data-url="/pages/dp_index/dp_index">店铺</text>
+		      <text  data-url="/pages/dp_index/dp_index">店铺</text>
 		    </view>
 		    <view v-if="goodsData.activity_id==0" class="buy_btn"  @tap="sheetshow_fuc">加入购物车</view>
 		    <view class="buy_btn buy_btn1"  @tap="sheetshow_fuc">立即购买</view>
@@ -1178,72 +1178,6 @@
 			  this.cnum= e.detail
 				
 			},
-			
-			jump(e) {
-				var that =this
-				if(that.btn_kg==1){
-					return
-				}else{
-					that.btn_kg=1
-					setTimeout(function(){
-						that.btn_kg=0
-					},2000)
-				}
-			  console.log(e.currentTarget.dataset.type)
-			  service.jump(e)
-			},
-			onClose() {
-			    this.sheetshow= false
-			    this.sheetshow1= false
-					this.$refs.popup.close()
-					this.$refs.popup_goods.close()
-			},
-			sheetshow_fuc() {
-			    this.sheetshow= true
-			    this.btnkg= 0
-					this.$refs.popup_goods.open()
-			
-			},
-			sheetshow1_fuc() {
-			  this.sheetshow1=true
-			   this.$refs.popup.open()
-			  this.btnkg= 0
-			
-			},
-			gb_yhtk(){
-				this.$refs.popup_yh.close()
-			},
-			tkchange0(e){
-				console.log(e)
-				this.sheetshow=e.show
-			},
-			tkchange(e){
-				console.log(e)
-				this.sheetshow=e.show
-			},
-			tkchange1(e){
-				console.log(e)
-				this.sheetshow1=e.show
-			},
-			swiper_change(e){
-			  // console.log(e.detail )
-			  var num = e.detail.current+1
-			  this.cur_swiper=num
-			},
-			
-			txtype_fuc(id) {
-			  if(this.dyr_type== id){
-					this.dyr_type= 0
-				}else{
-					this.dyr_type= id
-				}
-				console.log(this.dyr_type)
-			},
-			xz_dyr(){
-			  console.log(this.dyr_type)
-			  this.sheetshow1= false
-				this.$refs.popup.close()
-			},
 			//加入购物车
 			addwgc() {
 			  // if (!wx.getStorageSync('userWxmsg')) {
@@ -1320,35 +1254,108 @@
 			  
 			},
 			nowbuy() {
-			  // if (!wx.getStorageSync('userWxmsg')) {
-			  //   wx.navigateTo({
-			  //     url: '/pages/login/login',
-			  //   })
-			  //   return
-			  // }
-			  // console.log('buy')
-			  //http://water5100.800123456.top/WebService.asmx/order
 			  let that = this
-				
-			  // let goods = this.data.goods
-			  // let newimg = this.data.newimg
-			  // let newprice = this.data.newprice
-			  // //let goodsname=this.data.goodsd.goods_sku_name
-			  // let goods_pic = newimg ? newimg : goods.goods_pic
-			  // let goods_name = goods.goods_name
-			  // let goods_id = goods.id
-			  // let goods_real_price = newprice ? newprice : goods.goods_real_price
-			  // let ggshow = that.data.ggshow
-			  // let ggjson = that.data.ggjson
-			  // let goodsnum = this.data.cnum
-			  // let sku_id = that.data.sku_id
-			  // let goodsladder=this.data.goodsd.is_ladder_pricing
-			  // let goodsxq=this.data.goodsd
-			  // console.log(goodsxq)
+			  if(!that.v_id||that.guige_select.length!=that.guige_arr.length){
+			  	uni.showToast({
+			  		icon:'none',
+			  		title:'请选择规格'
+			  	})
+			  	return
+			  }
+			  for(var i;i<that.guige_arr.length;i++){
+			  	if(that.guige_select[i]=='false'){
+			  		uni.showToast({
+			  			icon:'none',
+			  			title:'请选择'+that.guige_arr[i].name
+			  		})
+			  		return
+			  	}
+			  }
+			  if(that.cnum==0){
+			  	uni.showToast({
+			  		icon:'none',
+			  		title:'请添加购买数量'
+			  	})
+			  	return
+			  }
+			  console.log(that.cnum)
+			  			 
+			  console.log('addwgc')
+			  if (that.btnkg == 1) {
+			    return
+			  } else {
+			    that.btnkg= 1
+			  }
 				that.onClose()
 			  uni.navigateTo({
-			    url: '/pages/Order/Order'
+			    url: '/pages/Order/Order?type=1&v_id='+that.v_id+'&number='+that.cnum+'&advocacy_user_id='+that.dyr_type
 			  })
+			},
+			
+			jump(e) {
+				var that =this
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+					setTimeout(function(){
+						that.btn_kg=0
+					},2000)
+				}
+			  console.log(e.currentTarget.dataset.type)
+			  service.jump(e)
+			},
+			onClose() {
+			    this.sheetshow= false
+			    this.sheetshow1= false
+					this.$refs.popup.close()
+					this.$refs.popup_goods.close()
+			},
+			sheetshow_fuc() {
+			    this.sheetshow= true
+			    this.btnkg= 0
+					this.$refs.popup_goods.open()
+			
+			},
+			sheetshow1_fuc() {
+			  this.sheetshow1=true
+			   this.$refs.popup.open()
+			  this.btnkg= 0
+			
+			},
+			gb_yhtk(){
+				this.$refs.popup_yh.close()
+			},
+			tkchange0(e){
+				console.log(e)
+				this.sheetshow=e.show
+			},
+			tkchange(e){
+				console.log(e)
+				this.sheetshow=e.show
+			},
+			tkchange1(e){
+				console.log(e)
+				this.sheetshow1=e.show
+			},
+			swiper_change(e){
+			  // console.log(e.detail )
+			  var num = e.detail.current+1
+			  this.cur_swiper=num
+			},
+			
+			txtype_fuc(id) {
+			  if(this.dyr_type== id){
+					this.dyr_type= 0
+				}else{
+					this.dyr_type= id
+				}
+				console.log(this.dyr_type)
+			},
+			xz_dyr(){
+			  console.log(this.dyr_type)
+			  this.sheetshow1= false
+				this.$refs.popup.close()
 			},
 			call(e){
 			  service.call(e)
