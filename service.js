@@ -1,5 +1,7 @@
+import Vue from 'vue'
 import store from './store/index.js'
-
+import tim from './commen/tim/tim.js'
+import event from 'commen/event.js'
 // 管理账号信息
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
@@ -222,6 +224,52 @@ const wxlogin=function (num){
 												store.commit('login', res.data.data)
 	                      uni.setStorageSync('token', res.data.data.userToken)
 	                      uni.setStorageSync('loginmsg', res.data.data)
+												
+												event.trigger({
+												    type:'test',
+												    page:'/pages/index/index',
+												    //obj和test是举的例子，随意啥都行，这个传过去在on中的args中都可以获取到
+												    obj:{
+												
+												    },
+												    test:{
+															'loginmsg': res.data.data
+												    },
+												    success:function(data){
+												        //data为on中返回的数据
+												    }
+												});
+												// im login
+												/*var userInfo=res.data.data
+												if (userInfo) {
+													let promise = tim.login({
+														userID: userInfo.identification_id,
+														userSig: userInfo.IMSign
+													});
+													promise.then((res) => {
+														console.log(res)
+														//登录成功后 更新登录状态
+														store.commit("toggleIsLogin", true);
+														//自己平台的用户基础信息
+														// uni.setStorageSync('userInfo', JSON.stringify(userInfo))
+														//tim 返回的用户信息
+														uni.setStorageSync('userTIMInfo', JSON.stringify(res.data))
+														console.log('userTIMInfo========>'+JSON.stringify(res.data))
+														// uni.reLaunch({
+														// 	url: '../tim/record'
+														// })
+													}).catch((err) => {
+														console.warn('login error:', err); // 登录失败的相关信息
+													});
+												} else {
+													uni.showToast({
+														icon: 'none',
+														title: '用户不存在',
+														duration: 1500
+													});
+												}*/
+												// im login
+												
 												
 												if(num==1){
 													uni.showToast({

@@ -2,10 +2,10 @@
 	<view>
 		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
 		<view class="container" v-if="htmlReset==0">
-			<view class="data_null" v-if="order_ls.length==0">
+			<view class="data_null" v-if="order_ls_data.length==0">
 						 <image  :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
 			</view>
-		  <view v-if="order_ls.length>0" class="goods" v-for="(item,idx) in order_ls[yhlist_idx]"
+		  <view v-if="order_ls_data.length>0" class="goods" v-for="(item,idx) in order_ls_data[yhlist_idx].coupon"
 				:data-tab="idx"
 				>
 		     
@@ -22,8 +22,10 @@
 						<image v-if="idx==1" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_07.png')"  mode="aspectFill"></image>
 						<image v-if="idx==2" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_10.png')"  mode="aspectFill"></image>
 						<view class="yhq_pri">
-							<view class="d1"><text>¥{{data_list[idx].arg1}}元</text> 代金券</view>
-							<view class="d2">2020.02.14-2020.02.18</view>
+							<view class="d1"  v-if="item.coupon_setting_type==1"><text>¥{{item.c_money}}元</text> {{item.coupon_setting_type_value}}</view>
+							<view class="d1"  v-if="item.coupon_setting_type==2"><text>¥{{item.discount_ratio}}折</text> {{item.coupon_setting_type_value}}</view>
+							<view class="d1"  v-if="item.coupon_setting_type==3"><text>全额抵扣</text> {{item.coupon_setting_type_value}}</view>
+							<view class="d2">{{filter.getDate_ymd(item.use_start_time,'.')}}-{{filter.getDate_ymd(item.use_end_time,'.')}}</view>
 						</view>
 						
 					</view>
@@ -99,13 +101,14 @@
 			  }
 			  console.log(e.currentTarget.dataset.idx)
 			  var idx = e.currentTarget.dataset.idx
-				that.$set(that.order_ls_data[yhlist_idx],'yh_idx',idx)
-			 //  var pages = getCurrentPages();   //当前页面
-			 //  var prevPage = pages[pages.length - 2];   //上一页面
-			 //  prevPage.setData({
-			 //    //直接给上一个页面赋值
-				// 	yhmsg: that.data_list[idx]
-				// });	
+				// that.$set(that.order_ls_data[that.yhlist_idx],'yh_idx',idx)
+			  var pages = getCurrentPages();   //当前页面
+			  var prevPage = pages[pages.length - 2];   //上一页面
+			  prevPage.setData({
+			    //直接给上一个页面赋值
+					yhlist_idx: that.yhlist_idx,
+					yh_idx: idx,
+				});	
 			  wx.navigateBack({
 			    //返回
 			    delta: 1
@@ -114,13 +117,14 @@
 			},
 			nouse(){
 				var that =this
-				that.$set(that.order_ls_data[yhlist_idx],'yh_idx',-1)
-			  // var pages = getCurrentPages();   //当前页面
-			  // var prevPage = pages[pages.length - 2];   //上一页面
-			  // prevPage.setData({
-			  //   //直接给上一个页面赋值
-			  //   yhmsg:'',
-			  // });
+				// that.$set(that.order_ls_data[that.yhlist_idx],'yh_idx',-1)
+			  var pages = getCurrentPages();   //当前页面
+			  var prevPage = pages[pages.length - 2];   //上一页面
+			  prevPage.setData({
+			    //直接给上一个页面赋值
+			    yhlist_idx:  that.yhlist_idx,
+			    yh_idx: -1,
+			  });
 			
 			  wx.navigateBack({
 			    //返回

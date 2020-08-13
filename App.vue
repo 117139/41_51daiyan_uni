@@ -104,6 +104,7 @@
 														        //data为on中返回的数据
 														    }
 														});
+														
 			                    } else {
 			                      uni.removeStorageSync('userInfo')
 			                      uni.removeStorageSync('token')

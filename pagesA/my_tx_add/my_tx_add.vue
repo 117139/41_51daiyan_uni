@@ -37,10 +37,23 @@
 				crad_id: '',
 			}
 		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin',
+				'order_ls_data'
+			])
+		},
+		onLoad(options) {
+			if(options.id){
+				this.id=options.id
+			}
+		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
-		onPullDownRefresh: function () {
+		onPullDownRefresh() {
 		  wx.stopPullDownRefresh();
 		},
 		methods: {
@@ -65,36 +78,82 @@
 			  this.crad_id= e.detail.value
 			},
 			save_val() {
-			  if (!this.yname) {
+				var that =this
+			  if (!that.yname) {
 			    wx.showToast({
 			      icon: 'none',
 			      title: '请输入开户银行',
 			    })
 			    return
 			  }
-			  if (!this.xname) {
+			  if (!that.xname) {
 			    wx.showToast({
 			      icon: 'none',
 			      title: '请输入持卡人姓名',
 			    })
 			    return
 			  }
-			  if (!this.crad_id) {
+			  if (!that.crad_id) {
 			    wx.showToast({
 			      icon: 'none',
 			      title: '请输入卡号',
 			    })
 			    return
 			  }
-			  wx.showToast({
-			    title: '保存',
-			  })
-			  setTimeout(function () {
-			    wx.navigateBack()
-			  }, 1000)
-			  console.log(this.yname)
-			  console.log(this.xname)
-			  console.log(this.crad_id)
+			  // wx.showToast({
+			  //   title: '保存',
+			  // })
+			  // setTimeout(function () {
+			  //   wx.navigateBack()
+			  // }, 1000)
+			  console.log(that.yname)
+			  console.log(that.xname)
+			  console.log(that.crad_id)
+				var jkurl = '/bankCard/add'
+				var datas = {
+					token: that.loginMsg.userToken,
+					cardholder:that.xname,
+					opening_bank:that.yname,
+					card:that.crad_id,
+				}
+				if(that.id){
+					jkurl = '/bankCard/update'
+					datas = {
+						id:that.id,
+						token: that.loginMsg.userToken,
+						cardholder:that.xname,
+						opening_bank:that.yname,
+						card:that.crad_id,
+					}
+				}
+				// 单个请求
+				service.P_post(jkurl, datas).then(res => {
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+					
+						uni.showToast({
+							icon:'none',
+							title:'操作成功'
+						})
+						setTimeout(function () {
+						  wx.navigateBack()
+						}, 1000)
+					}
+				}).catch(e => {
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
 			}
 		}
 	}

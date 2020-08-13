@@ -117,16 +117,16 @@
 				<view class="quan_msg">
 					<view class="oh4  quan_msg_text">{{item.content}}</view>
 					<view v-if="item.img.length==1" class="quan_msg_img">
-						<image v-if="item.type==1" class="one one_one" :src="filter.imgIP(item.img[0])" mode="aspectFill" :data-src="filter.imgIP(item.img[0])"
+						<image v-if="item.type==1" class="one one_one" :lazy-load='true' :src="filter.imgIP(item.img[0])" mode="aspectFill" :data-src="filter.imgIP(item.img[0])"
 						 @tap.stop="pveimg"></image>
-						<image v-if="item.type==2" class="one one_one" :src="filter.imgIP_video(item.img[0])" mode="aspectFill" :data-src="filter.imgIP_video(item.img[0])"
+						<image v-if="item.type==2" class="one one_one" :lazy-load='true' :src="filter.imgIP_video(item.img[0])" mode="aspectFill" :data-src="filter.imgIP_video(item.img[0])"
 						 @tap.stop="jump" data-url="/pages/xvideo/xvideo"></image>
 					</view>
 					<view v-else class="quan_msg_img">
 						<image v-if="item.type==1" v-for="(item1,idx1) in item.img"
-						 :src="filter.imgIP(item1)" mode="aspectFill" :data-src="filter.imgIP(item1)" :data-array="filter.getgimgarrIP(item.img)"
+						 :src="filter.imgIP(item1)" mode="aspectFill" :lazy-load='true' :data-src="filter.imgIP(item1)" :data-array="filter.getgimgarrIP(item.img)"
 						 @tap.stop="pveimg"></image>
-						<image v-if="item.type==2" v-for="(item1,idx1) in item.img" :src="filter.imgIP_video(item1)" mode="aspectFill" 
+						<image v-if="item.type==2" v-for="(item1,idx1) in item.img" :lazy-load='true' :src="filter.imgIP_video(item1)" mode="aspectFill" 
 						 @tap.stop="jump" data-url="/pages/xvideo/xvideo"></image>
 						<!-- <image :src="filter.imgIP('/static_s/51daiyan/images/goods1.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods1.png')"
 						 @tap.stop="pveimg"></image>
@@ -135,7 +135,7 @@
 					</view>
 				</view>
 				<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+item1.g_id">
-					<image class="quan_goods_img" :src="filter.imgIP(item1.g_img[0])" mode="aspectFill"></image>
+					<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill"></image>
 					<view class="quan_goods_msg">
 						<view class="quan_goods_name oh1">{{item1.g_title}}</view>
 						<view class="quan_goods_pri">
@@ -204,6 +204,7 @@
 				console.log('testindex:' + args);
 				console.log(args);
 				that.getdata()
+				that.Imlogin()
 				//返回数据，在trigger中success方法可以收到
 				return {
 
@@ -237,6 +238,37 @@
 			])
 		},
 		methods: {
+			Imlogin(){
+				var that =this
+				var userInfo=this.loginMsg
+				if (userInfo) {
+					let promise = that.tim.login({
+						userID: userInfo.identification_id,
+						userSig: userInfo.IMSign
+					});
+					promise.then((res) => {
+						console.log(res)
+						//登录成功后 更新登录状态
+						that.$store.commit("toggleIsLogin", true);
+						//自己平台的用户基础信息
+						// uni.setStorageSync('userInfo', JSON.stringify(userInfo))
+						//tim 返回的用户信息
+						uni.setStorageSync('userTIMInfo', JSON.stringify(res.data))
+						console.log('userTIMInfo========>'+JSON.stringify(res.data))
+						// uni.reLaunch({
+						// 	url: '../tim/record'
+						// })
+					}).catch((err) => {
+						console.warn('login error:', err); // 登录失败的相关信息
+					});
+				} else {
+					uni.showToast({
+						icon: 'none',
+						title: '用户不存在',
+						duration: 1500
+					});
+				}
+			},
 			guanzhuFuc(id,key){
 				var that =this
 				var data={

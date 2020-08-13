@@ -6,7 +6,7 @@
 			
 				<view class="goods_list">
 					<view v-for="(item,idx) in LaterBuy_list" class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
-						<image class="goods_img" :src="filter.imgIP(item.img[0])"  mode="aspectFill"></image>
+						<image class="goods_img" :lazy-load='true' :src="filter.imgIP(item.img[0])"  mode="aspectFill"></image>
 						<view class="goods_msg">
 							<view class="oh2">{{item.title}}</view>
 							<view class="goods_pri">

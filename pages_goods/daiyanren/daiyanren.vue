@@ -24,7 +24,7 @@
 				 </view>
 				 <view v-else class="li_box" v-for="(item,idx) in data_list">
 						<view class="user_tx"  @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
-							<image class="user_tx" :src="filter.imgIP(item.head_portrait)"></image>
+							<image class="user_tx" :lazy-load='true' :src="filter.imgIP(item.head_portrait)"></image>
 							<image v-if="item.identity_id==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 							<image v-if="item.identity_id==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
 						

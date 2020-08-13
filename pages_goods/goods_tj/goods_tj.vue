@@ -8,7 +8,7 @@
 				<view class="goods_box1">
 					<view class="goods_li1" v-for="(item,idx) in data_tj" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
 						<view class="goods_img">
-							<image class="goods_img" :src="filter.imgIP(item.g_pic[0])"></image>
+							<image class="goods_img" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"></image>
 							<view class="goods_dy_num"><text class="iconfont icondianzan2"></text>{{item.advocacy_mannumber}}代言</view>
 						</view>
 						<view class="goods_name1 oh1">{{item.g_title}}</view>
@@ -41,7 +41,7 @@
 					<view class="goods_li2" v-for="(item,idx) in data_list"  @tap="jump" :data-url="'/pages/details/details?id='+item.id">
 						<view class="goods_li2_d1">
 							<view class="goods_img2">
-								<image class="goods_img2" :src="filter.imgIP(item.g_pic[0])"></image>
+								<image class="goods_img2" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"></image>
 							</view>
 							<view class="goods_msg">
 								<view class="goods_name2 oh1 fz30">{{item.g_title}}</view>

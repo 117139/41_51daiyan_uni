@@ -19,7 +19,7 @@
 				<view class="imgbox mb20">
 				  <view class="addimg1" v-for="(item,idx) in imgb" :data-idx="idx" @tap="imgdel">
 				    <!-- <image src="{{filter.imgIP(item)}}" data-src="{{filter.imgIP(item)}}" mode="aspectFill"></image> -->
-				    <image :src="item" :data-src="item" mode="aspectFill"></image>
+				    <image :src="item" :lazy-load='true' :data-src="item" mode="aspectFill"></image>
 				  </view>
 				
 				  <view v-if="imgb.length<9" class="addimg" @tap="scpic">

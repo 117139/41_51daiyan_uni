@@ -73,9 +73,9 @@
 						<view class="time_box">
 							<view class="dt_li">
 								<view class="dt_li_d1">
-									<image v-if="item.type==2" class="dt_li_d1_img"  mode="aspectFill" :src="filter.imgIP_video(item.img[0])" :data-src="filter.imgIP_video(item.img[0])"
+									<image v-if="item.type==2" class="dt_li_d1_img" :lazy-load='true' mode="aspectFill" :src="filter.imgIP_video(item.img[0])" :data-src="filter.imgIP_video(item.img[0])"
 									  @tap.stop="jump" :data-url="'/pages/my_video/my_video?uid='+uid+'&idx='+item.g_id"></image>
-									<image v-if="item.type!=2" class="dt_li_d1_img"  mode="aspectFill" :src="filter.imgIP(item.img[0])" :data-src="filter.imgIP(item.img[0])" :data-array="filter.getgimgarrIP(item.img)"
+									<image v-if="item.type!=2" class="dt_li_d1_img" :lazy-load='true' mode="aspectFill" :src="filter.imgIP(item.img[0])" :data-src="filter.imgIP(item.img[0])" :data-array="filter.getgimgarrIP(item.img)"
 									 @tap.stop="pveimg"></image>
 									<view class="d1_msg">
 										<view class="dt_text oh3">{{item.content}}</view>
@@ -87,7 +87,7 @@
 									</view>
 								</view>
 								<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+item1.g_id">
-									<image class="quan_goods_img" :src="filter.imgIP(item1.g_img[0])" mode="aspectFill" :data-src="filter.imgIP(item1.g_img[0])"
+									<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill" :data-src="filter.imgIP(item1.g_img[0])"
 									 ></image>
 									<view class="quan_goods_msg">
 										<view class="quan_goods_name oh1">{{item1.g_title}}</view>
@@ -110,7 +110,7 @@
 					<view class="sp_list">
 						<view class="sp_li sp_li_v" v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages/my_video/my_video?uid='+uid+'&idx='+item.g_id">
 							<view class="sp_li_img">
-								<image class="sp_li_img" :src="filter.imgIP_video(item.img[0])" mode="aspectFill"></image>
+								<image class="sp_li_img" :lazy-load='true' :src="filter.imgIP_video(item.img[0])" mode="aspectFill"></image>
 								<view class="sp_li_img_cz">
 									<image :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
 								</view>
@@ -129,7 +129,7 @@
 							<view class="my_li_xc" v-for="(item1,idx1) in data_list">
 								<!-- <image class="my_li_xc_img" :src="filter.imgIP(item1.img[0])" mode="aspectFill"
 								 :data-src="filter.imgIP(item1.img[0])" :data-array="filter.getgimgarrIP(item1.img)" @tap.stop="pveimg"></image> -->
-								<image class="my_li_xc_img" :src="filter.imgIP(item1.img[0])" mode="aspectFill"
+								<image class="my_li_xc_img" :lazy-load='true' :src="filter.imgIP(item1.img[0])" mode="aspectFill"
 								 :data-src="filter.imgIP(item1.img[0])" @tap.stop="pveimg"></image>
 								<!-- <view class="xc_gb"><text class="iconfont iconguanbi"></text></view> -->
 								<view class="like_num"><text class="iconfont iconhongxinicon"></text>{{item1.praise_number}}</view>
@@ -146,7 +146,7 @@
 					<view class="sp_list">
 						<view class="sp_li sp_li_g" v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 							<view class="sp_li_img">
-								<image class="sp_li_img" :src="filter.imgIP(item.g_img[0])" mode="aspectFill"></image>
+								<image class="sp_li_img" :lazy-load='true' :src="filter.imgIP(item.g_img[0])" mode="aspectFill"></image>
 							</view>
 							<view class="sp_li_msg">
 								<view class="sp_li_name oh2">{{item.g_title}}</view>

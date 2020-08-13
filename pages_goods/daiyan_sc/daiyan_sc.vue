@@ -41,11 +41,11 @@
 					<view class="hy_goods">
 						<view v-for="(item,idx) in datas.friendGoods" class="hy_goods_li"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 							<view class="hy_goods_img">
-								<image class="hy_goods_img" :src="filter.imgIP(item.g_img[0])"></image>
+								<image class="hy_goods_img" :lazy-load='true' :src="filter.imgIP(item.g_img[0])"></image>
 							</view>
 							<view class="goods_pri">
 								<view class="goods_tximg">
-									<image class="goods_tximg" :src="item.user_head_portrait"></image>
+									<image class="goods_tximg" :lazy-load='true' :src="item.user_head_portrait"></image>
 								</view>
 								<view class="goods_mon">￥688</view>
 							</view>
@@ -66,13 +66,13 @@
 						<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
 						<view class="b_li"  v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 							<view class="li_img">
-								<image class="li_img" :src="filter.imgIP(item.g_img[0])" mode="aspectFill"></image>
+								<image class="li_img" :lazy-load='true' :src="filter.imgIP(item.g_img[0])" mode="aspectFill"></image>
 							</view>
 							<view class="li_msg">
 								<view class="li_name oh1">{{item.g_title}}</view>
 								<view class="goods_pri">
 									<view class="goods_tximg" v-if="item.user_head_portrait">
-										<image class="goods_tximg" :src="item.user_head_portrait"></image>
+										<image class="goods_tximg" :lazy-load='true' :src="item.user_head_portrait"></image>
 									</view>
 									<view class="goods_mon flex_1">￥{{item.g_current_price}}</view>
 									<view class="sy_xl" style="font-size: 20upx;">销量：{{item.g_sale}}</view>

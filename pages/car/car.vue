@@ -25,7 +25,7 @@
 						</view>
 					</view>
 					<view class="goodsImg"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
-						<image class="goodsImg"  :src="filter.imgIP(item.g_pic[0])" mode="aspectFill"></image>
+						<image class="goodsImg" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])" mode="aspectFill"></image>
 					</view>
 					<view class="goodsinr">
 						<view class="goodsname fz30 c30 oh2"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">{{item.g_title}} <text v-for="(item1,dix) in item.attr">{{item1.value}}</text></view>
@@ -53,7 +53,7 @@
 				</view>
 				<view class="goods_list">
 					<view class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id" v-for="(item,index) in rand_data">
-						<image class="goods_img"  :src="filter.imgIP(item.g_pic[0])"  mode="aspectFill"></image>
+						<image class="goods_img" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"  mode="aspectFill"></image>
 						<view class="goods_msg">
 							<view class="oh1">{{item.g_title}}</view>
 							<view class="goods_pri">

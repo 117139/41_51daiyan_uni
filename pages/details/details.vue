@@ -1288,7 +1288,7 @@
 			  }
 				that.onClose()
 			  uni.navigateTo({
-			    url: '/pages/Order/Order?type=1&v_id='+that.v_id+'&number='+that.cnum+'&advocacy_user_id='+that.dyr_type
+			    url: '/pages/Order/Order?type=1&v_id='+that.v_id+'&number='+that.cnum+'&advocacy_user_id='+that.dyr_type+'&v_id='+that.v_id
 			  })
 			},
 			

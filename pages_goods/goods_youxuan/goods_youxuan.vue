@@ -26,7 +26,7 @@
 					<view class="goods_li2" v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
 						<view class="goods_li2_d1">
 							<view class="goods_img2">
-								<image class="goods_img2" :src="filter.imgIP(item.g_pic[0])"></image>
+								<image class="goods_img2" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"></image>
 							</view>
 							<view class="goods_msg">
 								<view class="goods_name2 ">

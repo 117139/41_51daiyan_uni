@@ -17,7 +17,7 @@
 		    <!-- </view> -->
 		  </view>
 		  <view class="orderbder">
-		    <image src="/static/images/orderborder.png"></image>
+		    <image :src="filter.imgIP('/static_s/51daiyan/images/orderborder.png')"></image>
 		  </view>
 		  <view class="goodsBox contbox">
 		    <view class="goods" v-for="(item,idx) in data_list" :data-tab="idx">
@@ -49,7 +49,7 @@
 					    <!-- <view>10元</view> -->
 					  </view>
 					  <view class="dis_flex aic">
-					    <view class="fz26 c9">{{item.coupon.length==0?'无可用':order_ls_data[idx].yhidx==-1? '不使用':item.coupon[order_ls_data[idx].yhidx].coupon_setting_type==1?'-￥'+item.coupon[order_ls_data[idx].yhidx].c_money:item.coupon[order_ls_data[idx].yhidx].discount_ratio+'折'}}</view>
+					    <view class="fz26 c9">{{item.coupon.length==0?'无可用':order_ls_data[idx].yhidx==-1? '不使用':getxj(idx,'yh')}}</view>
 					    <text class="iconfont iconnext3 fz30 c9"></text>
 					  </view>
 					</view>
@@ -90,7 +90,7 @@
 		      <view class="guige_l_name">支付方式</view>
 		    </view>
 		    <view class="fz26 c3 paytype">
-		      <image src="/static/images/wxpay.png"></image>
+		      <image :src="filter.imgIP('/static_s/51daiyan/images/wxpay.png')"></image>
 		      微信支付
 		    </view>
 		  </view>
@@ -134,7 +134,8 @@
 				type: 0, ///1 单品下单  2 购物车下单
 				sku_id: '', //新单价
 				sku_number: '', //数量
-				
+				v_id:'',
+				use_dou:0,
 				
 				g_data:'',    //1,2（type=2）购物车 c_id
 				data_list:[],
@@ -149,7 +150,8 @@
 				sum: 1000,
 				my_dou: 100,
 				my_dou_xuan: false,
-				zsum: 1000
+				zsum: 1000,
+				order_ls_data:'',
 			}
 		},
 		computed:{
@@ -157,7 +159,7 @@
 				'hasLogin',
 				'loginMsg',
 				'wxlogin',
-				'order_ls_data'
+				// 'order_ls_data'
 			]),
 			
 		},
@@ -168,6 +170,7 @@
 				that.sku_id=option.v_id
 				that.sku_number=option.number
 				that.advocacy_user_id=option.v_id
+				that.v_id=option.v_id
 			}else{
 				that.type=option.type
 				that.g_data=option.g_data
@@ -186,21 +189,20 @@
 		      this.addressBack=true 
 		
 		    console.log(this.address, '地址')
-		
+				
 		  }
-		  if (currPage.data.yhmsg) {
-		    console.log(currPage.data.yhmsg, '优惠')
-		
-		    // var zsum = this.data.sum - currPage.data.yhmsg.arg1 + Number(this.data.yunfei)
-		    // console.log(zsum)
-		    // this.setData({
-		    //   yhmsg: currPage.data.yhmsg,
-		    //   zsum: zsum
-		    // })
-		    this.yhmsg= currPage.data.yhmsg
-		    this.jisuan()
+		  if (currPage.data.yhlist_idx) {
+				var yhlist_idx=currPage.data.yhlist_idx
+				var yh_idx=currPage.data.yh_idx
+				// var  order_ls_data=JSON.parse(JSON.stringify(that.order_ls_data))
+				// order_ls_data[yhlist_idx].yh_idx=yh_idx
+		    
+		    that.$set(that.order_ls_data[yhlist_idx],'yhidx',yh_idx)
+				// that.order_ls(order_ls_data)
 		  }
-			that.jisuan()
+			setTimeout(function (){
+				that.jisuan()
+			},1000)
 		},
 		onReady() {
 		
@@ -214,7 +216,7 @@
 		methods: {
 			...mapMutations(['order_ls']),
 			
-			getxj(idx){
+			getxj(idx,type){
 				var that = this
 				if(that.data_list.length==0){
 					return 
@@ -225,13 +227,13 @@
 					yunfei=that.yunfei[idx].postage
 				}
 				var yh=0
-				if(that.data_list[idx].yhidx>-1){
-					var yhq_data=that.data_list[idx].coupon[that.data_list[idx].yhidx]
+				if(that.order_ls_data[idx].yhidx>-1){
+					var yhq_data=that.order_ls_data[idx].coupon[that.order_ls_data[idx].yhidx]
 					if(yhq_data.coupon_setting_type==1){
 						yh=yhq_data.c_money
 					}
-					if(yhq_data.coupon_setting_type==2||yhq_data.coupon_setting_type==3){
-						var  goods_list=that.data_list[idx].goods
+					if(yhq_data.coupon_setting_type==2){
+						var  goods_list=that.order_ls_data[idx].goods
 						for(var i in goods_list){
 							if(yhq_data.coupon_use_obj_id==goods_list[i].g_id){
 								var zk_pri=goods_list[i].price*yhq_data.discount_ratio/100
@@ -241,8 +243,20 @@
 						}
 						yh=zk_pri
 					}
+					if(yhq_data.coupon_setting_type==3){
+						var  goods_list=that.order_ls_data[idx].goods
+						for(var i in goods_list){
+							if(yhq_data.coupon_use_obj_id==goods_list[i].g_id){
+								var zk_pri=goods_list[i].price
+								// zk_pri=zk_pri
+							}
+						}
+						yh=zk_pri
+					}
 				}
-				
+				if(type=='yh'){
+					return '-￥'+yh+'元'
+				}
 				zj=zj-yh*1+yunfei*1
 				if(zj>0){
 					zj=zj*1
@@ -289,6 +303,7 @@
 					
 							that.data_list =datas
 							that.order_ls(datas)
+							that.order_ls_data=JSON.parse(JSON.stringify(datas))
 							var address={
 								"id":res.address.id,
 								"name": res.address.a_name,
@@ -380,9 +395,11 @@
 				 var my_dou_new =that.my_dou*1
 				 if (zsum >my_d) {
 					zsum = zsum - my_d
+					that.use_dou=my_d
 					my_dou_new = 0
 				 } else {
 					my_dou_new = my_d - zsum
+					that.use_dou=zsum
 					zsum = 0
 				 }
 					console.log('我的代言豆还有：' + my_dou_new + '个')
@@ -391,6 +408,7 @@
 				} else {
 					// var zsum = that.sum - yhnum
 					// that.zsum= zsum
+					that.use_dou=0
 				}
 				
 				that.zsum= zsum.toFixed(2)
@@ -437,7 +455,7 @@
 		
 			subbtn() {
 			
-			  console.log(app.IPurl1)
+			  
 			  let that = this
 			
 			  if (that.address == null || that.address.id == '' || that.address.id == undefined) {
@@ -447,113 +465,104 @@
 			    })
 			    return
 			  }
-			  if (that.paykg == false) {
-			    return
-			  } else {
-			    wx.showLoading({
-			      title: '订单提交中...'
-			    })
-			    that.paykg= false
+			
+			  let datas
+			  let jkurl='/makeOrder'
+				var coupon_list=[]
+				for(var i=0;i<that.order_ls_data.length;i++){
+					var c_item
+					if(that.order_ls_data[i].yhidx!=-1){
+						c_item={
+							manager_id:that.order_ls_data[i].group_code,
+							// coupon_list_id:that.order_ls_data[i].yhidx==-1? '':that.order_ls_data[i].coupon[that.order_ls_data[i].yhidx].id
+							coupon_list_id:that.order_ls_data[i].coupon[that.order_ls_data[i].yhidx].id
+						}
+						coupon_list.push(c_item)
+					}
+					
+					
+				}
+				if(coupon_list.length==0){
+					coupon_list=''
+				}else{
+					coupon_list=JSON.stringify(coupon_list)
+				}
+				
+			  if(that.type==1){
+			  	datas = {
+			  		token: that.loginMsg.userToken,
+			  		type:that.type,
+			  		v_id:that.sku_id,
+						address_id:that.address.id,
+						advocacy_bean:that.use_dou,
+						advocacy_user_id:that.v_id,
+			  		number:that.sku_number,
+						coupon_list:coupon_list
+			  	}
 			  }
-			  setTimeout(function() {
-			    uni.hideLoading()
-			    uni.navigateTo({
-			      url: '/pages/OrderList/OrderList',
-			    })
-			  }, 1000)
-			  return
-			  // wx.hideLoading()
-			  // that.setData({
-			  // 	paykg:true
-			  // })
-			  // wx.showToast({
-			  // 	title: '提交失败',
-			  // 	icon: 'none',
-			  // 	duration: 1000
-			  // })
-			  // return
-			  let data
-			  let jkurl
-			  if (that.data.type == 2) {
-			    data = {
-			      token: wx.getStorageSync('token'),
-			      shopping_ids: that.idg,
-			      user_address_id: that.address.id,
-			      user_coupon_id: that.yhlist[that.yhidx] ? that.yhlist[that.yhidx].id : -1
-			    }
-			    jkurl = '/api/orderForShopping'
-			  } else {
-			
-			    data = {
-			      token: wx.getStorageSync('token'),
-			      goods_id: that.xzarr[0].goods_id,
-			      goods_attr: that.xzarr[0].attr_setjson,
-			      goods_num: that.xzarr[0].num,
-			      user_address_id: that.address.id,
-			      sku_id: that.sku_id,
-			      user_coupon_id: that.yhlist[that.yhidx] ? that.yhlist[that.yhidx].id : -1
-			    }
-			    jkurl = '/api/orderForGoods'
+			  if(that.type==2){
+			  	datas = {
+			  		token: that.loginMsg.userToken,
+			  		type:that.type,
+						address_id:that.address.id,
+						advocacy_bean:that.use_dou,
+			  		g_data:that.g_data,
+						coupon_list:coupon_list
+			  	}
 			  }
-			  wx.request({
-			    url: app.IPurl + jkurl,
-			    data: data,
-			    header: {
-			      'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    dataType: 'json',
-			    method: 'POST',
-			    success(res) {
-			
-			      wx.hideLoading()
-			      console.log(res)
-			
-			      if (res.data.code == 1) {
-			
-			        // setTimeout(function(){
-			        if (res.data.data.order_code) {
-			          console.log('order_code' + res.data.data.order_code)
-			          app.Pay(res.data.data.order_code)
-			        }
-			        // },1000)
-			        // let resultd=res.data
-			        // console.log(res.data)
-			        // if(res.data.data.order_code){
-			        // 	console.log('order_code'+res.data.data.order_code)
-			        // 	// app.Pay(res.data.order_info_id,'info')
-			        // }
-			      } else {
-			        wx.showToast({
-			          title: res.data.msg,
-			          icon: 'none',
-			          duration: 1000
-			        })
-			        that.paykg= true
-			      }
-			    },
-			    fail(res) {
-			
-			
-			      wx.hideLoading()
-			      that.paykg= true
-			      wx.showToast({
-			        title: '提交失败',
-			        icon: 'none',
-			        duration: 1000
-			      })
-			    }
+				// return
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+				}
+			  // 单个请求
+			  service.P_post(jkurl, datas).then(res => {
+			  	
+			  	console.log(res)
+			  	if (res.code == 1) {
+			  		var datas = res.data
+			  		// console.log(typeof datas)
+			  			
+			  		if (typeof datas == 'string') {
+			  			datas = JSON.parse(datas)
+			  		}
+			  	
+			  			uni.showLoading({
+			  				title:'正在拉起支付'
+			  			})
+							setTimeout(()=>{
+								uni.hideLoading()
+								uni.showToast({
+									icon:'none',
+									title:'拉起操作'
+								})
+								that.btnkg=0
+							},1000)
+			  	}
+			  }).catch(e => {
+			  	that.btnkg=0
+			  	console.log(e)
+			  	uni.showToast({
+			  		icon: 'none',
+			  		title: '获取数据失败'
+			  	})
 			  })
-			
-			
-			  // wx.navigateTo({
-			  // 	url:'../OrderDetails/OrderDetails'
-			  // })
 			
 			},
 			goaddress() {
 			  service.goaddress()
 			},
 			jump(e) {
+				var that =this
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+					setTimeout(function (){
+						that.btnkg=0
+					},1000)
+				}
 			  service.jump(e)
 			},
 			onRetry() {

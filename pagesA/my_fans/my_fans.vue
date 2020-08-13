@@ -221,7 +221,6 @@
 										for(var i=0; i<that.data_list.length;i++){
 											console.log(i)
 											if(that.data_list[i].u_id==id){
-												console.log(that.data_list[i].user_id,id)
 												// that.data_list[i].is_friend=1
 												// that.$set(that.data_list,i,that.data_list[i])
 												that.$set(that.data_list[i],'is_friend',1)
