@@ -3,6 +3,8 @@
 		<view class="container">
 		  <!-- goods_li -->
 				<view class="goods_list2">
+					
+					<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
 					<view class="goods_li2" v-for="(item,idx) in data_list">
 						<view class="goods_li2_d1"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 							<view class="goods_img2">

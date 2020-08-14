@@ -74,7 +74,8 @@
         "daiyan_quan_xq/daiyan_quan_xq",
         "activity/activity",
         "activity_db/activity_db",
-        "friends_daiyan/friends_daiyan"
+        "friends_daiyan/friends_daiyan",
+        "d_video/d_video"
       ]
     }
   ],
@@ -153,6 +154,5 @@
   "usingComponents": {
     "van-stepper": "./wxcomponents/vant/stepper/index",
     "van-popup": "./wxcomponents/vant/popup/index"
-  },
-  "sitemapLocation": "sitemap77.json"
+  }
 }

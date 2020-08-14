@@ -22,7 +22,7 @@ var imgIP_video=function(img){
 	var newimg =imgip+img
 	var arr = []
 	arr = newimg.split(".");
-	console.log(arr[arr.length-1])
+	// console.log(arr[arr.length-1])
 	if(arr[arr.length-1]=='mp4'){
 		arr[arr.length-1]='jpg'
 	}

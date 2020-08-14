@@ -17,11 +17,11 @@
 						默认地址
 					</view>
 					<view class="setcz c3">
-						<view class="setting2" :data-id="idx" @tap="addressEdit">
+						<view  v-if="form_type!=1" class="setting2" :data-id="idx" @tap="addressEdit">
 							<!-- <text class="iconfont icondingdan fz26 mr5"></text> -->
 		          编辑
 						</view>
-						<view class="setting3" :data-id="item.id" @tap="addressDel">
+						<view  v-if="form_type!=1" class="setting3" :data-id="item.id" @tap="addressDel">
 							<!-- <text class="iconfont iconshanchu fz26 mr5"></text> -->
 		          删除
 						</view>

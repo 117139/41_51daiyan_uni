@@ -26,7 +26,7 @@
 			<text class="iconfont iconyiping"></text>
 			<view>您还有{{datas.countAdvocacy}}件商品未代言，快来代言吧～</view>
 		</view>
-		<view class="index_box1 index_box4" @tap="jump" data-url="/pages_goods/star_list/star_list?type=0">
+		<view class="index_box1 index_box4" @tap="jump" data-url="/pages_goods/star_list/star_list?type=1">
 			<view>明星达人代言人推荐：</view>
 			<text>各种玩法尽在明星达人代言秀</text>
 		</view>
@@ -117,17 +117,17 @@
 				<view class="quan_msg">
 					<view class="oh4  quan_msg_text">{{item.content}}</view>
 					<view v-if="item.img.length==1" class="quan_msg_img">
-						<image v-if="item.type==1" class="one one_one" :lazy-load='true' :src="filter.imgIP(item.img[0])" mode="aspectFill" :data-src="filter.imgIP(item.img[0])"
+						<image v-if="item.type==1||item.type==3" class="one one_one" :lazy-load='true' :src="filter.imgIP(item.img[0])" mode="aspectFill" :data-src="filter.imgIP(item.img[0])"
 						 @tap.stop="pveimg"></image>
 						<image v-if="item.type==2" class="one one_one" :lazy-load='true' :src="filter.imgIP_video(item.img[0])" mode="aspectFill" :data-src="filter.imgIP_video(item.img[0])"
-						 @tap.stop="jump" data-url="/pages/xvideo/xvideo"></image>
+						 @tap.stop="jump" data-type="sp" :data-spurl="item.img" data-url="/pages_goods/d_video/d_video?idx=0"></image>
 					</view>
 					<view v-else class="quan_msg_img">
 						<image v-if="item.type==1" v-for="(item1,idx1) in item.img"
 						 :src="filter.imgIP(item1)" mode="aspectFill" :lazy-load='true' :data-src="filter.imgIP(item1)" :data-array="filter.getgimgarrIP(item.img)"
 						 @tap.stop="pveimg"></image>
 						<image v-if="item.type==2" v-for="(item1,idx1) in item.img" :lazy-load='true' :src="filter.imgIP_video(item1)" mode="aspectFill" 
-						 @tap.stop="jump" data-url="/pages/xvideo/xvideo"></image>
+						 @tap.stop="jump" data-type="sp" :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx='+idx1"></image>
 						<!-- <image :src="filter.imgIP('/static_s/51daiyan/images/goods1.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods1.png')"
 						 @tap.stop="pveimg"></image>
 						<image :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')"
@@ -161,7 +161,12 @@
 	        </view> -->
 					<view class="cz_li">跟随购买：{{item.follow_buy_number}}</view>
 					<view class="cz_li" @tap.stop="jump" data-url="/pages_goods/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>{{item.comment_number}}</view>
-					<view class="cz_li" @tap.stop="zan" :data-id="idx"><text class="iconfont iconzan"></text>{{item.praise_number}}</view>
+					<view class="cz_li" v-if="item.is_praise==2" @tap="guanzhuFuc_dz(4,item.id,'affirm')" :data-id="idx">
+						<text class="iconfont iconzan"></text>{{item.praise_number}}
+					</view>
+					<view class="cz_li" v-if="item.is_praise==1" @tap="guanzhuFuc_dz(4,item.id,'cancel')" :data-id="idx">
+						<text class="iconfont icondianzan2" style="color: #f00;"></text>{{item.praise_number}}
+					</view>
 				</view>
 			</view>
 		</view>
@@ -268,6 +273,64 @@
 						duration: 1500
 					});
 				}
+			},
+			guanzhuFuc_dz(type, id, key) {
+				var that = this
+				var data = {
+					token: that.loginMsg.userToken,
+					type: type,
+					id: id,
+					operate: key,
+				}
+			
+				if (that.btn_kg == 1) {
+					return
+				} else {
+					that.btn_kg = 1
+				}
+				service.P_post('/attention/operation', data).then(res => {
+					console.log(res)
+					that.btn_kg = 0
+					if (res.code == -1) {
+						uni.navigateTo({
+							url: '/pages/login/login'
+						})
+						return
+					} else if (res.code == 0 && res.msg == '请先登录账号~') {
+						uni.navigateTo({
+							url: '/pages/login/login'
+						})
+						return
+					} else if (res.code == 1) {
+						// that.onRetry()
+						for (var i = 0; i < that.data_list.length; i++) {
+							if (that.data_list[i].id == id) {
+								if (key == 'affirm') {
+									that.$set(that.data_list[i], 'is_praise', 1)
+									that.$set(that.data_list[i], 'praise_number', that.data_list[i].praise_number-1+2)
+								} else {
+									that.$set(that.data_list[i], 'is_praise', 2)
+									that.$set(that.data_list[i], 'praise_number', that.data_list[i].praise_number-1)
+								}
+			
+							}
+						}
+						uni.showToast({
+							icon: 'none',
+							title: '操作成功'
+						})
+					} else {
+			
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
+				})
+			
 			},
 			guanzhuFuc(id,key){
 				var that =this
@@ -451,6 +514,7 @@
 				console.log(e.currentTarget.dataset.id)
 			},
 			jump(e) {
+				
 				service.jump(e)
 			},
 			pveimg(e) {

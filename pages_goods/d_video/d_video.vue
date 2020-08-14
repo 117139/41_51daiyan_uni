@@ -1,61 +1,26 @@
 <template>
 	<view>
 			<swiper :vertical="true" :circular="true" :current="current" :skip-hidden-item-layout="true" @change="changeCurrent" @animationfinish="changeItem">
-			    <swiper-item :item-id="oneItemParam.a_id">
-			        <video title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(oneItemParam.img[0])"  :loop="true" :poster="filter.imgIP_video(oneItemParam.img[0])" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			    <swiper-item :item-id="oneItemParam">
+			        <video title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(oneItemParam)"  :loop="true" :poster="filter.imgIP_video(oneItemParam)" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			    </swiper-item>
 			
-			    <swiper-item :item-id="twoItemParam.a_id">
-			        <video title="2222222" id="myVideo1"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(twoItemParam.img[0])"  :loop="true" :poster="filter.imgIP_video(twoItemParam.img[0])" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			    <swiper-item :item-id="twoItemParam">
+			        <video title="2222222" id="myVideo1"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(twoItemParam)"  :loop="true" :poster="filter.imgIP_video(twoItemParam)" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			    </swiper-item>
 			
-			    <swiper-item :item-id="threeItemParam.a_id">
-			        <video title="3333333" id="myVideo2"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(threeItemParam.img[0])" :loop="true" :poster="filter.imgIP_video(threeItemParam.img[0])" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			    <swiper-item :item-id="threeItemParam">
+			        <video title="3333333" id="myVideo2"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(threeItemParam)" :loop="true" :poster="filter.imgIP_video(threeItemParam)" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			    </swiper-item>
 			
 			</swiper>
 			<cover-view class="back_btn" :style="style" @tap="back()">
 				<cover-image :src="filter.imgIP('/static_s/51daiyan/images/back.png')" class="head"></cover-image>
 			</cover-view>
-			<cover-image :src="filter.imgIP('/static_s/51daiyan/images/bofang.png')" class="play" v-if="playMark==1" @tap="tabVideo"></cover-image>
-			<!-- 用户 -->
-			<!-- <cover-view :hidden="isFull" class="user flex flex-alignItems">
-			    <cover-view class="user-rf">
-			        <cover-view class="flex flex-alignItems name">
-			            <cover-view class="name-child hide1">寻味</cover-view>
-			            <cover-image :src="filter.imgIP('/static_s/51daiyan/images/dizhi.png')" class="v_address" ></cover-image>
-			            <cover-view class="fz22 ">{{videoParam.site}}</cover-view>
-			        </cover-view>
-			    </cover-view>
-			</cover-view> -->
 			
-			<!-- 代言商品 -->
-			<!-- <cover-view class="tag" @tap="jump" data-url="/pages/details/details">
-			   <cover-image :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" class="v_goods_img" ></cover-image>
-			   <cover-view class="goods_msg">
-			      <cover-view class="oh2">{{videoParam.description}}</cover-view>
-			      <cover-view class="goods_Pri1"><cover-view class="pri1">¥{{videoParam.topic}}</cover-view><cover-view class="pri2">销量191</cover-view></cover-view>
-			   </cover-view>
-			</cover-view> -->
 			
 			<cover-image :src="filter.imgIP('/static_s/51daiyan/images/bofang.png')" class="play" v-if="playMark==1" @tap="tabVideo"></cover-image>
-			<!-- <view class="fullBtn"  @tap="asdasd">
-			  <cover-image src="{{filter.imgIP('tx.png')}}" class="head"></cover-image>
-			  <cover-view class="sp_gz">+关注</cover-view>
-			</view> -->
-			<!-- <view class="fullBtn"  @tap="guanzhu_fuc">
-			  <cover-image :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" class="head"></cover-image>
-			  <cover-view class="sp_gz">+关注</cover-view>
-			</view> -->
-			<!-- <view class="fullBtn fullBtn1"  @tap="videoLike">
-			  <cover-view class="dianzan_cion">
-			    <cover-image :src="filter.imgIP('/static_s/51daiyan/images/dianzan.png')" class="dianzan_image"></cover-image>
-			  </cover-view>
-			  <cover-view class="dianzan_num">{{videoParam.likeCount}}</cover-view>
-			</view>
-			<view class="fullBtn fullBtn2"  @tap="jump" data-url="/pages/details/details">
-			  <cover-image :src="filter.imgIP('/static_s/51daiyan/images/v_goods.png')" class="head"></cover-image>
-			</view> -->
+			
 	</view>
 </template>
 
@@ -78,6 +43,7 @@
 				uid:'',
 				idx:'',
 				btn_kg: 0,
+				data_list: [],
 				page: 1,
 				size: 20,
 				
@@ -105,6 +71,7 @@
 			}
 		},
 		onLoad: function (e) {
+			var that =this
 			this.uid=e.uid
 			this.idx=e.idx
 		  // 拿到当前视频的实例
@@ -114,13 +81,41 @@
 		  // 拿到当前视频的实例
 		  this.videoContext2 = wx.createVideoContext('myVideo2')
 			/* 初始化页面视频id 及 视频下标 */
-			this.videoId= e.idx || 1,
-		  this.getdatalist()
+			this.videoId= this.spurl[e.idx],
+		  that.videoList= that.spurl
+		  
+		  		
+		  let videoIndex = that.videoList.findIndex(v => v == that.videoId)
+		  console.log(that.videoList, '-----------')
+		  let current = videoIndex % 3
+		  		
+		  /* 拿到对应视频的数据 */
+		  that.getVideoParam(videoIndex)
+		  		
+		  if (current === 0) {
+		    that.oneItemParam= that.videoList[videoIndex]
+		  }
+		  		
+		  if (current === 1) {
+		    that.twoItemParam= that.videoList[videoIndex]
+		  }
+		  		
+		  if (current === 2) {
+		    that.threeItemParam= that.videoList[videoIndex]
+		  }
+		  		
+		  // 匹配对应数据
+		  that.tabItem(current, videoIndex)
+		  		
+		  /* 开始播放视频 */
+		  that.play(videoIndex)
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName',
 				'loginMsg',
-				'wxlogin']),
+				'wxlogin',
+				'spurl'
+				]),
 			
 			style() {
 				var StatusBar = this.StatusBar;
@@ -136,98 +131,9 @@
 			back(){
 				uni.navigateBack()
 			},
-			getdatalist() {
-			
-				let that = this
-				var jkurl = '/star/getHomepageData'
-				var datas = {
-					token: that.loginMsg.userToken,
-					user_id: that.uid,
-					type: 2,
-					page: that.page,
-					size: that.size
-				}
-				if (that.btn_kg == 1) {
-					return
-				} else {
-					that.btn_kg = 1
-				}
-				// 单个请求
-				service.P_get(jkurl, datas).then(res => {
-			
-					that.btn_kg = 0
-					console.log(res)
-					if (res.code == 1) {
-						var datas = res.data
-						// console.log(typeof datas)
-			
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						// if (datas.length == 0) {
-						// 	uni.showToast({
-						// 		icon: 'none',
-						// 		title: '暂无更多数据'
-						// 	})
-						// 	return
-						// }
-						if (that.page == 1) {
-							// that.data_list = datas
-							
-							
-							
-							that.videoList= datas
-							
-									
-							let videoIndex = that.videoList.findIndex(v => v.a_id == that.videoId)
-							console.log(that.videoList, '-----------')
-							let current = videoIndex % 3
-									
-							/* 拿到对应视频的数据 */
-							console.log(186+'---------------------------------------->')
-							console.log(videoIndex)
-							that.getVideoParam(videoIndex)
-									
-							if (current === 0) {
-							  that.oneItemParam= datas[videoIndex]
-							}
-									
-							if (current === 1) {
-							  that.twoItemParam= datas[videoIndex]
-							}
-									
-							if (current === 2) {
-							  that.threeItemParam= datas[videoIndex]
-							}
-									
-							// 匹配对应数据
-							that.tabItem(current, videoIndex)
-									
-							setTimeout(()=>{
-								that.stop()
-								/* 开始播放视频 */
-								that.play(videoIndex)
-							},500)
-						} else {
-							let newList = [...that.videoList, ...datas]
-							this.videoList= newList
-							// that.data_list = that.datas.concat(datas)
-						}
-			
-						that.page++
-					}
-				}).catch(e => {
-					that.btn_kg = 0
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败'
-					})
-				})
-			
-			},
 			
 			changeCurrent(e) {
+				var that =this
 			  console.log(e.detail.current)
 			  if (e.detail.current == 0) {
 			    this.fullScreenId= 'myVideo0'
@@ -243,11 +149,11 @@
 			  let id = e.detail.currentItemId
 			
 			  /* 根据当前视图视频id拿到对应的视频列表下标 */
-			  let videoIndex = videoList.findIndex(v => v.a_id == id)
+			   let videoIndex = that.videoList.findIndex(v => v == id)
 			  console.log('104:--------'+videoIndex)
 			  /* 滑动到倒数第二个视频 加载视频列表 */
 			  if (videoIndex == (videoList.length - 2)) {
-					this.getdatalist()
+					// this.getdatalist()
 			    // let newList = [...this.videoList, ...list2]
 			    // this.videoList= newList
 			  }
@@ -272,7 +178,7 @@
 			  let id = e.detail.currentItemId
 			
 			  /* 根据当前视图视频id拿到对应的视频列表下标 */
-			  let videoIndex = videoList.findIndex(v => v.a_id == id)
+			  let videoIndex = videoList.findIndex(v => v == id)
 			
 			  /* 拿到对应视频的数据 */
 			  this.getVideoParam(videoIndex)
@@ -329,7 +235,6 @@
 			// 拿到当前视图的视频数据
 			getVideoParam(videoIndex) {
 			  // 当前视频的数据列表
-				console.log(videoIndex)
 			  let videoList = JSON.parse(JSON.stringify(this.videoList))
 			  this.videoParam= videoList[videoIndex]
 			},
@@ -373,20 +278,7 @@
 			    this.playMark= 2
 			  }
 			},
-			// 点赞
-			videoLike() {
-			  wx.showToast({
-			    title: '点赞成功',
-			  })
-			  return
-			  // 深拷贝
-			  let videoParam = JSON.parse(JSON.stringify(this.videoParam))
 			
-			  this.setData({
-			    ['videoParam.like']: videoParam.like == 1 ? 0 : 1,
-			    ['videoParam.likeCount']: videoParam.like == 1 ? videoParam.likeCount - 1 : videoParam.likeCount + 1
-			  })
-			},
 			/**视屏进入、退出全屏 */
 			asdasd(e) {
 			  this.sisFull= true
@@ -401,12 +293,6 @@
 			  } else {
 			    this.isFull= false
 			  }
-			},
-			guanzhu_fuc(){
-			  wx.showToast({
-			    title: '关注成功',
-			  })
-			  return
 			},
 			jump(e) {
 			 service.jump(e)

@@ -55,7 +55,7 @@
 					:data-id='item.id'>
 					<view  class="crad_id " :class="tx_crad==idx? 'cur':''">
 						<image :src="filter.imgIP('/static_s/51daiyan/images/cradbg.png')"></image>
-						<text class="flex_1">{{item.cardholder}} {{item.card}}</text>
+						<text class="flex_1">{{item.opening_bank}} {{item.card}}</text>
 						<!-- <icon   type="success" size="18" color="#F7B43B" /> -->
 						<image :data-type="idx" @tap="txcrad_fuc" v-if="tx_crad==idx" class="tx_type2" src="../../static/images/duigou.png"></image>
 						<view  :data-type="idx" @tap="txcrad_fuc" v-else class="tx_type2"></view>
@@ -139,9 +139,9 @@
 				// console.log('当前点击的是第'+e.index+'个按钮，点击内容是'+e.content.text)
 				if (e.index == 0) {
 					console.log(item)
-					// uni.navigateTo({
-					// 	url:'../fabu_set/fabu?id='+id+'&type='+item.type
-					// })
+					uni.navigateTo({
+						url:'../mt_tx_add/mt_tx_add?id='+id+'&cardholder='+item.cardholder+'&opening_bank='+item.opening_bank+'&card='+item.card
+					})
 				}
 				if (e.index == 1) {
 					this.sc_d_fuc(id)

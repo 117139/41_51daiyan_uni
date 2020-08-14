@@ -132,9 +132,9 @@
 				btnkg: 0,
 				htmlReset: 0,
 				type: 0, ///1 单品下单  2 购物车下单
-				sku_id: '', //新单价
+				sku_id: '', //规格
 				sku_number: '', //数量
-				v_id:'',
+				advocacy_user_id:'',   //代言人
 				use_dou:0,
 				
 				g_data:'',    //1,2（type=2）购物车 c_id
@@ -169,8 +169,7 @@
 				that.type=option.type
 				that.sku_id=option.v_id
 				that.sku_number=option.number
-				that.advocacy_user_id=option.v_id
-				that.v_id=option.v_id
+				that.advocacy_user_id=option.advocacy_user_id
 			}else{
 				that.type=option.type
 				that.g_data=option.g_data
@@ -495,7 +494,7 @@
 			  		v_id:that.sku_id,
 						address_id:that.address.id,
 						advocacy_bean:that.use_dou,
-						advocacy_user_id:that.v_id,
+						advocacy_user_id:that.advocacy_user_id,
 			  		number:that.sku_number,
 						coupon_list:coupon_list
 			  	}

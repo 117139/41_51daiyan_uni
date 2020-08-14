@@ -142,6 +142,14 @@ const jump = function(e) {
 			return
 		}
 	}
+	if(datas.type=='sp'){
+		console.log(datas.spurl)
+		store.commit('spurl_fuc', datas.spurl)
+		uni.navigateTo({
+			url: datas.url
+		})
+		return
+	}
 	if (datas.type == 2) {
 		uni.switchTab({
 			url: datas.url

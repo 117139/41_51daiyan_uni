@@ -13,9 +13,7 @@
 						<text v-else class="iconfont iconXSJ-copy"></text>
 					</view>
 				</view>
-				<view class="data_null" v-if="data_list.length==0">
-							 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
-				</view>
+				
 				<view class="box_tit box_li" v-for="(item,idx) in data_list">
 					<view class="td1">
 						<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.u_id">
@@ -31,6 +29,7 @@
 			</view>
 		</view>
 		
+		<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
 	</view>
 </template>
 

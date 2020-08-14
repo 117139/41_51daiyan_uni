@@ -15,7 +15,10 @@
 					<view :class="ph_type1==2?'cur':''" @tap="ph_fuc1" data-type="2">代言收益排行</view>
 					<view :class="ph_type1==3?'cur':''" @tap="ph_fuc1" data-type="3">公益之星排行</view>
 				</view>
+				
 				<view class="dy_list">
+					
+						
 					<view class="dy_box" v-for="(item,idx) in datas">
 						<view class="dy_li">
 							<view class="pl_num">
@@ -77,6 +80,7 @@
 					</view> -->
 				</view>
 			</view>
+			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
 		</view>
 	</view>
 </template>

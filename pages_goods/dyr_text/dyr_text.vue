@@ -21,11 +21,19 @@
 		      <view class="quan_msg">
 		        <view class="oh4  quan_msg_text">{{item.content}}</view>
 		        <view v-if="item.img.length==1" class="quan_msg_img">
-		          <image class="one" :src="filter.imgIP(item.img[0])" :data-src="filter.imgIP(item.img[0])" @tap.stop="pveimg" mode="aspectFill"></image>
-		        </view>
+		          <image v-if="item.type==1||item.type==3" class="one" :src="filter.imgIP(item.img[0])" 
+								:data-src="filter.imgIP(item.img[0])" @tap.stop="pveimg" mode="aspectFill"></image>
+							<image v-if="item.type==2" class="one one_one" :lazy-load='true' 
+								:src="filter.imgIP_video(item.img[0])" mode="aspectFill" 
+								:data-src="filter.imgIP_video(item.img[0])"
+							 @tap.stop="jump" data-type="sp" :data-spurl="item.img" data-url="/pages_goods/d_video/d_video?idx=0"></image>
+						</view>
 		        <view v-else class="quan_msg_img">
-		          <image v-for="(item1,idx1) in item.img" :src="filter.imgIP(item1)"  mode="aspectFill" :data-src="filter.imgIP(item1)" @tap.stop="pveimg"></image>
-		          
+		          <image v-if="item.type==1" v-for="(item1,idx1) in item.img" :src="filter.imgIP(item1)"  mode="aspectFill" :data-src="filter.imgIP(item1)" @tap.stop="pveimg"></image>
+		          <image v-if="item.type==2" v-for="(item1,idx1) in item.img" :lazy-load='true' 
+								:src="filter.imgIP_video(item1)" mode="aspectFill"
+								@tap.stop="jump" data-type="sp" :data-spurl="item.img" 
+								:data-url="'/pages_goods/d_video/d_video?idx='+idx1"></image>
 		        </view>
 		      </view>
 		      <!-- <view class="quan_goods"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
@@ -55,7 +63,8 @@
 		        </view> -->
 		        <view class="cz_li">跟随购买：{{item.follow_buy_number}}</view>
 		        <view class="cz_li" @tap.stop="jump" data-url="/pages/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>{{item.comment_number}}</view>
-		        <view class="cz_li" @tap.stop="zan" data-id="idx"><text class="iconfont iconzan"></text>{{item.praise_number}}</view>
+		        <view class="cz_li" v-if="item.is_praise==2" @tap="guanzhuFuc(4,item.id,'affirm')" data-id="idx"><text class="iconfont iconzan"></text>{{item.praise_number}}</view>
+		        <view class="cz_li" v-if="item.is_praise==1" @tap="guanzhuFuc(4,item.id,'cancel')" data-id="idx"><text class="iconfont icondianzan2" style="color: #f00;"></text>{{item.praise_number}}</view>
 		      </view>
 		    </view>
 		  </view>
@@ -221,9 +230,65 @@
 				})
 			
 			},
-			zan(e){
-			  console.log(e.currentTarget.dataset.id)
+			guanzhuFuc(type, id, key) {
+				var that = this
+				var data = {
+					token: that.loginMsg.userToken,
+					type: type,
+					id: id,
+					operate: key,
+				}
+			
+				if (that.btn_kg == 1) {
+					return
+				} else {
+					that.btn_kg = 1
+				}
+				service.P_post('/attention/operation', data).then(res => {
+					console.log(res)
+					that.btn_kg = 0
+					if (res.code == -1) {
+						uni.navigateTo({
+							url: '/pages/login/login'
+						})
+						return
+					} else if (res.code == 0 && res.msg == '请先登录账号~') {
+						uni.navigateTo({
+							url: '/pages/login/login'
+						})
+						return
+					} else if (res.code == 1) {
+						// that.onRetry()
+						for (var i = 0; i < that.StarText_list.length; i++) {
+							if (that.StarText_list[i].id == id) {
+								if (key == 'affirm') {
+									that.$set(that.StarText_list[i], 'is_praise', 1)
+									that.$set(that.StarText_list[i], 'praise_number', that.StarText_list[i].praise_number-1+2)
+								} else {
+									that.$set(that.StarText_list[i], 'is_praise', 2)
+									that.$set(that.StarText_list[i], 'praise_number', that.StarText_list[i].praise_number-1)
+								}
+			
+							}
+						}
+						uni.showToast({
+							icon: 'none',
+							title: '操作成功'
+						})
+					} else {
+			
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
+				})
+			
 			},
+			
 			jump(e){
 			  service.jump(e)
 			},

@@ -732,7 +732,10 @@ padding: 0 10rpx;
   border-top: 1px solid #eee;
 }
 .buy_btn.data-v-39cbb4e8{
-  width:192rpx;
+  /* width:192rpx; */
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
   height:74rpx;
   background:rgba(247,180,59,1);
   border-radius:10rpx;
@@ -1006,9 +1009,15 @@ padding: 0 10rpx;
   -webkit-align-items: center;
           align-items: center;
   height: 120rpx;
+	padding: 0 28rpx;
+	box-sizing: border-box;
 }
 .czbtnG .jrgwc.data-v-39cbb4e8,.czbtnG .buybtn.data-v-39cbb4e8{
 	width:338rpx;
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
+	margin: 0 10rpx;
   height:80rpx;
   background:rgba(247,180,59,1);
   border-radius:40rpx;

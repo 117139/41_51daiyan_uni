@@ -108,7 +108,7 @@
 				<!-- 视频 -->
 				<view v-if="s_type==2" class="my_list">
 					<view class="sp_list">
-						<view class="sp_li sp_li_v" v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages/my_video/my_video?uid='+uid+'&idx='+item.g_id">
+						<view class="sp_li sp_li_v" v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages/my_video/my_video?uid='+uid+'&idx='+item.a_id">
 							<view class="sp_li_img">
 								<image class="sp_li_img" :lazy-load='true' :src="filter.imgIP_video(item.img[0])" mode="aspectFill"></image>
 								<view class="sp_li_img_cz">

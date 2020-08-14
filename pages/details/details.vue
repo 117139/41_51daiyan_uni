@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view :class="sheetshow1||sheetshow?'container-ban':'container'">
+		<view v-if="goodsData" :class="sheetshow1||sheetshow?'container-ban':'container'">
 		  <view class="swiper_box">
 		    <swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay"
 				 :interval="interval" :duration="duration" indicator-active-color='#8e8e8e'
@@ -131,10 +131,12 @@
 		          </view>
 		
 		          <view class="dyr_img">
-		            <image v-if="item.type!=3" class="dyr_img" :src="filter.imgIP(item.img[0])"  mode="aspectFill"
-								 :data-src="filter.imgIP(item.img[0])" :data-array="filter.getgimgarrIP(item.img)" @tap.stop="pveimg"></image>
-		            <image v-if="item.type==3" class="dyr_img" :src="filter.imgIP_video(item.img[0])"  mode="aspectFill"
-								 :data-src="filter.imgIP_video(item.img[0])" @tap.stop="pveimg"></image>
+								<!-- @tap.stop="pveimg"
+								@tap.stop="pveimg" -->
+		            <image v-if="item.type!=2" class="dyr_img" :src="filter.imgIP(item.img[0])"  mode="aspectFill"
+								 :data-src="filter.imgIP(item.img[0])" :data-array="filter.getgimgarrIP(item.img)"  @tap.stop="pveimg"></image>
+		            <image v-if="item.type==2" class="dyr_img" :src="filter.imgIP_video(item.img[0])"  mode="aspectFill"
+								 @tap.stop="jump" data-type="sp" :data-spurl="item.img" data-url="/pages_goods/d_video/d_video?idx=0"></image>
 		            <view class="dyr_imgnum"><text class="iconfont iconicontupian"></text>{{item.img.length}}</view>
 		          </view>
 		        </view>
@@ -212,119 +214,7 @@
 		      <image :src="filter.imgIP('/static_s/51daiyan/images/goods_02.jpg')" mode="aspectFill" style="width:750rpx;height:750rpx;display:block;" />
 		    </view>
 		  </view>
-		  <!-- tk -->
-			<uni-popup ref="popup_yh" type="center" @change="tkchange0">
-				<!-- <view class="hb_tk" style="background-image: url(../../static/images/get_yh.png);"> -->
-				<view class="hb_tk">
-					<image class="hb_tk_img" :src="filter.imgIP('/static_s/51daiyan/images/get_yh.png')" mode="scaleToFill"></image>
-					<scroll-view style="width: 100%;height: 100%;position: relative;z-index: 9999;" scroll-y>
-						<view class="dis_flex goods_yh_li" v-for="(item,idx) in yh_list">
-							<view class="goods_yh_pri" v-if="item.coupon_setting_type==1">
-								<view class="dis_flex d1"><text>￥</text>{{item.c_money*1}}</view>
-								<view class="d2">满{{item.condition*1}}可用</view>
-							</view>
-							<view class="goods_yh_pri" v-if="item.coupon_setting_type==2">
-								<view class="dis_flex d1">{{item.discount_ratio}}<text>折</text></view>
-							</view>
-							<view class="goods_yh_pri" v-if="item.coupon_setting_type==3">
-								<view class="dis_flex d1">全额</view>
-								<view class="dis_flex d1">抵扣</view>
-							</view>
-							<view class="flex_1 goods_yhmsg">
-								<view class="yh_type">{{item.name}}</view>
-								<view class="yh_time">
-									<view>有效日期</view>
-									<view>{{filter.getDate_ymd(item.use_start_time,'-')}}-{{filter.getDate_ymd(item.use_end_time,'-')}}</view>
-								</view>
-								
-							</view>
-							<view class="goods_get dis_flex">
-								<view v-if="item.is_get==2" class="goods_get_btn" @tap="get_yh(item.id)">领取</view>
-								<view v-if="item.is_get==1" class="goods_get_btn goods_get_btn1">已领取</view>
-							</view>
-						</view>
-					</scroll-view>
-				</view>
-				<view class="dis_flex aic ju_c">
-					<!-- <image class="yh_gb_btn" :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image> -->
-					<image class="yh_gb_btn" :src="filter.imgIP('/static_s/51daiyan/images/off.png')"  @tap="gb_yhtk"></image>
-				</view>
-			</uni-popup>
-		  <uni-popup ref="popup" type="bottom" @change="tkchange1">
-		    <view class="dy_box" style="padding: 0 5rpx 20rpx;height:600rpx;overflow: hidden">
-		        <scroll-view class=" dyr_scroll" style="height:600rpx;" scroll-y @lower-threshold="getStarlist">
-		          <view class="tk_dyr_li" v-for="(item,idx) in star_list" @tap="txtype_fuc(item.user_id)">
-		          <view class="dis_flex aic flex_1">
-		            <view class="tk_user_tx">
-		              <image class="tk_user_tx" :src="filter.imgIP(item.head_portrait)"  mode="aspectFill"></image>
-		              <image v-if="item.identity_id==1" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-		              <image v-if="item.identity_id==2" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
-		            </view>
-		            <view class="tk_user_name">{{item.nickname}}</view>
-		            <view v-if="item.is_friend==2" class="hy_bq">好友</view>
-		            <view v-if="item.identity_id==1" class="hy_bq hy_bq1 ">明星</view>
-		            <view v-if="item.identity_id==2" class="hy_bq hy_bq2">达人</view>
-		          </view>
-		          <icon  v-if="dyr_type==item.user_id" type="success" size="18" color="#F7B43B" />
-		          <view wx:else class="tx_type2">
-		            
-		          </view>
-		        </view>
-		        </scroll-view>
-		        <view class="dy_btn" @tap="xz_dyr">作为代言人</view>
-		    </view>
-		    <view class="b_view_o"></view>
-		  </uni-popup>
-		  <uni-popup ref="popup_goods" type="bottom" @change="tkchange">
-				<view class="tk_popup_box">
-					<view class="popopBox1">
-						<view class="goodsimg">
-							<image :src="filter.imgIP(show_img[0])" :data-src="filter.imgIP(show_img[0])" mode="aspectFill" @tap="pveimg"></image>
-						</view>
-						<view class="goodstkjg">
-							<view class="closebtn" @tap="onClose">
-								<image :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image>
-							</view>
-							<view class="goods_pri_h">￥{{show_pri}}</view>
-							<view class="kucun" v-if="guige_select.length>0">库存{{show_num}}件</view>
-							<view class="tkname oh2">已选择：{{ggshow1}}</view>
-						</view>
-					</view>
-					<block v-if="guige_arr.length>0" v-for="(item,idx) in guige_arr">
-						<view class="tkguigetit">{{item.name}}</view>
-						<view class="guigeBox">
-							<!-- :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx) }" -->
-							<block v-for="(item1,idx1) in item.value">
-								<text class="guigeOne"
-									v-if="ggShow(item.name,item1,idx)"
-									:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
-									:data-ggidx="idx"
-									:data-name="item.name"
-									:data-value="item1"
-									@tap="selegg">{{item1}}</text>
-								<text class="guigeOne"
-									v-else
-									:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
-									:data-ggidx="idx"
-									:data-name="item.name"
-									:data-value="item1"
-									>{{item1}}</text>
-							</block>
-						</view>
-					</block>
-					<view class="countnum">
-						<text>购买数量</text>
-						<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="show_num"
-						  @input="onChange" @change="onChange" />
-					</view>
-					<view class="b_view_o"></view>
-					<view class="czbtnG">
-						<view  v-if="goodsData.activity_id==0" class="jrgwc" @tap="addwgc">加入购物车</view>
-						<view class="buybtn" @tap="nowbuy">立即购买</view>
-					</view>
-				</view>
-			</uni-popup>
-		  <!-- 底部 -->
+		   <!-- 底部 -->
 		  <view class="bottom_box">
 		    <view class="kf_btn" @tap="jump" data-url="/pages/lts/lts">
 		      <text class="iconfont iconkefu"></text>
@@ -344,10 +234,124 @@
 		      <text class="iconfont iconstore"></text>
 		      <text  data-url="/pages/dp_index/dp_index">店铺</text>
 		    </view>
-		    <view v-if="goodsData.activity_id==0" class="buy_btn"  @tap="sheetshow_fuc">加入购物车</view>
-		    <view class="buy_btn buy_btn1"  @tap="sheetshow_fuc">立即购买</view>
+		    <view v-if="goodsData.activity_id==0&&goodsData.is_pond_goods==1" class="buy_btn"  @tap="sheetshow_fuc">加入购物车</view>
+		    <view  class="buy_btn buy_btn1"  @tap="sheetshow_fuc">{{goodsData.activity_id==0||goodsData.is_apply==2?'立即购买':'报名购买'}}</view>
+				
 		  </view>
 		</view>
+		<!-- tk -->
+		<uni-popup ref="popup_yh" type="center" @change="tkchange0">
+			<!-- <view class="hb_tk" style="background-image: url(../../static/images/get_yh.png);"> -->
+			<view class="hb_tk">
+				<image class="hb_tk_img" :src="filter.imgIP('/static_s/51daiyan/images/get_yh.png')" mode="scaleToFill"></image>
+				<scroll-view style="width: 100%;height: 100%;position: relative;z-index: 9999;" scroll-y>
+					<view class="dis_flex goods_yh_li" v-for="(item,idx) in yh_list">
+						<view class="goods_yh_pri" v-if="item.coupon_setting_type==1">
+							<view class="dis_flex d1"><text>￥</text>{{item.c_money*1}}</view>
+							<view class="d2">满{{item.condition*1}}可用</view>
+						</view>
+						<view class="goods_yh_pri" v-if="item.coupon_setting_type==2">
+							<view class="dis_flex d1">{{item.discount_ratio}}<text>折</text></view>
+						</view>
+						<view class="goods_yh_pri" v-if="item.coupon_setting_type==3">
+							<view class="dis_flex d1">全额</view>
+							<view class="dis_flex d1">抵扣</view>
+						</view>
+						<view class="flex_1 goods_yhmsg">
+							<view class="yh_type">{{item.name}}</view>
+							<view class="yh_time">
+								<view>有效日期</view>
+								<view>{{filter.getDate_ymd(item.use_start_time,'-')}}-{{filter.getDate_ymd(item.use_end_time,'-')}}</view>
+							</view>
+							
+						</view>
+						<view class="goods_get dis_flex">
+							<view v-if="item.is_get==2" class="goods_get_btn" @tap="get_yh(item.id)">领取</view>
+							<view v-if="item.is_get==1" class="goods_get_btn goods_get_btn1">已领取</view>
+						</view>
+					</view>
+				</scroll-view>
+			</view>
+			<view class="dis_flex aic ju_c">
+				<!-- <image class="yh_gb_btn" :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image> -->
+				<image class="yh_gb_btn" :src="filter.imgIP('/static_s/51daiyan/images/off.png')"  @tap="gb_yhtk"></image>
+			</view>
+		</uni-popup>
+		<uni-popup ref="popup" type="bottom" @change="tkchange1">
+		  <view class="dy_box" style="padding: 0 5rpx 20rpx;height:600rpx;overflow: hidden">
+		      <scroll-view class=" dyr_scroll" style="height:600rpx;" scroll-y @lower-threshold="getStarlist">
+		        <view class="tk_dyr_li" v-for="(item,idx) in star_list" @tap="txtype_fuc(item.user_id)">
+		        <view class="dis_flex aic flex_1">
+		          <view class="tk_user_tx">
+		            <image class="tk_user_tx" :src="filter.imgIP(item.head_portrait)"  mode="aspectFill"></image>
+		            <image v-if="item.identity_id==1" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+		            <image v-if="item.identity_id==2" class="tk_user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+		          </view>
+		          <view class="tk_user_name">{{item.nickname}}</view>
+		          <view v-if="item.is_friend==2" class="hy_bq">好友</view>
+		          <view v-if="item.identity_id==1" class="hy_bq hy_bq1 ">明星</view>
+		          <view v-if="item.identity_id==2" class="hy_bq hy_bq2">达人</view>
+		        </view>
+		        <icon  v-if="dyr_type==item.user_id" type="success" size="18" color="#F7B43B" />
+		        <view wx:else class="tx_type2">
+		          
+		        </view>
+		      </view>
+		      </scroll-view>
+		      <view class="dy_btn" @tap="xz_dyr">作为代言人</view>
+		  </view>
+		  <view class="b_view_o"></view>
+		</uni-popup>
+		<uni-popup ref="popup_goods" type="bottom" @change="tkchange">
+			<view class="tk_popup_box">
+				<view class="popopBox1">
+					<view class="goodsimg">
+						<image :src="filter.imgIP(show_img[0])" :data-src="filter.imgIP(show_img[0])" mode="aspectFill" @tap="pveimg"></image>
+					</view>
+					<view class="goodstkjg">
+						<view class="closebtn" @tap="onClose">
+							<image :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image>
+						</view>
+						<view class="goods_pri_h">￥{{show_pri}}</view>
+						<view class="kucun" v-if="guige_select.length>0">库存{{show_num}}件</view>
+						<view class="tkname oh2">已选择：{{ggshow1}}</view>
+					</view>
+				</view>
+				<block v-if="guige_arr.length>0" v-for="(item,idx) in guige_arr">
+					<view class="tkguigetit">{{item.name}}</view>
+					<view class="guigeBox">
+						<!-- :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx) }" -->
+						<block v-for="(item1,idx1) in item.value">
+							<text class="guigeOne"
+								v-if="ggShow(item.name,item1,idx)"
+								:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
+								:data-ggidx="idx"
+								:data-name="item.name"
+								:data-value="item1"
+								@tap="selegg">{{item1}}</text>
+							<text class="guigeOne"
+								v-else
+								:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
+								:data-ggidx="idx"
+								:data-name="item.name"
+								:data-value="item1"
+								>{{item1}}</text>
+						</block>
+					</view>
+				</block>
+				<view class="countnum">
+					<text>购买数量</text>
+					<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="show_num"
+					  @input="onChange" @change="onChange" />
+				</view>
+				<view class="b_view_o"></view>
+				<view class="czbtnG">
+					<view  v-if="goodsData.activity_id==0&&goodsData.is_pond_goods==1" class="jrgwc" @tap="addwgc">加入购物车</view>
+					<view class="buybtn" @tap="nowbuy">立即购买</view>
+				</view>
+			</view>
+		</uni-popup>
+		
 	</view>
 </template>
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
@@ -369,17 +373,7 @@
 				circular: true,
 				interval: 3000,
 				duration: 1000,
-				data_list:[
-				  { value1: '苏门答腊黄金曼特宁深度烘培' },
-				  { value1: '耳挂咖啡' },
-				  { value1: '耳挂咖啡1' },
-				  { value1: '耳挂咖啡1' },
-				  { value1: '耳挂咖啡1' },
-				  { value1: '耳挂咖啡1' },
-				  { value1: '耳挂咖啡1' },
-				  { value1: '耳挂咖啡1' },
-				  { value1:'耳挂咖啡1'},
-				],
+				data_list:[],
 				
 				
 				
@@ -450,7 +444,7 @@
 		 */
 		onLoad: function (options) {
 			this.g_id=options.id
-		  
+		  this.getyhlist()
 			
 		},
 		onShow() {
@@ -460,6 +454,7 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
+			this.getyhlist()
 			this.onRetry()
 		},
 		
@@ -519,7 +514,7 @@
 			},
 			onRetry(){
 				this.getSku()
-				this.getyhlist()
+				
 				this.star_page=1
 				this.getStarlist()
 				this.StarText_page=1
@@ -1161,6 +1156,9 @@
 			onChange(e) {
 				var that =this
 			  let idx = e.currentTarget.dataset.selec
+				if(that.goodsData.is_pond_goods==2){
+					this.cnum= 1
+				}
 			  // console.log(e.detail)
 				if(that.guige_select.length==0){
 					uni.showToast({
@@ -1291,7 +1289,48 @@
 			    url: '/pages/Order/Order?type=1&v_id='+that.v_id+'&number='+that.cnum+'&advocacy_user_id='+that.dyr_type+'&v_id='+that.v_id
 			  })
 			},
-			
+			bm_fuc() {
+				// var id = e.currentTarget.dataset.id
+				// var newdata = this.pinpai
+				// newdata[idx].bm = 2
+				// this.pinpai= newdata
+				var that=this
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+				}
+				var datas = {
+					token: that.loginMsg.userToken,
+					id:that.goodsData.activity_id
+				}
+				// 单个请求
+				service.P_post('/activity/join', datas).then(res => {
+					console.log(res)
+					if (res.code == 1) {
+						that.btnkg=0
+						
+						that.$set(that.goodsData, 'is_apply', 2)
+						uni.showToast({
+							title:'报名成功'
+						})
+					}else{
+						that.btnkg=0
+						// that.getdata()
+						uni.showToast({
+							icon:'none',
+							title:res.msg
+						})
+					}
+				}).catch(e => {
+						that.btnkg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
+				})
+			},
 			jump(e) {
 				var that =this
 				if(that.btn_kg==1){
@@ -1312,6 +1351,9 @@
 					this.$refs.popup_goods.close()
 			},
 			sheetshow_fuc() {
+					if(this.goodsData.activity_id!==0&&this.goodsData.is_apply==1){
+						this.bm_fuc()
+					}
 			    this.sheetshow= true
 			    this.btnkg= 0
 					this.$refs.popup_goods.open()
@@ -1951,7 +1993,8 @@ padding: 0 10rpx;
   border-top: 1px solid #eee;
 }
 .buy_btn{
-  width:192rpx;
+  /* width:192rpx; */
+	flex: 1;
   height:74rpx;
   background:rgba(247,180,59,1);
   border-radius:10rpx;
@@ -2165,9 +2208,13 @@ padding: 0 10rpx;
   justify-content: space-around;
   align-items: center;
   height: 120rpx;
+	padding: 0 28rpx;
+	box-sizing: border-box;
 }
 .czbtnG .jrgwc,.czbtnG .buybtn{
 	width:338rpx;
+	flex: 1;
+	margin: 0 10rpx;
   height:80rpx;
   background:rgba(247,180,59,1);
   border-radius:40rpx;

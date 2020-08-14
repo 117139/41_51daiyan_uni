@@ -438,6 +438,14 @@
 						"backgroundColor": "#f5f5f5"
 					}
 				}
+				,{
+							"path" : "d_video/d_video",
+							"style": {
+								"disableScroll": true,
+								"navigationBarTextStyle": "white",
+								"navigationStyle": "custom"
+							}
+					}
 			]
 		}
 	],

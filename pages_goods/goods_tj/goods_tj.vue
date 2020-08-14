@@ -5,7 +5,7 @@
 				<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/goods_tj_02.jpg')"></image>
 			</view>
 			<view class="h_main">
-				<view class="goods_box1">
+				<view class="goods_box1" v-if="data_tj.length>0">
 					<view class="goods_li1" v-for="(item,idx) in data_tj" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
 						<view class="goods_img">
 							<image class="goods_img" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"></image>

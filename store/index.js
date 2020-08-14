@@ -21,9 +21,13 @@ const store = new Vuex.Store({
 		loginMsg: '',
 		wxlogin: 0,
 		renzheng:'',
-		order_ls_data:''
+		order_ls_data:'',
+		spurl:[]
 	},
 	mutations: {
+		spurl_fuc(state,spurl){
+			state.spurl = spurl || [];
+		},
 		saverz(state,renzheng){
 			state.renzheng = renzheng || '';
 		},

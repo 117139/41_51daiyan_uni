@@ -8,13 +8,16 @@
 		      </view>
 		      <view class="dp_msg">
 		        <view class="dp_name oh2">{{datas.store_name}}</view>
-		        <view class="dp_lv">
-		          <image v-if="idx<5" v-for="(item,idx) in datas.rank" :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
-		         
-		        </view>
+						<view>
+							<view class="dp_lv">
+							  <image v-if="idx<5" v-for="(item,idx) in datas.rank" :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
+							 
+							</view>
+						</view>
+		       
 		        <view class="dp_bq">
 		          <text>代言 {{datas.advocacy_number}}</text>
-		          <text class="flex_1">粉丝数{{datas.fans_number}}</text>
+		          <text class="flex_1">粉丝数 {{datas.fans_number}}</text>
 		          <view v-if="!datas.is_follow" @tap.stop="guanzhuFuc(dpid,'affirm')" class="guanzhu_btn">关注</view>
 		          <view v-else @tap.stop="guanzhuFuc(dpid,'cancel')" class="guanzhu_btn">已关注</view>
 		        </view>
@@ -154,7 +157,7 @@
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
-		
+			this.getdatalist()
 		},
 		
 		/**
@@ -414,7 +417,7 @@
 .goods_img{
 	width: 100%;
 	height:338rpx;
-	border-radius:10px 10px 0px 0px;
+	border-radius:10rpx 10rpx 0px 0px;
 }
 .goods_msg{
 	width: 100%;

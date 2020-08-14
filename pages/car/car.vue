@@ -463,7 +463,7 @@
 										}
 										// 单个请求
 										service.P_post(jkurl, datas).then(res => {
-											that.btn_kg=0
+											that.btnkg=0
 											console.log(res)
 											if (res.code == 1) {
 												var datas = res.data
@@ -480,7 +480,7 @@
 													})
 											}
 										}).catch(e => {
-											that.btn_kg=0
+											that.btnkg=0
 											console.log(e)
 											uni.showToast({
 												icon: 'none',
@@ -789,7 +789,7 @@ page{
 .goods_img{
 	width: 100%;
 	height:338rpx;
-	border-radius:10px 10px 0px 0px;
+	border-radius:10rpx 10rpx 0px 0px;
 }
 .goods_msg{
 	width: 100%;

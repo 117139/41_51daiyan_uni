@@ -14,7 +14,7 @@
 		  <view class="list">
 		    <view class="li_box" v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages_goods/daiyan_quan_xq/daiyan_quan_xq?id='+item.id">
 		      <view class="li_img">
-		        <image class="li_img" :lazy-load='true' :src="filter.imgIP(item.img)"></image>
+		        <image class="li_img" :lazy-load='true' :src="filter.imgIP(item.img)" mode="aspectFill"></image>
 		      </view>
 		      <text class="li_name oh1">{{item.title}}</text>
 		      <view class="li_js oh2">{{item.synopsis}}</view>

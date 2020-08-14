@@ -27,7 +27,7 @@
 				<scroll-view class="find_user" scroll-x>
 					<view class="find_user1">
 						<view class="find_uimg" v-for="(item,idx) in store" @tap="jump"
-						 :data-url="'/pages_goods/activity/activity?id='+item.group_code">
+						 :data-url="'/pages_goods/dp_index/dp_index?id='+item.group_code">
 							<image class="find_uimg" :src="filter.imgIP(item.head_portrait)" mode="aspectFit"></image>
 							<view class="find_zcc">{{item.store_name}}</view>
 						</view>

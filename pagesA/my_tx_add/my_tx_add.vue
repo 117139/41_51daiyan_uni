@@ -48,6 +48,9 @@
 		onLoad(options) {
 			if(options.id){
 				this.id=options.id
+				this.yname=options.opening_bank
+				this.xname=options.cardholder
+				this.crad_id=options.card
 			}
 		},
 		/**
@@ -112,8 +115,8 @@
 				var jkurl = '/bankCard/add'
 				var datas = {
 					token: that.loginMsg.userToken,
-					cardholder:that.xname,
 					opening_bank:that.yname,
+					cardholder:that.xname,
 					card:that.crad_id,
 				}
 				if(that.id){
@@ -121,8 +124,8 @@
 					datas = {
 						id:that.id,
 						token: that.loginMsg.userToken,
-						cardholder:that.xname,
 						opening_bank:that.yname,
+						cardholder:that.xname,
 						card:that.crad_id,
 					}
 				}

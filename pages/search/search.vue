@@ -40,14 +40,14 @@
 							<image class="ss_goods_img" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"></image>
 						</view>
 						<view class="goods_msg">
-							<view class="goods_name">{{item.g_title}}</view>
+							<view class="goods_name oh2">{{item.g_title}}</view>
 							<view class="goods_pri">
 								<view class="pri1">￥{{item.g_price}}</view>
 								<view class="pri3">代言费：¥{{item.basics_advocacy_price}}</view>
 							</view>
 							<view class="goods_dy">
 								<view class="goods_zan">
-									<text class="iconfont icondianzan2"></text>5200代言人
+									<text class="iconfont icondianzan2"></text> {{item.advocacy_mannumber}} 代言人
 								</view>
 								<view class="find_sj" >
 									<view class="sj_list">
