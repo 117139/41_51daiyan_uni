@@ -89,10 +89,13 @@
 			])
 		},
 		methods: {
+		
+			
 			onRetry(){
-				this.page=1
 				this.datas=[]
 				this.btn_kg=0
+				this.btnkg=0
+				this.page=1
 				this.getaddlist()
 			},
 			xz_add(e){
@@ -106,7 +109,7 @@
 			  var prevPage = pages[pages.length - 2];   //上一页面
 			  prevPage.setData({
 			    //直接给上一个页面赋值
-			    addresschose: that.addresslist[idx],
+			    addresschose: that.datas[idx],
 			  });
 			
 			  wx.navigateBack({
@@ -305,11 +308,6 @@
 					}
 				)
 			},
-			onRetry(){
-				this.btnkg=0
-				this.page=1
-				this.getaddlist()
-			}
 		}
 	}
 </script>

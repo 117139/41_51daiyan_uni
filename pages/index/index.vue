@@ -134,7 +134,8 @@
 						 @tap.stop="pveimg"></image> -->
 					</view>
 				</view>
-				<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+item1.g_id">
+				<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" 
+				 :data-url="'/pages/details/details?id='+item1.g_id+'&dy_id='+item.id+'&advocacyviceId='+item1.id">
 					<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill"></image>
 					<view class="quan_goods_msg">
 						<view class="quan_goods_name oh1">{{item1.g_title}}</view>

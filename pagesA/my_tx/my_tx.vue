@@ -46,7 +46,7 @@
 				
 
 			</view>
-			<view class="zanwu" v-if="bank_list.length==0">暂无数据</view>
+			<view class="zanwu" v-if="tx_type==1&&bank_list.length==0">暂无数据</view>
 			
 			
 			<uni-swipe-action v-if="tx_type==1" style="width: 750upx;background: #fff;">
@@ -54,7 +54,7 @@
 					@click="onClick($event,idx,item.id,item)" @change="change"
 					:data-id='item.id'>
 					<view  class="crad_id " :class="tx_crad==idx? 'cur':''">
-						<image :src="filter.imgIP('/static_s/51daiyan/images/cradbg.png')"></image>
+						<!-- <image :src="filter.imgIP('/static_s/51daiyan/images/cradbg.png')"></image> -->
 						<text class="flex_1">{{item.opening_bank}} {{item.card}}</text>
 						<!-- <icon   type="success" size="18" color="#F7B43B" /> -->
 						<image :data-type="idx" @tap="txcrad_fuc" v-if="tx_crad==idx" class="tx_type2" src="../../static/images/duigou.png"></image>
@@ -135,12 +135,12 @@
 			},
 			onClick(e, idx, id, item) {
 				console.log(e)
-				console.log(idx)
+				// console.log(idx)
 				// console.log('当前点击的是第'+e.index+'个按钮，点击内容是'+e.content.text)
 				if (e.index == 0) {
 					console.log(item)
 					uni.navigateTo({
-						url:'../mt_tx_add/mt_tx_add?id='+id+'&cardholder='+item.cardholder+'&opening_bank='+item.opening_bank+'&card='+item.card
+						url:'/pagesA/my_tx_add/my_tx_add?id='+id+'&cardholder='+item.cardholder+'&opening_bank='+item.opening_bank+'&card='+item.card
 					})
 				}
 				if (e.index == 1) {
@@ -148,10 +148,58 @@
 				}
 			},
 			sc_d_fuc(id) {
-				uni.showToast({
-					icon: 'none',
-					title: '删除' + id
-				})
+				var that=this
+				// uni.showToast({
+				// 	icon: 'none',
+				// 	title: '删除' + id
+				// })
+				uni.showModal({
+				    title: '提示',
+				    content: '是否删除该银行卡?',
+				    success: function (res) {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+										var jkurl = '/bankCard/del'
+										var datas = {
+											token: that.loginMsg.userToken,
+											id:id
+										}
+										
+										// 单个请求
+										service.P_post(jkurl, datas).then(res => {
+											that.btn_kg = 0
+											console.log(res)
+											if (res.code == 1) {
+												var datas = res.data
+												// console.log(typeof datas)
+										
+												if (typeof datas == 'string') {
+													datas = JSON.parse(datas)
+												}
+										
+												uni.showToast({
+													icon: 'none',
+													title: '操作成功'
+												})
+												that.getbankCard()
+												
+												that.tx_crad=-1
+											}
+										}).catch(e => {
+											that.btn_kg = 0
+											console.log(e)
+											uni.showToast({
+												icon: 'none',
+												title: '操作失败'
+											})
+										})
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+				
+				
 			},
 			getbankCard() {
 				// const pageState1 = pageState.default(this)
@@ -187,7 +235,7 @@
 				})
 
 			},
-
+			
 			txtype_fuc(e) {
 				console.log(e.currentTarget.dataset.type)
 				this.tx_type = e.currentTarget.dataset.type
@@ -202,15 +250,53 @@
 			},
 			tx_sub() {
 				var that = this
+				
 				if (that.tx_mon == 0) {
-					wx.showToast({
+					uni.showToast({
 						icon: 'none',
 						title: '请输入提现金额',
 					})
 					return
 				}
-				wx.showToast({
-					title: '提现',
+				if(that.tx_type==0){
+					uni.showToast({
+						icon: 'none',
+						title: '微信提现',
+					})
+					return 
+				}
+				var jkurl = '/user/withDraw'
+				var datas = {
+					token: that.loginMsg.userToken,
+					card_id:that.bank_list[that.tx_crad].id,
+					money:that.tx_mon
+				}
+				
+				// 单个请求
+				service.P_post(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						uni.showToast({
+							icon:'none',
+							title:'提交成功，请耐心等待'
+						})
+						service.wxlogin()
+				
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
 				})
 			},
 			jump(e) {
@@ -289,6 +375,7 @@
 
 	.tx_int input {
 		font-size: 48rpx;
+		height: auto;
 	}
 
 	.tx_type {

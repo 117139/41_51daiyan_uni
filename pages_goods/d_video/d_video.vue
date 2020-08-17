@@ -2,15 +2,18 @@
 	<view>
 			<swiper :vertical="true" :circular="true" :current="current" :skip-hidden-item-layout="true" @change="changeCurrent" @animationfinish="changeItem">
 			    <swiper-item :item-id="oneItemParam">
-			        <video title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(oneItemParam)"  :loop="true" :poster="filter.imgIP_video(oneItemParam)" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			        <video title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(oneItemParam)" 
+							 :loop="true" :poster="filter.imgIP_video(oneItemParam)" :custom-cache="true" :controls="false" :show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			    </swiper-item>
 			
-			    <swiper-item :item-id="twoItemParam">
-			        <video title="2222222" id="myVideo1"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(twoItemParam)"  :loop="true" :poster="filter.imgIP_video(twoItemParam)" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			    <swiper-item :item-id="twoItemParam" v-if="videoList.length>1">
+			        <video title="2222222" id="myVideo1"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(twoItemParam)" 
+							 :loop="true" :poster="filter.imgIP_video(twoItemParam)" :custom-cache="true" :controls="false" :show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			    </swiper-item>
 			
-			    <swiper-item :item-id="threeItemParam">
-			        <video title="3333333" id="myVideo2"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(threeItemParam)" :loop="true" :poster="filter.imgIP_video(threeItemParam)" :custom-cache="true" :controls="false" :show-center-play-btn="true" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			    <swiper-item :item-id="threeItemParam" v-if="videoList.length>2">
+			        <video title="3333333" id="myVideo2"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(threeItemParam)"
+							 :loop="true" :poster="filter.imgIP_video(threeItemParam)" :custom-cache="true" :controls="false" :show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			    </swiper-item>
 			
 			</swiper>

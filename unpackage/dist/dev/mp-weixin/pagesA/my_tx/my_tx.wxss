@@ -66,6 +66,7 @@
 }
 .tx_int input.data-v-e210fd4a {
 	font-size: 48rpx;
+	height: auto;
 }
 .tx_type.data-v-e210fd4a {
 	width: 100%;

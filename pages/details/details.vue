@@ -96,7 +96,7 @@
 		  <view class="pj_box mt20" v-if="goodsData.comment.comment.length>0">
 		    <view class="pj_box_tit">
 		      <view class="p_tit_l">商品评价（{{goodsData.comment_count>0?goodsData.comment_count:0}}）</view>
-		      <view class="p_tit_r" :data-url="'/pages_goods/details_pl/details_pl?id='+g_id" @tap="jump">查看全部
+		      <view class="p_tit_r" :data-url="'/pages_goods/details_pl/details_pl?id='+g_id+'&dy_id='+dy_id+'&advocacyviceId='+advocacyviceId" @tap="jump">查看全部
 		        <text class="iconfont iconnext3"></text>
 		      </view>
 		    </view>
@@ -267,7 +267,7 @@
 						</view>
 						<view class="goods_get dis_flex">
 							<view v-if="item.is_get==2" class="goods_get_btn" @tap="get_yh(item.id)">领取</view>
-							<view v-if="item.is_get==1" class="goods_get_btn goods_get_btn1">已领取</view>
+							<view v-if="item.is_get==1" class="goods_get_btn goods_get_btn1">已领</view>
 						</view>
 					</view>
 				</scroll-view>
@@ -367,6 +367,8 @@
 			return {
 				btn_kg:0,
 				g_id:'',
+				dy_id:'',    //代言id
+				advocacyviceId:'',    //代言数据id
 				v_id:'',     //sku_id
 				indicatorDots: false,
 				autoplay: false,
@@ -429,7 +431,7 @@
 				}
 				var  newarr=[]
 				for(var i=0;i<arr.length;i++){
-					if(arr[i].value){
+					if(arr[i]&&arr[i].value){
 						newarr.push(arr[i].value)
 					}
 						
@@ -445,7 +447,10 @@
 		onLoad: function (options) {
 			this.g_id=options.id
 		  this.getyhlist()
-			
+			if(options.dy_id){
+				this.dy_id=options.dy_id
+				this.advocacyviceId=options.advocacyviceId
+			}
 		},
 		onShow() {
 			this.onRetry()
@@ -600,6 +605,8 @@
 				var jkurl = '/goods/goodsAdvoacyUserDetail'
 				var datas = {
 					gid:that.g_id,
+					advocacyId:that.dy_id,
+					advocacyviceId:that.advocacyviceId,
 					token: that.loginMsg.userToken,
 					page: that.star_page,
 					size:that.size
@@ -1158,6 +1165,7 @@
 			  let idx = e.currentTarget.dataset.selec
 				if(that.goodsData.is_pond_goods==2){
 					this.cnum= 1
+					return
 				}
 			  // console.log(e.detail)
 				if(that.guige_select.length==0){
@@ -1222,6 +1230,8 @@
 					g_id:that.g_id,
 					v_id:that.v_id,
 					sum:that.cnum,
+					advocacyId:that.dy_id,
+					advocacyviceId:that.advocacyviceId,
 					advocacy_user_id:that.dyr_type
 				}
 				// 单个请求
@@ -1285,8 +1295,10 @@
 			    that.btnkg= 1
 			  }
 				that.onClose()
+				// advocacyId:that.dy_id,
+					// advocacyviceId:that.advocacyviceId,
 			  uni.navigateTo({
-			    url: '/pages/Order/Order?type=1&v_id='+that.v_id+'&number='+that.cnum+'&advocacy_user_id='+that.dyr_type+'&v_id='+that.v_id
+			    url: '/pages/Order/Order?type=1&v_id='+that.v_id+'&number='+that.cnum+'&advocacy_user_id='+that.dyr_type+'&v_id='+that.v_id+'&dy_id='+that.dy_id+'&advocacyviceId='+that.advocacyviceId
 			  })
 			},
 			bm_fuc() {

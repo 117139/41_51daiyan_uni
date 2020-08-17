@@ -125,10 +125,14 @@
 				cur_swiper: 1,
 
 				btn_kg: 0,
-
+				btnkg:0,
 
 				g_id: '',
 				v_id: '', //sku_id
+				dy_id:'',
+				advocacyviceId:'',
+				dyr_type:0,
+				
 				sheetshow: false, //规格弹框控制
 				sheetshow1: false,
 
@@ -168,7 +172,7 @@
 				}
 				var newarr = []
 				for (var i = 0; i < arr.length; i++) {
-					if (arr[i].value) {
+					if (arr[i]&&arr[i].value) {
 						newarr.push(arr[i].value)
 					}
 				}
@@ -182,6 +186,10 @@
 		onLoad: function(options) {
 			this.g_id = options.id
 			this.onRetry()
+			if(options.dy_id){
+				this.dy_id=options.dy_id
+				this.advocacyviceId=options.advocacyviceId
+			}
 		},
 
 		/**
@@ -534,6 +542,10 @@
 				var that = this
 				let idx = e.currentTarget.dataset.selec
 				// console.log(e.detail)
+				if(that.goodsData.is_pond_goods==2){
+					this.cnum= 1
+					return
+				}
 				if (that.guige_select.length == 0) {
 					uni.showToast({
 						icon: 'none',
@@ -669,6 +681,8 @@
 					token: that.loginMsg.userToken,
 					g_id: that.g_id,
 					v_id: that.v_id,
+					advocacyId:that.dy_id,
+					advocacyviceId:that.advocacyviceId,
 					sum: that.cnum,
 					advocacy_user_id: that.dyr_type
 				}
@@ -735,7 +749,7 @@
 				that.onClose()
 				uni.navigateTo({
 					url: '/pages/Order/Order?type=1&v_id=' + that.v_id + '&number=' + that.cnum + '&advocacy_user_id=' + that.dyr_type +
-						'&v_id=' + that.v_id
+						'&v_id=' + that.v_id+'&dy_id='+that.dy_id+'&advocacyviceId='+that.advocacyviceId
 				})
 			},
 			bm_fuc() {

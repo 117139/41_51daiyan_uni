@@ -4,21 +4,21 @@
 			   <swiper-item :item-id="oneItemParam.a_id">
 			       <video title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" 
 						 :src="filter.imgIP(oneItemParam.video[0])"  :poster="filter.imgIP_video(oneItemParam.video[0])"
-						 :custom-cache="true" :controls="false" :loop="true" :show-center-play-btn="true" 
+						 :custom-cache="true" :controls="false" :loop="true" :show-center-play-btn="false" 
 						 :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			   </swiper-item>
 			   			
-			   <swiper-item :item-id="twoItemParam.a_id">
+			   <swiper-item :item-id="twoItemParam.a_id"  v-if="videoList.length>1">
 			       <video title="2222222" id="myVideo1"   @fullscreenchange="fullScreen_fuc" 
 						 :src="filter.imgIP(twoItemParam.video[0])"  :poster="filter.imgIP_video(twoItemParam.video[0])" 
-						 :custom-cache="true" :controls="false" :loop="true" :show-center-play-btn="true" 
+						 :custom-cache="true" :controls="false" :loop="true" :show-center-play-btn="false" 
 						 :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			   </swiper-item>
 			   			
-			   <swiper-item :item-id="threeItemParam.a_id">
+			   <swiper-item :item-id="threeItemParam.a_id" v-if="videoList.length>2">
 			       <video title="3333333" id="myVideo2"   @fullscreenchange="fullScreen_fuc" 
 						 :src="filter.imgIP(threeItemParam.video[0])" :poster="filter.imgIP_video(threeItemParam.video[0])" 
-						 :custom-cache="true" :controls="false" :loop="true" :show-center-play-btn="true" 
+						 :custom-cache="true" :controls="false" :loop="true" :show-center-play-btn="false" 
 						 :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			   </swiper-item>
 			</swiper>

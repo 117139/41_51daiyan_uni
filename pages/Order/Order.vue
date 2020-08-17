@@ -135,6 +135,8 @@
 				sku_id: '', //规格
 				sku_number: '', //数量
 				advocacy_user_id:'',   //代言人
+				dy_id:'',
+				advocacy_user_id:'',
 				use_dou:0,
 				
 				g_data:'',    //1,2（type=2）购物车 c_id
@@ -169,6 +171,8 @@
 				that.type=option.type
 				that.sku_id=option.v_id
 				that.sku_number=option.number
+				that.dy_id=option.dy_id
+				that.advocacyviceId=option.advocacyviceId
 				that.advocacy_user_id=option.advocacy_user_id
 			}else{
 				that.type=option.type
@@ -494,6 +498,8 @@
 			  		v_id:that.sku_id,
 						address_id:that.address.id,
 						advocacy_bean:that.use_dou,
+						advocacyId:that.dy_id,
+						advocacyviceId:that.advocacyviceId,
 						advocacy_user_id:that.advocacy_user_id,
 			  		number:that.sku_number,
 						coupon_list:coupon_list
@@ -517,7 +523,7 @@
 				}
 			  // 单个请求
 			  service.P_post(jkurl, datas).then(res => {
-			  	
+			  	that.btnkg=0
 			  	console.log(res)
 			  	if (res.code == 1) {
 			  		var datas = res.data
@@ -537,6 +543,11 @@
 									title:'拉起操作'
 								})
 								that.btnkg=0
+								setTimeout(function (){
+									uni.redirectTo({
+										url:'/pagesA/OrderList/OrderList'
+									})
+								},1000)
 							},1000)
 			  	}
 			  }).catch(e => {

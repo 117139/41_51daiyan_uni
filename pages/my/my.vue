@@ -80,7 +80,7 @@
 		        <view class="yue_li">
 		          <view>代言商品</view>
 		          <view class="zhishu">
-		            <text>{{loginMsg.follow_buy_goods_number?loginMsg.follow_buy_goods_number:0}}</text>件</view>
+		            <text>{{loginMsg.advocacy_goods_number?loginMsg.advocacy_goods_number:0}}</text>件</view>
 		        </view>
 		        <view class="yue_li">
 		          <view>跟随购买</view>

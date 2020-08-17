@@ -1,69 +1,72 @@
 <template>
 	<view>
-		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>重试</view>
 		<view class="container" v-if="htmlReset==0">
 		  <!-- <view class="hengxian"></view> -->
 		  <view class='dis_flex ju_a w100 pb40 pt20 bgfff tab_box'>
-		    <block v-for="(item,idx) in datalist">
+		    <block v-for="(item,idx) in data_list">
 		      <view :class="type==idx?'typecur':'c9'" :data-type="idx" @tap='bindcur'>{{item}}</view>
 		    </block>
 		
 		  </view>
-		
-		  <view class="goodsBox w100" v-if="type==idx0" v-for="(item0,idx0) in datalist">
-		    <view class="zanwu" v-if="goods[idx0].length==0">暂无内容</view>
+		<view class="zanwu" v-if="datas.length==0">暂无内容</view>
+		  <view class="goodsBox w100">
 		    <view class="goodsBox contbox">
-		      <view class="goods" v-for="(item,idx) in goods" :data-tab="idx">
-		        <view class="dianpu_tit" @tap="jump" :data-url="'/pages/dp_index/dp_index?shop_id=1&type='+type">
-		          <image class="dp_logo" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-		          <text>石说的达开旗舰店</text>
+		      <view class="goods" v-for="(item,idx) in datas">
+		        <view class="dianpu_tit" @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+item.order.group_code">
+		          <image class="dp_logo" :src="filter.imgIP(item.order.head_portrait)"></image>
+		          <text class="flex_1">{{item.order.store_name}}</text>
+		          <!-- <text>111</text> -->
 		        </view>
-		        <block v-for="(item1,idx1) in item">
-		          <view class="goods1" @tap="jump" :data-url="'/pagesA/OrderDetails/OrderDetails?shop_id=1&type='+type">
+		        <block v-for="(item1,idx1) in item.order_goods">
+		          <view class="goods1" @tap="jump" :data-url="'/pagesA/OrderDetails/OrderDetails?id='+item.order.o_id">
 		            <view v-if="type==4" class="xuanze" :data-selec="idx" :data-selec1="idx1" @tap.stop="select">
-		              <view class="xuanze1" :class="goods_sele[idx][idx1].xuan==true? 'xuanze2':''">
-		                <icon v-if="goods_sele[idx][idx1].xuan==true" type="success" size="14" color="#F7B43B" />
+		              <view class="xuanze1" :class="item1.xuan==true? 'xuanze2':''">
+		                <icon v-if="item1.xuan==true" type="success" size="14" color="#F7B43B" />
 		              </view>
 		            </view>
 		            <view class="goodsImg">
-		              <image class="goodsImg" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
+		              <image class="goodsImg" :src="filter.imgIP(item1.gd_vice_pic)" mode="aspectFill"></image>
 		            </view>
 		            <view class="goodsinr">
 		              <!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
-		              <view class="goodsname fz30 c30">{{'黄金曼特宁精品咖啡/袋泡咖啡/耳挂 咖啡6*10袋装'}}</view>
-		              <view class="goodspri">{{'已选择：苏门答腊黄金曼特宁深度烘培'}}</view>
+		              <view class="goodsname fz30 c30">{{item1.gd_name}}</view>
+		              <view class="goodspri">已选择：<text v-for="(item2,idx2) in item1.gd_attr">{{item2.value+' '}}</text></view>
 		              <view class="goodspri1">
 		                <!-- <text class="fz36 cf6377a fwb">￥{{filter.moneyFormat('48')}}</text> -->
-		                <text class="fz36 cf6377a fwb">￥{{'48'}}</text>
-		                <text class="fz36 c9">x1</text>
+		                <text class="fz36 cf6377a fwb">￥{{item1.single_price}}</text>
+		                <text class="fz36 c9">x{{item1.number}}</text>
 		
 		
 		              </view>
 		            </view>
 		          </view>
-		          <view v-if="type==4" class="o_cz">
-		            <view  @tap.stop="jump" data-url="/pagesA/daiyan_fabu/daiyan_fabu">我要代言</view>
+		          <view v-if="item1.is_comment==2||item1.is_advocacy==2" class="o_cz">
+								<view v-if="item1.is_comment==2" @tap.stop="jump" data-url="/pages/goods_pj/goods_pj">评价</view>
+		            <view v-if="item1.is_advocacy==2" @tap.stop="jump" data-url="/pagesA/daiyan_fabu/daiyan_fabu">我要代言</view>
 		          </view>
+							<view>
+							</view>
 		        </block>
 		
 		        <view class="o_xj">
 		          <view></view>
-		          <view>共3件，小记
-		            <text>¥144</text>
+		          <view>共{{getnum(idx)}}件，小记 
+		            <text style="margin-left: 8rpx;">¥ {{item.order.o_price}}</text>
 		          </view>
 		
 		        </view>
 		        <view class="o_cz">
-		          <view v-if="type==3" @tap.stop="jump" data-url="/pages/goods_pj/goods_pj">评价</view>
+		          <view v-if="type==3" @tap.stop="jump" data-url="/pages_goods/goods_pj/goods_pj">评价</view>
 		          <!-- <view v-if="type==0||type==4}}" @tap.stop="jump" data-url="/pages/daiyan_fabu/daiyan_fabu">我要代言</view> -->
-		          <view v-if="type==0||type==2">确认收货</view>
-		          <view v-if="type==0||type==1">付款</view>
-		          <view v-if="type==0||type==1" class="qx">取消订单</view>
+		          <view v-if="item.order.o_ddstatus==4||item.order.o_ddstatus==5" @tap.stop="get_goods(item.order.o_id)">确认收货</view>
+		          <view v-if="item.order.o_paystatus==1">付款</view>
+		          <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view>
 		        </view>
 		      </view>
 		    </view>
 		  </view>
-		  <view class="vbottom" v-if="type==4">
+		  <view class="vbottom" v-if="type==4&&datas.length>0">
 		    <view class="selecAll" @tap="selecAll">
 		      <view class="xuanze1 all " :class="all==true? 'xuanze2':''">
 		        <icon v-if="all==true" type="success" size="14" color="#F7B43B" />
@@ -93,21 +96,19 @@
 			return {
 				btnkg:0,
 				htmlReset:0,
-				datalist:[
+				data_list:[
 					'全部',
 					'待付款',
+					'待发货',
 					'待收货',
 				  '待评价',
 					'待代言'
 				],
-				pages:[1,1,1,1,1],
-				type:0,
-				goods:[
-				  [{ "num": 1, xuan: false, id: 1 },
-				    { "num": 1, xuan: false, id: 2 },],
-				  [{ "num": 1, xuan: false, id: 3 },
-				  { "num": 1, xuan: false, id: 4 },]
-				],
+				datas:[],
+				page:1,
+				size:20,
+				type:0,    //99全部订单  1：代付款 2：待收货 3：待评价  4：待代言
+				
 				shopNum:[],
 				sum:0,
 				otype:-2,
@@ -125,23 +126,27 @@
 				all: false,
 			}
 		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin',
+				// 'order_ls_data'
+			]),
+			
+		},
 		onLoad(option) {
 			if(option.type){
 				this.type=option.type
 			}
+			this.onRetry()
 		},
 		onShow(){
 			var pages=1
-			var goods=[ 
-		    [{ "num": 1, xuan: false, id: 1 },
-		      { "num": 1, xuan: false, id: 2 },],
-		    [{ "num": 1, xuan: false, id: 3 },
-		    { "num": 1, xuan: false, id: 4 },]
-		   ]
-			this.goods=goods
+			this.datas=[]
 			this.pages=pages
 		  if (this.btnkg==1){
-				that.btnkg=0
+				this.btnkg=0
 			}
 			console.log('我显示了')
 			// this.getOrderList('onshow')
@@ -150,16 +155,213 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  wx.stopPullDownRefresh();
+		  this.onRetry()
+		},
+		/**
+		 * 页面上拉触底事件的处理函数
+		 */
+		onReachBottom: function () {
+			this.getdatalist()
 		},
 		methods: {
-			cload(){
-				var pages=1
-				var goods=[1,1,]
-				this.goods=goods
-				this.pages=pages
-				console.log('我显示了')
-				// this.getOrderList('onshow')
+			del_order(id){
+				var that =this
+				uni.showModal({
+				    title: '提示',
+				    content: '是否取消该订单',
+				    success: function (res) {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+										var jkurl='/order/cancel'
+										var data={
+											token:that.loginMsg.userToken,
+											id:id
+										}
+										service.post(jkurl, data,
+											function(res) {
+												
+												// if (res.data.code == 1) {
+												if (res.data.code == 1) {
+													var datas = res.data.data
+													// console.log(typeof datas)
+													that.htmlReset=0
+													if (typeof datas == 'string') {
+														datas = JSON.parse(datas)
+													}
+													uni.showToast({
+														icon: 'none',
+														title: '操作成功'
+													})
+													that.onRetry()
+												} else {
+													that.htmlReset=1
+													if (res.data.msg) {
+														uni.showToast({
+															icon: 'none',
+															title: res.data.msg
+														})
+													} else {
+														uni.showToast({
+															icon: 'none',
+															title: '操作失败'
+														})
+													}
+												}
+											},
+											function(err) {
+												that.htmlReset=1
+												that.btnkg=0
+												
+													uni.showToast({
+														icon: 'none',
+														title: '操作失败'
+													})
+											
+											}
+										)
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+			},
+			
+			//确认收货
+			get_goods(id){
+				var that =this
+				var jkurl='/order/confirmReceipt'
+				var data={
+					token:that.loginMsg.userToken,
+					id:id
+				}
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+				}
+				service.post(jkurl, data,
+					function(res) {
+						that.btnkg=0
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							
+							var datas = res.data.data
+							// console.log(typeof datas)
+							that.htmlReset=0
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							uni.showToast({
+								icon: 'none',
+								title: '操作成功'
+							})
+							that.onRetry()
+						} else {
+							that.htmlReset=1
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
+							}
+						}
+					},
+					function(err) {
+						that.htmlReset=1
+						that.btnkg=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+					
+					}
+				)
+			},
+			getnum(idx){
+				var that =this
+				var list=that.datas[idx].order_goods
+				var znum=0
+				for(var i=0;i<list.length;i++){
+					znum=znum+list[i].number*1
+				}
+				return znum
+			},
+			onRetry(){
+				this.datas=[]
+				this.page=1
+				this.getdatalist()
+			},
+			getdatalist(){
+				
+				let that =this
+				var jkurl='/order'
+				var data={
+					token:that.loginMsg.userToken,
+					type:that.type==0?99:that.type,
+					page:that.page,
+					size:that.size
+				}
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+				}
+				service.get(jkurl, data,
+					function(res) {
+						that.btnkg=0
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							var datas = res.data.data
+							// console.log(typeof datas)
+							that.htmlReset=0
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							if(that.page==1){
+								that.datas=datas
+							}else{
+								if(datas.length){
+									uni.showToast({
+										icon:'none',
+										title:'到底了。。。'
+									})
+									return
+								}
+								that.datas=that.datas.concat(datas)
+							}
+							that.page++
+						} else {
+							that.htmlReset=1
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
+							}
+						}
+					},
+					function(err) {
+						that.htmlReset=1
+						that.btnkg=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+					
+					}
+				)
 			},
 			jump_fabu(){
 			  let that = this
@@ -195,9 +397,10 @@
 			bindcur(e){
 				var that =this
 			  console.log(e.currentTarget.dataset.type)
+				if(that.type== e.currentTarget.dataset.type) return
 			  that.type= e.currentTarget.dataset.type
 				// that.getOrderList()
-				
+				this.onRetry()
 			},
 			select(e) {
 			  let that = this
@@ -206,17 +409,19 @@
 			  let sid = e.currentTarget.dataset.selec
 			  let sid1 = e.currentTarget.dataset.selec1
 			  // console.log(this.data.goods_sele[sid].xuan)
-			  if (that.goods_sele[sid][sid1].xuan == false) {
-			    that.goods_sele[sid][sid1].xuan = true
-			    that.goods_sele=that.goods_sele
+			  if (that.datas[sid].order_goods[sid1].xuan == false) {
+			    // that.goods_sele[sid][sid1].xuan = true
+			    // that.goods_sele=that.goods_sele
+					that.$set(that.datas[sid].order_goods[sid1],'xuan',true)
 			  } else {
-			    that.goods_sele[sid][sid1].xuan = false
-			    that.goods_sele= that.goods_sele
+					that.$set(that.datas[sid].order_goods[sid1],'xuan',false)
+			    // that.goods_sele[sid][sid1].xuan = false
+			    // that.goods_sele= that.goods_sele
 			  }
 			  let qx = true
-			  for (let i in that.goods_sele) {
-			    for (let j in that.goods_sele[i]){
-			      if (that.goods_sele[i][j].xuan == false) {
+			  for (let i in that.datas) {
+			    for (let j in that.datas[i].order_goods){
+			      if (that.datas[i].order_goods[j].xuan == false) {
 			        qx = false
 			        break
 			      }
@@ -448,78 +653,6 @@
 				
 			},
 			
-			//获取列表
-			getOrderList(ttype){
-				// const pageState1 = pageState.default(this)
-				// pageState1.loading()    // 切换为loading状态
-				// pageState1.finish()
-				// return
-				let that = this
-				//http://water5100.800123456.top/WebService.asmx/order
-				wx.request({
-					url:  app.IPurl+'/api/orderList',
-					data:{
-						token:wx.getStorageSync('token'),
-						status_code:that.data.type,
-						page:that.data.pages[that.data.type],
-						page_length:10
-					},
-					header: {
-						'content-type': 'application/x-www-form-urlencoded' 
-					},
-					dataType:'json',
-					method:'get',
-					success(res) {
-						if(res.data.code==1){
-							wx.setNavigationBarTitle({
-								title:'订单列表'
-							})
-							that.htmlReset=0
-								console.log(ttype)
-								let resultd=res.data.data
-								if(ttype=='onshow'){
-									var pages=[1,1,1,1,1]
-									var goods=[ [],[],[],[],[], ]
-									that.data.goods=goods
-								}
-								if(resultd.length>0){
-									that.data.goods[that.data.type]=that.data.goods[that.data.type].concat(resultd)
-									that.data.pages[that.data.type]++
-									that.goods=that.goods
-									that.pages=that.pages
-								
-									console.log(that.data.goods)
-								}else{
-									wx.showToast({
-										icon:"none",
-										title:"没有更多数据了"
-									})
-								}
-								// console.log(res.data.list)
-								
-								
-						}else{
-							wx.showToast({
-								icon:"none",
-								title:"获取失败"
-							})
-							that.htmlReset=1
-							console.log(res.data)
-						}
-						
-						// pageState1.finish()    // 切换为finish状态
-					},
-					fail(err) {
-						wx.showToast({
-							icon:"none",
-							title:"获取失败"
-						})
-						that.htmlReset=1
-						console.log(err)
-						 // pageState1.error()    // 切换为error状态
-					}
-				})
-			},
 			//订单详情
 			goOrderDetails(e){
 				console.log(e.currentTarget.dataset.id)
@@ -541,9 +674,6 @@
 			jump(e) {
 			  service.jump(e)
 			},
-			onRetry(){
-				this.onLoad()
-			}
 		}
 	}
 </script>
