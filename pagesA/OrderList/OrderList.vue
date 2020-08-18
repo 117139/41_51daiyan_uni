@@ -20,7 +20,7 @@
 		        </view>
 		        <block v-for="(item1,idx1) in item.order_goods">
 		          <view class="goods1" @tap="jump" :data-url="'/pagesA/OrderDetails/OrderDetails?id='+item.order.o_id">
-		            <view v-if="type==4" class="xuanze" :data-selec="idx" :data-selec1="idx1" @tap.stop="select">
+		            <view v-if="type==5" class="xuanze" :data-selec="idx" :data-selec1="idx1" @tap.stop="select(idx,idx1,item1)">
 		              <view class="xuanze1" :class="item1.xuan==true? 'xuanze2':''">
 		                <icon v-if="item1.xuan==true" type="success" size="14" color="#F7B43B" />
 		              </view>
@@ -43,7 +43,7 @@
 		          </view>
 		          <view v-if="item1.is_comment==2||item1.is_advocacy==2" class="o_cz">
 								<view v-if="item1.is_comment==2" @tap.stop="jump" data-url="/pages/goods_pj/goods_pj">评价</view>
-		            <view v-if="item1.is_advocacy==2" @tap.stop="jump" data-url="/pagesA/daiyan_fabu/daiyan_fabu">我要代言</view>
+		            <view v-if="item1.is_advocacy==2" @tap.stop="jump_fabu(item1)" data-url="/pagesA/daiyan_fabu/daiyan_fabu">我要代言</view>
 		          </view>
 							<view>
 							</view>
@@ -57,7 +57,7 @@
 		
 		        </view>
 		        <view class="o_cz">
-		          <view v-if="type==3" @tap.stop="jump" data-url="/pages_goods/goods_pj/goods_pj">评价</view>
+		          <!-- <view v-if="item1.is_comment==2" @tap.stop="jump" data-url="/pages_goods/goods_pj/goods_pj">评价</view> -->
 		          <!-- <view v-if="type==0||type==4}}" @tap.stop="jump" data-url="/pages/daiyan_fabu/daiyan_fabu">我要代言</view> -->
 		          <view v-if="item.order.o_ddstatus==4||item.order.o_ddstatus==5" @tap.stop="get_goods(item.order.o_id)">确认收货</view>
 		          <view v-if="item.order.o_paystatus==1">付款</view>
@@ -66,7 +66,7 @@
 		      </view>
 		    </view>
 		  </view>
-		  <view class="vbottom" v-if="type==4&&datas.length>0">
+		  <view class="vbottom" v-if="type==5&&datas.length>0">
 		    <view class="selecAll" @tap="selecAll">
 		      <view class="xuanze1 all " :class="all==true? 'xuanze2':''">
 		        <icon v-if="all==true" type="success" size="14" color="#F7B43B" />
@@ -115,12 +115,7 @@
 				
 				
 				
-				goods_sele: [
-				  [{ "num": 1, xuan:false,id:1},
-				    { "num": 1, xuan: false, id: 2 },],
-				  [{ "num": 1, xuan: false, id: 3 },
-				    { "num": 1, xuan: false, id: 4 },]
-				],
+				goods_sele: [],
 				// goods_sele: [],
 				xuan: false,
 				all: false,
@@ -143,12 +138,8 @@
 		},
 		onShow(){
 			var pages=1
-			this.datas=[]
-			this.pages=pages
-		  if (this.btnkg==1){
-				this.btnkg=0
-			}
-			console.log('我显示了')
+			// this.datas=[]
+			this.onRetry()
 			// this.getOrderList('onshow')
 		},
 		/**
@@ -164,6 +155,7 @@
 			this.getdatalist()
 		},
 		methods: {
+			...mapMutations(['dy_fb_fuc']),
 			del_order(id){
 				var that =this
 				uni.showModal({
@@ -363,35 +355,29 @@
 					}
 				)
 			},
-			jump_fabu(){
+			jump_fabu(item){
 			  let that = this
-			  let xuanG = that.goods_sele
-			  let idG = ''
-			  var xzarr = []
-			  for (let i=0;i<xuanG.length;i++) {
-			    for (let j = 0; j < xuanG[i].length; j++){
-			      if (xuanG[i][j].xuan) {
-			        if (idG == '') {
-			          idG = xuanG[i][j].id
-			
-			        } else {
-			          idG += ',' + xuanG[i][j].id
-			        }
-			        xzarr.push(that.goods[i])
-			      }
-			    }
-			
-			    // console.log(idG)
-			  }
-			  xzarr = JSON.stringify(xzarr)
-			  console.log(xzarr)
-			  console.log(idG)
-			  if (idG !== '') {
-			    wx.navigateTo({
-			      url: '/pagesA/daiyan_fabu/daiyan_fabu',
-			    })
-			    // app.openOrder(idG, xzarr, 1)
-			  }
+				if(!item){
+					if(that.goods_sele.length==0){
+						uni.showToast({
+							icon:'none',
+							title:'请先选择商品'
+						})
+						return
+					}
+					that.dy_fb_fuc(that.goods_sele)
+				}else{
+					var arr=[]
+					arr.push(item)
+					that.dy_fb_fuc(arr)
+				}
+			 
+				
+				
+				wx.navigateTo({
+				  url: '/pagesA/daiyan_fabu/daiyan_fabu',
+				})
+		
 			  
 			},
 			bindcur(e){
@@ -402,26 +388,43 @@
 				// that.getOrderList()
 				this.onRetry()
 			},
-			select(e) {
+			select(idx,idx1,item) {
 			  let that = this
-			  console.log(e.currentTarget.dataset.selec)
-			  console.log(e.currentTarget.dataset.selec1)
-			  let sid = e.currentTarget.dataset.selec
-			  let sid1 = e.currentTarget.dataset.selec1
+			  // console.log(e.currentTarget.dataset.selec)
+			  // console.log(e.currentTarget.dataset.selec1)
+			  let sid = idx
+			  let sid1 = idx1
 			  // console.log(this.data.goods_sele[sid].xuan)
-			  if (that.datas[sid].order_goods[sid1].xuan == false) {
+			  if (!that.datas[sid].order_goods[sid1].xuan) {
 			    // that.goods_sele[sid][sid1].xuan = true
 			    // that.goods_sele=that.goods_sele
 					that.$set(that.datas[sid].order_goods[sid1],'xuan',true)
+					var push_kg=true
+					for(var i=0;i<that.goods_sele.length;i++){
+						if(that.goods_sele[i].ov_id==item.ov_id){
+							push_kg=false
+						}
+					}
+					if(push_kg){
+						that.goods_sele.push(item)
+					}
 			  } else {
 					that.$set(that.datas[sid].order_goods[sid1],'xuan',false)
+					for(var i=0;i<that.goods_sele.length;i++){
+						console.log(that.goods_sele[i].ov_id,item.ov_id)
+						console.log(that.goods_sele[i].ov_id==item.ov_id)
+						if(that.goods_sele[i].ov_id==item.ov_id){
+							
+							that.goods_sele.splice(i,1)
+						}
+					}
 			    // that.goods_sele[sid][sid1].xuan = false
 			    // that.goods_sele= that.goods_sele
 			  }
 			  let qx = true
 			  for (let i in that.datas) {
 			    for (let j in that.datas[i].order_goods){
-			      if (that.datas[i].order_goods[j].xuan == false) {
+			      if (!that.datas[i].order_goods[j].xuan) {
 			        qx = false
 			        break
 			      }
@@ -438,23 +441,33 @@
 			  // that.countpri()
 			},
 			selecAll() {
+				var that =this
 			  let kg
-			  if (this.all == false) {
+			  if (that.all == false) {
 			    kg = true
+					var new_sele=[]
+					for (var i=0;i<that.datas.length;i++) {
+					  
+					  for (var j=0;j<that.datas[i].order_goods.length;j++) {
+							console.log(i,j)
+							console.log(that.datas[i].order_goods[j])
+					    that.$set(that.datas[i].order_goods[j],'xuan',kg)
+							new_sele.push(that.datas[i].order_goods[j])
+					  }
+					}
+					that.goods_sele=new_sele
 			  } else {
-			    kg = false
-			  }
-			  this.all= kg
-			  // this.goods_sele[sid].xuan=true
-			  for (let i in this.goods_sele) {
-			    
-			    for (let j in this.goods_sele[i]) {
-			      this.goods_sele[i][j].xuan = kg
+					kg=false
+					that.goods_sele=[]
+			    for (var i=0 ;i<that.datas.length;i++) {
+			      
+			      for (var j=0;j<that.datas[i].order_goods.length;j++) {
+			        that.$set(that.datas[i].order_goods[j],'xuan',kg)
+			      }
 			    }
 			  }
-			  this.goods_sele= this.goods_sele
-			  //计算总价
-			  // this.countpri()
+			  that.all= kg
+			 
 			},
 			gopinlun(e){
 				wx.navigateTo({

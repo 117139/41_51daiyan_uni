@@ -22,9 +22,21 @@ const store = new Vuex.Store({
 		wxlogin: 0,
 		renzheng:'',
 		order_ls_data:'',
-		spurl:[]
+		spurl:[],
+		dy_fb_list:[],
+		ov_ids:'',
 	},
 	mutations: {
+		
+		dy_fb_fuc(state,dy_fb_list){
+			state.dy_fb_list = dy_fb_list || [];
+			var ov_ids=[]
+			for(var i=0;i<dy_fb_list.length;i++){
+				ov_ids.push(dy_fb_list[i].ov_id)
+			}
+			console.log(ov_ids)
+			state.ov_ids = ov_ids.join(',')
+		},
 		spurl_fuc(state,spurl){
 			state.spurl = spurl || [];
 		},

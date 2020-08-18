@@ -634,8 +634,10 @@
 							that.btn_kg=0
 							return
 						}
+						
 						if(that.star_page==1){
 							that.star_list =datas
+							that.dyr_type=datas[0].user_id
 							// that.dyr_type=datas[0].user_id
 						}else{
 							
@@ -1400,7 +1402,7 @@
 			
 			txtype_fuc(id) {
 			  if(this.dyr_type== id){
-					this.dyr_type= 0
+					// this.dyr_type= 0
 				}else{
 					this.dyr_type= id
 				}

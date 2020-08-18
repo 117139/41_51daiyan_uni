@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='cload'>重试</view>
 		<view class="container" v-if="htmlReset==0">
 		  <!-- <view class="hb_canvas" style="position: fixed; top: -199999rpx;">
 		    <image class="hb_bg draw_canvas" src="/static/images/hbbg.jpg"></image>
@@ -31,23 +31,23 @@
 		  <!-- <wxml-to-canvas class="widget"></wxml-to-canvas> -->
 		  <image :src="src" style="width: 375px; height: 667px;position:fixed;top:-9999999px;"></image>
 		  <view class="goodsBox w100">
-		    <view v-if="open_type>idx" class="quan_goods" v-for="(item,idx) in data_list" @tap="jump" data-url="/pages/details/details">
-		      <image class="quan_goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
+		    <view v-if="open_type>idx" class="quan_goods" v-for="(item,idx) in dy_fb_list" @tap="jump" data-url="/pages/details/details">
+		      <image class="quan_goods_img" :src="filter.imgIP(item.gd_vice_pic)" mode="aspectFill"></image>
 		      <view class="quan_goods_msg">
-		        <view class="quan_goods_name oh1">苏泊尔IH家用大容量智能电饭锅</view>
+		        <view class="quan_goods_name oh1">{{item.gd_name}}</view>
 		        <view class="quan_goods_pri">
-		          <text class="pri1">¥668</text>
-		          <text class="pri2">¥1368</text>
+		          <text class="pri1">￥{{item.single_price}}</text>
+		          <text class="pri2">¥{{item.original_price}}</text>
 		        </view>
 		        <view class="quan_goods_btn">
-		          <view class="goods_btn1">库存:11000</view>
+		          <view class="goods_btn1">库存:{{item.total_number}}</view>
 		          <view class="goods_btn2">
-		            <text>5200+</text>代言人</view>
+		            <text>{{item.advocacy_mannumber}}</text>代言人</view>
 		        </view>
 		      </view>
 		    </view>
 		    <view class="goods_more" v-if="open_type==2">
-		      <view>共{{data_list.length}}件</view>
+		      <view>共{{dy_fb_list.length}}件</view>
 		      <view class="gm_more" @tap="open_more">点击查看更多</view>
 		    </view>
 		  </view>
@@ -67,7 +67,7 @@
 		    <view class="imgbox mb20">
 		      <view class="addimg1" v-for="(item,idx) in imgb" :data-idx="idx" @tap="imgdel">
 		        <!-- <image src="filter.imgIP(item)}}" data-src="filter.imgIP(item)}}" mode="aspectFill"></image> -->
-		        <image :src="item" :data-src="item" mode="aspectFill"></image>
+		        <image :src="filter.imgIP(item)" :data-src="item" mode="aspectFill"></image>
 		      </view>
 		
 		      <view v-if="imgb.length<9" class="addimg" @tap="scpic">
@@ -221,7 +221,9 @@
 		computed: {
 			...mapState([
 				'hasLogin',
-				'loginMsg'
+				'loginMsg',
+				'dy_fb_list',
+				'ov_ids',
 			])
 		},
 		onLoad(option) {
@@ -284,6 +286,11 @@
 			onClose() {
 			    this.sheetshow= false
 					this.$refs.popup.close()
+					if(this.xdxy_type==0){
+						uni.navigateBack({
+							delta:1
+						})
+					}
 			},
 			open_more(){
 			  this.open_type=10000
@@ -444,6 +451,7 @@
 			save_val(){
 			  var that = this
 			  var type = that.type
+				var path_list=''
 			  if (type == 0) {
 			    if (that.imgb.length == 0) {
 			      wx.showToast({
@@ -452,6 +460,7 @@
 			      })
 			      return
 			    }
+					path_list=that.imgb.join(',')
 			  }
 			  if (type == 1) {
 			    if (!that.sp_url) {
@@ -461,6 +470,7 @@
 			      })
 			      return
 			    }
+					path_list=that.sp_url
 			  }
 			  // if (type == 2) {
 			  //   if (!that.haibao) {
@@ -481,18 +491,70 @@
 					return
 				}
 				
-				wx.showToast({
-					title: '操作成功',
-				})
-				setTimeout(function () {
-				  wx.navigateTo({
-			      url: '/pagesA/daiyan_fabu_ok/daiyan_fabu_ok',
-			    })
-				}, 1000)
-				console.log(that.zhaungtai[that.index])
-				console.log(that.yuanyin[that.index1])
-				console.log(that.yname)
-				console.log(that.imgb)
+				var jkurl='/advocacy/add'
+				var data={
+					token:that.loginMsg.userToken,
+					ov_ids:that.ov_ids,
+					content:that.yname,
+					path:path_list,
+					type:that.type==0? 1:that.type==1? 2:that.type==2?3:1
+				}
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+				}
+				service.post(jkurl, data,
+					function(res) {
+						that.btnkg=0
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							
+							var datas = res.data.data
+							// console.log(typeof datas)
+							// that.htmlReset=0
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							wx.showToast({
+								title: '操作成功',
+							})
+							setTimeout(function () {
+							  wx.redirectTo({
+							    url: '/pagesA/daiyan_fabu_ok/daiyan_fabu_ok',
+							  })
+							}, 1000)
+						} else {
+							// that.htmlReset=1
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
+							}
+						}
+					},
+					function(err) {
+						// that.htmlReset=1
+						that.btnkg=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+					
+					}
+				)
+				
+				// console.log(that.zhaungtai[that.index])
+				// console.log(that.yuanyin[that.index1])
+				// console.log(that.yname)
+				// console.log(that.imgb)
 			},
 				
 			get_val(e) {
@@ -545,7 +607,7 @@
 			    })
 			    return
 			  }
-				var newdata = that.imgb
+				/*var newdata = that.imgb
 				console.log(i)
 				newdata.push(imgs[i])
 				that.imgb= newdata
@@ -553,31 +615,27 @@
 				if (news1 < 9&& i<imgs.length-1) {
 				  i++
 				  that.upimg(imgs, i)
-				}
-				return
+				}*/
+				// return
 			  // console.log(img1)
 			  wx.uploadFile({
-			    url: app.IPurl, //仅为示例，非真实的接口地址
+			    url: service.IPurl+'/upload/streamImg', //仅为示例，非真实的接口地址
 			    filePath: imgs[i],
-			    name: 'upfile',
+			    name: 'file',
 			    formData: {
-			      'apipage': 'uppic',
+			      'type': 1,
 			    },
 			    success(res) {
 			      // console.log(res.data)
 			      var ndata = JSON.parse(res.data)
-			      if (ndata.error == 0) {
-			        console.log(imgs[i], i, ndata.url)
-			        var newdata = that.data.imgb
+			      if (ndata.code == 1) {
+			        console.log(imgs[i], i,ndata.msg)
+			        var newdata = that.imgb
 			        console.log(i)
-			        newdata.push(ndata.url)
-			        that.setData({
-			          imgb: newdata
-			        })
-			        // i++
-			        // that.upimg(imgs, i)
-			        var news1 = that.data.imgb.length
-			        if (news1 < 9) {
+			        newdata.push(ndata.msg)
+			        that.imgb= newdata
+			        var news1 = that.imgb.length
+			        if (news1 < 9&& i<imgs.length-1) {
 			          i++
 			          that.upimg(imgs, i)
 			        }

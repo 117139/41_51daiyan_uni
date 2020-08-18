@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="container">
-		  <image class="ok_bg" :src="filter.imgIP('fabu_ok.jpg')"></image>
+		  <image class="ok_bg" :src="filter.imgIP('/static_s/51daiyan/images/fabu_ok.jpg')"></image>
 		  <view class="okcz">
 		    <view class="btn1">保存图片并分享</view>
 		    <view class="btn2" @tap="goindex">回到首页</view>

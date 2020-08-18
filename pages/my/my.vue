@@ -115,11 +115,11 @@
 		          <image class="order_icon" :src="filter.imgIP('/static_s/51daiyan/images/my21.png')"></image>
 		          <view>待付款</view>
 		        </view>
-		        <view class="yue_li" @tap="jump" data-url="/pagesA/OrderList/OrderList?type=2" data-login="true" :data-haslogin="hasLogin">
+		        <view class="yue_li" @tap="jump" data-url="/pagesA/OrderList/OrderList?type=3" data-login="true" :data-haslogin="hasLogin">
 		          <image class="order_icon" :src="filter.imgIP('/static_s/51daiyan/images/my20.png')" ></image>
 		          <view>待收货</view>
 		        </view>
-		        <view class="yue_li" @tap="jump" data-url="/pagesA/OrderList/OrderList?type=4" data-login="true" :data-haslogin="hasLogin">
+		        <view class="yue_li" @tap="jump" data-url="/pagesA/OrderList/OrderList?type=5" data-login="true" :data-haslogin="hasLogin">
 		          <image class="order_icon" :src="filter.imgIP('/static_s/51daiyan/images/my22.png')"></image>
 		          <view>待代言</view>
 		        </view>
