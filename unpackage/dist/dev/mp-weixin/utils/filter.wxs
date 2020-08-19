@@ -26,9 +26,9 @@ var imgIP_video=function(img){
 	if(arr[arr.length-1]=='mp4'){
 		arr[arr.length-1]='jpg'
 	}
-	arr=arr.join('.')
+	newimg=arr.join('.')
 	// console.log(newimg)
-	return arr
+	return newimg
 }
 var moneyFormat = function(money) {
 		money=money-1+1

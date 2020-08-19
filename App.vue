@@ -499,4 +499,11 @@
 		line-height: 40rpx;
 		justify-content: center;
 	}
+	.data_last{
+		line-height: 100rpx;
+		text-align: center;
+		width: 100%;
+		font-size: 24rpx;
+		color: #666;
+	}
 </style>

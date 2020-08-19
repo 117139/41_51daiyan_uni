@@ -84,17 +84,8 @@
 		data() {
 			return {
 				btnkg:0,
-				store: [1, 1, 1, 1],
-				activity: [{
-						bm: 1
-					},
-					{
-						bm: 1
-					},
-					{
-						bm: 1
-					},
-				]
+				store: [],
+				activity: []
 			}
 		},
 		computed: {

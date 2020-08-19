@@ -307,7 +307,8 @@
 				var that =this
 			  var datas = {
 			  	token: that.loginMsg.userToken,
-			  	aau_id:id
+			  	aau_id:id,
+					activity_id:that.data_list[idx].a_activity_id
 			  }
 			  // 单个请求
 			  service.P_post('/activity/vote', datas).then(res => {

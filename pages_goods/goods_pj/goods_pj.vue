@@ -5,6 +5,15 @@
 			<view class="fw_list">
 				
 				<view class="fuwu_li">
+					<view class="d1">评价标签:</view>
+					<view class="fw_msg">
+						
+					</view>
+				</view>
+				<view class="pj_bq">
+					<view class="bq_li" :class="item.xuan==true? 'cur':''" v-for="(item,idx) in catelist" @tap="xz(idx)">{{item.title}}</view>
+				</view>
+				<view class="fuwu_li">
 					<view class="d1">发表评价:</view>
 					<view class="fw_msg">
 						
@@ -19,12 +28,12 @@
 				<view class="imgbox mb20">
 				  <view class="addimg1" v-for="(item,idx) in imgb" :data-idx="idx" @tap="imgdel">
 				    <!-- <image src="{{filter.imgIP(item)}}" data-src="{{filter.imgIP(item)}}" mode="aspectFill"></image> -->
-				    <image :src="item" :lazy-load='true' :data-src="item" mode="aspectFill"></image>
+				    <image :src="filter.imgIP(item)" :lazy-load='true' :data-src="item" mode="aspectFill"></image>
 				  </view>
 				
 				  <view v-if="imgb.length<9" class="addimg" @tap="scpic">
 				
-				    <image :src="filter.imgIP('/static_s/51daiyan/images/upimg1.png')"></image>
+				    <image :src="filter.imgIP('/static_s/51daiyan/images/upimg1.jpg')"></image>
 				  </view>
 				</view>
 		    
@@ -46,37 +55,32 @@
 	export default {
 		data() {
 			return {
-				btnkg:0,
+				btn_kg:0,
+				catelist:[],
 				htmlReset:0,
-				
+				ov_id:'',
 				yname:'',
 				imgb:[],
 			}
 		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
+		},
 		onLoad: function (option) {
-			// wx.setNavigationBarTitle({
-			// 	title:'加载中...'
-			// })
-		  // if(option.id){
-			// 	console.log(option.id)
-			// }
-			
-			// wx.setNavigationBarTitle({
-			// 	title: '订单列表'
-			// })
-			if(option.type){
-				this.type=option.type
+			this.getCate()
+			if(option.id){
+				this.ov_id=option.id
 			}
 			
 			
 			
 		},
 		onShow(){
-			var pages=1
-			var goods=[ 1,1 ]
-			this.goods=goods
-			this.pages=pages
-			this.goods=this.goods
+			this.page=1
 		  if (this.btnkg==1){
 				that.btnkg=0
 			}
@@ -102,26 +106,86 @@
 		  wx.stopPullDownRefresh();
 		},
 		methods: {
-			
+			xz(idx){
+				var that =this
+				if (!that.catelist[idx].xuan) {
+					that.$set(that.catelist[idx],'xuan',true)
+					
+				} else {
+					that.$set(that.catelist[idx],'xuan',false)
+				}
+			},
+			getCate(){
+				var that =this
+				var datas={
+					type:4
+				}
+				// 单个请求
+				service.P_get('/cate/list',datas).then(res => {
+				  console.log(res)
+					if(res.code==1){
+						that.catelist=res.data
+						
+					}
+				}).catch(e => {
+				  console.log(e)
+					uni.showToast({
+						icon:'none',
+						title:'获取数据失败'
+					})
+				})
+				
+			},
 			save_val(){
 				var that =this
-				if(!that.data.yname){
+				if(!that.yname){
 					wx.showToast({
 					  icon: 'none',
 					  title: '请输入您的评价',
 					})
 					return
 				}
-				
-				wx.showToast({
-					title: '操作成功',
+				var tag=[]
+				for(var i=0;i<that.catelist.length;i++){
+					if(that.catelist[i].xuan){
+						tag.push(that.catelist[i].title)
+					}
+				}
+				tag.join(',')
+				var datas={
+					token:that.loginMsg.userToken,
+					ov_id:that.ov_id,
+					tag:tag,
+					img:that.imgb.join(','),
+					content:that.yname,
+				}
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+				}
+				// 单个请求
+				service.P_post('/order/appraiseGoods',datas).then(res => {
+				  console.log(res)
+					if(res.code==1){
+						wx.showToast({
+							title: '操作成功',
+						})
+						setTimeout(function () {
+						  wx.navigateBack()
+						}, 1000)
+						
+						console.log(that.yname)
+						console.log(that.imgb)
+					}
+				}).catch(e => {
+				  console.log(e)
+					uni.showToast({
+						icon:'none',
+						title:'获取数据失败'
+					})
 				})
-				setTimeout(function () {
-				  wx.navigateBack()
-				}, 1000)
-				
-				console.log(that.yname)
-				console.log(that.imgb)
+			
 			},
 				
 			get_val(e) {
@@ -174,37 +238,35 @@
 			    })
 			    return
 			  }
-				var newdata = that.imgb
+				/*var newdata = that.imgb
 				console.log(i)
 				newdata.push(imgs[i])
-				that.imgb=newdata
+				that.imgb= newdata
 				var news1 = that.imgb.length
 				if (news1 < 9&& i<imgs.length-1) {
 				  i++
 				  that.upimg(imgs, i)
-				}
-				return
+				}*/
+				// return
 			  // console.log(img1)
 			  wx.uploadFile({
-			    url: app.IPurl, //仅为示例，非真实的接口地址
+			    url: service.IPurl+'/upload/streamImg', //仅为示例，非真实的接口地址
 			    filePath: imgs[i],
-			    name: 'upfile',
+			    name: 'file',
 			    formData: {
-			      'apipage': 'uppic',
+			      'type': 1,
 			    },
 			    success(res) {
 			      // console.log(res.data)
 			      var ndata = JSON.parse(res.data)
-			      if (ndata.error == 0) {
-			        console.log(imgs[i], i, ndata.url)
+			      if (ndata.code == 1) {
+			        console.log(imgs[i], i,ndata.msg)
 			        var newdata = that.imgb
 			        console.log(i)
-			        newdata.push(ndata.url)
+			        newdata.push(ndata.msg)
 			        that.imgb= newdata
-			        // i++
-			        // that.upimg(imgs, i)
 			        var news1 = that.imgb.length
-			        if (news1 < 9) {
+			        if (news1 < 9&& i<imgs.length-1) {
 			          i++
 			          that.upimg(imgs, i)
 			        }
@@ -247,11 +309,11 @@
 
 <style scoped>
 page{
-  background: #f5f5f5;
+  background: #fff;
 }
 .container{
 	min-height: 100vh;
-	background: #f5f5f5;
+	background: #fff;
 	padding-top: 1rpx;
   padding-bottom: 100rpx;
 }
@@ -584,7 +646,7 @@ text{
 	height: 75rpx;
 	display: flex;
 	align-items: center;
-	border-top: 1px solid #eee;
+	/* border-top: 1px solid #eee; */
 }
 
 .fuwu_li text{
@@ -683,5 +745,28 @@ text{
   margin-top: 30rpx;
   font-size: 24rpx;
   color: #666;
+}
+.pj_bq{
+	display: flex;
+	flex-wrap: wrap;
+}
+.bq_li{
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 60rpx;
+	color: #F75559;
+	border: 1px solid rgba(247, 85, 89, 1);
+	border-radius: 14rpx;
+	padding: 0 23rpx;
+	box-sizing: border-box;
+	font-size: 24rpx;
+	margin: 10rpx 18rpx;
+}
+.bq_li.cur{
+	color: #F75559;
+	border: 1px solid rgba(247, 85, 89, 1);
+	background: rgba(250, 233, 234, 1);
 }
 </style>

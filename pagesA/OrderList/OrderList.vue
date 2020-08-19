@@ -42,7 +42,7 @@
 		            </view>
 		          </view>
 		          <view v-if="item1.is_comment==2||item1.is_advocacy==2" class="o_cz">
-								<view v-if="item1.is_comment==2" @tap.stop="jump" data-url="/pages/goods_pj/goods_pj">评价</view>
+								<view v-if="item1.is_comment==2" @tap.stop="jump" :data-url="'/pages_goods/goods_pj/goods_pj?id='+item1.ov_id">评价</view>
 		            <view v-if="item1.is_advocacy==2" @tap.stop="jump_fabu(item1)" data-url="/pagesA/daiyan_fabu/daiyan_fabu">我要代言</view>
 		          </view>
 							<view>
@@ -77,7 +77,7 @@
 		      <!-- <view><text class="fz26">合计:</text>￥{{sum}}</view>
 					<view class="fz22 c9">不含运费</view> -->
 		    </view>
-		    <view class="jiesuan" @tap.stop="jump_fabu">合并代言</view>
+		    <view class="jiesuan" @tap.stop="jump_fabu()">合并代言</view>
 		  </view>
 		
 		</view>
@@ -137,8 +137,9 @@
 			this.onRetry()
 		},
 		onShow(){
-			var pages=1
-			// this.datas=[]
+			this.page=1
+			this.goods_sele=[]
+			this.all=false
 			this.onRetry()
 			// this.getOrderList('onshow')
 		},
@@ -156,6 +157,13 @@
 		},
 		methods: {
 			...mapMutations(['dy_fb_fuc']),
+			
+			onRetry(){
+				this.datas=[]
+				this.page=1
+				this.btnkg=0
+				this.getdatalist()
+			},
 			del_order(id){
 				var that =this
 				uni.showModal({
@@ -284,11 +292,6 @@
 				}
 				return znum
 			},
-			onRetry(){
-				this.datas=[]
-				this.page=1
-				this.getdatalist()
-			},
 			getdatalist(){
 				
 				let that =this
@@ -365,6 +368,7 @@
 						})
 						return
 					}
+					console.log(that.goods_sele)
 					that.dy_fb_fuc(that.goods_sele)
 				}else{
 					var arr=[]

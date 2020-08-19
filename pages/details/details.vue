@@ -451,9 +451,10 @@
 				this.dy_id=options.dy_id
 				this.advocacyviceId=options.advocacyviceId
 			}
+			this.onRetry()
 		},
 		onShow() {
-			this.onRetry()
+			// this.onRetry()
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
@@ -1374,6 +1375,7 @@
 			
 			},
 			sheetshow1_fuc() {
+				if(this.star_list.length==0) return
 			  this.sheetshow1=true
 			   this.$refs.popup.open()
 			  this.btnkg= 0

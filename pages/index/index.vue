@@ -63,7 +63,7 @@
 			</view>
 		</view>
 		<view class="goods_index">
-			<view @tap="jump" data-url="/pages/xvideo/xvideo">
+			<view>
 				<view class="goodstype_name">代言人短视频 <image :src="filter.imgIP('/static_s/51daiyan/images/goods_type1.png')"></image>
 				</view>
 				<view class="goods_tip">已为您更新{{datas.advocacyVideoArr.length}}个视频</view>
@@ -111,7 +111,7 @@
 							<text v-if="item.use_identity_id==2">达人</text>
 						</view>
 					</view>
-					<view v-if="item.a_activity_id>0&&item.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-id="item.id" :data-idx="idx">为我投票</view>
+					<view v-if="item.a_activity_id>0&&item.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-id="item.user_id" :data-idx="idx">为我投票</view>
 					<view v-if="item.a_activity_id>0&&item.is_vote==1" class="quan_user_btn quan_user_btn1">已投票</view>
 				</view>
 				<view class="quan_msg">
@@ -161,7 +161,7 @@
 	          </view>
 	        </view> -->
 					<view class="cz_li">跟随购买：{{item.follow_buy_number}}</view>
-					<view class="cz_li" @tap.stop="jump" data-url="/pages_goods/daiyan_pl/daiyan_pl"><text class="iconfont iconpinglun"></text>{{item.comment_number}}</view>
+					<view class="cz_li" @tap.stop="jump" :data-url="'/pages_goods/daiyan_pl/daiyan_pl?id='+item.id"><text class="iconfont iconpinglun"></text>{{item.comment_number}}</view>
 					<view class="cz_li" v-if="item.is_praise==2" @tap="guanzhuFuc_dz(4,item.id,'affirm')" :data-id="idx">
 						<text class="iconfont iconzan"></text>{{item.praise_number}}
 					</view>
@@ -170,6 +170,7 @@
 					</view>
 				</view>
 			</view>
+			<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 		</view>
 		<!-- <view class="zxkf_btn">
 			<button open-type="contact" bindcontact="kffuc"></button>
@@ -195,6 +196,7 @@
 				homeVideo: '',
 				start_li: [], //明星达人
 				data_list: [], //代言列表
+				data_last:false,
 				indicatorDots: true,
 				autoplay: true,
 				interval: 3000,
@@ -432,6 +434,7 @@
 						//代言数据
 						that.data_list = res.data.advocacyArr
 						that.page = 2
+						that.data_last=false
 					}
 				}).catch(e => {
 					console.log(e)
@@ -451,6 +454,7 @@
 					token: that.loginMsg.userToken,
 					page: that.page
 				}
+				if(that.data_last) return
 				// 单个请求
 				service.P_get(jkurl, datas).then(res => {
 					console.log(res)
@@ -463,10 +467,11 @@
 						}
 
 						if (datas.length==0) {
-							uni.showToast({
-								icon: 'none',
-								title: '到底了。。。'
-							})
+							// uni.showToast({
+							// 	icon: 'none',
+							// 	title: '到底了。。。'
+							// })
+							that.data_last=true
 							return
 						}
 						that.datas = that.datas.concat(datas)
@@ -488,7 +493,8 @@
 				var that =this
 			  var datas = {
 			  	token: that.loginMsg.userToken,
-			  	aau_id:id
+			  	aau_id:id,
+					activity_id:that.data_list[idx].a_activity_id
 			  }
 			  // 单个请求
 			  service.P_post('/activity/vote', datas).then(res => {

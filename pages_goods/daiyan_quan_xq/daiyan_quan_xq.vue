@@ -41,7 +41,7 @@
 									<text v-if="item.use_identity_id==2">达人</text>
 								</view>
 		          </view>
-							<view v-if="item.a_activity_id>0&&item.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-id="item.id" :data-idx="idx">为我投票</view>
+							<view v-if="item.a_activity_id>0&&item.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-id="item.user_id" :data-idx="idx">为我投票</view>
 							<view v-if="item.a_activity_id>0&&item.is_vote==1" class="quan_user_btn quan_user_btn1">已投票</view>
 		          <!-- <view v-if="item.tp_type==1" class="quan_user_btn" @tap.stop="toupiao" :data-idx="idx">为我投票</view>
 							<view wx:else class="quan_user_btn quan_user_btn1" >已投票</view> -->
@@ -548,7 +548,8 @@
 				var that =this
 			  var datas = {
 			  	token: that.loginMsg.userToken,
-			  	aau_id:id
+			  	aau_id:id,
+					activity_id:that.data_list[idx].a_activity_id
 			  }
 			  // 单个请求
 			  service.P_post('/activity/vote', datas).then(res => {

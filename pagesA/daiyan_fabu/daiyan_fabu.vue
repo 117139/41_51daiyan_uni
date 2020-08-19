@@ -88,7 +88,7 @@
 		    <view class="imgbox mb20">
 		      <view class="addimg1" v-if="sp_url" @tap="chooseVideo">
 		        <!-- <image src="filter.imgIP(item)}}" data-src="filter.imgIP(item)}}" mode="aspectFill"></image> -->
-		        <image :src="filter.imgIP('/static_s/51daiyan/images/download.jpg')" :data-src="filter.imgIP('/static_s/51daiyan/images/download.jpg')" mode="aspectFill"></image>
+		        <image :src="filter.imgIP_video(sp_url)" mode="aspectFill"></image>
 		      </view>
 		
 		      <view wx:else class="addimg" @tap="chooseVideo">
@@ -426,27 +426,67 @@
 			  var that = this
 			  wx.chooseVideo({
 			    success: function (res) {
-			      that.sp_url= res.tempFilePath
+			      // that.sp_url= res.tempFilePath
+						that.uploadvideo(res)
 			    }
 			  })
 			},
 			//上传视频 目前后台限制最大100M，以后如果视频太大可以在选择视频的时候进行压缩
-			uploadvideo: function () {
-			  var src = this.data.src;
-			  wx.uploadFile({
-			    url: 'http://172.16.98.36:8080/upanddown/upload2',//服务器接口
-			    filePath: src,
-			    header: {
-			      'content-type': 'multipart/form-data'
-			    },
-			    name: 'files',//服务器定义的Key值
-			    success: function () {
+			uploadvideo(res) {
+				var that=this
+			  const uploadTask = uni.uploadFile({
+			    url: service.IPurl+'/upload/upVvideo',//服务器接口
+			    filePath: res.tempFilePath,
+			    name: 'file',
+			    formData: {},
+			    success: function (res) {
 			      console.log('视频上传成功')
+						console.log
+						if(typeof res.data=='string'){
+							var ndata = JSON.parse(res.data)
+						}else{
+							var ndata = res.data
+						}
+						if (ndata.code == 1) {
+						  // console.log(imgs[i], i,ndata.msg)
+						  // var newdata = that.imgb
+							that.sp_url= ndata.msg
+							wx.showToast({
+							  icon: "none",
+							  title: "上传成功"
+							})
+						} else {
+						  wx.showToast({
+						    icon: "none",
+						    title: "上传失败"
+						  })
+						}
 			    },
 			    fail: function () {
 			      console.log('接口调用失败')
 			    }
 			  })
+				
+				uploadTask.onProgressUpdate((res) => {
+						console.log('上传进度' + res.progress);
+						console.log('已经上传的数据长度' + res.totalBytesSent);
+						console.log('预期需要上传的数据总长度' + res.totalBytesExpectedToSend);
+						uni.showLoading({
+							mask:'true',
+							title: '上传进度：' + res.progress
+						});
+						// 测试条件，取消上传任务。
+						// if (res.progress > 50) {
+						// 		uploadTask.abort();
+						// }
+						if (res.progress ==100) {
+								// uni.hideLoading()
+								uni.showLoading({
+									mask:'true',
+									title: '正在校验视频'
+								});
+						}
+				});
 			},
 			save_val(){
 			  var that = this
