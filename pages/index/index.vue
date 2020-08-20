@@ -188,6 +188,7 @@
 	export default {
 		data() {
 			return {
+				btn_kg:0,
 				datas: '',
 				page: 2,
 				banner: '',
@@ -220,6 +221,9 @@
 
 			});
 		},
+		onShow() {
+			this.btn_kg=0
+		},
 		onPullDownRefresh: function() {
 			wx.stopPullDownRefresh();
 			this.getdata()
@@ -246,6 +250,7 @@
 			])
 		},
 		methods: {
+			...mapMutations(['setAbout']),
 			Imlogin(){
 				var that =this
 				var userInfo=this.loginMsg
@@ -430,6 +435,7 @@
 					console.log(res)
 					if (res.code == 1) {
 						that.datas = res.data
+						that.setAbout(res.data.aboutAs)
 						that.start_li = res.data.publicUserArr
 						//代言数据
 						that.data_list = res.data.advocacyArr
@@ -502,7 +508,8 @@
 			  	if (res.code == 1) {
 			  		// that.page=1
 			  		// that.getdatalist()
-						that.data_list[idx].is_vote=2
+						// that.data_list[idx].is_vote=2
+						that.$set(that.data_list[idx],'is_vote',2)
 			  		uni.showToast({
 			  			icon: 'none',
 			  			title: '操作成功'

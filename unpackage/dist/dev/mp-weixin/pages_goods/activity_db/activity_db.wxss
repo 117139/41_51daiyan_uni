@@ -43,7 +43,7 @@
   font-size: 30rpx;
 }
 .avtivity_time_djs text.data-v-0460313b{
-  width:46rpx;
+  width:52rpx;
   height:60rpx;
   background:rgba(255,255,255,1);
   border:1px solid rgba(191,191,191,1);

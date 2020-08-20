@@ -1,38 +1,81 @@
 <template>
 	<view>
-		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
+		<view v-if="htmlReset==1" class="chongshi" @tap='onRetry'>重试</view>
 		<view class="container" v-if="htmlReset==0">
-			<view class="data_null" v-if="order_ls_data.length==0">
-						 <image  :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
-			</view>
-		  <view v-if="order_ls_data.length>0" class="goods" v-for="(item,idx) in order_ls_data[yhlist_idx].coupon"
-				:data-tab="idx"
-				>
-		     
-				<view class="goods1">
-				
-					<!-- <view class="xuanze" data-selec="idx" catchtap="select">
-						<view class="xuanze1 {{goods_sele[idx].xuan==true? 'xuanze2':''">
-							<icon  v-if="goods_sele[idx].xuan==true" type="success" size="14" color="#F7B43B" />
+			<block  v-if="form_type==1">
+				<view class="data_null" v-if="order_ls_data.length==0">
+							 <image  :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
+				</view>
+				<view v-if="order_ls_data.length>0" class="goods" v-for="(item,idx) in order_ls_data[yhlist_idx].coupon"
+					:data-tab="idx"
+					>
+				   
+					<view class="goods1">
+					
+						<!-- <view class="xuanze" data-selec="idx" catchtap="select">
+							<view class="xuanze1 {{goods_sele[idx].xuan==true? 'xuanze2':''">
+								<icon  v-if="goods_sele[idx].xuan==true" type="success" size="14" color="#F7B43B" />
+							</view>
+						</view> -->
+						<!-- <view class="goodsImg" v-if="item.goods_pic"> -->
+						<view class="yhq_li_img"  @tap="xz_add" :data-idx="idx">
+							<!-- <image v-if="item.is_use==2" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_10.png')"  mode="aspectFill"></image>
+							<block v-if="item.is_use==1"> -->
+								<image v-if="item.coupon_setting_type==1" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/mj.png')"  mode="aspectFill"></image>
+								<image v-if="item.coupon_setting_type==2" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_zk.png')"  mode="aspectFill"></image>
+								<image v-if="item.coupon_setting_type==3" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_mf.png')"  mode="aspectFill"></image>
+							<!-- </block> -->
+							<view class="yhq_pri">
+								<view class="d1"  v-if="item.coupon_setting_type==1"><text>¥{{item.c_money}}元 </text> {{item.coupon_setting_type_value}}</view>
+								<view class="d1"  v-if="item.coupon_setting_type==2"><text>¥{{item.discount_ratio}}折 </text> {{item.coupon_setting_type_value}}</view>
+								<view class="d1"  v-if="item.coupon_setting_type==3"><text>全额抵扣</text> {{item.coupon_setting_type_value}}</view>
+								<view class="d2">{{filter.getDate_ymd(item.use_start_time,'.')}}-{{filter.getDate_ymd(item.use_end_time,'.')}}</view>
+							</view>
+							
 						</view>
-					</view> -->
-					<!-- <view class="goodsImg" v-if="item.goods_pic"> -->
-					<view class="yhq_li_img"  @tap="xz_add" :data-idx="idx">
-						<image v-if="idx==0" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/mj.png')"  mode="aspectFill"></image>
-						<image v-if="idx==1" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_07.png')"  mode="aspectFill"></image>
-						<image v-if="idx==2" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_10.png')"  mode="aspectFill"></image>
-						<view class="yhq_pri">
-							<view class="d1"  v-if="item.coupon_setting_type==1"><text>¥{{item.c_money}}元</text> {{item.coupon_setting_type_value}}</view>
-							<view class="d1"  v-if="item.coupon_setting_type==2"><text>¥{{item.discount_ratio}}折</text> {{item.coupon_setting_type_value}}</view>
-							<view class="d1"  v-if="item.coupon_setting_type==3"><text>全额抵扣</text> {{item.coupon_setting_type_value}}</view>
-							<view class="d2">{{filter.getDate_ymd(item.use_start_time,'.')}}-{{filter.getDate_ymd(item.use_end_time,'.')}}</view>
+					</view>	
+				  
+				</view>
+				<view v-if="form_type==1" class="no_btn" @tap="nouse">不使用优惠券</view>
+			</block>
+			<block v-else>
+				<view class="data_null" v-if="data_list.length==0">
+							 <image  :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
+				</view>
+				<view v-if="data_list.length>0" class="goods" v-for="(item,idx) in data_list"
+					:data-tab="idx"
+					>
+				   
+					<view class="goods1">
+					
+						<!-- <view class="xuanze" data-selec="idx" catchtap="select">
+							<view class="xuanze1 {{goods_sele[idx].xuan==true? 'xuanze2':''">
+								<icon  v-if="goods_sele[idx].xuan==true" type="success" size="14" color="#F7B43B" />
+							</view>
+						</view> -->
+						<!-- <view class="goodsImg" v-if="item.goods_pic"> -->
+						<view class="yhq_li_img"  @tap="xz_add" :data-idx="idx">
+							<image v-if="item.is_use==2" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_10.png')"  mode="aspectFill"></image>
+							<block v-if="item.is_use==1">
+								<image v-if="item.coupon_setting_type==1" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/mj.png')"  mode="aspectFill"></image>
+								<image v-if="item.coupon_setting_type==2" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_zk.png')"  mode="aspectFill"></image>
+								<image v-if="item.coupon_setting_type==3" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_mf.png')"  mode="aspectFill"></image>
+							</block>
+							<!-- <image v-if="idx==0" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/mj.png')"  mode="aspectFill"></image>
+							<image v-if="idx==1" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_07.png')"  mode="aspectFill"></image>
+							<image v-if="idx==2" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_10.png')"  mode="aspectFill"></image> -->
+							<view class="yhq_pri">
+								<view class="d1" v-if="item.coupon_setting_type==1"><text>¥{{item.money}}元 </text> 满减券</view>
+								<view class="d1" v-if="item.coupon_setting_type==2"><text>{{item.coupon_discount_ratio}}折 </text> 折扣券</view>
+								<view class="d1" v-if="item.coupon_setting_type==3"><text>全额抵扣</text></view>
+								<view class="d2">{{filter.getDate_ymd(item.coupon_use_start_time,'.')}}-{{filter.getDate_ymd(item.coupon_use_end_time,'.')}}</view>
+							</view>
+							
 						</view>
-						
-					</view>
-				</view>	
-		    
-			</view>
-			<view v-if="form_type==1" class="no_btn" @tap="nouse">不使用优惠券</view>
+					</view>	
+				  
+				</view>
+			</block>
 			<!-- <view class="vbottom" v-if="goods.length!==0">
 				<view class="selecAll" @tap="selecAll">
 					<view class="xuanze1 all {{all==true? 'xuanze2':''">
@@ -65,7 +108,12 @@
 				htmlReset: 0,
 				yhlist_idx:0,
 				
-				form_type:''
+				form_type:'',
+				btn_kg:0,
+				data_last:false,
+				data_list:[],
+				page:1,
+				size:20,
 			}
 		},
 		computed:{
@@ -81,19 +129,94 @@
 		  if (option.type) {
 		    that.form_type= option.type
 				that.yhlist_idx=option.idx
-		  }
+		  }else{
+				this.onRetry()
+			}
+		},
+		/**
+		 * 页面相关事件处理函数--监听用户下拉动作
+		 */
+		onPullDownRefresh: function () {
+		  this.onRetry()
+		},
+		
+		/**
+		 * 页面上拉触底事件的处理函数
+		 */
+		onReachBottom: function () {
+			// this.getdatalist()
+		},
+		
+		/**
+		 * 用户点击右上角分享
+		 */
+		onShareAppMessage: function () {
+		
 		},
 		methods: {
-			/**
-			 * 页面相关事件处理函数--监听用户下拉动作
-			 */
-			onPullDownRefresh: function () {
-			  wx.stopPullDownRefresh();
+			
+			onRetry(){
+				this.page=1
+				this.data_list=[]
+					this.data_last=false
+				this.btn_kg=0
+				this.getdatalist()
 			},
-			cload() {
-			  var that = this
-			  that.getdata()
+			getdatalist() {
+			
+				let that = this
+				var jkurl = '/user/couponLst'
+				var datas = {
+					token: that.loginMsg.userToken,
+					page: that.page,
+					size:that.size,
+				}
+				if(that.data_last) return
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						if (datas.length==0) {
+							if(that.page==1){
+								that.data_list=datas
+							}else{
+								that.data_last=true
+							}
+							return
+						}
+						if(that.page==1){
+							that.data_list=datas
+						}else{
+							
+							that.data_list = that.datas.concat(datas)
+						}
+			
+						that.page++
+					}
+				}).catch(e => {
+						that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+				
 			},
+			
 			xz_add(e) {
 			  var that = this
 			  if (that.form_type != 1) {

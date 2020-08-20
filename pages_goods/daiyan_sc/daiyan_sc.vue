@@ -85,6 +85,8 @@
 							</view>
 						</view>
 					</view>
+					
+					<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 				</view>
 			</view>
 		</view>
@@ -105,7 +107,8 @@
 				btn_kg:0,
 				s_type:0,
 				datas:'',
-				data_list:[1,1,1,1]
+				data_list:[],
+				data_last:false,
 			}
 		},
 		computed: {
@@ -205,6 +208,7 @@
 			onRetry(){
 				this.page=1
 				this.data_list=[]
+				this.data_last=false
 				this.getdatalist()
 			},
 			getdatalist() {
@@ -216,6 +220,7 @@
 					page: that.page,
 					cateId:that.datas.cateData[that.s_type].id,
 				}
+				if(that.data_last) return
 				if(that.btn_kg==1){
 					return
 				}else{
@@ -234,10 +239,15 @@
 							datas = JSON.parse(datas)
 						}
 						if (datas.length==0) {
-							uni.showToast({
-								icon: 'none',
-								title: '暂无更多数据'
-							})
+							// uni.showToast({
+							// 	icon: 'none',
+							// 	title: '暂无更多数据'
+							// })
+							if(that.page==1){
+								that.data_list=datas
+							}else{
+								that.data_last=true
+							}
 							return
 						}
 						if(that.page==1){

@@ -29,7 +29,8 @@
 		    <view :class="s_type==0?'cur':''"  @tap="ss_type" data-type="0">商品</view>
 		    <view :class="s_type==1?'cur':''"  @tap="ss_type" data-type="1">买家代言</view>
 		  </view>
-			<view class="h_main">
+			<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
+			<view v-if="data_list.length>0" class="h_main">
 				
 				<!-- tab -->
 				<!-- <view class="list_tab">
@@ -40,6 +41,7 @@
 						<view @tap="px_fuc" data-type="2">价格<view class="list_px"><text class="iconfont iconXSJ-copy {{dy_pri==0?'cur':''}}"></text><text class="iconfont iconXSJ {{dy_pri==1?'cur':''}}" ></text></view></view>
 				</view> -->
 				<!-- goods_li -->
+				
 				<view v-if="s_type==0" class="goods_list">
 					<view v-for="(item,idx) in data_list" class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
 						<image class="goods_img" :src="filter.imgIP(item.photo[0])"  mode="aspectFill"></image>
@@ -76,6 +78,7 @@
 						</view>
 					</view>
 				</view>
+				<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 			</view>
 		</view>
 		
@@ -98,7 +101,8 @@
 				
 				s_type: 0,
 				datas:[],
-				data_list:[]
+				data_list:[],
+				data_last:false,
 			}
 		},
 		computed: {
@@ -170,6 +174,7 @@
 			onRetry(){
 				this.page=1
 				this.data_list=[]
+				this.data_last=false
 				this.getdatalist()
 			},
 			getdata() {
@@ -206,6 +211,7 @@
 					page: that.page,
 					size: that.size
 				}
+				if(that.data_last) return
 				if(that.s_type==1){
 					jkurl='/store/adv'
 				}
@@ -227,10 +233,15 @@
 							datas = JSON.parse(datas)
 						}
 						if (datas.length == 0) {
-							uni.showToast({
-								icon: 'none',
-								title: '暂无更多数据'
-							})
+							// uni.showToast({
+							// 	icon: 'none',
+							// 	title: '暂无更多数据'
+							// })
+							if(that.page==1){
+								that.data_list=datas
+							}else{
+								that.data_last=true
+							}
 							return
 						}
 						if (that.page == 1) {

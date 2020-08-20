@@ -155,6 +155,9 @@
 						</view>
 					</view>
 				</view>
+				
+				<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
+				<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 			</view>
 		</view>
 
@@ -173,6 +176,7 @@
 			return {
 				uid:'',
 				btn_kg: 0,
+				data_last:false,
 				s_type: 1,
 				datas: '',
 				data_list: [],
@@ -317,6 +321,8 @@
 			  		// that.page=1
 			  		// that.getdatalist()
 						that.data_list[idx].is_vote=2
+						
+						that.$set(that.data_list[idx],'is_vote',2)
 			  		uni.showToast({
 			  			icon: 'none',
 			  			title: '操作成功'
@@ -333,6 +339,7 @@
 			onRetry() {
 				this.page = 1
 				this.data_list = []
+				this.data_last=false
 				this.getdatalist()
 			},
 			getdatalist() {
@@ -346,10 +353,11 @@
 					page: that.page,
 					size: that.size
 				}
-				if (that.btn_kg == 1) {
+				if(that.data_last) return
+				if(that.btn_kg==1){
 					return
-				} else {
-					that.btn_kg = 1
+				}else{
+					that.btn_kg=1
 				}
 				// 单个请求
 				service.P_get(jkurl, datas).then(res => {
@@ -364,10 +372,15 @@
 							datas = JSON.parse(datas)
 						}
 						if (datas.length == 0) {
-							uni.showToast({
-								icon: 'none',
-								title: '暂无更多数据'
-							})
+							// uni.showToast({
+							// 	icon: 'none',
+							// 	title: '暂无更多数据'
+							// })
+							if(that.page==1){
+								that.datas=datas
+							}else{
+								that.data_last=true
+							}
 							return
 						}
 						if (that.page == 1) {

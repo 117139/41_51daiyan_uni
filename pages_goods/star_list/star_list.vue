@@ -38,7 +38,7 @@
 									<view v-if="item.is_attention==2" class="user_btn user_btn1" @tap="guanzhuFuc(item.id,'cancel')">已关注</view>
 								</view>
 								<view class="star_dymsg">
-									<view class="dy_sp" v-if="item.davocacy_type==2" @tap="jump" data-url="/pages/xvideo/xvideo">
+									<view class="dy_sp" v-if="item.davocacy_type==2" @tap.stop="jump" data-type="sp" :data-spurl="item.davocacy_pic" data-url="/pages_goods/d_video/d_video?idx=0">
 										<image class="dy_sp" :src="filter.imgIP_video(item.davocacy_pic[0])" mode="aspectFill"></image>
 										<view class="play_box">
 											<image :src="filter.imgIP_video('/static_s/51daiyan/images/bofang.png')"></image>
@@ -51,6 +51,8 @@
 									 @tap.stop="pveimg"></image>
 								</view>
 							</view>
+							
+							<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 						</scroll-view>
 					</view>
 				</view>
@@ -71,12 +73,12 @@
 		data() {
 			return {
 				btn_kg:0,
+				data_last:false,
 				s_type: 1,
 				datas:[],
 				page:1,
 				size:20,
 				keyword:'',
-				
 			}
 		},
 		computed: {
@@ -171,10 +173,12 @@
 			onRetry(){
 				this.page=1
 				this.datas=[]
+				this.data_last=false
 				this.getdatalist()
 			},
 			getdatalist() {
 				let that = this
+				if(that.data_last) return
 				if(that.btn_kg==1){
 					return
 				}else{
@@ -205,10 +209,15 @@
 							that.datas =datas
 						}else{
 							if (datas.length == 0) {
-								uni.showToast({
-									icon: 'none',
-									title: '暂无更多数据'
-								})
+								// uni.showToast({
+								// 	icon: 'none',
+								// 	title: '暂无更多数据'
+								// })
+								if(that.page==1){
+									that.datas=datas
+								}else{
+									that.data_last=true
+								}
 								that.btn_kg=0
 								return
 							}

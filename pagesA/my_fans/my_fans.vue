@@ -26,6 +26,8 @@
 						<view  v-if="item.is_friend==1"  @tap="guanzhuFuc(2,item.u_id,'affirm')" :data-idx="idx" class="user_btn">+关注</view>
 						<view v-if="item.is_friend==2" class="user_btn user_btn1" @tap="guanzhuFuc(2,item.u_id,'cancel')">互相关注</view>
 				 </view>
+				 
+				 <view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 			 </view>
 			 
 		</view>
@@ -42,6 +44,7 @@
 		data() {
 			return {
 				btn_kg:0,
+				data_last:false,
 				type:'',
 				ss_cur:0,
 				page:1,
@@ -88,6 +91,7 @@
 				onRetry(){
 					this.page=1
 					this.data_list=[]
+					this.data_last=false
 					this.btn_kg=0
 					this.getdatalist()
 				},
@@ -100,6 +104,7 @@
 						page: that.page,
 						size:that.size
 					}
+					if(that.data_last) return
 					if(that.btn_kg==1){
 						return
 					}else{
@@ -118,10 +123,11 @@
 								datas = JSON.parse(datas)
 							}
 							if (datas.length==0) {
-								uni.showToast({
-									icon: 'none',
-									title: '暂无更多数据'
-								})
+								if(that.page==1){
+									that.data_list=datas
+								}else{
+									that.data_last=true
+								}
 								return
 							}
 							if(that.page==1){

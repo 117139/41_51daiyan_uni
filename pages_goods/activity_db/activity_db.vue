@@ -2,13 +2,13 @@
 	<view>
 		<view class="container">
 		  <view class="avtivity_box">
-		    <image class="avtivity_box" :src="filter.imgIP('hd_banner.jpg')"></image>
-		    <view class="hd_time">活动截止时间：2019/11/01-2019/11/03</view>
+		    <image class="avtivity_box"  :src="filter.imgIP(datas.img[0])" mode="aspectFill"></image>
+		    <view class="hd_time">活动截止时间：{{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>
 		  </view>
 		  <view class="avtivity_time">
 		    <image class="avtivity_time" :src="filter.imgIP('/static_s/51daiyan/images/hd_bg2.jpg')"></image>
 		    <view class="avtivity_time_djs">
-		      活动倒计时：
+		     活动倒计时：
 		     <text>{{hd_time.day>0?hd_time.day:0}}</text>
 		     天
 		     <text>{{hd_time.hh>0?hd_time.hh:0}}</text>
@@ -27,27 +27,27 @@
 		    <view class="hd_db_dp">
 		      <view class="d1">
 		        <view>人人都是代言人</view>
-		        <view>我的优惠券<text class="iconfont iconnext3 fz14 cf"></text></view>
+		        <view v-if="hasLogin" @tap="jump" :data-url="'/pagesA/my_yhq/my_yhq?id='+ad_id">我的优惠券<text class="iconfont iconnext3 fz14 cf"></text></view>
 		      </view>
 		      <view class="dp_msg">
-		        <image :src="filter.imgIP('dp_logo.jpg')"></image>
-		        <view @tap="jump" data-url="/pages/daiyan_fabu/daiyan_fabu">我要代言</view>
-		        <text>参与投票可获得优惠券</text>
+		        <image :src="filter.imgIP(datas.head_portrait)"></image>
+		        <view @tap="jump_back" >我要代言</view>
+		        <!-- <text>参与投票可获得优惠券</text> -->
 		      </view>
 		    </view>
 		  </view>
-		  <view class="hd_jd">晋级50强 2019/11/18-2019/11/25</view>
+		  <view class="hd_jd">活动时间： {{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>
 		 
 		  <view class="db_main">
 		    <view class="list_tit" :class="ph_type==1?'cur':''">
 		      <view class="ph_fri">
-		        <image class="ph_fri " :src="ph_type==0?'../../static/images/daiyan_ph1.png':'../../static/images/daiyan_ph.png'"></image>
+		        <image class="ph_fri " :src="ph_type==0?filter.imgIP('/static_s/51daiyan/images/daiyan_ph1.png'):filter.imgIP('/static_s/51daiyan/images/daiyan_ph.png')"></image>
 		        <view class="pl_li" @tap="ph_fuc" data-type="0">为TA投票</view>
 		      </view>
 		      <view class="pl_li1" @tap="ph_fuc" data-type="1">活动介绍</view>
 		    </view>
 		    <view class="dy_list" v-if="ph_type=='0'">
-		      <view class="dy_box"  v-for="(item,idx) in start_li">
+		      <view class="dy_box"  v-for="(item,idx) in star_list">
 		        <view class="dy_li">
 		          <view class="pl_num">
 		            <image v-if="idx==0" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_1.png')"></image>
@@ -55,24 +55,26 @@
 		            <image v-if="idx==2" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_3.png')"></image>
 		            <text v-if="idx>2">{{idx+1}}</text>
 		          </view>
-		          <view class="pl_tx" @tap="jump" data-url="/pages/my_index/my_index">
-		            <image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+		          <view class="pl_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
+		            <image class="pl_tx" :src="filter.imgIP(item.head_portrait)"></image>
 		          </view>
-		          <view class="ph_name">张一鸣</view>
+		          <view class="ph_name">{{item.nickname}}</view>
 		          <view class="ph_num">
-		            <text>2200</text>人气值</view>
-		          <view v-if="item.tp_type==1" @tap.stop="toupiao" :data-idx="idx" class="ph_btn">投票</view>
+		            <text>{{item.popularity}}</text>人气值</view>
+		          <view v-if="item.is_vote==2" @tap.stop="toupiao"  :data-id="item.user_id" :data-idx="idx" class="ph_btn">投票</view>
 		          <view  v-else class="ph_btn ph_btn1">已投票</view>
 		        </view>
-		        <view class="li_dy">代言说：喜欢运动的感觉，耐克just di it！</view>
+		        <view class="li_dy">代言说：{{item.say}}</view>
 		      </view>
-		      
+		      <view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 		    </view>
 		    <view class="dy_list" v-if="ph_type=='1'">
 		      <view class="hd_js">
-		        <view class="dyr_tit">耐克优选代言人：</view>
-		      <view class="dyr_msg">选出最会玩，最有影响力的代言人，人人都可参与的代言人活动。自拍短视频上传，并拉动朋友参与优选投票。你就有机会成为该品牌的优选代言人，并获得现金激励。</view>
-		      <video src="https://gss3.baidu.com/6LZ0ej3k1Qd3ote6lo7D0j9wehsv/tieba-smallvideo-transcode-cae/2902246_e631577dd461c49ccf6939da69bce1d2_0_cae.mp4"></video>
+		        <view class="dyr_tit">{{datas.store_name}}优选代言人：</view>
+						<view class="dyr_msg" v-html="datas.content">
+							<!-- 选出最会玩，最有影响力的代言人，人人都可参与的代言人活动。自拍短视频上传，并拉动朋友参与优选投票。你就有机会成为该品牌的优选代言人，并获得现金激励。 -->
+						</view>
+						<!-- <video src="https://gss3.baidu.com/6LZ0ej3k1Qd3ote6lo7D0j9wehsv/tieba-smallvideo-transcode-cae/2902246_e631577dd461c49ccf6939da69bce1d2_0_cae.mp4"></video> -->
 		      </view>
 		    </view>
 		  </view>
@@ -84,117 +86,44 @@
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import service from '../../service.js';
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	var djs_fuc
 	export default {
 		data() {
 			return {
+				btn_kg:0,
+				data_last:false,
 				hd_time:{
 				  day: 0,
 				  hh: 0,
 				  mm: 0,
 				  min:0,
 				},
-				start_li: [
-				  {
-				    name: '未达标商户',
-				    img: '/static/images/1_03.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '达标商户',
-				    img: '/static/images/1_05.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '巡机单',
-				    img: '/static/images/1_09.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已巡机',
-				    img: '/static/images/1_10.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '装机单',
-				    img: '/static/images/1_13.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已装机',
-				    img: '/static/images/1_14.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '维护单',
-				    img: '/static/images/1_17.jpg',
-				    url: '/pages/list/list',
-				    tp_type: '1'
-				  },
-				  {
-				    name: '已维护',
-				    img: '/static/images/1_18.jpg',
-				    url: '/pages/list/list',
-				    type: '7'
-				  },
-				  {
-				    name: '换机单',
-				    img: '/static/images/2_09.jpg',
-				    url: '/pages/list/list',
-				    type: '8'
-				  },
-				  {
-				    name: '已换机',
-				    img: '/static/images/2_10.jpg',
-				    url: '/pages/list/list',
-				    type: '9'
-				  },
-				  {
-				    name: '撤机单',
-				    img: '/static/images/2_13.jpg',
-				    url: '/pages/list/list',
-				    type: '10'
-				  },
-				  {
-				    name: '已撤机',
-				    img: '/static/images/2_14.jpg',
-				    url: '/pages/list/list',
-				    type: '11'
-				  },
-				  {
-				    name: '终端交易查询',
-				    img: '/static/images/2_17.jpg',
-				    url: '/pages/list/list',
-				    type: '12'
-				  },
-				  {
-				    name: '应收列表',
-				    img: '/static/images/2_18.jpg',
-				    url: '/pages/list/list',
-				    type: '13'
-				  },
-				
-				],
+				page:1,
+				size:20,
+				datas:'',
+				star_list: [],
 				ph_type: '0',
 			}
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
 		  var that =this
-		  djs_fuc=setInterval(function () {
-		    that.hd_time= that.djs()
-		    console.log(that.djs())
-		  }, 1000);
+		  that.ad_id=options.id
+			that.onRetry()
 		},
-		
 		/**
 		 * 生命周期函数--监听页面初次渲染完成
 		 */
@@ -227,14 +156,16 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  wx.stopPullDownRefresh();
+		  var that =this
+		  that.onRetry()
 		},
 		
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
-		
+			var that =this
+			that.getdatalist()
 		},
 		
 		/**
@@ -244,11 +175,100 @@
 		
 		},
 		methods: {
+			jump_back(){
+				uni.navigateBack()
+			},
+			onRetry(){
+				var that =this
+				that.page=1
+				that.data_last=false
+				that.getdatalist()
+			},
+			getdatalist() {
+			
+				let that = this
+				var jkurl = '/activity/activityHit'
+				var datas = {
+					token: that.loginMsg.userToken,
+					page: that.page,
+					size:that.size,
+					id:that.ad_id
+				}
+				if(that.data_last) return
+				if (that.btn_kg == 1) {
+					return
+				} else {
+					that.btn_kg = 1
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					console.log(res)
+					
+					that.btn_kg=0
+					if (res.code == 1) {
+						var datas = res.data.user_data
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						that.hd_type=res.data.is_act_open
+						if(that.page==1){
+							that.datas=res.data
+							djs_fuc=setInterval(function () {
+							  that.hd_time= that.djs(res.data.end_time*1000)
+							  // console.log(that.djs())
+							}, 1000);
+							that.star_list =datas
+						}else{
+							if (datas.length==0) {
+								that.data_last=true
+								return
+							}
+							that.star_list = that.star_list.concat(datas)
+						}
+			
+						that.page++
+					}
+				}).catch(e => {
+					
+					that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+				
+			},
+			
 			toupiao(e) {
+			  var id = e.currentTarget.dataset.id
 			  var idx = e.currentTarget.dataset.idx
-			  var newdata = this.start_li
-			  newdata[idx].tp_type = 2
-			  this.start_li= newdata
+				var that =this
+			  var datas = {
+			  	token: that.loginMsg.userToken,
+			  	aau_id:id,
+					activity_id:that.star_list[idx].a_activity_id
+			  }
+			  // 单个请求
+			  service.P_post('/activity/vote', datas).then(res => {
+			  	console.log(res)
+			  	if (res.code == 1) {
+			  		
+			  		uni.showToast({
+			  			icon: 'none',
+			  			title: '操作成功'
+			  		})
+						that.$set(that.star_list[idx],'is_vote',2)
+			  	}
+			  }).catch(e => {
+			  	console.log(e)
+			  	uni.showToast({
+			  		icon: 'none',
+			  		title: '操作失败'
+			  	})
+			  })
 			},
 			jump(e) {
 			  service.jump(e)
@@ -257,27 +277,26 @@
 			  var that = this
 			  if (that.ph_type == e.currentTarget.dataset.type) return
 			  that.ph_type= e.currentTarget.dataset.type
+				that.onRetry()
 			},
-			djs(){
-			  var nowtime = new Date(),  //获取当前时间
-			    endtime = new Date("2020/6/8");  //定义结束时间
-			  var lefttime = endtime.getTime() - nowtime.getTime(),  //距离结束时间的毫秒数
-			    leftd = Math.floor(lefttime / (1000 * 60 * 60 * 24)),  //计算天数
-			    lefth = Math.floor(lefttime / (1000 * 60 * 60) % 24),  //计算小时数
-			    leftm = Math.floor(lefttime / (1000 * 60) % 60),  //计算分钟数
-			    lefts = Math.floor(lefttime / 1000 % 60);  //计算秒数
+			djs(end_time){
+			  var nowtime = new Date() //获取当前时间
+			    // endtime = new Date("2020/9/8");  //定义结束时间
+			  // var lefttime = endtime.getTime() - nowtime.getTime(),  //距离结束时间的毫秒数
+			  var lefttime =end_time - nowtime.getTime()  //距离结束时间的毫秒数
+				var leftd = Math.floor(lefttime / (1000 * 60 * 60 * 24))  //计算天数
+				var lefth = Math.floor(lefttime / (1000 * 60 * 60) % 24)  //计算小时数
+				var leftm = Math.floor(lefttime / (1000 * 60) % 60)  //计算分钟数
+				var lefts = Math.floor(lefttime / 1000 % 60)  //计算秒数
 			  var djstime={
 			    day: leftd,
 			    hh: lefth,
 			    mm: leftm,
 			    min: lefts,
 			  }
-				if(lefttime<0){
-					clearInterval(djs_fuc) 
-				}
 			  return djstime
 			  // return leftd + "天" + lefth + ":" + leftm + ":" + lefts;  //返回倒计时的字符串
-			}
+			},
 		}
 	}
 </script>
@@ -321,7 +340,7 @@
   font-size: 30rpx;
 }
 .avtivity_time_djs text{
-  width:46rpx;
+  width:52rpx;
   height:60rpx;
   background:rgba(255,255,255,1);
   border:1px solid rgba(191,191,191,1);

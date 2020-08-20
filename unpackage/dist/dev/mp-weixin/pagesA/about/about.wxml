@@ -1,1 +1,2 @@
-<view class="data-v-9cfec3f2"><view class="about_box data-v-9cfec3f2">51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言</view></view>
+<wxs src="../../utils/filter.wxs" module="filter"></wxs>
+<view class="data-v-9cfec3f2"><view class="about_box data-v-9cfec3f2"><rich-text nodes="{{aboutBody}}"></rich-text></view></view>

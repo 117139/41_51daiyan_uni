@@ -341,6 +341,8 @@
 				</block>
 				<view class="countnum">
 					<text>购买数量</text>
+					<!-- <van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="goodsData.is_pond_goods==2?1:show_num"
+					  @input="onChange" @change="onChange" /> -->
 					<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="show_num"
 					  @input="onChange" @change="onChange" />
 				</view>
@@ -1165,11 +1167,12 @@
 			//数量
 			onChange(e) {
 				var that =this
-			  let idx = e.currentTarget.dataset.selec
-				if(that.goodsData.is_pond_goods==2){
-					this.cnum= 1
-					return
-				}
+			  
+				//显示优选的购买
+				// if(that.goodsData.is_pond_goods==2){
+				// 	this.cnum= 1
+				// 	return
+				// }
 			  // console.log(e.detail)
 				if(that.guige_select.length==0){
 					uni.showToast({

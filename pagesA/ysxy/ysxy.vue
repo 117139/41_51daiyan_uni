@@ -1,8 +1,6 @@
 <template>
 	<view>
-		<view class="about_box" v-html="xy_datas[0].content">
-		  51代言
-		</view>
+		<view class="about_box" v-html="xy_datas[0].content"></view>
 	</view>
 </template>
 

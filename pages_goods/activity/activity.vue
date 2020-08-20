@@ -2,7 +2,7 @@
 	<view>
 		<view class="container">
 		  <view class="avtivity_box">
-		    <image  class="avtivity_box" :src="filter.imgIP(datas.img[0])"></image>
+		    <image  class="avtivity_box" :src="filter.imgIP(datas.img[0])" mode="aspectFill"></image>
 		    <view class="hd_time">活动截止时间：{{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>
 		  </view>
 		  <view class="avtivity_time">
@@ -55,7 +55,7 @@
 		  <view class="hd_tip">提示！活动开始前完成购买代言，即刻开始拉票！</view>
 		  <view class="hd_db" v-if="hd_type==2">
 		    <view>本期优选代言人排行榜</view>
-		    <view class="jump_btn" @tap="jump" :data-url="'/pages_goods/activity_db/activity_db?id='+item.ad_id">进入打榜页<text class="iconfont iconnext3"></text></view>
+		    <view class="jump_btn" @tap="jump" :data-url="'/pages_goods/activity_db/activity_db?id='+ad_id">进入打榜页<text class="iconfont iconnext3"></text></view>
 		  </view>
 		  <view class="dy_list" v-if="hd_type==2">
 		    <view class="dy_box" v-for="(item,idx) in star_list">
@@ -71,11 +71,13 @@
 		        </view>
 		        <view class="ph_name">{{item.nickname}}</view>
 		        <view class="ph_num"><text>{{item.popularity}}</text>人气值</view>
-		        <view v-if="item.is_vote==2" @tap.stop="toupiao" :data-id="item.id" class="ph_btn">投票</view>
+		        <view v-if="item.is_vote==2" @tap.stop="toupiao"  :data-id="item.user_id" :data-idx="idx" class="ph_btn">投票</view>
 		        <view  v-else class="ph_btn ph_btn1">已投票</view>
 		      </view>
 		      <view class="li_dy">代言说：{{item.say}}</view>
 		    </view>
+				
+				<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 		  </view>
 		</view>
 		
@@ -93,6 +95,8 @@
 	export default {
 		data() {
 			return {
+				btn_kg:0,
+				data_last:false,
 				ad_id:'',
 				hd_time:{
 				  day: 0,
@@ -188,6 +192,7 @@
 					if (res.code == 1) {
 						that.datas = res.data
 						that.page=1
+						this.data_last=false
 						that.getdatalist()
 						djs_fuc=setInterval(function () {
 						  that.hd_time= that.djs(res.data.end_time*1000)
@@ -215,6 +220,12 @@
 					size:that.size,
 					id:that.ad_id
 				}
+				if(that.data_last) return
+				if (that.btn_kg == 1) {
+					return
+				} else {
+					that.btn_kg = 1
+				}
 				// 单个请求
 				service.P_get(jkurl, datas).then(res => {
 					console.log(res)
@@ -232,10 +243,7 @@
 							that.star_list =datas
 						}else{
 							if (datas.length==0) {
-								uni.showToast({
-									icon: 'none',
-									title: '到底了。。。'
-								})
+								that.data_last=true
 								return
 							}
 							that.star_list = that.star_list.concat(datas)
@@ -275,10 +283,12 @@
 			},
 			toupiao(e) {
 			  var id = e.currentTarget.dataset.id
+			  var idx = e.currentTarget.dataset.idx
 				var that =this
 			  var datas = {
 			  	token: that.loginMsg.userToken,
-			  	aau_id:id
+			  	aau_id:id,
+					activity_id:that.star_list[idx].a_activity_id
 			  }
 			  // 单个请求
 			  service.P_post('/activity/vote', datas).then(res => {
@@ -289,10 +299,7 @@
 			  			icon: 'none',
 			  			title: '操作成功'
 			  		})
-						setTimeout(function(){
-							that.page=1
-							that.getdatalist()
-						},1000)
+						that.$set(that.star_list[idx],'is_vote',2)
 			  	}
 			  }).catch(e => {
 			  	console.log(e)
@@ -348,7 +355,7 @@
   font-size: 30rpx;
 }
 .avtivity_time_djs text{
-  width:46rpx;
+  width:52rpx;
   height:60rpx;
   background:rgba(255,255,255,1);
   border:1px solid rgba(191,191,191,1);

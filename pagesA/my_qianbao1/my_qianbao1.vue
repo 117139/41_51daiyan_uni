@@ -4,7 +4,7 @@
 			<view class="tixian_box">
 				<image  class="tixian_box" :src="filter.imgIP('/static_s/51daiyan/images/tx_bg_02.jpg')"></image>
 				<view class="money_yue">
-					<view class="d1">¥<text>1000.00</text></view>
+					<view class="d1">¥<text>{{my_d}}</text></view>
 					<view class="d2">代言豆</view>
 				</view>
 			</view>
@@ -12,16 +12,17 @@
 			<view class="w100" >
 				<view class="cw_list"	v-for="(item1,idx1) in cw_data">
 					<view class="cw1">
-						<view class="fz28 c3">{{item1.name}}</view>
+						<view class="fz28 c3">{{item1.change_type_value}}</view>
 						<view v-if="item1.BeiZhuName!==''" class="fz24 c9">{{item1.BeiZhuName}}</view>
 					</view>
 					<view class="cw1 cw2">
-						<view class="fz32 cee1111">{{item1.pri}}</view>
+						<view class="fz32 cee1111">{{item1.symbol}}{{item1.price}}</view>
 						<!-- <view v-if="item1.AddTime" class="fz24 c9">{{filter.getTime(item1.AddTime)}}</view> -->
-						<view v-if="item1.time" class="fz24 c9">{{item1.time}}</view>
+						<view v-if="item1.create_time" class="fz24 c9">{{item1.create_time}}</view>
 					</view>
 				</view>
 		    
+		    <view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 		    <!-- <template is="htmlStatus" data="{{...htmlStatus" /> -->
 			</view>
 		</view>
@@ -39,58 +40,121 @@
 	export default {
 		data() {
 			return {
-				tx_type:0,
-				tx_crad:0,
-				tx_mon:0,
-				cw_data:[
-				    {
-				      name: '购物',
-				      pri: '+20',
-				      time: '2020-05-20 15:26',
-				      inr: '材料费提成'
-				    },
-				    {
-				      name: '购物',
-				      pri: '+20',
-				      time: '2020-05-10 15:26',
-				      inr: '材料费提成'
-				    },
-				    {
-				      name: '购物',
-				      pri: '+20',
-				      time: '2019-08-14 12:00',
-				      inr: ''
-				    },
-				    {
-				      name: '购物',
-				      pri: '+20',
-				      time: '2019-08-14 12:00',
-				      inr: ''
-				    },
-				  ]
+				btnkg:0,
+				data_last:false,
+				page:1,
+				size:20,
+				my_d:0,
+				cw_data:[]
 			}
 		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin',
+				// 'order_ls_data'
+			]),
+			
+		},
+		onLoad(option) {
+			this.onRetry()
+		},
+		/**
+		 * 页面相关事件处理函数--监听用户下拉动作
+		 */
+		onPullDownRefresh: function () {
+			this.onRetry()
+		},
+		
+		/**
+		 * 页面上拉触底事件的处理函数
+		 */
+		onReachBottom: function () {
+		this.getdatalist()
+		},
+		
+		/**
+		 * 用户点击右上角分享
+		 */
+		onShareAppMessage: function () {
+		
+		},
 		methods: {
-			/**
-			 * 页面相关事件处理函数--监听用户下拉动作
-			 */
-			onPullDownRefresh: function () {
-				wx.stopPullDownRefresh();
+			onRetry(){
+				this.cw_data=[]
+				this.page=1
+				this.btnkg=0
+				this.data_last=false
+				this.getdatalist()
+			},
+			getdatalist(){
+				
+				let that =this
+				var jkurl='/user/beans'
+				var data={
+					token:that.loginMsg.userToken,
+					page:that.page,
+					size:that.size
+				}
+				if(that.data_last) return
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+				}
+				service.get(jkurl, data,
+					function(res) {
+						that.btnkg=0
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							var datas = res.data.data
+							// console.log(typeof datas)
+							that.htmlReset=0
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							that.my_d=datas.bean
+							if(that.page==1){
+								that.cw_data=datas.data
+							}else{
+								if(datas.data.length==0){
+								
+									that.data_last=true
+									
+									return
+								}
+								that.cw_data=that.cw_data.concat(datas.data)
+							}
+							that.page++
+						} else {
+							that.htmlReset=1
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
+							}
+						}
+					},
+					function(err) {
+						that.htmlReset=1
+						that.btnkg=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+					
+					}
+				)
 			},
 			
-			/**
-			 * 页面上拉触底事件的处理函数
-			 */
-			onReachBottom: function () {
-			
-			},
-			
-			/**
-			 * 用户点击右上角分享
-			 */
-			onShareAppMessage: function () {
-			
-			},
 			txtype_fuc(e){
 				console.log(e.currentTarget.dataset.type)
 				this.tx_type=e.currentTarget.dataset.type

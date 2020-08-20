@@ -19,6 +19,7 @@
 		      <text class="li_name oh1">{{item.title}}</text>
 		      <view class="li_js oh2">{{item.synopsis}}</view>
 		    </view>
+				<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 		  </view>
 		</view>
 	</view>
@@ -37,8 +38,9 @@
 			return {
 				type:'',
 				btn_kg:0,
+				data_last:false,
 				page:1,
-				size:20,
+				size:30,
 				data_list:[],
 				daiyan_ss:''
 			}
@@ -92,14 +94,14 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  that.onRetry()
+		  this.onRetry()
 		},
 		
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
-			that.getdata()
+			this.getdata()
 		},
 		
 		/**
@@ -112,12 +114,14 @@
 			onRetry(){
 				this.page=1
 				this.data_list=[]
+				this.data_last=false
 				this.getdata()
 			},
 			
 			getdata(){
 				let that = this
 				console.log(that.btn_kg)
+				if(that.data_last) return
 				if(that.btn_kg==1){
 					return
 				}else{
@@ -137,11 +141,10 @@
 					if(res.code==1){
 						var datas = res.data
 						if (datas.length == 0) {
-							if(that.page>1){
-								uni.showToast({
-									icon: 'none',
-									title: '暂无更多数据'
-								})
+							if(that.page==1){
+								that.data_list=datas
+							}else{
+								that.data_last=true
 							}
 							
 							that.btn_kg=0

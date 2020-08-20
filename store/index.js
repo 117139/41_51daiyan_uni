@@ -25,9 +25,12 @@ const store = new Vuex.Store({
 		spurl:[],
 		dy_fb_list:[],
 		ov_ids:'',
+		aboutBody:'',
 	},
 	mutations: {
-		
+		setAbout(state,about){
+			state.aboutBody = about || '';
+		},
 		dy_fb_fuc(state,dy_fb_list){
 			state.dy_fb_list = dy_fb_list || [];
 			var ov_ids=[]

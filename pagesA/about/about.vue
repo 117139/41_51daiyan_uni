@@ -1,18 +1,26 @@
 <template>
 	<view>
-		<view class="about_box">
-		  51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言51代言
-		</view>
+		<view class="about_box" v-html="aboutBody"></view>
 	</view>
 </template>
 
+<script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
 	import service from '../../service.js';
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		data() {
 			return {
 				type:0
 			}
+		},
+		computed: {
+			...mapState([
+				'aboutBody'
+			])
 		},
 		onLoad(option) {
 			if(option.type=='协议'){

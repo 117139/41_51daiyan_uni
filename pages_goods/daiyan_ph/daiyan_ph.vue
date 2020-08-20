@@ -31,56 +31,17 @@
 								<image class="pl_tx" :src="item.head_portrait"></image>
 							</view>
 							<view class="ph_name">{{item.nickname}}</view>
-							<view class="ph_num"><text>{{item.number}}</text>件</view>
+							<view class="ph_num"><text>{{item.number}}</text>{{ph_type1==2?'元':'件'}}</view>
 							<view class="ph_btn" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.id">去看看</view>
 						</view>
-						<view class="li_dy oh2">代言说：{{item.introduction}}</view>
+						<view class="li_dy oh2">代言说：{{item.introduction?item.introduction:''}}</view>
 					</view>
-					<!-- <view class="dy_box">
-						<view class="dy_li">
-							<view class="pl_num">
-								<image class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_2.png')"></image>
-							</view>
-							<view class="pl_tx" @tap="jump" data-url="/pages/my_index/my_index">
-								<image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-							</view>
-							<view class="ph_name">张一鸣</view>
-							<view class="ph_num"><text>97</text>件</view>
-							<view class="ph_btn" @tap="jump" data-url="/pages/my_index/my_index">去看看</view>
-						</view>
-						<view class="li_dy">代言说：喜欢运动的感觉，耐克just di it！</view>
-					</view>
-					<view class="dy_box">
-						<view class="dy_li">
-							<view class="pl_num">
-								<image class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_3.png')"></image>
-							</view>
-							<view class="pl_tx" @tap="jump" data-url="/pages/my_index/my_index">
-								<image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-							</view>
-							<view class="ph_name">张一鸣</view>
-							<view class="ph_num"><text>97</text>件</view>
-							<view class="ph_btn" @tap="jump" data-url="/pages/my_index/my_index">去看看</view>
-						</view>
-						<view class="li_dy">代言说：喜欢运动的感觉，耐克just di it！</view>
-					</view>
-					<view class="dy_box">
-						<view class="dy_li">
-							<view class="pl_num">
-								4
-							</view>
-							<view class="pl_tx" @tap="jump" data-url="/pages/my_index/my_index">
-								<image class="pl_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-							</view>
-							<view class="ph_name">张一鸣</view>
-							<view class="ph_num"><text>97</text>件</view>
-							<view class="ph_btn" @tap="jump" data-url="/pages/my_index/my_index">去看看</view>
-						</view>
-						<view class="li_dy">代言说：喜欢运动的感觉，耐克just di it！</view>
-					</view> -->
+					
 				</view>
 			</view>
 			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
+			
+			<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 		</view>
 	</view>
 </template>
@@ -95,9 +56,10 @@
 	export default {
 		data() {
 			return {
+				btn_kg:0,
+				data_last:false,
 				ph_type:1,
 				ph_type1:1,
-				btn_kg:0,
 				datas:[],
 				page:1,
 				size:20,
@@ -148,14 +110,14 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  wx.stopPullDownRefresh();
+		 this.onRetry()
 		},
 		
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
-		
+		this.getdatalist()
 		},
 		
 		/**
@@ -168,10 +130,12 @@
 			onRetry(){
 				this.page=1
 				this.datas=[]
+				this.data_last=false
 				this.getdatalist()
 			},
 			getdatalist() {
 				let that = this
+				if(that.data_last) return
 				if(that.btn_kg==1){
 					return
 				}else{
@@ -198,10 +162,15 @@
 						}
 			
 						if (datas.length == 0) {
-							uni.showToast({
-								icon: 'none',
-								title: '暂无更多数据'
-							})
+							// uni.showToast({
+							// 	icon: 'none',
+							// 	title: '暂无更多数据'
+							// })
+							if(that.page==1){
+								that.datas=datas
+							}else{
+								that.data_last=true
+							}
 							that.btn_kg=0
 							return
 						}

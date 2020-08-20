@@ -3,84 +3,108 @@
 		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
 		<view class="container">
 		<view class="order_box1">
-		  <image src="/static/images/order_bg_02.jpg"></image>
-		  <view v-if="h_type==1||h_type==0" class="order_tit">
+		  <image :src="filter.imgIP('/static_s/51daiyan/images/order_bg_02.jpg')"></image>
+		  <view v-if="datas.o_paystatus==1" class="order_tit">
 		    <view class="type_img">
-		      <image src="/static/images/ot_fukuan.png"></image>
+		      <image  :src="filter.imgIP('/static_s/51daiyan/images/ot_fukuan.png')"></image>
 		    </view>
 		    <view class="ot_msg">
 		      <view class="d1">待付款</view>
 		      <view class="d2">等待付款中</view>
 		    </view>
 		  </view>
-		  <view v-if="h_type==2" class="order_tit">
+		  <view v-if="datas.o_ddstatus==2" class="order_tit">
 		    <view class="type_img">
-		      <image src="/static/images/ot_shouhuo.png"></image>
+		      <image  :src="filter.imgIP('/static_s/51daiyan/images/ot_shouhuo.png')"></image>
+		    </view>
+		    <view class="ot_msg">
+		      <view class="d1">待发货</view>
+		      <view class="d2">等待发货中</view>
+		    </view>
+		  </view>
+		  <view  v-if="datas.o_ddstatus==4||datas.o_ddstatus==5" class="order_tit">
+		    <view class="type_img">
+		      <image  :src="filter.imgIP('/static_s/51daiyan/images/ot_shouhuo.png')"></image>
 		    </view>
 		    <view class="ot_msg">
 		      <view class="d1">待收货</view>
 		      <view class="d2">请及时确认收货</view>
 		    </view>
 		  </view>
-		  <view  v-if="h_type==3" class="order_tit">
+		  <view  v-if="datas.o_ddstatus==1&&h_type==4" class="order_tit">
 		    <view class="type_img" style="width:56rpx;">
-		      <image src="/static/images/ot_pingjia.png"></image>
+		      <image  :src="filter.imgIP('/static_s/51daiyan/images/ot_pingjia.png')"></image>
 		    </view>
 		    <view class="ot_msg">
 		      <view class="d1">待评价</view>
 		      <view class="d2">期待您的评价</view>
 		    </view>
 		  </view>
-		  <view  v-if="h_type==4" class="order_tit">
+		  <view v-if="datas.o_ddstatus==1&&h_type==4" class="order_tit">
 		    <view class="type_img">
-		      <image src="/static/images/ot_daiyan.png"></image>
+		      <image :src="filter.imgIP('/static_s/51daiyan/images/ot_daiyan.png')"></image>
 		    </view>
 		    <view class="ot_msg">
 		      <view class="d1">待代言</view>
 		      <view class="d2">已收货期待您的代言</view>
 		    </view>
 		  </view>
+		  <view v-if="datas.o_ddstatus==1&&h_type==0" class="order_tit">
+		    <view class="type_img">
+		      <image :src="filter.imgIP('/static_s/51daiyan/images/ot_daiyan.png')"></image>
+		    </view>
+		    <view class="ot_msg">
+		      <view class="d1">已完成</view>
+		      <view class="d2">已收货期待您的代言</view>
+		    </view>
+		  </view>
 		</view>
 		  <view class="address">
 		    <view class="add_r">
-					<image src="/static/images/address23.png"></image> 
+					<image :src="filter.imgIP('/static_s/51daiyan/images/address23.png')"></image> 
 				</view>
 				<view class="add_l">
-					<view class="al_1">{{'昵称'}} <text class="l_tel">{{'18300000000'}}</text></view>
-					<view class="al_2">{{'河北省  保定市  莲花区  未来石4号楼2101室'}} </view>
+					<view class="al_1">{{datas.o_name}} <text class="l_tel">{{datas.o_tel}}</text></view>
+					<view class="al_2">{{datas.o_address}} </view>
 				</view>
 				
 			</view>
 			<view class="orderbder">
-				<image src="/static/images/orderborder.png"></image>
+				<image :src="filter.imgIP('/static_s/51daiyan/images/orderborder.png')"></image>
 			</view>
 			<view class="goodsBox contbox">
-		      <view class="goods" v-for="(item,idx) in goods" :data-tab="idx" @tap="jump" data-url="/pages/OrderDetails/OrderDetails?shop_id=1">
+		      <view class="goods">
 		        <view class="dianpu_tit">
-		          <image class="dp_logo" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-		          <text>石说的达开旗舰店</text>
+		          <image class="dp_logo" :src="filter.imgIP(datas.head_portrait)"></image>
+		          <text>{{datas.store_name}}</text>
 		          <!-- <text class="iconfont iconnext3"></text> -->
 		        </view>
-		        <view class="goods1" v-for="(item1,idx1) in goods">
-		          <view class="goodsImg">
-		            <image class="goodsImg" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
-		          </view>
-		          <view class="goodsinr">
-		            <!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
-		            <view class="goodsname fz30 c30 oh1">{{'黄金曼特宁精品咖啡/袋泡咖啡/耳挂 咖啡6*10袋装'}}</view>
-		            <view class="goodspri">{{'已选择：苏门答腊黄金曼特宁深度烘培'}}</view>
-		            <view class="goodspri1">
-		              <!-- <text class="fz36 cf6377a fwb">￥{{filter.moneyFormat('48')}}</text> -->
-		              <text class="fz36 cf6377a fwb">￥{{'48'}}</text>
-		
-		
-		            </view>
-		          </view>
-		        </view>
+		       <block v-for="(item,idx) in datas.order_goods">
+						 <view class="goods1"  :data-tab="idx" @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+						   <view class="goodsImg">
+						     <image class="goodsImg" :src="filter.imgIP(item.gd_vice_pic[0])" mode="aspectFill"></image>
+						   </view>
+						   <view class="goodsinr">
+						     <!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
+						     <view class="goodsname fz30 c30 oh1">{{item.gd_name}}</view>
+						     <view class="goodspri">已选择：<text v-for="(item1,idx1) in item.gd_attr">{{item1.value+' '}}</text></view>
+						     <view class="goodspri1">
+						       <!-- <text class="fz36 cf6377a fwb">￥{{filter.moneyFormat('48')}}</text> -->
+						       <text class="fz36 cf6377a fwb">￥{{item.single_price}}</text>
+						 		
+						 		
+						     </view>
+						   </view>
+						 </view>
+						 <view v-if="item.is_comment==2||item.is_advocacy==2" class="o_cz" style="padding: 0 28rpx 28rpx;">
+						 	<view v-if="item.is_comment==2" @tap.stop="jump" :data-url="'/pages_goods/goods_pj/goods_pj?id='+item.ov_id">评价</view>
+						   <view v-if="item.is_advocacy==2" @tap.stop="jump_fabu(item)" data-url="/pagesA/daiyan_fabu/daiyan_fabu">我要代言</view>
+						 </view>
+					 </block>
 		        <view class="o_xj">
 		          <view></view>
-		          <view>共3件，合记
-		            <text>¥144</text>
+		          <view>共{{getnum(1)}}件，合记
+		            <text>¥{{datas.o_price}}</text>
 		          </view>
 		
 		        </view>
@@ -98,19 +122,18 @@
 						<canvas class='canvas' style="width:{{qrcodeWidth}}px; height:{{qrcodeWidth}}px;" canvas-id='canvas' bindlongtap=''></canvas>
 					</view> -->
 					<view class="ordermsg_r">
-						<view class="omsgp">订单编号：{{'21763816468492'}}</view>
-						<view class="omsgp">创建时间：{{'2020-02-10  11:56:40'}}</view>
+						<view class="omsgp">订单编号：{{datas.o_order_num}}</view>
+						<view class="omsgp">创建时间：{{filter.getDate_ymd(datas.o_create_time)}}</view>
 						
 					
 					</view>
 		      
 				</view>
-				<view class="o_cz">
-		        <view v-if="h_type==3" catchtap="jump" data-url="/pages/goods_pj/goods_pj">评价</view>
-		        <!-- <view  v-if="h_type==4"  @tap="jump" data-url="/pages/daiyan_fabu/daiyan_fabu">我要代言</view> -->
-		        <view  v-if="h_type==2">确认收货</view>
-		        <view  v-if="h_type==0||h_type==1">付款</view>
-		        <view  v-if="h_type==0||h_type==1" class="qx">取消订单</view>
+				<view class="o_cz" >
+		        
+		        <view v-if="data.o_ddstatus==4||data.o_ddstatus==5" @tap.stop="get_goods(data.o_id)">确认收货</view>
+		        <view v-if="data.o_paystatus==1">付款</view>
+						<!-- <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view> -->
 		    </view>
 			</view>
 		
@@ -133,49 +156,35 @@
 	export default {
 		data() {
 			return {
+				id:'',
 				h_type:"",
 				btnkg:0,
 				htmlkg:0,
-				Odata:'',
-				order_id:'',
-				order_status:'',
-				delivery_code:'',
-				goods:[1,1,],
-				spimg:[],
-				shopNum:[],
-				goods_sele:[],
-				qujan:[],
-				order_product_list:[],
-				show0:0,
-				show1:0,
-				show2:0,
-				sum:0,
-				qrcodeWidth: qrcodeWidth,
+				
+				datas:'',
+				
 			}
 		},
-		onReady(){
-			let that =this
-			that.countpri()
-			// console.log(that.delivery_code)
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin',
+				// 'order_ls_data'
+			]),
 			
 		},
 		onLoad: function (option) {
 		  var that =this
-		  if(option.type){
-		    that.h_type=option.type
+		  if(option.id){
+		    that.id=option.id
+				that.h_type=option.type
+				that.getdata()
 		  }
-			// wx.setNavigationBarTitle({
-			// 	title:'加载中...'
-			// })
-		  // if(option.id){
-			// 	console.log(option.id)
-			// }
-			// this.setData({
-			// 	order_id:option.id
-			// })
-			// this.getOrderList(option.id)
+		
 		},
 		onShow(){
+			var that =this
 			if(that.btnkg==1){
 				that.btnkg=0
 			}
@@ -184,14 +193,197 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
-		  uni.stopPullDownRefresh();
+		  this.getdata()
 		},
 		methods: {
-			
+			...mapMutations(['dy_fb_fuc']),
+			jump(e) {
+			  service.jump(e)
+			},
+			getnum(idx){
+				var that =this
+				if(that.datas.order_goods.length==0) return
+				var list=that.datas.order_goods
+				var znum=0
+				for(var i=0;i<list.length;i++){
+					znum+=list[i].number*1
+				}
+				return znum
+			},
+			jump_fabu(item){
+			  let that = this
+				if(!item){
+					if(that.goods_sele.length==0){
+						uni.showToast({
+							icon:'none',
+							title:'请先选择商品'
+						})
+						return
+					}
+					console.log(that.goods_sele)
+					that.dy_fb_fuc(that.goods_sele)
+				}else{
+					var arr=[]
+					arr.push(item)
+					that.dy_fb_fuc(arr)
+				}
+			 
+				
+				
+				wx.navigateTo({
+				  url: '/pagesA/daiyan_fabu/daiyan_fabu',
+				})
+					
+			  
+			},
 			cload(){
-				this.getOrderList(this.order_id)
+				this.getdata()
+			},
+			getdata(){
+				var that =this
+				var datas={
+					token:that.loginMsg.userToken,
+					id:that.id
+				}
+				// 单个请求
+				service.P_get('/order/details',datas).then(res => {
+				  console.log(res)
+					if(res.code==1){
+						// that.catelist=res.data
+						that.datas=res.data
+					}
+				}).catch(e => {
+				  console.log(e)
+					uni.showToast({
+						icon:'none',
+						title:'获取数据失败'
+					})
+				})
+				
+				
 			},
 			
+			
+			
+			del_order(id){
+				var that =this
+				uni.showModal({
+				    title: '提示',
+				    content: '是否取消该订单',
+				    success: function (res) {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+										var jkurl='/order/cancel'
+										var data={
+											token:that.loginMsg.userToken,
+											id:id
+										}
+										service.post(jkurl, data,
+											function(res) {
+												
+												// if (res.data.code == 1) {
+												if (res.data.code == 1) {
+													var datas = res.data.data
+													// console.log(typeof datas)
+													that.htmlReset=0
+													if (typeof datas == 'string') {
+														datas = JSON.parse(datas)
+													}
+													uni.showToast({
+														icon: 'none',
+														title: '操作成功'
+													})
+													that.onRetry()
+												} else {
+													that.htmlReset=1
+													if (res.data.msg) {
+														uni.showToast({
+															icon: 'none',
+															title: res.data.msg
+														})
+													} else {
+														uni.showToast({
+															icon: 'none',
+															title: '操作失败'
+														})
+													}
+												}
+											},
+											function(err) {
+												that.htmlReset=1
+												that.btnkg=0
+												
+													uni.showToast({
+														icon: 'none',
+														title: '操作失败'
+													})
+											
+											}
+										)
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+			},
+			
+			//确认收货
+			get_goods(id){
+				var that =this
+				var jkurl='/order/confirmReceipt'
+				var data={
+					token:that.loginMsg.userToken,
+					id:id
+				}
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+				}
+				service.post(jkurl, data,
+					function(res) {
+						that.btnkg=0
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							
+							var datas = res.data.data
+							// console.log(typeof datas)
+							that.htmlReset=0
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							uni.showToast({
+								icon: 'none',
+								title: '操作成功'
+							})
+							that.onRetry()
+						} else {
+							that.htmlReset=1
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
+							}
+						}
+					},
+					function(err) {
+						that.htmlReset=1
+						that.btnkg=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+					
+					}
+				)
+			},
 			bindPickerChange(e) {
 			  console.log('picker发送选择改变，携带值为', e.detail.value)
 			  this.show0= e.detail.value
@@ -204,59 +396,7 @@
 			  console.log('picker发送选择改变，携带值为', e.detail.value)
 			  this.show2= e.detail.value
 			},
-			/*计算价格*/
-			countpri(){
-				/*let heji=0
-				let var2= this.data.goods
-				for (let i in var2) {
-						heji +=var2[i].num*(var2[i].pri*100)
-						let zj=var2[i].num*(var2[i].pri*100)
-						if(zj==0){
-							this.setData({
-								sum:'0.00'
-							})
-							return
-						}else{
-							zj=zj+"'"
-						}
-						if(zj.length<4){
-							zj='0000'+zj
-							zj=zj.substr(-4);
-							console.log(zj)
-						}
-						
-						let zj1 = zj.substring(0, zj.length-3);
-						let zj2 = zj.substring( zj.length-3, zj.length-1);
-						// console.log(zj1+'.'+zj2)
-						zj=zj1+'.'+zj2
-						this.data.goods[i].zj=zj
-						this.setData({
-							goods:this.data.goods
-						})
-				}
-				// console.log(heji)
-				if(heji==0){
-					this.setData({
-						sum:'0.00'
-					})
-					return
-				}else{
-					heji=heji+"'"
-				}
-				if(heji.length<4){
-					heji='0000'+heji
-					heji=heji.substr(-4);
-					// console.log(heji)
-				}
-				
-				let hj1 = heji.substring(0, heji.length-3);
-				let hj2 = heji.substring( heji.length-3, heji.length-1);
-				// console.log(hj1+'.'+hj2)
-				heji=hj1+'.'+hj2
-				this.setData({
-					sum:heji
-				})*/
-			},
+			
 			//取消订单
 			cancelOrder(e){
 				let that =this

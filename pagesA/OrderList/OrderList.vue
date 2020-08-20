@@ -9,7 +9,7 @@
 		    </block>
 		
 		  </view>
-		<view class="zanwu" v-if="datas.length==0">暂无内容</view>
+			<view class="zanwu" v-if="datas.length==0">暂无内容</view>
 		  <view class="goodsBox w100">
 		    <view class="goodsBox contbox">
 		      <view class="goods" v-for="(item,idx) in datas">
@@ -19,7 +19,7 @@
 		          <!-- <text>111</text> -->
 		        </view>
 		        <block v-for="(item1,idx1) in item.order_goods">
-		          <view class="goods1" @tap="jump" :data-url="'/pagesA/OrderDetails/OrderDetails?id='+item.order.o_id">
+		          <view class="goods1" @tap="jump" :data-url="'/pagesA/OrderDetails/OrderDetails?id='+item.order.o_id+'&type='+type">
 		            <view v-if="type==5" class="xuanze" :data-selec="idx" :data-selec1="idx1" @tap.stop="select(idx,idx1,item1)">
 		              <view class="xuanze1" :class="item1.xuan==true? 'xuanze2':''">
 		                <icon v-if="item1.xuan==true" type="success" size="14" color="#F7B43B" />
@@ -61,11 +61,13 @@
 		          <!-- <view v-if="type==0||type==4}}" @tap.stop="jump" data-url="/pages/daiyan_fabu/daiyan_fabu">我要代言</view> -->
 		          <view v-if="item.order.o_ddstatus==4||item.order.o_ddstatus==5" @tap.stop="get_goods(item.order.o_id)">确认收货</view>
 		          <view v-if="item.order.o_paystatus==1">付款</view>
-		          <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view>
+		          <!-- <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view> -->
 		        </view>
 		      </view>
 		    </view>
 		  </view>
+			
+			<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 		  <view class="vbottom" v-if="type==5&&datas.length>0">
 		    <view class="selecAll" @tap="selecAll">
 		      <view class="xuanze1 all " :class="all==true? 'xuanze2':''">
@@ -96,6 +98,7 @@
 			return {
 				btnkg:0,
 				htmlReset:0,
+				data_last:false,
 				data_list:[
 					'全部',
 					'待付款',
@@ -162,6 +165,7 @@
 				this.datas=[]
 				this.page=1
 				this.btnkg=0
+				this.data_last=false
 				this.getdatalist()
 			},
 			del_order(id){
@@ -302,6 +306,7 @@
 					page:that.page,
 					size:that.size
 				}
+				if(that.data_last) return
 				if(that.btnkg==1){
 					return
 				}else{
@@ -321,11 +326,10 @@
 							if(that.page==1){
 								that.datas=datas
 							}else{
-								if(datas.length){
-									uni.showToast({
-										icon:'none',
-										title:'到底了。。。'
-									})
+								if(datas.length==0){
+								
+									that.data_last=true
+									
 									return
 								}
 								that.datas=that.datas.concat(datas)

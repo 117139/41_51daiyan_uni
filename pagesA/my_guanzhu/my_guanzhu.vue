@@ -48,6 +48,7 @@
 					 </view>
 				 </block>
 				 
+				 <view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 			 </view>
 			
 		</view>
@@ -65,6 +66,7 @@
 		data() {
 			return {
 				btn_kg:0,
+				data_last:false,
 				type:'',
 				ss_cur:99,
 				data_list: [],
@@ -109,6 +111,7 @@
 			onRetry(){
 				this.page=1
 				this.data_list=[]
+				this.data_last=false
 				this.btn_kg=0
 				this.getdatalist()
 			},
@@ -122,6 +125,7 @@
 					type:that.ss_cur,
 					size:that.size
 				}
+				if(that.data_last) return
 				if(that.btn_kg==1){
 					return
 				}else{
@@ -140,10 +144,11 @@
 							datas = JSON.parse(datas)
 						}
 						if (datas.length==0) {
-							uni.showToast({
-								icon: 'none',
-								title: '暂无更多数据'
-							})
+							if(that.page==1){
+								that.data_list=datas
+							}else{
+								that.data_last=true
+							}
 							return
 						}
 						if(that.page==1){
