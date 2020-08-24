@@ -229,6 +229,13 @@ const wxlogin=function (num){
 	                    if (res.data.code == 1) {
 	                      console.log('登录成功')
 	                      console.log(res.data)
+												//获取手机号
+												// if(!res.data.phone){
+												// 	uni.navigateTo({
+												// 		url:'/pages/getTel/getTel'
+												// 	})
+												// 	return
+												// }
 												store.commit('login', res.data.data)
 	                      uni.setStorageSync('token', res.data.data.userToken)
 	                      uni.setStorageSync('loginmsg', res.data.data)
@@ -248,35 +255,7 @@ const wxlogin=function (num){
 												    }
 												});
 												// im login
-												/*var userInfo=res.data.data
-												if (userInfo) {
-													let promise = tim.login({
-														userID: userInfo.identification_id,
-														userSig: userInfo.IMSign
-													});
-													promise.then((res) => {
-														console.log(res)
-														//登录成功后 更新登录状态
-														store.commit("toggleIsLogin", true);
-														//自己平台的用户基础信息
-														// uni.setStorageSync('userInfo', JSON.stringify(userInfo))
-														//tim 返回的用户信息
-														uni.setStorageSync('userTIMInfo', JSON.stringify(res.data))
-														console.log('userTIMInfo========>'+JSON.stringify(res.data))
-														// uni.reLaunch({
-														// 	url: '../tim/record'
-														// })
-													}).catch((err) => {
-														console.warn('login error:', err); // 登录失败的相关信息
-													});
-												} else {
-													uni.showToast({
-														icon: 'none',
-														title: '用户不存在',
-														duration: 1500
-													});
-												}*/
-												// im login
+												
 												
 												
 												if(num==1){

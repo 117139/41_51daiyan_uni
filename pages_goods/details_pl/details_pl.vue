@@ -45,37 +45,44 @@
 
 			<uni-popup ref="popup_goods" type="bottom" @change="tkchange">
 				<view class="tk_popup_box">
-					<view class="popopBox1">
-						<view class="goodsimg">
-							<image :src="filter.imgIP(show_img[0])" :data-src="filter.imgIP(show_img[0])" mode="aspectFill" @tap="pveimg"></image>
-						</view>
-						<view class="goodstkjg">
-							<view class="closebtn" @tap="onClose">
-								<image :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image>
+					<view class="closebtn" @tap="onClose">
+						<image :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image>
+					</view>
+					<scroll-view class=" dyr_scroll" style="height:800rpx;" scroll-y>
+						<view class="popopBox1">
+							<view class="goodsimg">
+								<!-- <image :src="filter.imgIP(show_img[0])" :data-src="filter.imgIP(show_img[0])" mode="aspectFill" @tap="pveimg"></image> -->
+								<image v-if="show_img.length>0" :src="filter.imgIP(show_img[0])" :data-src="filter.imgIP(show_img[0])" mode="aspectFill" @tap="pveimg"></image>
+								<image v-else :src="filter.imgIP(goodsData.img[0])" :data-src="filter.imgIP(goodsData.img[0])" mode="aspectFill" @tap="pveimg"></image>
 							</view>
-							<view class="goods_pri_h">￥{{show_pri}}</view>
-							<view class="kucun" v-if="guige_select.length>0">库存{{show_num}}件</view>
-							<view class="tkname oh2">已选择：{{ggshow1}}</view>
+							<view class="goodstkjg">
+								<!-- <view class="closebtn" @tap="onClose">
+									<image :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image>
+								</view> -->
+								<view class="goods_pri_h">￥{{show_pri}}</view>
+								<view class="kucun" v-if="guige_select.length>0">库存{{show_num}}件</view>
+								<view class="tkname oh2">已选择：{{ggshow1}}</view>
+							</view>
 						</view>
-					</view>
-					<block v-if="guige_arr.length>0" v-for="(item,idx) in guige_arr">
-						<view class="tkguigetit">{{item.name}}</view>
-						<view class="guigeBox">
-							<!-- :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx) }" -->
-							<block v-for="(item1,idx1) in item.value">
-								<text class="guigeOne" v-if="ggShow(item.name,item1,idx)" :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
-								 :data-ggidx="idx" :data-name="item.name" :data-value="item1" @tap="selegg">{{item1}}</text>
-								<text class="guigeOne" v-else :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
-								 :data-ggidx="idx" :data-name="item.name" :data-value="item1">{{item1}}</text>
-							</block>
+						<block v-if="guige_arr.length>0" v-for="(item,idx) in guige_arr">
+							<view class="tkguigetit">{{item.name}}</view>
+							<view class="guigeBox">
+								<!-- :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx) }" -->
+								<block v-for="(item1,idx1) in item.value">
+									<text class="guigeOne" v-if="ggShow(item.name,item1,idx)" :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
+									 :data-ggidx="idx" :data-name="item.name" :data-value="item1" @tap="selegg">{{item1}}</text>
+									<text class="guigeOne" v-else :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
+									 :data-ggidx="idx" :data-name="item.name" :data-value="item1">{{item1}}</text>
+								</block>
+							</view>
+						</block>
+						<view class="countnum">
+							<text>购买数量</text>
+							<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum"
+							 min="0" :max="show_num" @input="onChange" @change="onChange" />
 						</view>
-					</block>
-					<view class="countnum">
-						<text>购买数量</text>
-						<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum"
-						 min="0" :max="show_num" @input="onChange" @change="onChange" />
-					</view>
-					<view class="b_view_o"></view>
+						<view class="b_view_o"></view>
+					</scroll-view>
 					<view class="czbtnG">
 						<view v-if="goodsData.activity_id==0&&goodsData.is_pond_goods==1" class="jrgwc" @tap="addwgc">加入购物车</view>
 						<view class="buybtn" @tap="nowbuy">立即购买</view>
@@ -89,14 +96,22 @@
 					<text>客服</text>
 				</view>
 				<view class="sg"></view>
-				<view class="kf_btn">
+				<view v-if="goodsData.is_collect==1" class="kf_btn" @tap="scFuc(g_id,'affirm')">
+				  <text class="iconfont iconhongxinicon"></text>
+				  <text>收藏</text>
+				</view>
+				<view  v-if="goodsData.is_collect==2" class="kf_btn" @tap="scFuc(g_id,'cancel')">
+				  <text class="iconfont iconhongxinicon1" style="color: #f00;"></text>
+				  <text style="color: #f00;">已收藏</text>
+				</view>
+				<!-- <view class="kf_btn">
 					<text class="iconfont iconhongxinicon"></text>
 					<text>收藏</text>
-				</view>
+				</view> -->
 				<view class="sg"></view>
 				<view class="kf_btn" @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+goodsData.merchant.group_code">
-					<text class="iconfont iconstore"></text>
-					<text>店铺</text>
+				  <text class="iconfont iconstore"></text>
+				  <text  data-url="/pages/dp_index/dp_index">店铺</text>
 				</view>
 				<view class="buy_btn" v-if="goodsData.activity_id==0&&goodsData.is_pond_goods==1" @tap="sheetshow_fuc">加入购物车</view>
 				<view class="buy_btn buy_btn1" @tap="sheetshow_fuc">立即购买</view>
@@ -248,6 +263,92 @@
 				this.star_page = 1
 				this.getStarlist()
 			},
+			scFuc(id,key){
+				var that =this
+				var data={
+					token:that.loginMsg.userToken,
+					type:5,
+					id:id,
+					operate:key,
+				}
+				if(key=='affirm'){
+					service.P_post('/attention/operation',data).then(res => {
+					  console.log(res)
+						that.btnkg=0
+						if(res.code==-1){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==0&&res.msg=='请先登录账号~'){
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(res.code==1){
+							that.getSku()
+							uni.showToast({
+								icon:'none',
+								title:'操作成功'
+							})
+						}else{
+							
+						}
+					}).catch(e => {
+						that.btnkg=0
+					  console.log(e)
+						uni.showToast({
+							icon:'none',
+							title:'操作失败'
+						})
+					})
+					return
+				}
+				wx.showModal({
+					title: '提示',
+					content: '是否取消收藏?',
+					success (res) {
+						if (res.confirm) {
+							console.log('用户点击确定')
+							service.P_post('/attention/operation',data).then(res => {
+							  console.log(res)
+								that.btnkg=0
+								if(res.code==-1){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==0&&res.msg=='请先登录账号~'){
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+									return
+								}else if(res.code==1){
+									that.getSku()
+									uni.showToast({
+										icon:'none',
+										title:'操作成功'
+									})
+								}else{
+									
+								}
+							}).catch(e => {
+								that.btnkg=0
+							  console.log(e)
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消')
+						}
+					}
+				})
+				
+				
+			},
+			
 			//获取评论的
 			getStarlist() {
 				let that = this
@@ -1475,7 +1576,11 @@
 		position: relative;
 		z-index: 999;
 	}
-
+	.dyr_scroll{
+		width: 694rpx;
+		margin: 0 auto;
+		position: relative;
+	}
 	.popopBox1 {
 		width: 100%;
 		display: flex;
@@ -1514,11 +1619,12 @@
 		border: 1px solid #dddddd;
 		overflow: hidden;
 		position: absolute;
-		top: 0;
-		right: 0;
+		top: 20rpx;
+		right: 20rpx;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		z-index: 999999;
 	}
 
 	.closebtn image {

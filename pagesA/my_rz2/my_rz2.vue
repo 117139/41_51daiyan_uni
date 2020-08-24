@@ -100,27 +100,36 @@
 			  //   })
 			  //   return
 			  // }
+				
+				
+				var tip_text='是否提交'
+				
+				if (!fs.ks_id) {
+				  // wx.showToast({
+				  //   icon: 'none',
+				  //   title: '请输入快手账号'
+				  // })
+				  // return
+					tip_text= '您还没有填写快手账号，是否提交'
+				}
+				
+				if (!fs.dy_id) {
+				  // wx.showToast({
+				  //   icon: 'none',
+				  //   title: '请输入抖音账号'
+				  // })
+				  // return
+					tip_text= '您还没有填写抖音账号，是否提交'
+				}
 			  if (!fs.wb_id) {
-			    wx.showToast({
-			      icon: 'none',
-			      title: '请输入微博账号'
-			    })
-			    return
+			    // wx.showToast({
+			    //   icon: 'none',
+			    //   title: '请输入微博账号'
+			    // })
+			    // return
+					tip_text= '您还没有填写微博账号，是否提交'
 			  }
-			  if (!fs.dy_id) {
-			    wx.showToast({
-			      icon: 'none',
-			      title: '请输入抖音账号'
-			    })
-			    return
-			  }
-			  if (!fs.ks_id) {
-			    wx.showToast({
-			      icon: 'none',
-			      title: '请输入快手账号'
-			    })
-			    return
-			  }
+				
 			  // if (!fs.tel || !(/^1\d{10}$/.test(fs.tel))) {
 			  //   wx.showToast({
 			  //     icon: 'none',
@@ -131,7 +140,7 @@
 			
 			  wx.showModal({
 			    title: '提示',
-			    content: '是否提交',
+			    content: tip_text,
 			    success(res) {
 			      if (res.confirm) {
 			        console.log('用户点击确定')

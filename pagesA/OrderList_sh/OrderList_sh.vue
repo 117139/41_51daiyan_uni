@@ -9,16 +9,16 @@
 		    </block>
 		
 		  </view>
-		
-		  <view class="goodsBox w100" v-if="type==idx0" v-for="(item0,idx0) in datalist">
-		    <view class="zanwu" v-if="goods[idx0].length==0">暂无内容</view>
+		  <view class="goodsBox w100">
+				<view class="zanwu" v-if="datas.length==0">暂无内容</view>
+		    
 		    <view class="goodsBox contbox">
-		      <view class="goods" v-for="(item,idx) in goods" :data-tab="idx" @tap="jump" data-url="'/pagesA/OrderDetails/OrderDetails?shop_id=1&type='+type}}">
+		      <view class="goods" v-for="(item,idx) in datas">
 		        <!-- <view class="dianpu_tit">
-		          <image class="dp_logo" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
-		          <text>石说的达开旗舰店</text>
+		          <image class="dp_logo" :src="filter.imgIP(item.order.head_portrait)"></image>
+		          <text>{{item.store_name}}</text>
 		        </view> -->
-		        <block v-for="(item1,idx1) in goods">
+		        <block v-for="(item1,idx1) in item.order_goods">
 		          <view class="goods1">
 		            <!-- <view v-if="type==4}}" class="xuanze" data-selec="idx}}" data-selec1="idx1}}" catchtap="select">
 		            <view class="xuanze1 {{goods_sele[idx][idx1].xuan==true? 'xuanze2':''}}">
@@ -26,27 +26,28 @@
 		            </view>
 		          </view> -->
 		            <view class="goodsImg">
-		              <image class="goodsImg" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
+		              <image class="goodsImg" :src="filter.imgIP(item1.gd_vice_pic)" mode="aspectFill"></image>
 		            </view>
 		            <view class="goodsinr">
 		              <!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
-		              <view class="goodsname fz30 c30 oh1">{{'黄金曼特宁精品咖啡/袋泡咖啡/耳挂 咖啡6*10袋装'}}</view>
+		              <view class="goodsname fz30 c30 oh1">{{item1.gd_name}}</view>
 		
 		              <view class="goodspri1">
-		                <text class="fz24 c6 ">数量：3</text>
+		                <text class="fz24 c6 ">数量：{{item1.may_retreat_number}}</text>
 		              </view>
 		            </view>
 		
 		          </view>
 		
 		          <view class="o_cz">
-		            <view v-if="type==0" @tap="jump" data-url="/pagesA/OrderList_sh_tk/OrderList_sh_tk">申请售后</view>
-		            <view v-if="type==1">取消售后</view>
+		            <view v-if="type==0" @tap="jump" :data-url="'/pagesA/OrderList_sh_tk/OrderList_sh_tk?item='+JSON.stringify(item1)">申请售后</view>
+		            <view v-if="type==1" @tap.stop='del_order(item1.id)'>取消售后</view>
 		          </view>
 		        </block>
 		
 		      </view>
 		    </view>
+				<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 		  </view>
 		</view>
 	</view>
@@ -64,85 +65,205 @@
 			return {
 				btnkg:0,
 				htmlReset:0,
+				data_last:false,
 				datalist:[
 					'售后申请',
 					'处理中',
 				  '申请记录'
 				],
-				pages:[1,1,1,1,1],
+				page:1,
+				size:20,
 				type:0,
-				goods:[1,1],
-				shopNum:[],
 				sum:0,
 				otype:-2,
 				
 				
 				
-				goods_sele: [
-				  [{ "num": 1, xuan:false},
-				    { "num": 1, xuan:false },],
-				  [{ "num": 1, xuan:false },
-				    { "num": 1, xuan:false },]
-				],
+				datas: [],
 				// goods_sele: [],
 				xuan: false,
 				all: false,
 			}
 		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin',
+				// 'order_ls_data'
+			]),
+			
+		},
+		onLoad(option) {
+			
+			this.onRetry()
+		},
+		onShow(){
+			// this.page=1
+			// this.goods_sele=[]
+			// this.all=false
+			// this.onRetry()
+			// this.getOrderList('onshow')
+		},
+		
+		onReady(){
+			
+		},
+		/**
+		 * 页面相关事件处理函数--监听用户下拉动作
+		 */
+		onPullDownRefresh: function () {
+		  this.onRetry()
+		},
+		/**
+		 * 页面上拉触底事件的处理函数
+		 */
+		onReachBottom: function () {
+			this.getdatalist()
+		},
 		methods: {
-			onLoad: function (option) {
-				// wx.setNavigationBarTitle({
-				// 	title:'加载中...'
-				// })
-			  // if(option.id){
-				// 	console.log(option.id)
-				// }
+			onRetry(){
+				this.datas=[]
+				this.page=1
+				this.btnkg=0
+				this.data_last=false
+				this.getdatalist()
+			},
+			getdatalist(){
 				
-				// wx.setNavigationBarTitle({
-				// 	title: '订单列表'
-				// })
-				if(option.type){
-					this.type=option.type
+				let that =this
+				var jkurl='/afterSale'
+				var data={
+					token:that.loginMsg.userToken,
+					type:that.type-1+2,
+					page:that.page,
+					size:that.size
 				}
-				
-				
-				
-			},
-			onShow(){
-				var pages=1
-				var goods=[ 1,1 ]
-				this.goods=goods
-					this.pages=pages
-					this.goods=this.goods
-			  if (this.btnkg==1){
-					that.btnkg=0
+				if(that.data_last) return
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
 				}
-				console.log('我显示了')
-				// this.getOrderList('onshow')
+				service.get(jkurl, data,
+					function(res) {
+						that.btnkg=0
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							var datas = res.data.data
+							// console.log(typeof datas)
+							that.htmlReset=0
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							if(that.page==1){
+								that.datas=datas
+							}else{
+								if(datas.length==0){
+								
+									that.data_last=true
+									
+									return
+								}
+								that.datas=that.datas.concat(datas)
+							}
+							that.page++
+						} else {
+							that.htmlReset=1
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
+							}
+						}
+					},
+					function(err) {
+						that.htmlReset=1
+						that.btnkg=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+					
+					}
+				)
 			},
-			cload(){
-				var pages=1
-				var goods=[1,1,]
-				this.goods=goods
-				this.pages=pages
-					thisgoods=this.goods
-				console.log('我显示了')
-				// this.getOrderList('onshow')
+			del_order(id){
+				var that =this
+				uni.showModal({
+				    title: '提示',
+				    content: '是否取消该售后订单',
+				    success: function (res) {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+										var jkurl='/afterSale/cancelAfter'
+										var data={
+											token:that.loginMsg.userToken,
+											id:id
+										}
+										service.post(jkurl, data,
+											function(res) {
+												
+												// if (res.data.code == 1) {
+												if (res.data.code == 1) {
+													var datas = res.data.data
+													// console.log(typeof datas)
+													that.htmlReset=0
+													if (typeof datas == 'string') {
+														datas = JSON.parse(datas)
+													}
+													uni.showToast({
+														icon: 'none',
+														title: '操作成功'
+													})
+													that.onRetry()
+												} else {
+													that.htmlReset=1
+													if (res.data.msg) {
+														uni.showToast({
+															icon: 'none',
+															title: res.data.msg
+														})
+													} else {
+														uni.showToast({
+															icon: 'none',
+															title: '操作失败'
+														})
+													}
+												}
+											},
+											function(err) {
+												that.htmlReset=1
+												that.btnkg=0
+												
+													uni.showToast({
+														icon: 'none',
+														title: '操作失败'
+													})
+											
+											}
+										)
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
 			},
-			onReady(){
-				
-			},
-			/**
-			 * 页面相关事件处理函数--监听用户下拉动作
-			 */
-			onPullDownRefresh: function () {
-			  wx.stopPullDownRefresh();
-			},
+			
 			bindcur(e){
 				var that =this
 			  console.log(e.currentTarget.dataset.type)
+				if(that.type== e.currentTarget.dataset.type) return
 			  that.type= e.currentTarget.dataset.type
 				// that.getOrderList()
+				that.onRetry()
 				
 			},
 			select(e) {
@@ -177,306 +298,18 @@
 			  // //计算总价
 			  // that.countpri()
 			},
-			selecAll() {
-			  let kg
-			  if (this.all == false) {
-			    kg = true
-			  } else {
-			    kg = false
-			  }
-			  this.all= kg
-			  // this.data.goods_sele[sid].xuan=true
-			  for (let i in this.goods_sele) {
-			    
-			    for (let j in this.goods_sele[i]) {
-			      this.goods_sele[i][j].xuan = kg
-			    }
-			  }
-			  this.goods_sele=this.goods_sele
-			  //计算总价
-			  // this.countpri()
-			},
+			
 			gopinlun(e){
 				wx.navigateTo({
 					url:'/pages/fabiaopl/fabiaopl?oid='+e.currentTarget.dataset.oid
 				})
 			},
-			//删除
-			cancelOrder(e){
-				let that =this
-				// console.log('picker发送选择改变，携带值为', e.detail.value)
-				let oid=e.currentTarget.dataset.oid
-				wx.showModal({
-					title: '提示',
-					content: '是否取消该订单?',
-					success (res) {
-						if (res.confirm) {
-							console.log('用户点击确定')
-							wx.request({
-								url:  app.IPurl+'/api/order',
-								data:{
-									status:-1,
-									order_id:oid,
-									token:wx.getStorageSync('token')
-								},
-								header: {
-									'content-type': 'application/x-www-form-urlencoded' 
-								},
-								dataType:'json',
-								method:'PUT',
-								success(res) {
-									if(res.data.error==-2){
-										app.checktoken(res.data.error)
-										that.onLoad()
-									}
-									if(res.data.code==1){
-										wx.showToast({
-											title: '删除成功',
-											duration: 1000
-										});
-										setTimeout(function(){
-											var pages=[1,1,1,1,1]
-											var goods=[ [],[],[],[],[], ]
-											that.pages=pages
-												that.goods=goods
-											that.getOrderList()
-										},1000)
-										// that.getOrderList(that.data.type)
-									}else{
-										wx.showToast({
-											title: '操作失败',
-											duration: 1000
-										});
-									}
-									
-								
-								},
-								fail() {
-									 wx.showToast({
-									 	title: '操作失败',
-									 	duration: 1000
-									 });
-								}
-							})
-						} else if (res.cancel) {
-							console.log('用户点击取消')
-						}
-					}
-				})
-				
-			},
-			/*计算价格*/
-			countpri(){
-				let heji=0
-				let var2= this.goods
-				for (let i in var2) {
-						heji +=var2[i].num*(var2[i].pri*100)
-						let zj=var2[i].num*(var2[i].pri*100)
-						if(zj==0){
-							this.sum='0.00'
-							return
-						}else{
-							zj=zj+"'"
-						}
-						if(zj.length<4){
-							zj='0000'+zj
-							zj=zj.substr(-4);
-							// console.log(zj)
-						}
-						
-						let zj1 = zj.substring(0, zj.length-3);
-						let zj2 = zj.substring( zj.length-3, zj.length-1);
-						// console.log(zj1+'.'+zj2)
-						zj=zj1+'.'+zj2
-						this.goods[i].zj=zj
-						this.goods=this.goods
-				}
-				// console.log(heji)
-				if(heji==0){
-					this.sum='0.00'
-					return
-				}else{
-					heji=heji+"'"
-				}
-				if(heji.length<4){
-					heji='0000'+heji
-					heji=heji.substr(-4);
-					// console.log(heji)
-				}
-				
-				let hj1 = heji.substring(0, heji.length-3);
-				let hj2 = heji.substring( heji.length-3, heji.length-1);
-				// console.log(hj1+'.'+hj2)
-				heji=hj1+'.'+hj2
-				this.sum=heji
-			},
 			
-			shouhuoBtn(e){
-				let that =this
-				// console.log('picker发送选择改变，携带值为', e.detail.value)
-				let oid=e.currentTarget.dataset.oid
-				wx.showModal({
-					title: '提示',
-					content: '是否确认收货?',
-					success (res) {
-						if (res.confirm) {
-							console.log('用户点击确定')
-							if(that.btnkg==1){
-								return
-							}else{
-								that.btnkg=1
-							}
-							wx.request({
-								url:  app.IPurl+'/api/order',
-								data:{
-									status:1,
-									order_id:oid,
-									token:wx.getStorageSync('token')
-								},
-								header: {
-									'content-type': 'application/x-www-form-urlencoded' 
-								},
-								dataType:'json',
-								method:'PUT',
-								success(res) {
-									
-									if(res.data.code==1){
-										wx.showToast({
-											title: '收货成功',
-											duration: 1000
-										});
-										setTimeout(function(){
-											var pages=[1,1,1,1,1]
-											var goods=[ [],[],[],[],[], ]
-												that.pages=pages
-												that.goods=goods
-												that.btnkg=0
-											that.getOrderList()
-										},1000)
-									}else{
-										that.btnkg=0
-										if(res.data.msg){
-											wx.showToast({
-												title: res.data.msg,
-												duration: 2000,
-												icon:'none'
-											});
-										}else{
-											wx.showToast({
-												title: '网络异常',
-												duration: 2000,
-												icon:'none'
-											});
-										}
-									}
-									
-								
-								},
-								fail() {
-									that.btnkg=0
-									 wx.showToast({
-									 	title: '操作失败',
-									 	duration: 1000
-									 });
-								}
-							})
-						} else if (res.cancel) {
-							console.log('用户点击取消')
-						}
-					}
-				})
-				
-				
-			},
-			
-			//获取列表
-			getOrderList(ttype){
-				// const pageState1 = pageState.default(this)
-				// pageState1.loading()    // 切换为loading状态
-				// pageState1.finish()
-				// return
-				let that = this
-				//http://water5100.800123456.top/WebService.asmx/order
-				wx.request({
-					url:  app.IPurl+'/api/orderList',
-					data:{
-						token:wx.getStorageSync('token'),
-						status_code:that.type,
-						page:that.pages[that.type],
-						page_length:10
-					},
-					header: {
-						'content-type': 'application/x-www-form-urlencoded' 
-					},
-					dataType:'json',
-					method:'get',
-					success(res) {
-						if(res.data.code==1){
-							wx.setNavigationBarTitle({
-								title:'订单列表'
-							})
-							that.htmlReset=0
-								console.log(ttype)
-								let resultd=res.data.data
-								if(ttype=='onshow'){
-									var pages=[1,1,1,1,1]
-									var goods=[ [],[],[],[],[], ]
-									that.goods=goods
-								}
-								if(resultd.length>0){
-									that.goods[that.type]=that.goods[that.type].concat(resultd)
-									that.pages[that.type]++
-									
-										that.goods=that.goods
-										that.pages=that.pages
-									console.log(thatgoods)
-								}else{
-									wx.showToast({
-										icon:"none",
-										title:"没有更多数据了"
-									})
-								}
-								// console.log(res.data.list)
-								
-								
-						}else{
-							wx.showToast({
-								icon:"none",
-								title:"获取失败"
-							})
-							that.setData({
-								htmlReset:1
-							})
-							console.log(res.data)
-						}
-						
-						// pageState1.finish()    // 切换为finish状态
-					},
-					fail(err) {
-						wx.showToast({
-							icon:"none",
-							title:"获取失败"
-						})
-						that.htmlReset=1
-						console.log(err)
-						 // pageState1.error()    // 切换为error状态
-					}
-				})
-			},
-			//订单详情
-			goOrderDetails(e){
-				console.log(e.currentTarget.dataset.id)
-				wx.navigateTo({
-					url:'/pages/OrderDetails/OrderDetails?id='+e.currentTarget.dataset.id
-				})
-			},
 			
 			jump(e) {
 			  service.jump(e)
 			},
-			onRetry(){
-				this.onLoad()
-			}
+			
 		}
 	}
 </script>

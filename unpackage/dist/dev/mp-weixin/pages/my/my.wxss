@@ -1,4 +1,8 @@
 
+.loading_img.data-v-0be17cc6{
+		width: 30rpx;
+		height: 30rpx;
+}
 .container.data-v-0be17cc6{
   width: 100%;
   min-height: 100vh;

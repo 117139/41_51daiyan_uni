@@ -901,8 +901,8 @@ padding: 0 10rpx;
 	border: 1px solid #dddddd;
 	overflow: hidden;
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: 20rpx;
+	right: 20rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -912,6 +912,7 @@ padding: 0 10rpx;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
 	        align-items: center;
+	z-index: 999999;
 }
 .closebtn image.data-v-39cbb4e8{
   width: 37rpx;
@@ -1145,6 +1146,7 @@ button.data-v-39cbb4e8 {
 .dyr_scroll.data-v-39cbb4e8{
 	width: 694rpx;
 	margin: 0 auto;
+	position: relative;
 }
 .tk_dyr_li.data-v-39cbb4e8{
   width: 100%;

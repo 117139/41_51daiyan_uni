@@ -27,9 +27,10 @@ page.data-v-51e9b630{
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
-	-webkit-box-align: center;
-	-webkit-align-items: center;
-	        align-items: center;
+	/* align-items: center; */
+	-webkit-box-align: start;
+	-webkit-align-items: flex-start;
+	        align-items: flex-start;
 	border-bottom: 1px solid #ddd;
 	position: relative;
 }
@@ -58,7 +59,7 @@ page.data-v-51e9b630{
 .xuanze.data-v-51e9b630{
 	width: 30rpx;
 	height: 30rpx;
-	padding: 40rpx 30rpx 40rpx 0rpx;
+	padding: 85rpx 30rpx 85rpx 0rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -95,6 +96,7 @@ page.data-v-51e9b630{
 	border: 0;
 }
 .goodsinr.data-v-51e9b630{
+	min-height: 200rpx;
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
 	        flex: 1;
@@ -103,7 +105,7 @@ page.data-v-51e9b630{
 	font-size: 30rpx;
 	color: #333333;
 	padding-right: 20rpx;
-	margin-bottom: 20rpx;
+	margin-bottom: 15rpx;
 	box-sizing: border-box;
 	display:-webkit-box !important;  
 	overflow:hidden;
@@ -111,6 +113,22 @@ page.data-v-51e9b630{
 	word-break:break-all;
 	-webkit-box-orient:vertical;
 	-webkit-line-clamp:2;
+}
+.goodsname1.data-v-51e9b630{
+	font-size: 28rpx;
+	color: #999;
+	padding-right: 20rpx;
+	margin-bottom: 10rpx;
+	box-sizing: border-box;
+	/* display:-webkit-box !important;  
+	overflow:hidden;
+	text-overflow:ellipsis;
+	word-break:break-all;
+	-webkit-box-orient:vertical;
+	-webkit-line-clamp:2; */
+}
+.goodsname1 text.data-v-51e9b630{
+	margin-right: 8rpx;
 }
 .goodspri.data-v-51e9b630{
 	font-size: 26rpx;

@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
 		<view class="container">
 			<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/my_indexbg_02.jpg')"></image>
 			<view class="h_main">
@@ -17,7 +18,7 @@
 							</view>
 							<view class="daiyan_lv"><text class="iconfont iconxingzhuang60kaobei2"></text>代言星级 {{datas.advocacy_grade_value}}</view>
 						</view>
-						<view v-if="loginMsg.id!=datas.id" class="gz_btn gz_btn1" @tap="jump" data-url="/pages/lts/lts">私信</view>
+						<view v-if="loginMsg.id!=datas.id" class="gz_btn gz_btn1" @tap="toroom(datas.identification_id)" :data-url="'/pages/tim/room?id='+datas.id">私信</view>
 						<view v-if="loginMsg.id!=datas.id&&datas.is_attention==2" class="gz_btn" @tap="guanzhuFuc(datas.id,'cancel')">已关注</view>
 						<view v-if="loginMsg.id!=datas.id&&datas.is_attention==1" class="gz_btn" @tap="guanzhuFuc(datas.id,'affirm')">+关注</view>
 					</view>
@@ -44,7 +45,9 @@
 							<view>跟随购买</view>
 						</view>
 						<view class="yue_li">
-							<view class="zhishu"><text>{{datas.exceed_number}}</text>%</view>
+							<!-- <view class="zhishu"><text>{{datas.exceed_number}}</text>%</view> -->
+							<view v-if="exceed_number_bl>-1" class="zhishu"> <text>{{exceed_number_bl?exceed_number_bl:0}}</text>%</view>
+							<view v-if="exceed_number_bl==-1" class="zhishu"> <image class="loading_img" :src="filter.imgIP('/static_s/51daiyan/images/loading_more.gif')" mode=""></image></view>
 							<view>超过好友</view>
 						</view>
 						<view class="yue_li">
@@ -116,8 +119,8 @@
 								</view>
 							</view>
 							<view class="sp_li_msg" style="display: none;">
-								<view class="sp_li_name oh2">三只松鼠-巨型零食大礼包 内含30包休闲食品</view>
-								<view class="sp_li_time">2月10日</view>
+								<view class="sp_li_name oh2"></view>
+								<view class="sp_li_time"></view>
 							</view>
 						</view>
 					</view>
@@ -177,6 +180,7 @@
 				uid:'',
 				btn_kg: 0,
 				data_last:false,
+				exceed_number_bl:-1,
 				s_type: 1,
 				datas: '',
 				data_list: [],
@@ -196,8 +200,12 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
+			uni.showLoading({
+				title:'正在加载中'
+			})
 			this.uid = options.id
 			this.getdata()
+			this.getdata_cy()
 		},
 
 		/**
@@ -232,7 +240,7 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function() {
-			this.getdata()
+			this.onRetry()
 		},
 
 		/**
@@ -249,6 +257,45 @@
 
 		},
 		methods: {
+			onRetry(){
+				this.getdata()
+				this.getdata_cy()
+			},
+			
+			// onRetry() {
+			// 	this.page = 1
+			// 	this.data_list = []
+			// 	this.data_last=false
+			// 	this.getdatalist()
+			// },
+			getdata_cy() {
+				var that = this
+				var datas = {
+					id: that.uid,
+				}
+				// 单个请求
+				service.P_get('/user/getExceedFriend', datas).then(res => {
+					console.log(res)
+					if (res.code == 1) {
+						that.exceed_number_bl = res.data.exceed_number_bl
+						
+					}
+				}).catch(e => {
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			
+			},
+			toroom(id){
+				this.$store.commit('createConversationActive', id)
+				uni.navigateTo({
+					url: '/pages/tim/room?id='+id
+				})
+			},
 			gettime(time,type) {
 				if(type==1){
 					return service.gettime(time).date
@@ -277,7 +324,7 @@
 			getdata() {
 				var that = this
 				var datas = {
-					token: that.loginMsg.userToken,
+					token: that.loginMsg.userToken?that.loginMsg.userToken:'',
 					user_id: that.uid
 				}
 				if (that.btn_kg == 1) {
@@ -291,10 +338,17 @@
 					if (res.code == 1) {
 						that.datas = res.data
 						that.btn_kg = 0
-						that.onRetry()
+						that.htmlReset=0
+						that.page = 1
+						that.data_list = []
+						that.data_last=false
+						that.getdatalist()
+					}else{
+						that.htmlReset=1
 					}
 				}).catch(e => {
 					that.btn_kg = 0
+					that.htmlReset=1
 					console.log(e)
 					uni.showToast({
 						icon: 'none',
@@ -336,12 +390,6 @@
 			  	})
 			  })
 			},
-			onRetry() {
-				this.page = 1
-				this.data_list = []
-				this.data_last=false
-				this.getdatalist()
-			},
 			getdatalist() {
 
 				let that = this
@@ -377,7 +425,7 @@
 							// 	title: '暂无更多数据'
 							// })
 							if(that.page==1){
-								that.datas=datas
+								that.data_list=datas
 							}else{
 								that.data_last=true
 							}

@@ -32,7 +32,9 @@
 		  <image :src="src" style="width: 375px; height: 667px;position:fixed;top:-9999999px;"></image>
 		  <view class="goodsBox w100">
 		    <view v-if="open_type>idx" class="quan_goods" v-for="(item,idx) in dy_fb_list" @tap="jump" data-url="/pages/details/details">
-		      <image class="quan_goods_img" :src="filter.imgIP(item.gd_vice_pic)" mode="aspectFill"></image>
+		      <image v-if="item.gd_vice_pic.length>0" class="quan_goods_img" :src="filter.imgIP(item.gd_vice_pic[0])" mode="aspectFill"></image>
+		      <image v-else class="quan_goods_img" :src="filter.imgIP(item.gd_mastr_pic[0])" mode="aspectFill"></image>
+					
 		      <view class="quan_goods_msg">
 		        <view class="quan_goods_name oh1">{{item.gd_name}}</view>
 		        <view class="quan_goods_pri">
@@ -471,9 +473,13 @@
 						console.log('上传进度' + res.progress);
 						console.log('已经上传的数据长度' + res.totalBytesSent);
 						console.log('预期需要上传的数据总长度' + res.totalBytesExpectedToSend);
+						// uni.showLoading({
+						// 	mask:'true',
+						// 	title: '上传进度：' + res.progress
+						// });
 						uni.showLoading({
 							mask:'true',
-							title: '上传进度：' + res.progress
+							title: '正在上传视频'
 						});
 						// 测试条件，取消上传任务。
 						// if (res.progress > 50) {

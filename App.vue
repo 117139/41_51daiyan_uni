@@ -85,6 +85,13 @@
 			                    if (res.data.code == 1) {
 			                      console.log('登录成功')
 			                      console.log(res.data)
+														//获取手机号
+														// if(!res.data.phone){
+														// 	uni.navigateTo({
+														// 		url:'/pages/getTel/getTel.vue'
+														// 	})
+														// 	return
+														// }
 														that.login(res.data.data)
 														console.log('loginMsg----------------->')
 														// console.lo(that.loginMsg)

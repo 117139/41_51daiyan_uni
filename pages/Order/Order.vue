@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="hengxian"></view>
-		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
 		<view class="container" v-if="data_list.length>0">
 		
 		  <view class="address" data-url="/pagesA/myaddress/myaddress?type=1" @tap="jump">
@@ -167,6 +167,9 @@
 		},
 		onLoad(option) {
 			var that =this
+			uni.showLoading({
+				title:'正在加载中'
+			})
 			if(option.type==1){
 				that.type=option.type
 				that.sku_id=option.v_id
@@ -214,11 +217,14 @@
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function() {
-		  that.getdata()
+		  // that.getdata()
 		},
 		methods: {
 			...mapMutations(['order_ls']),
 			
+			onRetry() {
+			  this.getdata()
+			},
 			getxj(idx,type){
 				var that = this
 				if(that.data_list.length==0){
@@ -303,7 +309,7 @@
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-					
+							that.htmlReset=0
 							that.data_list =datas
 							that.order_ls(datas)
 							that.order_ls_data=JSON.parse(JSON.stringify(datas))
@@ -321,9 +327,12 @@
 							that.jisuan()
 							console.log(address)
 							that.getyf()
+					}else{
+						that.htmlReset=1
 					}
 				}).catch(e => {
 					that.btn_kg=0
+					that.htmlReset=1
 					console.log(e)
 					uni.showToast({
 						icon: 'none',
@@ -574,9 +583,6 @@
 					},1000)
 				}
 			  service.jump(e)
-			},
-			onRetry() {
-			  this.onLoad()
 			}
 		}
 	}

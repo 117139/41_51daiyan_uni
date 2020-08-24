@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>重试</view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
 		<view class="container" v-if="htmlReset==0">
 		  <!-- <view class="hengxian"></view> -->
 		  <view class='dis_flex ju_a w100 pb40 pt20 bgfff tab_box'>
@@ -16,7 +16,9 @@
 		        <view class="dianpu_tit" @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+item.order.group_code">
 		          <image class="dp_logo" :src="filter.imgIP(item.order.head_portrait)"></image>
 		          <text class="flex_1">{{item.order.store_name}}</text>
-		          <!-- <text>111</text> -->
+		          <text v-if="item.order.o_ddstatus==1">待支付</text>
+		          <text v-if="item.order.o_ddstatus==2&&item.order.o_paystatus==2">待发货</text>
+		          <text v-if="item.order.o_ddstatus==2&&item.order.o_paystatus==2">待发货</text>
 		        </view>
 		        <block v-for="(item1,idx1) in item.order_goods">
 		          <view class="goods1" @tap="jump" :data-url="'/pagesA/OrderDetails/OrderDetails?id='+item.order.o_id+'&type='+type">
@@ -26,7 +28,9 @@
 		              </view>
 		            </view>
 		            <view class="goodsImg">
-		              <image class="goodsImg" :src="filter.imgIP(item1.gd_vice_pic)" mode="aspectFill"></image>
+		              <!-- <image class="goodsImg" :src="filter.imgIP(item1.gd_vice_pic)" mode="aspectFill"></image> -->
+									<image v-if="item1.gd_vice_pic.length>0" class="goodsImg" :src="filter.imgIP(item1.gd_vice_pic[0])" mode="aspectFill"></image>
+									<image v-else class="goodsImg" :src="filter.imgIP(item1.gd_mastr_pic[0])" mode="aspectFill"></image>
 		            </view>
 		            <view class="goodsinr">
 		              <!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
@@ -137,7 +141,7 @@
 			if(option.type){
 				this.type=option.type
 			}
-			this.onRetry()
+			// this.onRetry()
 		},
 		onShow(){
 			this.page=1
@@ -259,7 +263,14 @@
 								icon: 'none',
 								title: '操作成功'
 							})
-							that.onRetry()
+							for(var i=0; i<that.datas.length;i++){
+								if(that.datas[i].order.o_id==id){
+									
+									// that.datas[i].is_friend=2
+									// that.$set(that.datas,i,that.datas[i])
+									that.datas.splice(i, 1)
+								}
+							}
 						} else {
 							that.htmlReset=1
 							if (res.data.msg) {
@@ -701,11 +712,11 @@
 
 <style scoped>
 page{
-  background: #f5f5f5;
+  background: #f8f8f8;
 }
 .container{
 	min-height: 100vh;
-	background: #f5f5f5;
+	background: #f8f8f8;
 	padding-top: 80rpx;
   padding-bottom: 100rpx;
 }
@@ -866,7 +877,7 @@ page{
 	width: 100%;
 	padding: 10rpx 0;
 	box-sizing: border-box;
-	background-color: #f5f5f5;
+	background-color: #f8f8f8;
 }
 .goodsImg image{
 	width: 100%;

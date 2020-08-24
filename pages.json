@@ -87,6 +87,7 @@
 		}, {
 			"path": "pages/Order/Order",
 			"style": {
+				"disableScroll": true,
 				"navigationBarTitleText": "填写订单"
 			}
 		},
@@ -126,6 +127,10 @@
             	"navigationBarTextStyle": "white",
             	"navigationStyle": "custom"
             }
+        }
+        ,{
+            "path" : "pages/getTel/getTel",
+            "style" : {}
         }
     ],
 
@@ -300,6 +305,10 @@
 				}
 			    ,{
                     "path" : "ysxy/ysxy",
+                    "style" : {}
+                }
+                ,{
+                    "path" : "daiyan_edit/daiyan_edit",
                     "style" : {}
                 }
             ]

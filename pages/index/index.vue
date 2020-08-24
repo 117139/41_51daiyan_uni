@@ -21,16 +21,18 @@
 				<view @tap="jump" data-url="/pages_goods/daiyan_ph/daiyan_ph">排行</view>
 			</view>
 		</view>
-		<view class="index_box1 index_box3" v-if="datas.countAdvocacy>0" @tap="jump" data-url="/pagesA/OrderList/OrderList?type=4"
+		
+		<view v-if="htmlReset==1" class="zanwu" @tap='getdata'>请求失败，请点击重试</view>
+		<view class="index_box1 index_box3" v-if="datas.wdyNumber>0" @tap="jump" data-url="/pagesA/OrderList/OrderList?type=5"
 		 data-login="true" :data-haslogin="hasLogin">
 			<text class="iconfont iconyiping"></text>
-			<view>您还有{{datas.countAdvocacy}}件商品未代言，快来代言吧～</view>
+			<view>您还有{{datas.wdyNumber}}件商品未代言，快来代言吧～</view>
 		</view>
-		<view class="index_box1 index_box4" @tap="jump" data-url="/pages_goods/star_list/star_list?type=1">
+		<view v-if="start_li.length>0" class="index_box1 index_box4" @tap="jump" data-url="/pages_goods/star_list/star_list?type=1">
 			<view>明星达人代言人推荐：</view>
 			<text>各种玩法尽在明星达人代言秀</text>
 		</view>
-		<scroll-view class="start_list" scroll-x>
+		<scroll-view  v-if="start_li.length>0" class="start_list" scroll-x>
 			<view class="start_list1">
 				<view class="start_li" v-for="(item,index) in start_li">
 					<view class="star_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
@@ -46,7 +48,7 @@
 				</view>
 			</view>
 		</scroll-view>
-		<view class="find_star" @tap="jump" data-url="/pages_goods/daiyan_find/daiyan_find">
+		<view class="find_star" v-if="datas.activityArr.length>0" @tap="jump" data-url="/pages_goods/daiyan_find/daiyan_find">
 			<view class="find_tit">
 				<view>寻找代言人:</view>
 				<text>（赏金任务）</text>
@@ -62,11 +64,11 @@
 				<text class="iconfont iconnext3"></text>
 			</view>
 		</view>
-		<view class="goods_index">
+		<view class="goods_index" v-if="datas.advocacyVideoArr.length>0||datas.goodStuffArr.length>0">
 			<view>
 				<view class="goodstype_name">代言人短视频 <image :src="filter.imgIP('/static_s/51daiyan/images/goods_type1.png')"></image>
 				</view>
-				<view class="goods_tip">已为您更新{{datas.advocacyVideoArr.length}}个视频</view>
+				<view class="goods_tip">已为您更新{{datas.advocacyVideoArr.length>0?datas.advocacyVideoArr.length:0}}个视频</view>
 				<view class="goods_list">
 					<view v-if="idx<2" class="goods_li" v-for="(item,idx) in datas.advocacyVideoArr" 
 					 @tap.stop="jump" :data-url="'/pages/xvideo/xvideo?idx='+item.id">
@@ -189,6 +191,7 @@
 		data() {
 			return {
 				btn_kg:0,
+				htmlReset:0,
 				datas: '',
 				page: 2,
 				banner: '',
@@ -223,6 +226,14 @@
 		},
 		onShow() {
 			this.btn_kg=0
+			if(this.hasLogin){
+				if (this.isSDKReady) {
+					console.log('2222')
+					this.getConversationList()
+				} else {
+					console.log('333333')
+				}
+			}
 		},
 		onPullDownRefresh: function() {
 			wx.stopPullDownRefresh();
@@ -246,8 +257,24 @@
 			...mapState([
 				'hasLogin',
 				'loginMsg',
-				'wxlogin'
+				'wxlogin',
+				'isLogin',
+				'isSDKReady',
+				'conversationList'
 			])
+		},
+		watch: {
+			isSDKReady(val) {
+				//isSDKReady == true 
+				if (val) {
+					//更新用户自己的基础资料（头像+昵称+个性签名）
+					this.updateUserInfo()
+					//请求会话列表
+					this.getConversationList()
+				}
+			},
+
+
 		},
 		methods: {
 			...mapMutations(['setAbout']),
@@ -281,6 +308,42 @@
 						duration: 1500
 					});
 				}
+			},
+			
+			//提交用户的基础信息到Im
+			updateUserInfo() {
+				var that =this
+				//将已经登陆的用户信息 提交到IM中
+				// let userInfo = JSON.parse(uni.getStorageSync('userInfo'))
+				console.log('将已经登陆的用户信息 提交到IM中')
+				let promise = this.tim.updateMyProfile({
+					nick: that.loginMsg.nickname,
+					avatar: that.loginMsg.avatarurl,
+					gender: this.$TIM.TYPES.GENDER_MALE,
+					selfSignature: that.loginMsg.introduction,
+					allowType: this.$TIM.TYPES.ALLOW_TYPE_ALLOW_ANY
+				});
+				promise.then((res) => {
+					console.log('提交资料成功')
+				}).catch((err) => {
+					console.warn('updateMyProfile error:', imError); // 更新资料失败的相关信息
+				});
+			},
+			//获取消息列表
+			getConversationList() {
+				// 拉取会话列表
+				let promise = this.tim.getConversationList();
+				promise.then((res) => {
+					let conversationList = res.data.conversationList; // 会话列表，用该列表覆盖原有的会话列表
+					if (conversationList.length>0) {
+			
+						//将返回的会话列表拼接上 用户的基本资料  
+						//说明：如果已经将用户信息 提交到tim服务端了 就不需要再次拼接
+						this.$store.commit("updateConversationList", conversationList);
+					}
+				}).catch((err) => {
+					console.warn('getConversationList error:', err); // 获取会话列表失败的相关信息
+				});
 			},
 			guanzhuFuc_dz(type, id, key) {
 				var that = this
@@ -434,6 +497,7 @@
 				service.P_get('', datas).then(res => {
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						that.datas = res.data
 						that.setAbout(res.data.aboutAs)
 						that.start_li = res.data.publicUserArr
@@ -441,8 +505,11 @@
 						that.data_list = res.data.advocacyArr
 						that.page = 2
 						that.data_last=false
+					}else{
+						that.htmlReset=1
 					}
 				}).catch(e => {
+					that.htmlReset=1
 					console.log(e)
 					uni.showToast({
 						icon: 'none',

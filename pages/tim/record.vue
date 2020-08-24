@@ -140,9 +140,23 @@
 			}
 			
 		},
+		/**
+		 * 页面相关事件处理函数--监听用户下拉动作
+		 */
+		onPullDownRefresh: function() {
+			if(this.hasLogin){
+				if (this.isSDKReady) {
+					console.log('2222')
+					this.getConversationList()
+				} else {
+					console.log('333333')
+				}
+			}
+		},
 		computed: {
 			...mapState([
 				'hasLogin',
+				'loginMsg',
 				'forcedLogin',
 				'isLogin',
 				'isSDKReady',
@@ -212,10 +226,10 @@
 				//将已经登陆的用户信息 提交到IM中
 				let userInfo = JSON.parse(uni.getStorageSync('userInfo'))
 				let promise = this.tim.updateMyProfile({
-					nick: userInfo.user,
-					avatar: userInfo.img,
+					nick: loginMsg.nickname,
+					avatar: loginMsg.avatarurl,
 					gender: this.$TIM.TYPES.GENDER_MALE,
-					selfSignature: '暂无个性签名',
+					selfSignature: loginMsg.introduction,
 					allowType: this.$TIM.TYPES.ALLOW_TYPE_ALLOW_ANY
 				});
 				promise.then((res) => {

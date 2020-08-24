@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
+		<!-- <view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view> -->
 		<view class="container" v-if="htmlReset==0">
 		
 			<view class="goodsBox w100" >
@@ -12,15 +12,15 @@
 						<view class="goods1">
 		
 							<view class="goodsImg">
-								<image class="goodsImg" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
+								<image class="goodsImg" :src="filter.imgIP(datas.gd_vice_pic[0])" mode="aspectFill"></image>
 							</view>
 							<view class="goodsinr">
 								<!-- <view class="goodsname fz30 c30 oh1">{{item.goods_name}}</view> -->
-								<view class="goodsname fz30 c30 oh1">{{'黄金曼特宁精品咖啡/袋泡咖啡/耳挂 咖啡6*10袋装'}}</view>
+								<view class="goodsname fz30 c30 oh1">{{datas.gd_name}}</view>
 		
 								<view class="goodspri1">
-									<text class="fz24 cf6377a ">￥48</text>
-									<text class="fz24 c6 ">x3</text>
+									<text class="fz24 cf6377a ">￥{{datas.single_price}}</text>
+									<text class="fz24 c6 ">x{{datas.may_retreat_number}}</text>
 								</view>
 							</view>
 		
@@ -40,6 +40,14 @@
 						<text class="iconfont iconnext3"></text>
 					</view>
 				</picker>
+				<view class="fuwu_li bt0">
+					<view class="d1">数量</view>
+					<view class="fw_msg">
+						<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="1" :max="datas.may_retreat_number"
+						  @input="onChange" @change="onChange" />
+					</view>
+					<!-- <text class="iconfont iconnext3"></text> -->
+				</view>
 				<!-- <picker class="w100" bindchange="bindPickerChange" value="index1}}" range="yuanyin}}" range-key='name'>
 					<view class="fuwu_li">
 						<view class="d1">退款原因</view>
@@ -64,8 +72,8 @@
 			<view class="fw_list">
 				<view class="imgbox mb20">
 				  <view class="addimg1" v-for="(item,idx) in imgb" :data-idx="idx" @tap="imgdel">
-				    <!-- <image src="filter.imgIP(item)}}" data-src="filter.imgIP(item)}}" mode="aspectFill"></image> -->
-				    <image :rc="item" :data-src="item" mode="aspectFill"></image>
+				    <image :src="filter.imgIP(item)" :data-src="filter.imgIP(item)" mode="aspectFill"></image>
+				    <!-- <image :rc="item" :data-src="item" mode="aspectFill"></image> -->
 				  </view>
 				
 				  <view v-if="imgb.length<9" class="addimg" @tap="scpic">
@@ -99,11 +107,11 @@
 					'处理中',
 				  '申请记录'
 				],
-				pages:[1,1,1,1,1],
+				datas:'',
 				zhaungtai:[
 				  { name: '没收到货,或与卖家协商同意不用退货', value: '1' },
 				  { name: '已收到货,需要退货退款', value: '2' },
-				  { name: '已收到货,需要换货', value: '2' },
+				  { name: '已收到货,需要换货', value: '3' },
 				],
 				index:0,
 				yuanyin:[
@@ -116,19 +124,22 @@
 				index1:0,
 				yname:'',
 				imgb:[],
+				cnum:1,
 				
 				
-				
-				goods_sele: [
-				  [{ "num": 1, xuan:false},
-				    { "num": 1, xuan:false },],
-				  [{ "num": 1, xuan:false },
-				    { "num": 1, xuan:false },]
-				],
-				// goods_sele: [],
+				goods_sele: [],
 				xuan: false,
 				all: false,
 			}
+		},
+		computed:{
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin',
+				// 'order_ls_data'
+			]),
+			
 		},
 		onLoad: function (option) {
 			// wx.setNavigationBarTitle({
@@ -141,27 +152,27 @@
 			// wx.setNavigationBarTitle({
 			// 	title: '订单列表'
 			// })
-			if(option.type){
-				this.type=option.type
+			if(option.item){
+				this.datas=JSON.parse(option.item)
+				console.log(option.item)
 			}
 			
 			
 			
 		},
 		onShow(){
-			var pages=1
-			var goods=[ 1,1 ]
-			this.goods=goods
-			this.pages=pages
-				this.goods=this.goods
-		  if (this.btnkg==1){
-				that.btnkg=0
-			}
+		
 			console.log('我显示了')
 			// this.getOrderList('onshow')
 		},
 		methods: {
-			
+			//数量
+			onChange(e) {
+				var that =this
+			 
+			  this.cnum= e.detail
+				
+			},
 			cload(){
 				var pages=1
 				var goods=[1,1,]
@@ -206,12 +217,60 @@
 					})
 					return
 				}
-				wx.showToast({
-					title: '操作成功',
-				})
-				setTimeout(function () {
-				  wx.navigateBack()
-				}, 1000)
+				var imgs=that.imgb.join(',')
+				var jkurl='/afterSale/applyAfterSale'
+				var data={
+					token:that.loginMsg.userToken,
+					number:that.cnum,
+					content:that.yname,
+					ov_id:that.datas.id,
+					type:that.index-1+2,
+					pic:imgs
+				}
+				service.post(jkurl, data,
+					function(res) {
+						
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							var datas = res.data.data
+							// console.log(typeof datas)
+							// that.htmlReset=0
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							wx.showToast({
+								title: '操作成功',
+							})
+							setTimeout(function () {
+							  wx.navigateBack()
+							}, 1000)
+						} else {
+							// that.htmlReset=1
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
+							}
+						}
+					},
+					function(err) {
+						// that.htmlReset=1
+						that.btnkg=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+					
+					}
+				)
+				
 				console.log(that.zhaungtai[that.index])
 				console.log(that.yuanyin[that.index1])
 				console.log(that.yname)
@@ -268,7 +327,7 @@
 			    })
 			    return
 			  }
-				var newdata = that.imgb
+				/*var newdata = that.imgb
 				console.log(i)
 				newdata.push(imgs[i])
 				that.imgb= newdata
@@ -276,29 +335,27 @@
 				if (news1 < 9&& i<imgs.length-1) {
 				  i++
 				  that.upimg(imgs, i)
-				}
-				return
+				}*/
+				// return
 			  // console.log(img1)
 			  wx.uploadFile({
-			    url: app.IPurl, //仅为示例，非真实的接口地址
+			    url: service.IPurl+'/upload/streamImg', //仅为示例，非真实的接口地址
 			    filePath: imgs[i],
-			    name: 'upfile',
+			    name: 'file',
 			    formData: {
-			      'apipage': 'uppic',
+			      'type': 1,
 			    },
 			    success(res) {
 			      // console.log(res.data)
 			      var ndata = JSON.parse(res.data)
-			      if (ndata.error == 0) {
-			        console.log(imgs[i], i, ndata.url)
+			      if (ndata.code == 1) {
+			        console.log(imgs[i], i,ndata.msg)
 			        var newdata = that.imgb
 			        console.log(i)
-			        newdata.push(ndata.url)
+			        newdata.push(ndata.msg)
 			        that.imgb= newdata
-			        // i++
-			        // that.upimg(imgs, i)
 			        var news1 = that.imgb.length
-			        if (news1 < 9) {
+			        if (news1 < 9&& i<imgs.length-1) {
 			          i++
 			          that.upimg(imgs, i)
 			        }

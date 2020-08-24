@@ -18,9 +18,10 @@
 								<text v-if="item.use_identity_id==2">达人</text>
 							</view>
 						</view>
-						<view v-if="item.a_activity_id>0&&item.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-id="item.user_id"
-						 :data-idx="idx">为我投票</view>
-						<view v-if="item.a_activity_id>0&&item.is_vote==1" class="quan_user_btn quan_user_btn1">已投票</view>
+						<view class="fz30 c9">{{item.audit_status_value}}</view>
+						<view class="quan_user_btn" @tap.stop="jump_fabu(item)">编辑</view>
+						<view class="quan_user_btn" @tap.stop="del_li" :data-id="item.id"
+						 :data-idx="idx">删除</view>
 					</view>
 					<view class="quan_msg">
 						<view class="oh4  quan_msg_text">{{item.content}}</view>
@@ -123,12 +124,31 @@
 			this.getdatalist()
 		},
 		methods: {
+			...mapMutations(['dy_fb_fuc']),
 			onRetry(){
 				this.data_list=[]
 				this.page=1
 				this.btnkg=0
 				this.data_last=false
 				this.getdatalist()
+			},
+			jump_fabu(item){
+			  let that = this
+				if(!item){
+					
+				}else{
+					// var arr=[]
+					// arr.push(item)
+					that.dy_fb_fuc(item.goods)
+				}
+			 
+				
+				
+				wx.navigateTo({
+				  url: '/pagesA/daiyan_edit/daiyan_edit?id='+item.id,
+				})
+					
+			  
 			},
 			guanzhuFuc_dz(type, id, key) {
 				var that = this
@@ -196,7 +216,7 @@
 				var datas = {
 					token: that.loginMsg.userToken,
 					page: that.page,
-					size:taht.size
+					size:that.size
 				}
 				if(that.data_last) return
 				// 单个请求
@@ -269,6 +289,7 @@
 				let that = this
 				// console.log('picker发送选择改变，携带值为', e.detail.value)
 				let id = e.currentTarget.dataset.id
+				let idx = e.currentTarget.dataset.idx
 				wx.showModal({
 					title: '提示',
 					content: '是否删除?',
@@ -280,10 +301,33 @@
 							} else {
 								that.btnkg = 1
 							}
-							uni.showToast({
-								icon: 'none',
-								title: '删除'
+							var datas = {
+								token: that.loginMsg.userToken,
+								ad_id:id,
+							}
+							// 单个请求
+							service.P_post('/user/delAdvocacy', datas).then(res => {
+								that.btnkg =0
+								console.log(res)
+								if (res.code == 1) {
+									// that.page=1
+									// that.getdatalist()
+									// that.data_list[idx].is_vote=2
+									that.data_list.splice(idx, 1)
+									uni.showToast({
+										icon: 'none',
+										title: '操作成功'
+									})
+								}
+							}).catch(e => {
+								that.btnkg =0
+								console.log(e)
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
 							})
+							
 						} else if (res.cancel) {
 							console.log('用户点击取消')
 						}
@@ -343,7 +387,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 168rpx;
+		width: 100rpx;
 		height: 56rpx;
 		background: rgba(254, 58, 53, 1);
 		border-radius: 10rpx;

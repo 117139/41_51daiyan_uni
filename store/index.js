@@ -85,6 +85,7 @@ const store = new Vuex.Store({
 		//选择好友聊天--创建会话/拼接会话id
 		createConversationActive(state, toUserId) {
 			state.conversationActive.conversationID = 'C2C' + toUserId
+			console.log(toUserId)
 			state.toUserId = toUserId
 			state.currentMessageList = []
 		},

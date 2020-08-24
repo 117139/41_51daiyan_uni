@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
 		<view class="container" v-if="htmlReset==0">
 			<view class="zanwu_box" v-if="data_list.length==0">
 				<image  :src="filter.imgIP('/static_s/51daiyan/images/car_null.png')"></image>
@@ -28,13 +29,16 @@
 						<image class="goodsImg" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])" mode="aspectFill"></image>
 					</view>
 					<view class="goodsinr">
-						<view class="goodsname fz30 c30 oh2"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">{{item.g_title}} <text v-for="(item1,dix) in item.attr">{{item1.value}}</text></view>
+						<view class="goodsname fz30 c30 oh2"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">{{item.g_title}}</view>
+						<view class="goodsname1"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+							<text v-for="(item1,dix) in item.attr">{{item1.value}}</text>
+						</view>
 						<view class="goodspri1"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 							<text class="fz36 cf6377a fwb">￥{{item.g_price}}</text>
 						</view>
 		        <view class="goodspri1">
 							
-							<text class="fz36 cf6377a fwb"></text>
+							<text class="fz30 c9">库存：{{item.sku_number}}</text>
 						
 							<view class="vstepper steppera">
 								<view @tap.stop="onNum" :data-idx="idx" data-ad="-" :data-id="item.g_id" class="vantjian c9">-</view>
@@ -58,7 +62,7 @@
 							<view class="oh1">{{item.g_title}}</view>
 							<view class="goods_pri">
 								<text>￥{{item.g_price}}</text>
-								<text class="pr2">￥{{item.g_original_price}}</text>
+								<!-- <text class="pr2">￥{{item.g_original_price}}</text> -->
 							</view>
 						</view>
 					</view>
@@ -147,7 +151,19 @@
 			  let that = this
 			  
 			  if (!that.data_list[idx].xuan) {
+					if(that.data_list[idx].sku_number>that.data_list[idx].number){
 						that.$set(that.data_list[idx],'xuan',true)
+					}else if(that.data_list[idx].sku_number>0){
+						uni.showToast({
+							icon: 'none',
+							title: '该商品库存不足请减少购买数量'
+						})
+					}else{
+						uni.showToast({
+							icon: 'none',
+							title: '该商品库存不足'
+						})
+					}
 			  } else {
 					that.$set(that.data_list[idx],'xuan',false)
 			  }
@@ -197,7 +213,26 @@
 			  that.all= kg
 			  // this.data.goods_sele[sid].xuan=true
 			  for (var i=0;i<that.data_list.length;i++) {
-						that.$set(that.data_list[i],'xuan',kg)
+						
+						if(kg){
+							if(that.data_list[i].sku_number>that.data_list[i].number){
+								that.$set(that.data_list[i],'xuan',true)
+							}else if(that.data_list[i].sku_number>0){
+								// uni.showToast({
+								// 	icon: 'none',
+								// 	title: '该商品库存不足请减少购买数量'
+								// })
+								that.$set(that.data_list[i],'xuan',false)
+							}else{
+								// uni.showToast({
+								// 	icon: 'none',
+								// 	title: '该商品库存不足'
+								// })
+								that.$set(that.data_list[i],'xuan',false)
+							}
+						}else{
+							that.$set(that.data_list[i],'xuan',kg)
+						}
 			  }
 			  // this.setData({
 			  //   goods_sele: this.goods_sele
@@ -304,7 +339,7 @@
 			 	console.log(e)
 			 	uni.showToast({
 			 		icon: 'none',
-			 		title: '获取数据失败'
+			 		title: '操作失败'
 			 	})
 			 })
 	
@@ -325,7 +360,7 @@
 					if (res.code == 1) {
 						var datas = res.data
 						// console.log(typeof datas)
-							
+						that.htmlReset=0	
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
@@ -338,8 +373,11 @@
 							}
 							that.data_list_ls=[]
 							that.rand_data=res.rand_data
+					}else{
+						that.htmlReset=1
 					}
 				}).catch(e => {
+					that.htmlReset=1
 					that.btn_kg=0
 					console.log(e)
 					uni.showToast({
@@ -525,7 +563,8 @@ page{
 	padding: 28rpx;
 	box-sizing: border-box;
 	display: flex;
-	align-items: center;
+	/* align-items: center; */
+	align-items: flex-start;
 	border-bottom: 1px solid #ddd;
 	position: relative;
 }
@@ -554,7 +593,7 @@ page{
 .xuanze{
 	width: 30rpx;
 	height: 30rpx;
-	padding: 40rpx 30rpx 40rpx 0rpx;
+	padding: 85rpx 30rpx 85rpx 0rpx;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -575,13 +614,14 @@ page{
 	border: 0;
 }
 .goodsinr{
+	min-height: 200upx;
 	flex: 1;
 }
 .goodsname{
 	font-size: 30rpx;
 	color: #333333;
 	padding-right: 20rpx;
-	margin-bottom: 20rpx;
+	margin-bottom: 15rpx;
 	box-sizing: border-box;
 	display:-webkit-box !important;  
 	overflow:hidden;
@@ -589,6 +629,22 @@ page{
 	word-break:break-all;
 	-webkit-box-orient:vertical;
 	-webkit-line-clamp:2;
+}
+.goodsname1{
+	font-size: 28rpx;
+	color: #999;
+	padding-right: 20rpx;
+	margin-bottom: 10rpx;
+	box-sizing: border-box;
+	/* display:-webkit-box !important;  
+	overflow:hidden;
+	text-overflow:ellipsis;
+	word-break:break-all;
+	-webkit-box-orient:vertical;
+	-webkit-line-clamp:2; */
+}
+.goodsname1 text{
+	margin-right: 8upx;
 }
 .goodspri{
 	font-size: 26rpx;

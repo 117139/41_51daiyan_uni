@@ -1,85 +1,89 @@
 <template>
 	<view>
 		<view class="container">
-		  <view class="dp_box">
-		    <view class="dp_b1">
-		      <view class="dp_logo">
-		        <image :src="filter.imgIP(datas.head_portrait)" mode="aspectFill"></image>
-		      </view>
-		      <view class="dp_msg">
-		        <view class="dp_name oh2">{{datas.store_name}}</view>
-						<view>
-							<view class="dp_lv">
-							  <image v-if="idx<5" v-for="(item,idx) in datas.rank" :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
-							 
-							</view>
-						</view>
-		       
-		        <view class="dp_bq">
-		          <text>代言 {{datas.advocacy_number}}</text>
-		          <text class="flex_1">粉丝数 {{datas.fans_number}}</text>
-		          <view v-if="!datas.is_follow" @tap.stop="guanzhuFuc(dpid,'affirm')" class="guanzhu_btn">关注</view>
-		          <view v-else @tap.stop="guanzhuFuc(dpid,'cancel')" class="guanzhu_btn">已关注</view>
-		        </view>
-		
-		      </view>
-		    </view>
-		  </view>
-		  <view class="dp_type">
-		    <view :class="s_type==0?'cur':''"  @tap="ss_type" data-type="0">商品</view>
-		    <view :class="s_type==1?'cur':''"  @tap="ss_type" data-type="1">买家代言</view>
-		  </view>
-			<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
-			<view v-if="data_list.length>0" class="h_main">
-				
-				<!-- tab -->
-				<!-- <view class="list_tab">
-						<view @tap="px_fuc" data-type="0">代言费
-							<view class="list_px"><text class="iconfont iconXSJ-copy {{dy_mon==0?'cur':''}}"></text><text class="iconfont iconXSJ {{dy_mon==1?'cur':''}}"></text></view>
-						</view>
-						<view @tap="px_fuc" data-type="1">代言人数<view class="list_px"><text class="iconfont iconXSJ-copy {{dy_num==0?'cur':''}}"></text><text class="iconfont iconXSJ {{dy_num==1?'cur':''}}" ></text></view></view>
-						<view @tap="px_fuc" data-type="2">价格<view class="list_px"><text class="iconfont iconXSJ-copy {{dy_pri==0?'cur':''}}"></text><text class="iconfont iconXSJ {{dy_pri==1?'cur':''}}" ></text></view></view>
-				</view> -->
-				<!-- goods_li -->
-				
-				<view v-if="s_type==0" class="goods_list">
-					<view v-for="(item,idx) in data_list" class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
-						<image class="goods_img" :src="filter.imgIP(item.photo[0])"  mode="aspectFill"></image>
-						<view class="goods_msg">
-							<view class="oh1">{{item.title}}</view>
-							<view class="goods_pri">
-								<text>￥{{item.basics_price}}</text>
-								<text class="pr2">￥{{item.basics_original_price}}</text>
-							</view>
-						</view>
-					</view>
-				</view>
-				<view v-if="s_type==1" class="my_list">
-					<view class="sp_list" >
-						<view class="sp_li" v-for="(item,idx) in data_list"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
-							<view class="sp_li_img">
-								<image v-if="item.type==2" class="sp_li_img" :src="filter.imgIP_video(item.obj_pic[0])" mode="aspectFill"></image>
-								<image v-else class="sp_li_img" :src="filter.imgIP(item.obj_pic[0])" mode="aspectFill"></image>
-								<view class="sp_li_img_cz">
-									<image :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
+			<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+			<block v-if="htmlReset==0">
+				<view v-if="datas" class="dp_box">
+				  <view class="dp_b1">
+				    <view class="dp_logo">
+				      <image :src="filter.imgIP(datas.head_portrait)" mode="aspectFill"></image>
+				    </view>
+				    <view class="dp_msg">
+				      <view class="dp_name oh2">{{datas.store_name}}</view>
+							<view>
+								<view class="dp_lv">
+								  <image v-if="idx<5" v-for="(item,idx) in datas.rank" :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
+								 
 								</view>
 							</view>
-							<view class="sp_li_msg">
-								<view class="sp_li_name oh2">{{item.content}}</view>
-								<view class="sp_li_time">
-		              <view class="user_tximg">
-		                <image :src="filter.imgIP(item.head_portrait)"></image>
-		                {{item.nickname}}
-		              </view>
-		              <view v-if="!item.is_like"><text class="iconfont iconhongxinicon" style="margin-right: 8rpx;"></text> {{item.praise_number}}</view>
-		              <view v-else class="yzan"><text class="iconfont iconhongxinicon1" style="margin-right: 8rpx;"></text> {{item.praise_number}}</view>
-		            </view>
+				     
+				      <view class="dp_bq">
+				        <text>代言 {{datas.advocacy_number}}</text>
+				        <text class="flex_1">粉丝数 {{datas.fans_number}}</text>
+				        <view v-if="!datas.is_follow" @tap.stop="guanzhuFuc(dpid,'affirm')" class="guanzhu_btn">关注</view>
+				        <view v-else @tap.stop="guanzhuFuc(dpid,'cancel')" class="guanzhu_btn">已关注</view>
+				      </view>
+						
+				    </view>
+				  </view>
+				</view>
+				<view class="dp_type">
+				  <view :class="s_type==0?'cur':''"  @tap="ss_type" data-type="0">商品</view>
+				  <view :class="s_type==1?'cur':''"  @tap="ss_type" data-type="1">买家代言</view>
+				</view>
+				<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
+				<view v-if="data_list.length>0" class="h_main">
+					
+					<!-- tab -->
+					<!-- <view class="list_tab">
+							<view @tap="px_fuc" data-type="0">代言费
+								<view class="list_px"><text class="iconfont iconXSJ-copy {{dy_mon==0?'cur':''}}"></text><text class="iconfont iconXSJ {{dy_mon==1?'cur':''}}"></text></view>
+							</view>
+							<view @tap="px_fuc" data-type="1">代言人数<view class="list_px"><text class="iconfont iconXSJ-copy {{dy_num==0?'cur':''}}"></text><text class="iconfont iconXSJ {{dy_num==1?'cur':''}}" ></text></view></view>
+							<view @tap="px_fuc" data-type="2">价格<view class="list_px"><text class="iconfont iconXSJ-copy {{dy_pri==0?'cur':''}}"></text><text class="iconfont iconXSJ {{dy_pri==1?'cur':''}}" ></text></view></view>
+					</view> -->
+					<!-- goods_li -->
+					
+					<view v-if="s_type==0" class="goods_list">
+						<view v-for="(item,idx) in data_list" class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
+							<image class="goods_img" :src="filter.imgIP(item.photo[0])"  mode="aspectFill"></image>
+							<view class="goods_msg">
+								<view class="oh1">{{item.title}}</view>
+								<view class="goods_pri">
+									<text>￥{{item.basics_price}}</text>
+									<text class="pr2">￥{{item.basics_original_price}}</text>
+								</view>
 							</view>
 						</view>
 					</view>
+					<view v-if="s_type==1" class="my_list">
+						<view class="sp_list" >
+							<view class="sp_li" v-for="(item,idx) in data_list"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+								<view class="sp_li_img">
+									<image v-if="item.type==2" class="sp_li_img" :src="filter.imgIP_video(item.obj_pic[0])" mode="aspectFill"></image>
+									<image v-else class="sp_li_img" :src="filter.imgIP(item.obj_pic[0])" mode="aspectFill"></image>
+									<view class="sp_li_img_cz">
+										<image :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
+									</view>
+								</view>
+								<view class="sp_li_msg">
+									<view class="sp_li_name oh2">{{item.content}}</view>
+									<view class="sp_li_time">
+				            <view class="user_tximg">
+				              <image :src="filter.imgIP(item.head_portrait)"></image>
+				              {{item.nickname}}
+				            </view>
+				            <view v-if="!item.is_like"><text class="iconfont iconhongxinicon" style="margin-right: 8rpx;"></text> {{item.praise_number}}</view>
+				            <view v-else class="yzan"><text class="iconfont iconhongxinicon1" style="margin-right: 8rpx;"></text> {{item.praise_number}}</view>
+				          </view>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 				</view>
-				<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
-			</view>
+			</block>
+		  
 		</view>
 		
 	</view>
@@ -95,6 +99,7 @@
 		data() {
 			return {
 				btn_kg:0,
+				htmlReset:0,
 				dpid:0,
 				page:1,
 				size:20,
@@ -116,6 +121,9 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
+			uni.showLoading({
+				title:'正在加载中'
+			})
 			this.dpid=options.id
 			this.getdata()
 			this.onRetry()
@@ -187,11 +195,15 @@
 				service.P_get('/store', datas).then(res => {
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						that.datas = res.data.store
 						that.onRetry()
+					}else{
+						that.htmlReset=1
 					}
 				}).catch(e => {
 					console.log(e)
+					that.htmlReset=1
 					uni.showToast({
 						icon: 'none',
 						title: '获取数据失败'

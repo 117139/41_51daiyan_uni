@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
 		<view v-if="goodsData" :class="sheetshow1||sheetshow?'container-ban':'container'">
 		  <view class="swiper_box">
 		    <swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay"
@@ -70,8 +71,11 @@
 		  </view>
 		  <view class="goods_xmsg">
 		    <view class="v1">促 销</view>
-		    <view class="v2" v-if="goodsData.freight_type==2&&goodsData.freight>0">
+		    <view class="v2" v-if="goodsData.freight>0">
 		      <text class="yhq_box">满包邮</text>全店满{{goodsData.freight}}元包邮，偏远地区除外；
+				</view>
+		    <view class="v2" v-if="goodsData.freight==0">
+		      <text class="yhq_box">包邮</text>免运费，偏远地区除外；
 				</view>
 		    <view class="v3">
 		      <text class="iconfont iconcaozuo"></text>
@@ -304,50 +308,55 @@
 		</uni-popup>
 		<uni-popup ref="popup_goods" type="bottom" @change="tkchange">
 			<view class="tk_popup_box">
-				<view class="popopBox1">
-					<view class="goodsimg">
-						<image :src="filter.imgIP(show_img[0])" :data-src="filter.imgIP(show_img[0])" mode="aspectFill" @tap="pveimg"></image>
-					</view>
-					<view class="goodstkjg">
-						<view class="closebtn" @tap="onClose">
-							<image :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image>
+				<view class="closebtn" @tap="onClose">
+					<image :src="filter.imgIP('/static_s/51daiyan/images/closebtn_03.jpg')"></image>
+				</view>
+				<scroll-view class=" dyr_scroll" style="height:800rpx;" scroll-y>
+					
+					<view class="popopBox1">
+						<view class="goodsimg">
+							<image v-if="show_img.length>0" :src="filter.imgIP(show_img[0])" :data-src="filter.imgIP(show_img[0])" mode="aspectFill" @tap="pveimg"></image>
+							<image v-else :src="filter.imgIP(goodsData.img[0])" :data-src="filter.imgIP(goodsData.img[0])" mode="aspectFill" @tap="pveimg"></image>
 						</view>
-						<view class="goods_pri_h">￥{{show_pri}}</view>
-						<view class="kucun" v-if="guige_select.length>0">库存{{show_num}}件</view>
-						<view class="tkname oh2">已选择：{{ggshow1}}</view>
+						<view class="goodstkjg">
+							
+							<view class="goods_pri_h">￥{{show_pri}}</view>
+							<view class="kucun" v-if="guige_select.length>0">库存{{show_num}}件</view>
+							<view class="tkname oh2">已选择：{{ggshow1}}</view>
+						</view>
 					</view>
-				</view>
-				<block v-if="guige_arr.length>0" v-for="(item,idx) in guige_arr">
-					<view class="tkguigetit">{{item.name}}</view>
-					<view class="guigeBox">
-						<!-- :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx) }" -->
-						<block v-for="(item1,idx1) in item.value">
-							<text class="guigeOne"
-								v-if="ggShow(item.name,item1,idx)"
-								:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
-								:data-ggidx="idx"
-								:data-name="item.name"
-								:data-value="item1"
-								@tap="selegg">{{item1}}</text>
-							<text class="guigeOne"
-								v-else
-								:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
-								:data-ggidx="idx"
-								:data-name="item.name"
-								:data-value="item1"
-								>{{item1}}</text>
-						</block>
+					<block v-if="guige_arr.length>0" v-for="(item,idx) in guige_arr">
+						<view class="tkguigetit">{{item.name}}</view>
+						<view class="guigeBox">
+							<!-- :class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx) }" -->
+							<block v-for="(item1,idx1) in item.value">
+								<text class="guigeOne"
+									v-if="ggShow(item.name,item1,idx)"
+									:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
+									:data-ggidx="idx"
+									:data-name="item.name"
+									:data-value="item1"
+									@tap="selegg">{{item1}}</text>
+								<text class="guigeOne"
+									v-else
+									:class="{ 'cur': guige_select[idx]&&guige_select[idx].value==item1,'goods_null':!ggShow(item.name,item1,idx)}"
+									:data-ggidx="idx"
+									:data-name="item.name"
+									:data-value="item1"
+									>{{item1}}</text>
+							</block>
+						</view>
+					</block>
+					<view class="countnum">
+						<text>购买数量</text>
+						<!-- <van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="goodsData.is_pond_goods==2?1:show_num"
+							@input="onChange" @change="onChange" /> -->
+						<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="show_num"
+							@input="onChange" @change="onChange" />
 					</view>
-				</block>
-				<view class="countnum">
-					<text>购买数量</text>
-					<!-- <van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="goodsData.is_pond_goods==2?1:show_num"
-					  @input="onChange" @change="onChange" /> -->
-					<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="show_num"
-					  @input="onChange" @change="onChange" />
-				</view>
-				<view class="b_view_o"></view>
-				<view class="czbtnG">
+					<view class="b_view_o"></view>
+				</scroll-view>
+				<view class="czbtnG" style="background: #fff;z-index: 999;">
 					<view  v-if="goodsData.activity_id==0&&goodsData.is_pond_goods==1" class="jrgwc" @tap="addwgc">加入购物车</view>
 					<view class="buybtn" @tap="nowbuy">立即购买</view>
 				</view>
@@ -368,6 +377,7 @@
 		data() {
 			return {
 				btn_kg:0,
+				htmlReset:0,
 				g_id:'',
 				dy_id:'',    //代言id
 				advocacyviceId:'',    //代言数据id
@@ -448,8 +458,13 @@
 		 */
 		onLoad: function (options) {
 			this.g_id=options.id
+			uni.showLoading({
+				title:'正在加载中'
+			})
 		  this.getyhlist()
+			
 			if(options.dy_id){
+				
 				this.dy_id=options.dy_id
 				this.advocacyviceId=options.advocacyviceId
 			}
@@ -457,6 +472,7 @@
 		},
 		onShow() {
 			// this.onRetry()
+			this.btnkg=0
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
@@ -541,7 +557,7 @@
 				var jkurl = '/goods/goodsCoupon'
 				var datas = {
 					gid:that.g_id,
-					token: that.loginMsg.userToken,
+					token: that.loginMsg.userToken?that.loginMsg.userToken:'',
 				}
 				// 单个请求
 				service.P_get(jkurl, datas).then(res => {
@@ -610,7 +626,7 @@
 					gid:that.g_id,
 					advocacyId:that.dy_id,
 					advocacyviceId:that.advocacyviceId,
-					token: that.loginMsg.userToken,
+					token: that.loginMsg.userToken?that.loginMsg.userToken:'',
 					page: that.star_page,
 					size:that.size
 				}
@@ -672,7 +688,7 @@
 				var jkurl = '/goods/advocacySay'
 				var datas = {
 					gid:that.g_id,
-					token: that.loginMsg.userToken,
+					token: that.loginMsg.userToken?that.loginMsg.userToken:'',
 					page: that.StarText_page,
 					size:that.size
 				}
@@ -729,7 +745,7 @@
 				var jkurl = '/goods/LaterBuy'
 				var datas = {
 					gid:that.g_id,
-					token: that.loginMsg.userToken,
+					token: that.loginMsg.userToken?that.loginMsg.userToken:'',
 					page: that.LaterBuy_page,
 					size:that.size
 				}
@@ -947,13 +963,14 @@
 			getSku(){
 				var that =this
 				var datas={
-					token:that.loginMsg.userToken,
+					token:that.loginMsg.userToken?that.loginMsg.userToken:'',
 					id:that.g_id
 				}
 				// 单个请求
 				service.P_get('/goods/details',datas).then(res => {
 				  console.log(res)
 					if(res.code==1){
+						that.htmlReset=0
 						// that.catelist=res.data
 						var guige_sku=JSON.stringify(res.data.attr.sku_all)
 						var guige_skuarr=JSON.stringify(res.data.attr.specification)
@@ -965,9 +982,19 @@
 						that.show_img=res.data.img
 						that.show_pri=res.data.current_price
 						that.show_num=0
+					}else{
+						if(res.msg='商品已下架'){
+							setTimeout(()=>{
+								uni.navigateBack({
+									delta:1
+								})
+							},1000)
+						}
+						that.htmlReset=1
 					}
 				}).catch(e => {
 				  console.log(e)
+					that.htmlReset=1
 					uni.showToast({
 						icon:'none',
 						title:'获取数据失败'
@@ -2144,11 +2171,12 @@ padding: 0 10rpx;
 	border: 1px solid #dddddd;
 	overflow: hidden;
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: 20rpx;
+	right: 20rpx;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	z-index: 999999;
 }
 .closebtn image{
   width: 37rpx;
@@ -2340,6 +2368,7 @@ button {
 .dyr_scroll{
 	width: 694rpx;
 	margin: 0 auto;
+	position: relative;
 }
 .tk_dyr_li{
   width: 100%;

@@ -748,6 +748,11 @@ view.user_tx.data-v-2376a286 {
 	position: relative;
 	z-index: 999;
 }
+.dyr_scroll.data-v-2376a286{
+	width: 694rpx;
+	margin: 0 auto;
+	position: relative;
+}
 .popopBox1.data-v-2376a286 {
 	width: 100%;
 	display: -webkit-box;
@@ -792,8 +797,8 @@ view.user_tx.data-v-2376a286 {
 	border: 1px solid #dddddd;
 	overflow: hidden;
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: 20rpx;
+	right: 20rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -803,6 +808,7 @@ view.user_tx.data-v-2376a286 {
 	-webkit-box-align: center;
 	-webkit-align-items: center;
 	        align-items: center;
+	z-index: 999999;
 }
 .closebtn image.data-v-2376a286 {
 	width: 37rpx;

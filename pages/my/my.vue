@@ -67,13 +67,12 @@
 		    </view>
 		  </view>
 		  <view class="my_mian">
-		    <view class="user_money user_money">
+		    <view class="user_money user_money" v-if="hasLogin">
 		      <view class="user_money_tit">
 		        <view class="v1">
 		          <text class="iconfont iconshuju"></text>
 		          <view class="v1_tit">我的代言指数</view>
 		        </view>
-		
 		      </view>
 		
 		      <view class="inr_box">
@@ -89,8 +88,9 @@
 		        </view>
 		        <view class="yue_li">
 		          <view>超过好友</view>
-		          <view class="zhishu">
-		            <text>{{loginMsg.exceed_number?loginMsg.exceed_number:0}}</text>%</view>
+		          <view v-if="exceed_number_bl>-1" class="zhishu"> <text>{{exceed_number_bl?exceed_number_bl:0}}</text>%</view>
+		          <view v-if="hasLogin&&exceed_number_bl==-1" class="zhishu"> <image class="loading_img" :src="filter.imgIP('/static_s/51daiyan/images/loading_more.gif')" mode=""></image></view>
+		          <view v-if="!hasLogin" class="zhishu"> <text>0</text>%</image></view>
 		        </view>
 		        <view class="yue_li">
 		          <view>公益指数</view>
@@ -99,7 +99,7 @@
 		        </view>
 		      </view>
 		    </view>
-		    <view class="user_money mt20">
+		    <view class="user_money mt20"  v-if="hasLogin">
 		      <view class="user_money_tit" @tap="jump" data-url="/pagesA/OrderList/OrderList"  data-login="true" :data-haslogin="hasLogin">
 		        <view class="v1">
 		          <text class="iconfont icondingdan"></text>
@@ -196,7 +196,7 @@
 	export default {
 		data() {
 			return {
-				
+				exceed_number_bl:-1,
 			}
 		},
 		computed: {
@@ -205,15 +205,33 @@
 				'loginMsg'
 			])
 		},
+		watch: {
+			hasLogin(val) {
+				//hasLogin == true 
+				if (val) {
+					this.getdata()
+				}
+			},
+		
+		
+		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
 		onPullDownRefresh: function () {
 		  if(this.hasLogin){
 				service.wxlogin()
+				this.getdata()
+			}else{
+				uni.stopPullDownRefresh();
 			}
 		},
-		
+		onLoad() {
+			if(this.hasLogin){
+				service.wxlogin()
+				this.getdata()
+			}
+		},
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
@@ -228,6 +246,28 @@
 		
 		},
 		methods: {
+			getdata() {
+				var that = this
+				var datas = {
+					id: that.loginMsg.id,
+				}
+				// 单个请求
+				service.P_get('/user/getExceedFriend', datas).then(res => {
+					console.log(res)
+					if (res.code == 1) {
+						that.exceed_number_bl = res.data.exceed_number_bl
+						
+					}
+				}).catch(e => {
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			
+			},
 			jump(e){
 			  service.jump(e)
 			},
@@ -239,6 +279,10 @@
 </script>
 
 <style scoped>
+	.loading_img{
+		width: 30rpx;
+		height: 30rpx;
+	}
 .container{
   width: 100%;
   min-height: 100vh;

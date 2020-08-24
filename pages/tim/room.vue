@@ -58,24 +58,24 @@
 							</view>
 							<!-- 右-头像 -->
 							<view class="right">
-								<image :src="userInfo.img"></image>
+								<image :src="loginMsg.avatarurl"></image>
 							</view>
 						</view>
 						<!-- 别人发出的消息 -->
 						<view class="other" v-else>
 							<!-- 左-头像 -->
 							<view class="left">
-								<image :src="toUserInfo.img"></image>
+								<image :src="toUserInfo.head_portrait"></image>
 							</view>
 							<!-- 右-用户名称-时间-消息 -->
 							<view class="right">
 								<view class="username">
-									<view class="name">{{toUserInfo.user}}</view>
+									<view class="name">{{toUserInfo.name}}</view>
 									<view class="time" v-if="index==0">{{timeFliter(item.time)}}</view>
 									<!-- <view v-else-if="timeFliter(item.time)!=timeFliter(msgList[index-1].time)"></view> -->
 									<!-- <view v-else-if="index>0">{{timeFliter(msgList[index-1].time)}}</view> -->
 									<view v-else-if="index>0">{{gettime1(index-1)}}</view>
-									<view style="color: rgba(0,0,0,0);">{{toUserInfo.user}}</view>
+									<view style="color: rgba(0,0,0,0);">{{toUserInfo.name}}</view>
 								</view>
 								<!-- 文字消息 -->
 								<view v-if="item.type==TIM.TYPES.MSG_TEXT" class="bubble">
@@ -123,7 +123,7 @@
 			<swiper class="emoji-swiper" :class="{hidden:hideEmoji}" indicator-dots="true" duration="150">
 				<swiper-item v-for="(page,pid) in emojiList" :key="pid">
 					<view v-for="(em,eid) in page" :key="eid" @tap="addEmoji(em)">
-						<image mode="widthFix" :src="'/static/img/emoji/'+em.url"></image>
+						<image mode="widthFix" :src="filter.imgIP('/static_s/51daiyan/img/emoji/'+em.url)"></image>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -166,7 +166,7 @@
 						<!-- <textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="18" /> -->
 						<input type="text"
 						       class="input"
-						       v-model.lazy:value="textMsg"
+						       v-model="textMsg"
 						       confirm-type="send"
 						       :focus="isFocus"
 						       @focus="isFocus = true"
@@ -204,7 +204,7 @@
 						<view class="close-btn">
 							<view class="icon close" @tap="closeRedEnvelope"></view>
 						</view>
-						<image src="/static/img/im/face/face_1.jpg"></image>
+						<image :src="filter.imgIP('/static_s/51daiyan/img/im/face/face_1.jpg')"></image>
 					</view>
 					<view class="from">来自{{redenvelopeData.from}}</view>
 					<view class="blessing">{{redenvelopeData.blessing}}</view>
@@ -221,9 +221,15 @@
 		
 	</view>
 </template>
+<script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
+	import service from '../../service.js';
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	import userList from '../../commen/tim/user.js'
-	import {mapState} from "vuex";
+
 	
 	export default {
 		data() {
@@ -301,6 +307,8 @@
 		},
 		computed:{
 			...mapState({
+				loginMsg:'loginMsg',
+				hasLogin:'hasLogin',
 				currentMessageList:state=>state.currentMessageList,
 			})
 		},
@@ -311,20 +319,20 @@
 			},
 		},
 		onLoad(option) {
+			console.log(option.id)
 			if(!this.hasLogin){
 				return
 			}
-			this.userInfo = JSON.parse(uni.getStorageSync('userInfo'))
-			this.toUserId = this.$store.state.toUserId
+			// if(typeof uni.getStorageSync('userInfo')=='string'){
+			// 		this.userInfo = JSON.parse(uni.getStorageSync('userInfo'))
+			// }
+			
+			this.toUserId =option.id?option.id: this.$store.state.toUserId
 			this.conversationActive = this.$store.state.conversationActive
 			this.TIM = this.$TIM
 			//获取聊天对象的用户信息---有后端的情况这里 使用后端api请求、
 			//防止初次聊天的时候 没有对方的基础信息
-			userList.forEach(item=>{
-				if(this.toUserId == item.userId){
-					this.toUserInfo = item
-				}
-			})
+			this.getmsg()
 			this.getMsgList();
 			//语音自然播放结束
 			this.AUDIO.onEnded((res)=>{
@@ -365,6 +373,30 @@
 			uni.stopPullDownRefresh();
 		},
 		methods:{
+			getmsg(){
+				var that = this
+				var datas = {
+					token: that.loginMsg.userToken,
+					id: that.toUserId
+				}
+				
+				// 单个请求
+				service.P_get('/getTx', datas).then(res => {
+					console.log(res)
+					if (res.code == 1) {
+						that.toUserInfo = res.data
+						uni.setNavigationBarTitle({
+							title:res.data.name
+						})
+					}
+				}).catch(e => {
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取对方数据失败'
+					})
+				})
+			},
 			gettime1(idx){
 				if(idx<0){
 					return
@@ -642,8 +674,9 @@
 							if(EM.alt==item){
 								//在线表情路径，图文混排必须使用网络路径，请上传一份表情到你的服务器后再替换此路径 
 								//比如你上传服务器后，你的100.gif路径为https://www.xxx.com/emoji/100.gif 则替换onlinePath填写为https://www.xxx.com/emoji/
-								let onlinePath = 'https://s2.ax1x.com/2019/04/12/'
-								let imgstr = '<img class="emoji_i" src="'+onlinePath+this.onlineEmoji[EM.url]+'">';
+								let onlinePath = 'http://51daiyan.test.upcdn.net/static_s/51daiyan/img/emoji/'
+								// let imgstr = '<img class="emoji_i" src="'+onlinePath+this.onlineEmoji[EM.url]+'">';
+								let imgstr = '<img class="emoji_i" src="'+onlinePath+EM.url+'">';
 								console.log("imgstr: " + imgstr);
 								return imgstr;
 							}
