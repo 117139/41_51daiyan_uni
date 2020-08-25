@@ -26,14 +26,14 @@
 							<image v-if="item.type==2" class="one one_one" :lazy-load='true' 
 								:src="filter.imgIP_video(item.img[0])" mode="aspectFill" 
 								:data-src="filter.imgIP_video(item.img[0])"
-							 @tap.stop="jump" data-type="sp" :data-spurl="item.img" data-url="/pages_goods/d_video/d_video?idx=0"></image>
+							 @tap.stop="jump" data-type="sp" :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx=0&a_id='+item.id"></image>
 						</view>
 		        <view v-else class="quan_msg_img">
 		          <image v-if="item.type==1" v-for="(item1,idx1) in item.img" :src="filter.imgIP(item1)"  mode="aspectFill" :data-src="filter.imgIP(item1)" @tap.stop="pveimg"></image>
 		          <image v-if="item.type==2" v-for="(item1,idx1) in item.img" :lazy-load='true' 
 								:src="filter.imgIP_video(item1)" mode="aspectFill"
 								@tap.stop="jump" data-type="sp" :data-spurl="item.img" 
-								:data-url="'/pages_goods/d_video/d_video?idx='+idx1"></image>
+								:data-url="'/pages_goods/d_video/d_video?idx='+idx1+'&a_id='+item.id"></image>
 		        </view>
 		      </view>
 		      <!-- <view class="quan_goods"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
@@ -67,6 +67,8 @@
 		        <view class="cz_li" v-if="item.is_praise==1" @tap="guanzhuFuc(4,item.id,'cancel')" data-id="idx"><text class="iconfont icondianzan2" style="color: #f00;"></text>{{item.praise_number}}</view>
 		      </view>
 		    </view>
+				
+				<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 		  </view>
 		  <!-- <view class="zxkf_btn">
 				<button open-type="contact" bindcontact="kffuc"></button>
@@ -86,6 +88,8 @@
 	export default {
 		data() {
 			return {
+				btn_kg:0,
+				data_last:false,
 				banner: '',
 				homeSeek: '',
 				homeTeacher: '',
@@ -177,6 +181,7 @@
 			//获取代言人说列表
 			getStarTextlist() {
 				let that = this
+				if(that.data_last) return
 				if(that.btn_kg==1){
 					return
 				}else{
@@ -203,12 +208,14 @@
 			
 						if (datas.length == 0) {
 							if(that.StarText_page>1){
-								uni.showToast({
-									icon: 'none',
-									title: '暂无更多数据'
-								})
+								// uni.showToast({
+								// 	icon: 'none',
+								// 	title: '暂无更多数据'
+								// })
+								that.data_last=true
+							}else{
+								that.StarText_list =datas
 							}
-							that.btn_kg=0
 							return
 						}
 						if(that.StarText_page==1){
@@ -217,7 +224,6 @@
 							
 							that.StarText_list = that.StarText_list.concat(datas)
 						}
-						that.btn_kg=0
 						that.StarText_page++
 					}
 				}).catch(e => {

@@ -1,8 +1,10 @@
 
 .container.data-v-4e7b0aa4{
 	min-height: 100vh;
+	height: auto;
 	background: #eeeeee;
 	padding-bottom: 100rpx;
+	display: block;
 }
 image.data-v-4e7b0aa4{
 	width: 100%;

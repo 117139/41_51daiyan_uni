@@ -55,7 +55,10 @@
 		  </view>
 		  <view class='dis_flex ju_a w100 pb40 pt20 bgfff tab_box'>
 		    <block  v-for="(item,idx) in datalist">
-		      <view :class="type==idx?'typecur':'c9'" :data-type="idx" @tap='bindcur'><text>{{item}}</text></view>
+		      <!-- <view :class="type==idx?'typecur':'c9'" :data-type="idx" @tap='bindcur'><text>{{item}}</text></view> -->
+					<view :class="type==1?'typecur':'c9'" :data-type="1" @tap='bindcur'><text>图片代言</text></view>
+					<view :class="type==2?'typecur':'c9'" :data-type="2" @tap='bindcur'><text>视频代言</text></view>
+					<view v-if="dy_fb_list.length==1" :class="type==3?'typecur':'c9'" :data-type="3" @tap='bindcur'><text>海报代言</text></view>
 		    </block>
 		
 		  </view>
@@ -109,12 +112,11 @@
 		    <!-- <view class="haibao" @tap="ctxc">生成海报</view> -->
 		    <view  class="haibao_box">
 		      <!-- <image class="haibao_box" src="{{filter.imgIP(haibao)}}"></image> -->
-		      <image v-if="src" class="haibao_box" :src="src"></image>
+		      <image v-if="src" class="haibao_box" :src="filter.imgIP(src)"></image>
 		    </view>
-		    <view  class="haibao_box haibao_box1">
-		      <!-- <image class="haibao_box" src="{{filter.imgIP(haibao)}}"></image> -->
-		      <image v-if="src" class="haibao_box haibao_box1" :src="src"></image>
-		    </view>
+		    <!-- <view  class="haibao_box haibao_box1">
+		      <image v-if="src" class="haibao_box haibao_box1" :src="filter.imgIP(src)"></image>
+		    </view> -->
 				
 		  </view>
 			<view class="hideCanvasView">
@@ -135,7 +137,7 @@
 		  
 		  <view class="daiyan_cz">
 		    
-		    <view class="sq_btn" @tap="save_val">发布代言</view>
+		    <view class="sq_btn" @tap="save_val">编辑代言</view>
 		  </view>
 			<uni-popup ref="popup" type="center" @change="tkchange">
 				<view class="dyxy_box">
@@ -176,7 +178,7 @@
 				  '海报代言'
 				],
 				src: '',
-				type: 0,
+				type: 1,
 				pages:[1,1,1,1,1],
 				data_list:[
 				  1,
@@ -498,7 +500,7 @@
 			  var that = this
 			  var type = that.type
 				var path_list=''
-			  if (type == 0) {
+			  if (type == 1) {
 			    if (that.imgb.length == 0) {
 			      wx.showToast({
 			        icon: 'none',
@@ -508,7 +510,7 @@
 			    }
 					path_list=that.imgb.join(',')
 			  }
-			  if (type == 1) {
+			  if (type == 2) {
 			    if (!that.sp_url) {
 			      wx.showToast({
 			        icon: 'none',
@@ -518,15 +520,16 @@
 			    }
 					path_list=that.sp_url
 			  }
-			  // if (type == 2) {
-			  //   if (!that.haibao) {
-			  //     wx.showToast({
-			  //       icon: 'none',
-			  //       title: '请生成海报',
-			  //     })
-			  //     return
-			  //   }
-			  // }
+			  if (type == 3) {
+			    if (!that.src) {
+			      wx.showToast({
+			        icon: 'none',
+			        title: '请生成海报',
+			      })
+			      return
+			    }
+					path_list=that.src
+			  }
 			  
 			  
 				if(!that.yname){
@@ -543,7 +546,7 @@
 					ov_ids:that.ov_ids,
 					content:that.yname,
 					path:path_list,
-					type:that.type==0? 1:that.type==1? 2:that.type==2?3:1
+					type:that.type
 				}
 				if(that.btnkg==1){
 					return
@@ -567,7 +570,7 @@
 							})
 							setTimeout(function () {
 							  wx.redirectTo({
-							    url: '/pagesA/daiyan_fabu_ok/daiyan_fabu_ok',
+							    url: '/pagesA/daiyan_fabu_ok/daiyan_fabu_ok?type='+that.type+'&path='+path_list,
 							  })
 							}, 1000)
 						} else {
@@ -693,13 +696,6 @@
 			      }
 			    }
 			  })
-			},
-			//订单详情
-			goOrderDetails(e){
-				console.log(e.currentTarget.dataset.id)
-				wx.navigateTo({
-					url:'/pages/OrderDetails/OrderDetails?id='+e.currentTarget.dataset.id
-				})
 			},
 			//付款
 			pay(e){
@@ -933,7 +929,35 @@
 					_app.log('海报生成成功, 时间:' + new Date() + '， 临时路径: ' + d.poster.tempFilePath)
 					_this.poster.finalPath = d.poster.tempFilePath;
 					_this.qrShow = true;
-					this.src=d.poster.tempFilePath
+					_this.src=d.poster.tempFilePath
+					wx.uploadFile({
+					  url: service.IPurl+'/upload/streamImg', //仅为示例，非真实的接口地址
+					  filePath:d.poster.tempFilePath,
+					  name: 'file',
+					  formData: {
+					    'type': 1,
+					  },
+					  success(res) {
+					    // console.log(res.data)
+					    var ndata = JSON.parse(res.data)
+					    if (ndata.code == 1) {
+					      // console.log(imgs[i], i,ndata.msg)
+					      // var newdata = that.imgb
+					      // console.log(i)
+					      // newdata.push(ndata.msg)
+					      that.src= ndata.msg
+								 wx.showToast({
+									 icon: "none",
+									 title: "上传成功"
+								 })
+					    } else {
+					      wx.showToast({
+					        icon: "none",
+					        title: "上传失败"
+					      })
+					    }
+					  }
+					})
 				} catch (e) {
 					_app.hideLoading();
 					_app.showToast(JSON.stringify(e));

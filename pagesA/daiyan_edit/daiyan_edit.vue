@@ -30,7 +30,7 @@
 		    <!-- <block  v-for="(item,idx) in datalist"> -->
 		      <view :class="type==1?'typecur':'c9'" :data-type="1" @tap='bindcur'><text>图片代言</text></view>
 		      <view :class="type==2?'typecur':'c9'" :data-type="2" @tap='bindcur'><text>视频代言</text></view>
-		      <view :class="type==3?'typecur':'c9'" :data-type="3" @tap='bindcur'><text>海报代言</text></view>
+		      <view v-if="dy_fb_list.length==1" :class="type==3?'typecur':'c9'" :data-type="3" @tap='bindcur'><text>海报代言</text></view>
 		    <!-- </block> -->
 		
 		  </view>
@@ -84,12 +84,11 @@
 		    <!-- <view class="haibao" @tap="ctxc">生成海报</view> -->
 		    <view  class="haibao_box">
 		      <!-- <image class="haibao_box" src="{{filter.imgIP(haibao)}}"></image> -->
-		      <image v-if="src" class="haibao_box" :src="src"></image>
+		      <image v-if="src" class="haibao_box" :src="filter.imgIP(src)"></image>
 		    </view>
-		    <view  class="haibao_box haibao_box1">
-		      <!-- <image class="haibao_box" src="{{filter.imgIP(haibao)}}"></image> -->
+		    <!-- <view  class="haibao_box haibao_box1">
 		      <image v-if="src" class="haibao_box haibao_box1" :src="src"></image>
-		    </view>
+		    </view> -->
 				
 		  </view>
 			<view class="hideCanvasView">
@@ -110,7 +109,7 @@
 		  
 		  <view class="daiyan_cz">
 		    
-		    <view class="sq_btn" @tap="save_val">发布代言</view>
+		    <view class="sq_btn" @tap="save_val">保存代言</view>
 		  </view>
 			
 		</view>
@@ -149,7 +148,7 @@
 				yname:'',
 				imgb:[],
 				sp_url:'',
-				haibao:'haibao.png',
+				haibao:'',
 				
 				dy_datas: [],
 				// goods_sele: [],
@@ -159,7 +158,7 @@
 				width:750,
 				height: 1334,
 				
-				sheetshow:true,
+				sheetshow:false,
 				xdxy_type:1,
 				
 				
@@ -209,11 +208,22 @@
 					token: that.loginMsg.userToken?that.loginMsg.userToken:'',
 					id: that.id,
 				}
-				// 单个请求
+				// 单个请求 视频代言改图片代言
 				service.P_get('/advocacy/details', datas).then(res => {
 					console.log(res)
 					if (res.code == 1) {
 						that.dy_datas = res.data
+						that.yname=res.data.content
+						that.type=res.data.type
+						if(res.data.type==1){
+							that.imgb=res.data.pic
+						}
+						if(res.data.type==2){
+							that.sp_url=res.data.pic[0]
+						}
+						if(res.data.type==3){
+							that.src=res.data.pic[0]
+						}
 						that.htmlReset=0
 					}else{
 						that.htmlReset=1
@@ -477,13 +487,14 @@
 					path_list=that.sp_url
 			  }
 			  if (type == 3) {
-			    if (!that.haibao) {
+			    if (!that.src) {
 			      wx.showToast({
 			        icon: 'none',
 			        title: '请生成海报',
 			      })
 			      return
 			    }
+					path_list=that.src
 			  }
 			  
 			  
@@ -495,13 +506,13 @@
 					return
 				}
 				
-				var jkurl='/advocacy/add'
+				var jkurl='/advocacy/update'
 				var data={
 					token:that.loginMsg.userToken,
-					ov_ids:that.ov_ids,
+					id:that.id,
 					content:that.yname,
 					path:path_list,
-					type:that.type==0? 1:that.type==1? 2:that.type==2?3:1
+					type:that.type
 				}
 				if(that.btnkg==1){
 					return
@@ -521,12 +532,16 @@
 								datas = JSON.parse(datas)
 							}
 							wx.showToast({
-								title: '操作成功',
+								icon:'none',
+								title: '操作成功'
 							})
 							setTimeout(function () {
-							  wx.redirectTo({
-							    url: '/pagesA/daiyan_fabu_ok/daiyan_fabu_ok',
+							  uni.navigateBack({
+							  	delta:1,
 							  })
+								// wx.redirectTo({
+								//   url: '/pagesA/daiyan_fabu_ok/daiyan_fabu_ok?type='+that.type+'&path='+path_list,
+								// })
 							}, 1000)
 						} else {
 							// that.htmlReset=1
@@ -652,26 +667,8 @@
 			    }
 			  })
 			},
-			//订单详情
-			goOrderDetails(e){
-				console.log(e.currentTarget.dataset.id)
-				wx.navigateTo({
-					url:'/pages/OrderDetails/OrderDetails?id='+e.currentTarget.dataset.id
-				})
-			},
-			//付款
-			pay(e){
-			  var that =this
-				let oid=e.currentTarget.dataset.code
-				if(that.data.btnkg==1){
-					return
-				}else{
-					that.setData({
-						btnkg:1
-					})
-				}
-				app.Pay(oid,'info')
-			},
+			
+			
 			jump(e) {
 			  service.jump(e)
 			},
@@ -888,7 +885,35 @@
 					_app.log('海报生成成功, 时间:' + new Date() + '， 临时路径: ' + d.poster.tempFilePath)
 					_this.poster.finalPath = d.poster.tempFilePath;
 					_this.qrShow = true;
-					this.src=d.poster.tempFilePath
+					// _this.src=d.poster.tempFilePath
+					wx.uploadFile({
+					  url: service.IPurl+'/upload/streamImg', //仅为示例，非真实的接口地址
+					  filePath:d.poster.tempFilePath,
+					  name: 'file',
+					  formData: {
+					    'type': 1,
+					  },
+					  success(res) {
+					    // console.log(res.data)
+					    var ndata = JSON.parse(res.data)
+					    if (ndata.code == 1) {
+					      // console.log(imgs[i], i,ndata.msg)
+					      // var newdata = that.imgb
+					      // console.log(i)
+					      // newdata.push(ndata.msg)
+					      _this.src= ndata.msg
+								 wx.showToast({
+									 icon: "none",
+									 title: "上传成功"
+								 })
+					    } else {
+					      wx.showToast({
+					        icon: "none",
+					        title: "上传失败"
+					      })
+					    }
+					  }
+					})
 				} catch (e) {
 					_app.hideLoading();
 					_app.showToast(JSON.stringify(e));

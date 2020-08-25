@@ -3,6 +3,7 @@
 		<view class="container">
 			<!-- 代言圈 -->
 			<view class="quan_list">
+				<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
 				<view class="quan_li" v-for="(item,idx) in data_list">
 					<view class="quan_user_box">
 						<image @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id" class="quan_user_tx" :src="item.user_head_portrait"
@@ -29,13 +30,15 @@
 							<image v-if="item.type==1||item.type==3" class="one one_one" :lazy-load='true' :src="filter.imgIP(item.img[0])"
 							 mode="aspectFill" :data-src="filter.imgIP(item.img[0])" @tap.stop="pveimg"></image>
 							<image v-if="item.type==2" class="one one_one" :lazy-load='true' :src="filter.imgIP_video(item.img[0])" mode="aspectFill"
-							 :data-src="filter.imgIP_video(item.img[0])" @tap.stop="jump" data-type="sp" :data-spurl="item.img" data-url="/pages_goods/d_video/d_video?idx=0"></image>
+							 :data-src="filter.imgIP_video(item.img[0])" @tap.stop="jump" data-type="sp"
+								:data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx='+idx1+'&a_id='+item.id"></image>
 						</view>
 						<view v-else class="quan_msg_img">
 							<image v-if="item.type==1" v-for="(item1,idx1) in item.img" :src="filter.imgIP(item1)" mode="aspectFill"
 							 :lazy-load='true' :data-src="filter.imgIP(item1)" :data-array="filter.getgimgarrIP(item.img)" @tap.stop="pveimg"></image>
 							<image v-if="item.type==2" v-for="(item1,idx1) in item.img" :lazy-load='true' :src="filter.imgIP_video(item1)"
-							 mode="aspectFill" @tap.stop="jump" data-type="sp" :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx='+idx1"></image>
+							 mode="aspectFill" @tap.stop="jump" data-type="sp"
+								:data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx='+idx1+'&a_id='+item.id"></image>
 							<!-- <image :src="filter.imgIP('/static_s/51daiyan/images/goods1.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods1.png')"
 		  				 @tap.stop="pveimg"></image>
 		  				<image :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')"
@@ -109,6 +112,9 @@
 			])
 		},
 		onLoad() {
+			this.onRetry()
+		},
+		onShow() {
 			this.onRetry()
 		},
 		/**
@@ -338,7 +344,10 @@
 			},
 			jump(e) {
 				service.jump(e)
-			}
+			},
+			pveimg(e){
+				service.pveimg(e)
+			},
 		}
 	}
 </script>

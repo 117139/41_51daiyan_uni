@@ -75,6 +75,7 @@
 
 	let videoContext = null; //video实例
 	let time = null
+	var add_kg=''
 	import {
 		mapState,
 		mapMutations
@@ -156,6 +157,40 @@
 			back(){
 				uni.navigateBack()
 			},
+			addlookNum() {
+			
+				let that = this
+				var jkurl = '/videoPlay'
+				var datas = {
+					token: that.loginMsg.userToken,
+					ad_id: that.videoParam.a_id
+				}
+				
+				// 单个请求
+				service.P_post(jkurl, datas).then(res => {
+			
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						
+							
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			
+			},
 			getdatalist() {
 			
 				let that = this
@@ -222,6 +257,11 @@
 								that.stop()
 								/* 开始播放视频 */
 								that.play(videoIndex)
+								
+								add_kg=setTimeout(()=>{
+									//短视频增加播放量
+									that.addlookNum()
+								},1500)
 							},500)
 						} else {
 							let newList = [...that.videoList, ...datas]
@@ -301,11 +341,17 @@
 			
 			 
 				setTimeout(()=>{
+					clearInterval(add_kg)
 					/* 销毁视频实例 */
 					that.stop()
 								
 					/* 开始播放视频 */
 					that.play(swiperIndex)
+					
+					add_kg=setTimeout(()=>{
+						//短视频增加播放量
+						that.addlookNum()
+					},1500)
 				},500)
 			},
 			// 根据swiperIndex videoIndex匹配对应数据

@@ -27,6 +27,15 @@
 						<image :src="filter.imgIP('/static_s/51daiyan/images/ot_fukuan.png')"></image>
 					</view>
 					<view class="ot_msg">
+						<view class="d1">已退款</view>
+						<view class="d2">订单已退款</view>
+					</view>
+				</view>
+				<view v-if="datas.o_paystatus==4" class="order_tit">
+					<view class="type_img">
+						<image :src="filter.imgIP('/static_s/51daiyan/images/ot_fukuan.png')"></image>
+					</view>
+					<view class="ot_msg">
 						<view class="d1">已取消</view>
 						<view class="d2">订单已取消</view>
 					</view>

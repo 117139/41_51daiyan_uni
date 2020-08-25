@@ -191,6 +191,7 @@
 	z-index: 2;
 }
 .star_name.data-v-57280228 {
+	max-width: 100%;
 	font-size: 30rpx;
 	line-height: 30rpx;
 	margin-bottom: 20rpx;

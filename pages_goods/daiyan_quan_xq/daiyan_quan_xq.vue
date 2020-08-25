@@ -7,7 +7,7 @@
 				<view :class="tab_type==2?'cur':''" data-type="2" @tap="tab_fuc">圈子商品<text></text></view>
 			</view>
 			<view v-if="tab_type==0" style="width: 100%;">
-				<view class="daiyan_msg">
+				<view v-if="datas" class="daiyan_msg">
 					<view class="dy_logo">
 						<image class="dy_logo" :src="filter.imgIP(datas.img)"></image>
 					</view>
@@ -52,14 +52,15 @@
 							<view v-if="item.img.length==1" class="quan_msg_img">
 								<image v-if="item.type==1" class="one one_one" :lazy-load='true' :src="filter.imgIP(item.img[0])" mode="aspectFill"
 								 :data-src="filter.imgIP(item.img[0])" @tap.stop="pveimg"></image>
-								<image v-if="item.type==2" class="one one_one" :lazy-load='true' data-type="sp" :data-spurl="item.img" data-url="/pages_goods/d_video/d_video?idx=0"
+								<image v-if="item.type==2" class="one one_one" :lazy-load='true' data-type="sp"
+								 :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx=0&a_id='+item.id"
 								 :src="filter.imgIP_video(item.img[0])" mode="aspectFill" :data-src="filter.imgIP_video(item.img[0])" @tap.stop="jump"></image>
 							</view>
 							<view v-else class="quan_msg_img">
 								<image v-if="item.type==1" v-for="(item1,idx1) in item.img" :src="filter.imgIP(item1)" mode="aspectFill"
 								 :lazy-load='true' :data-src="filter.imgIP(item1)" :data-array="filter.getgimgarrIP(item.img)" @tap.stop="pveimg"></image>
 								<image v-if="item.type==2" v-for="(item1,idx1) in item.img" :lazy-load='true' data-type="sp" :data-spurl="item.img"
-								 :data-url="'/pages_goods/d_video/d_video?idx='+idx1" :src="filter.imgIP_video(item1)" mode="aspectFill"
+								 :data-url="'/pages_goods/d_video/d_video?idx='+idx1+'&a_id='+item.id" :src="filter.imgIP_video(item1)" mode="aspectFill"
 								 @tap.stop="jump"></image>
 								<!-- <image :src="filter.imgIP('/static_s/51daiyan/images/goods1.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods1.png')"
 		          	 @tap.stop="pveimg"></image>

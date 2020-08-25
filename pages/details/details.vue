@@ -140,7 +140,7 @@
 		            <image v-if="item.type!=2" class="dyr_img" :src="filter.imgIP(item.img[0])"  mode="aspectFill"
 								 :data-src="filter.imgIP(item.img[0])" :data-array="filter.getgimgarrIP(item.img)"  @tap.stop="pveimg"></image>
 		            <image v-if="item.type==2" class="dyr_img" :src="filter.imgIP_video(item.img[0])"  mode="aspectFill"
-								 @tap.stop="jump" data-type="sp" :data-spurl="item.img" data-url="/pages_goods/d_video/d_video?idx=0"></image>
+								 @tap.stop="jump" data-type="sp" :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx=0&a_id='+item.id"></image>
 		            <view class="dyr_imgnum"><text class="iconfont iconicontupian"></text>{{item.img.length}}</view>
 		          </view>
 		        </view>
@@ -460,6 +460,9 @@
 			this.g_id=options.id
 			uni.showLoading({
 				title:'正在加载中'
+			})
+			uni.setNavigationBarTitle({
+				title:'正在加载中...'
 			})
 		  this.getyhlist()
 			
@@ -982,13 +985,16 @@
 						that.show_img=res.data.img
 						that.show_pri=res.data.current_price
 						that.show_num=0
+						uni.setNavigationBarTitle({
+							title:'商品详情'
+						})
 					}else{
 						if(res.msg='商品已下架'){
 							setTimeout(()=>{
 								uni.navigateBack({
 									delta:1
 								})
-							},1000)
+							},3000)
 						}
 						that.htmlReset=1
 					}

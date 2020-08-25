@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view style="height: 100vh;overflow: scroll;">
 		<view class="hengxian"></view>
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
 		<view class="container" v-if="data_list.length>0">
@@ -170,6 +170,9 @@
 			uni.showLoading({
 				title:'正在加载中'
 			})
+			uni.setNavigationBarTitle({
+				title:'正在加载中...'
+			})
 			if(option.type==1){
 				that.type=option.type
 				that.sku_id=option.v_id
@@ -324,6 +327,9 @@
 							}
 							that.address=address
 							that.my_dou=res.common_data.bean
+							uni.setNavigationBarTitle({
+								title:'填写订单'
+							})
 							that.jisuan()
 							console.log(address)
 							that.getyf()
@@ -589,10 +595,13 @@
 </script>
 
 <style scoped>
+
 .container{
 	min-height: 100vh;
+	height: auto;
 	background: #eeeeee;
 	padding-bottom: 100rpx;
+	display: block;
 }
 image{
 	width: 100%;

@@ -16,9 +16,12 @@
 		        <view class="dianpu_tit" @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+item.order.group_code">
 		          <image class="dp_logo" :src="filter.imgIP(item.order.head_portrait)"></image>
 		          <text class="flex_1">{{item.order.store_name}}</text>
-		          <text v-if="item.order.o_ddstatus==1">待支付</text>
+		          <text v-if="item.order.o_paystatus==1">待支付</text>
 		          <text v-if="item.order.o_ddstatus==2&&item.order.o_paystatus==2">待发货</text>
-		          <text v-if="item.order.o_ddstatus==2&&item.order.o_paystatus==2">待发货</text>
+		          <text v-if="datas.o_paystatus==3">已退款</text>
+		          <text v-if="datas.o_paystatus==4">已取消</text>
+		          <text  v-if="datas.o_ddstatus==4||datas.o_ddstatus==5">待收货</text>
+		          <text  v-if="datas.o_ddstatus==1">已完成</text>
 		        </view>
 		        <block v-for="(item1,idx1) in item.order_goods">
 		          <view class="goods1" @tap="jump" :data-url="'/pagesA/OrderDetails/OrderDetails?id='+item.order.o_id+'&type='+type">

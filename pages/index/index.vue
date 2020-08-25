@@ -42,7 +42,7 @@
 							<image v-if="item.identity_id==2" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
 						</view>
 					</view>
-					<view class="star_name">{{item.nickname}}</view>
+					<view class="star_name oh1">{{item.nickname}}</view>
 					<view v-if="item.is_attention==1" class="star_btn" @tap.stop="guanzhuFuc(item.user_id,'affirm')">关注</view>
 					<view v-if="item.is_attention==2" class="star_btn star_btn1" @tap.stop="guanzhuFuc(item.user_id,'cancel')">已关注</view>
 				</view>
@@ -122,14 +122,14 @@
 						<image v-if="item.type==1||item.type==3" class="one one_one" :lazy-load='true' :src="filter.imgIP(item.img[0])" mode="aspectFill" :data-src="filter.imgIP(item.img[0])"
 						 @tap.stop="pveimg"></image>
 						<image v-if="item.type==2" class="one one_one" :lazy-load='true' :src="filter.imgIP_video(item.img[0])" mode="aspectFill" :data-src="filter.imgIP_video(item.img[0])"
-						 @tap.stop="jump" data-type="sp" :data-spurl="item.img" data-url="/pages_goods/d_video/d_video?idx=0"></image>
+						 @tap.stop="jump" data-type="sp" :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx=0&a_id='+item.id"></image>
 					</view>
 					<view v-else class="quan_msg_img">
 						<image v-if="item.type==1" v-for="(item1,idx1) in item.img"
 						 :src="filter.imgIP(item1)" mode="aspectFill" :lazy-load='true' :data-src="filter.imgIP(item1)" :data-array="filter.getgimgarrIP(item.img)"
 						 @tap.stop="pveimg"></image>
 						<image v-if="item.type==2" v-for="(item1,idx1) in item.img" :lazy-load='true' :src="filter.imgIP_video(item1)" mode="aspectFill" 
-						 @tap.stop="jump" data-type="sp" :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx='+idx1"></image>
+						 @tap.stop="jump" data-type="sp" :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx='+idx1+'&a_id='+item.id"></image>
 						<!-- <image :src="filter.imgIP('/static_s/51daiyan/images/goods1.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods1.png')"
 						 @tap.stop="pveimg"></image>
 						<image :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')"
@@ -528,13 +528,18 @@
 					page: that.page
 				}
 				if(that.data_last) return
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+				}
 				// 单个请求
 				service.P_get(jkurl, datas).then(res => {
 					console.log(res)
 					if (res.code == 1) {
 						var datas = res.data
 						// console.log(typeof datas)
-
+						that.btn_kg=0
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
@@ -552,6 +557,7 @@
 						that.page++
 					}
 				}).catch(e => {
+					that.btn_kg=0
 					console.log(e)
 					uni.showToast({
 						icon: 'none',
@@ -793,6 +799,7 @@
 	}
 
 	.star_name {
+		max-width: 100%;
 		font-size: 30rpx;
 		line-height: 30rpx;
 		margin-bottom: 20rpx;

@@ -2,7 +2,7 @@
 	<view>
 		<view class="container">
 			<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
-			<block v-if="htmlReset==0">
+			<block v-if="htmlReset==0&&datas">
 				<view v-if="datas" class="dp_box">
 				  <view class="dp_b1">
 				    <view class="dp_logo">
@@ -105,7 +105,7 @@
 				size:20,
 				
 				s_type: 0,
-				datas:[],
+				datas:'',
 				data_list:[],
 				data_last:false,
 			}
@@ -123,6 +123,9 @@
 		onLoad: function (options) {
 			uni.showLoading({
 				title:'正在加载中'
+			})
+			uni.setNavigationBarTitle({
+				title:'正在加载中...'
 			})
 			this.dpid=options.id
 			this.getdata()
@@ -197,6 +200,9 @@
 					if (res.code == 1) {
 						that.htmlReset=0
 						that.datas = res.data.store
+						uni.setNavigationBarTitle({
+							title:'店铺首页'
+						})
 						that.onRetry()
 					}else{
 						that.htmlReset=1
