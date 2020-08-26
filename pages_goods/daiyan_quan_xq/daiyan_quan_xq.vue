@@ -71,7 +71,8 @@
 						<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+item1.g_id">
 							<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill"></image>
 							<view class="quan_goods_msg">
-								<view class="quan_goods_name oh1">{{item1.g_title}}</view>
+								<!-- <view class="quan_goods_name oh1">{{item1.g_title}}</view> -->
+								<view class="quan_goods_name dis_flex aic"><text v-if="item1.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item1.g_title}}</text></view>
 								<view class="quan_goods_pri">
 									<text class="pri1">¥{{item1.g_current_price}}</text>
 									<text class="pri2">¥{{item1.g_original_price}}</text>
@@ -158,7 +159,11 @@
 								<image class="goods_img2" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])" mode="aspectFill"></image>
 							</view>
 							<view class="goods_msg">
-								<view class="goods_name2 oh1">{{item.g_title}}</view>
+								<!-- <view class="goods_name2 oh1">{{item.g_title}}</view> -->
+								<view class="goods_name2 dis_flex aic">
+									<text v-if="item.fk_is_way==2" class="xcxdy_zy_icon">自营</text>
+									<text class="flex_1 oh1">{{item.g_title}}</text>
+								</view>
 								<view class="goods_pri">
 									<view class="pri1">¥{{item.g_price}}</view>
 									<view class="pri2">¥{{item.g_old_price}}</view>
@@ -406,9 +411,9 @@
 					datas = {
 						token: that.loginMsg.userToken,
 						c_id: that.id,
-						b: that.dy_mon ? 'down' : 'up',
-						sum: that.dy_num ? 'down' : 'up',
-						p: that.dy_pri ? 'down' : 'up',
+						b: that.dy_mon==-1 ?'':that.dy_mon==1 ? 'down' : 'up',
+						sum: that.dy_num ==-1 ?'':that.dy_num==1 ?  'down' : 'up',
+						p: that.dy_pri ==-1 ?'':that.dy_pri==1 ?  'down' : 'up',
 						page: that.page,
 						size: that.size
 					}

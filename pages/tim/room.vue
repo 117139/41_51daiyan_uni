@@ -30,7 +30,7 @@
 								<view v-if="item.type==TIM.TYPES.MSG_IMAGE" class="bubble">
 									<image @tap="previmg" :data-url="item.payload.imageInfoArray[0].imageUrl"
 									 :src="item.payload.imageInfoArray[0].imageUrl" mode="aspectFill"
-										style="width: 64px;height: 64px;"></image>
+										style="width: 240upx;height: 240upx;"></image>
 								</view>
 								<!-- 自定义消息 -->
 								<view v-if="item.type==TIM.TYPES.MSG_CUSTOM" class="bubble">
@@ -46,12 +46,12 @@
 									</view>
 									<view v-if="item.payload.data=='custom_good'"  class="chat_box" @tap="jump" :data-url="getarg(item.payload.extension,'a2',item.payload.data)">
 										<image class="chat_img" :src="getarg(item.payload.extension,'a3',item.payload.data)"
-										 mode="aspectFill" style="width: 64px;height: 64px;"></image>
+										 mode="aspectFill" style="width: 196upx;height: 196upx;"></image>
 										<view class="chat_msg">
-											<view class="gb_name oh1">{{item.payload.description}}</view>
-											<view class="gb_msg  oh1">{{'自定义参数1:'+getarg(item.payload.extension,'a',item.payload.data)}}</view>
-											<view class="gb_msg oh1">{{'自定义参数2:'+getarg(item.payload.extension,'a1',item.payload.data)}}</view>
-											<view class="gb_msg oh1">{{'自定义参数3:'+getarg(item.payload.extension,'a2',item.payload.data)}}</view>
+											<view class="gb_name oh2">{{item.payload.description}}</view>
+											<view class="gb_msg  oh1">{{'￥'+getarg(item.payload.extension,'a',item.payload.data)}}</view>
+											<!-- <view class="gb_msg oh1">{{'自定义参数2:'+getarg(item.payload.extension,'a1',item.payload.data)}}</view>
+											<view class="gb_msg oh1">{{'自定义参数3:'+getarg(item.payload.extension,'a2',item.payload.data)}}</view> -->
 										</view>
 									</view>
 								</view>
@@ -70,12 +70,12 @@
 							<!-- 右-用户名称-时间-消息 -->
 							<view class="right">
 								<view class="username">
-									<view class="name">{{toUserInfo.name}}</view>
+									<!-- <view class="name ">{{toUserInfo.name}}</view> -->
 									<view class="time" v-if="index==0">{{timeFliter(item.time)}}</view>
 									<!-- <view v-else-if="timeFliter(item.time)!=timeFliter(msgList[index-1].time)"></view> -->
 									<!-- <view v-else-if="index>0">{{timeFliter(msgList[index-1].time)}}</view> -->
-									<view v-else-if="index>0">{{gettime1(index-1)}}</view>
-									<view style="color: rgba(0,0,0,0);">{{toUserInfo.name}}</view>
+									<view class="time" v-else-if="index>0">{{gettime1(index-1)}}</view>
+									<!-- <view style="color: rgba(0,0,0,0);">{{toUserInfo.name}}</view> -->
 								</view>
 								<!-- 文字消息 -->
 								<view v-if="item.type==TIM.TYPES.MSG_TEXT" class="bubble">
@@ -85,7 +85,7 @@
 								<view v-if="item.type==TIM.TYPES.MSG_IMAGE" class="bubble">
 									<image @tap="previmg" :data-url="item.payload.imageInfoArray[0].imageUrl"
 									 :src="item.payload.imageInfoArray[0].imageUrl" mode="aspectFill"
-										style="width: 64px;height: 64px;"></image>
+										style="width: 240upx;height: 240upx;"></image>
 								</view>
 								<view v-if="item.type==TIM.TYPES.MSG_CUSTOM" class="bubble">
 									<view v-if="item.payload.data=='custom'">{{item.payload.data}}</view>
@@ -100,12 +100,14 @@
 									</view>
 									<view v-if="item.payload.data=='custom_good'"  class="chat_box" @tap="jump" :data-url="getarg(item.payload.extension,'a2',item.payload.data)">
 										<image class="chat_img" :src="getarg(item.payload.extension,'a3',item.payload.data)"
-										 mode="aspectFill" style="width: 64px;height: 64px;"></image>
+										 mode="aspectFill" style="width: 196upx;height: 196upx;"></image>
 										<view class="chat_msg">
-											<view class="gb_name oh1">{{item.payload.description}}</view>
+											<view class="gb_name oh2">{{item.payload.description}}</view>
+											<view class="gb_msg  oh1">{{'￥'+getarg(item.payload.extension,'a',item.payload.data)}}</view>
+											<!-- <view class="gb_name oh1">{{item.payload.description}}</view>
 											<view class="gb_msg oh1">{{'自定义参数1:'+getarg(item.payload.extension,'a',item.payload.data)}}</view>
 											<view class="gb_msg oh1">{{'自定义参数2:'+getarg(item.payload.extension,'a1',item.payload.data)}}</view>
-											<view class="gb_msg oh1">{{'自定义参数3:'+getarg(item.payload.extension,'a2',item.payload.data)}}</view>
+											<view class="gb_msg oh1">{{'自定义参数3:'+getarg(item.payload.extension,'a2',item.payload.data)}}</view> -->
 										</view>
 									</view>
 								</view>
@@ -139,8 +141,8 @@
 					<view class="box" @tap="handRedEnvelopes">
 						<view class="icon hongbao"></view>
 					</view>
-					<view class="box" @tap="customModal">
-						<view class="iconfont icon-zidingyi"></view>
+					<view v-if="msg_type==2" class="box" @tap="customModal">
+						<view class="iconfont iconzidingyi"></view>
 					</view>
 				</view>
 			</view>
@@ -234,6 +236,11 @@
 	export default {
 		data() {
 			return {
+				msg_type:1,   //客服  2
+				goods_id:'',
+				goods_name:'',
+				goods_img:'',
+				goods_pri:'',
 				//TIM变量
 				conversationActive:null,
 				toUserId:'',
@@ -321,12 +328,24 @@
 		onLoad(option) {
 			console.log(option.id)
 			if(!this.hasLogin){
+				uni.navigateBack({
+					delta:1
+				})
 				return
 			}
+			console.log(option.goods_name)
+			console.log(option.goods_img)
+			console.log(option.goods_pri)
+			this.goods_name=option.goods_name
+			this.goods_img=option.goods_img
+			this.goods_pri=option.goods_pri
+			this.goods_id=option.goods_id
 			// if(typeof uni.getStorageSync('userInfo')=='string'){
 			// 		this.userInfo = JSON.parse(uni.getStorageSync('userInfo'))
 			// }
-			
+			if(option.type){
+				this.msg_type=option.type
+			}
 			this.toUserId =option.id?option.id: this.$store.state.toUserId
 			this.conversationActive = this.$store.state.conversationActive
 			this.TIM = this.$TIM
@@ -377,6 +396,7 @@
 				var that = this
 				var datas = {
 					token: that.loginMsg.userToken,
+					type:that.msg_type,
 					id: that.toUserId
 				}
 				
@@ -918,20 +938,20 @@
 				var that=this
 			  uni.showModal({
 			      title: '提示',
-			      content: '是否发送自定义消息',
+			      content: '是否发送此商品',
 			      success: function (res) {
 			          if (res.confirm) {
 			              console.log('用户点击确定');
 										var ext={
-											a:'a',
+											a:that.goods_pri,
 											a1:'a1',
-											a2:'/pages/index/index',
-											a3:'http://119.90.34.147:8080/finance/img/system/touxiang.jpg',
+											a2:'/pages/details/details?id='+that.goods_id,
+											a3:service.imgurl+that.goods_img,
 										}
 										ext=JSON.stringify(ext)
 										var msg={
 											data:'custom_good',
-											description:'自定义消息的说明字段',
+											description:that.goods_name,
 											extension:ext
 										}
 										that.sendMsg(msg,'custom')
@@ -981,17 +1001,19 @@
 		padding-bottom: 100upx;
 	}
 	.chat_box{
-		width: 400upx;
+		width: 500upx;
 		display: flex;
 	}
 	.chat_img{
-		width: 120upx;
-		height: 120upx;
+		width: 240upx;
+		height: 240upx;
 		margin-right: 20upx;
 	}
 	.chat_msg{
+		flex: 1;
 		display: flex;
 		flex-direction: column;
+		justify-content: space-between;
 	}
 	.gb_name{
 		font-size: 28upx;
@@ -1008,5 +1030,24 @@
 		padding: 2upx;
 		box-sizing: border-box;
 		vertical-align: text-bottom;
+	}
+	.other{
+		padding-top: 20rpx;
+	}
+	.username{
+		position: relative;
+		height: 1rpx!important;
+	}
+	.username .time{
+		position: absolute;
+		top: -40upx;
+		left: 0;
+		right: 0;
+		text-align: center;
+		padding-right: 130rpx;
+
+	}
+	.bubble{
+		max-width: 80%!important;
 	}
 </style>

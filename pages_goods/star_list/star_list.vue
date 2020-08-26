@@ -28,7 +28,7 @@
 									<view class="user_msg">
 										<view class="fwb">{{item.nickname}}</view>
 										<view class="oh1 fz22">
-											<image :src="filter.imgIP('/static_s/51daiyan/images/star_jj.png')"></image>简介：{{item.introduction}}
+											<image :src="filter.imgIP('/static_s/51daiyan/images/star_jj.png')"></image>简介：{{item.introduction?item.introduction:''}}
 										</view>
 										<view>
 											<image :src="filter.imgIP('/static_s/51daiyan/images/dy_num.png')"></image>代言数量：{{item.advocacy_goods_number?item.advocacy_goods_number:0}}

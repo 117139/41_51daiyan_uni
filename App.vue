@@ -513,4 +513,19 @@
 		font-size: 24rpx;
 		color: #666;
 	}
+	.xcxdy_zy_icon{
+		padding: 2upx 5upx;
+		background: #ff0000;
+		border-radius: 4upx;
+		font-size: 20upx;
+		line-height: 22upx;
+		height: 26upx;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		color: #fff;
+		display: flex;
+		align-items: center;
+		margin-right: 8upx;
+	}
 </style>

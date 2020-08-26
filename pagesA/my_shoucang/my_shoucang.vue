@@ -10,7 +10,8 @@
 							<image class="goods_img2" :src="filter.imgIP(item.obj_img)"></image>
 						</view>
 						<view class="goods_msg">
-							<view class="goods_name2 fz30 oh1">{{item.obj_name}}</view>
+							<!-- <view class="goods_name2 fz30 oh1">{{item.obj_name}}</view> -->
+							<view class="goods_name2 fz30 dis_flex aic"><text v-if="item.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item.obj_name}}</text></view>
 							<view class="goods_pri">
 								<view class="pri1">¥{{item.v_current_price?item.v_current_price:0}}</view>
 								<view class="pri2">代言费：¥{{item.advocacy_price?item.advocacy_price:0}}</view>

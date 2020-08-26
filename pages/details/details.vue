@@ -19,14 +19,14 @@
 		  </view>
 		  <view class="goods_msg">
 		    <view class="goods_pri">
-		      <view class="pri1">¥{{goodsData.current_price}}</view>
+		      <view class="pri1  dis_flex aic"><text v-if="goodsData.fk_is_way==2" class="xcxdy_zy_icon">自营</text>¥{{goodsData.current_price}}</view>
 		      <view class="pri2">代言费：¥{{goodsData.advocacy_price}}</view>
 		    </view>
 		    <view class="goods_pri" v-if="goodsData.original_price>0">
 		      <view class="pri2">原价：¥{{goodsData.original_price}}</view>
 		    </view>
-		    <view class="goods_name">{{goodsData.title}}</view>
-		
+		    <view class="goods_name"><text>{{goodsData.title}}</text></view>
+				
 		    <view class="goods_pri">
 		      <view class="pri2" v-if="goodsData.freight_type==1">运费{{goodsData.freight}}元</view>
 		      <view class="pri2" v-if="goodsData.freight_type==2">{{goodsData.freight>0?'满'+goodsData.freight+'元包邮':''}}包邮</view>
@@ -60,7 +60,7 @@
 		    </view>
 		  </view>
 		  <!-- <view class="goods_xmsg" @tap="jump" data-url="/pagesA/my_yhq/my_yhq"> -->
-		  <view class="goods_xmsg" @tap="yhq_get">
+		  <view v-if="yh_list.length==0" class="goods_xmsg" @tap="yhq_get">
 		    <view class="v1">优惠券</view>
 		    <view class="v2">
 		      <text class="yhq_box">领券</text>
@@ -81,7 +81,7 @@
 		      <text class="iconfont iconcaozuo"></text>
 		    </view>
 		  </view>
-		  <view class="goods_xmsg"  @tap="jump" data-url="/pagesA/myaddress/myaddress?type=1">
+		  <view v-if="goodsData.distribution" class="goods_xmsg"  @tap="jump" data-url="/pagesA/myaddress/myaddress?type=1">
 		    <view class="v1">配 送</view>
 		    <view class="v2">
 		      <text class="yhq_box">同城</text>{{goodsData.distribution}}</view>
@@ -220,7 +220,7 @@
 		  </view>
 		   <!-- 底部 -->
 		  <view class="bottom_box">
-		    <view class="kf_btn" @tap="jump" data-url="/pages/lts/lts">
+		    <view class="kf_btn"  @tap="toroom(goodsData.support_staff)">
 		      <text class="iconfont iconkefu"></text>
 		      <text >客服</text>
 		    </view>
@@ -498,8 +498,26 @@
 		
 		},
 		methods: {
+			toroom(id){
+				if(!this.hasLogin){
+					uni.navigateTo({
+						url: '/pages/login/login',
+					});
+					return
+				}
+				this.$store.commit('createConversationActive', id)
+				uni.navigateTo({
+					url: '/pages/tim/room?id='+id+'&type=2'+'&goods_id='+this.g_id+'&goods_name='+this.goodsData.title+'&goods_img='+this.goodsData.img[0]+'&goods_pri='+this.goodsData.current_price
+				})
+			},
 			yhq_get(){
-				
+				if(this.yh_list.length==0){
+					uni.showToast({
+						icon:'none',
+						title:'此商品暂无优惠'
+					})
+					return
+				}
 				this.$refs.popup_yh.open()
 			},
 			get_yh(id){
@@ -586,14 +604,16 @@
 						// 	return
 						// }
 						that.yh_list =datas
-						var tk_kg=true
-						for(var i=0;i<datas.length;i++){
-							if(datas[i].is_get==1){
-								tk_kg=false
+						if(datas.length>0){
+							var tk_kg=true
+							for(var i=0;i<datas.length;i++){
+								if(datas[i].is_get==1){
+									tk_kg=false
+								}
 							}
-						}
-						if(tk_kg){
-							this.$refs.popup_yh.open()
+							if(tk_kg){
+								this.$refs.popup_yh.open()
+							}
 						}
 						// if(that.star_page==1){
 						// 	that.star_list =datas
@@ -1617,6 +1637,7 @@ line-height: 36rpx;
   padding: 0 28rpx;
   margin-bottom: 14rpx;
   box-sizing: border-box;
+	flex-wrap: wrap;
 }
 .pri2 text{
   font-size: 23rpx;

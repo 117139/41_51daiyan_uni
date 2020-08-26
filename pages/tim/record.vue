@@ -150,6 +150,7 @@
 					this.getConversationList()
 				} else {
 					console.log('333333')
+					uni.stopPullDownRefresh();
 				}
 			}
 		},
@@ -257,12 +258,13 @@
 				promise.then((res) => {
 					let conversationList = res.data.conversationList; // 会话列表，用该列表覆盖原有的会话列表
 					if (conversationList.length>0) {
-
+						uni.stopPullDownRefresh();
 						//将返回的会话列表拼接上 用户的基本资料  
 						//说明：如果已经将用户信息 提交到tim服务端了 就不需要再次拼接
 						this.$store.commit("updateConversationList", conversationList);
 					}
 				}).catch((err) => {
+					uni.stopPullDownRefresh();
 					console.warn('getConversationList error:', err); // 获取会话列表失败的相关信息
 				});
 			},

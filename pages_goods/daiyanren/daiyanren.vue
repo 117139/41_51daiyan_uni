@@ -1,11 +1,15 @@
 <template>
 	<view>
 		<view class="container">
-			<view class="goods_xx">
+			<view v-if="goodsdata" class="goods_xx">
 				<view class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+g_id">
 				  <image class="quan_goods_img" :src="filter.imgIP(goodsdata.photo[0])" mode="aspectFill"></image>
 				  <view class="quan_goods_msg">
 				    <view class="quan_goods_name oh1">{{goodsdata.g_title}}</view>
+						<view class="quan_goods_name dis_flex aic">
+							<text v-if="goodsdata.fk_is_way==2" class="xcxdy_zy_icon">自营</text>
+							<text class="flex_1 oh1">{{goodsdata.g_title}}</text>
+						</view>
 				    <view class="quan_goods_pri">
 				      <text class="pri1">¥{{goodsdata.basics_price}}</text>
 				      <text class="pri2">¥{{goodsdata.basics_original_price}}</text>
@@ -60,7 +64,7 @@
 				ss_cur:1,
 				page:1,
 				size:20,
-				data_list:[1,1,1,1],
+				data_list:[],
 				goodsdata:''
 			}
 		},

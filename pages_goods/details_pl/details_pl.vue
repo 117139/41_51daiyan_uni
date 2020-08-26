@@ -91,7 +91,7 @@
 			</uni-popup>
 			<!-- 底部 -->
 			<view class="bottom_box">
-				<view class="kf_btn" @tap="jump" data-url="/pages/lts/lts">
+				<view class="kf_btn"  @tap="toroom(goodsData.support_staff)">
 					<text class="iconfont iconkefu"></text>
 					<text>客服</text>
 				</view>
@@ -262,6 +262,18 @@
 				this.getSku()
 				this.star_page = 1
 				this.getStarlist()
+			},
+			toroom(id){
+				if(!this.hasLogin){
+					uni.navigateTo({
+						url: '/pages/login/login',
+					});
+					return
+				}
+				this.$store.commit('createConversationActive', id)
+				uni.navigateTo({
+					url: '/pages/tim/room?id='+id+'&type=2'
+				})
 			},
 			scFuc(id,key){
 				var that =this

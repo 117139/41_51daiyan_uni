@@ -31,7 +31,7 @@
 							</view>
 							<view class="goods_msg">
 								<view class="goods_name2 ">
-									<view class="flex_1 oh1">{{item.g_title}}</view>
+									<view class="flex_1 dis_flex aic"><text v-if="item.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item.g_title}}</text></view>
 									<view class="yx_icon">严选</view>
 								</view>
 								<view class="goods_pri">

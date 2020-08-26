@@ -69,7 +69,11 @@
 								<image class="li_img" :lazy-load='true' :src="filter.imgIP(item.g_img[0])" mode="aspectFill"></image>
 							</view>
 							<view class="li_msg">
-								<view class="li_name oh1">{{item.g_title}}</view>
+								<!-- <view class="li_name oh1">{{item.g_title}}</view> -->
+								<view class="li_name dis_flex aic">
+									<text v-if="item.fk_is_way==2" class="xcxdy_zy_icon">自营</text>
+									<text class="flex_1 oh1">{{item.g_title}}</text>
+								</view>
 								<view class="goods_pri">
 									<view class="goods_tximg" v-if="item.user_head_portrait">
 										<image class="goods_tximg" :lazy-load='true' :src="item.user_head_portrait"></image>

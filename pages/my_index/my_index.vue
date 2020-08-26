@@ -93,7 +93,8 @@
 									<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill" :data-src="filter.imgIP(item1.g_img[0])"
 									 ></image>
 									<view class="quan_goods_msg">
-										<view class="quan_goods_name oh1">{{item1.g_title}}</view>
+										<!-- <view class="quan_goods_name oh1">{{item1.g_title}}</view> -->
+										<view class="quan_goods_name dis_flex aic"><text v-if="item1.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item1.g_title}}</text></view>
 										<view class="quan_goods_pri">
 											<text class="pri1">¥{{item1.g_current_price}}</text>
 											<text class="pri2">¥{{item1.g_original_price}}</text>
@@ -291,6 +292,12 @@
 			
 			},
 			toroom(id){
+				if(!this.hasLogin){
+					uni.navigateTo({
+						url: '/pages/login/login',
+					});
+					return
+				}
 				this.$store.commit('createConversationActive', id)
 				uni.navigateTo({
 					url: '/pages/tim/room?id='+id

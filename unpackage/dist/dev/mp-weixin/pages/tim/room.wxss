@@ -707,7 +707,7 @@ page {
   padding-right: 130rpx;
 }
 .content .msg-list .row .other .right .username .name {
-  margin-right: 50rpx;
+  margin-right: 20rpx;
 }
 .content .msg-list .row .other .right .bubble {
   background-color: #fff;
@@ -869,17 +869,20 @@ page {
   padding-bottom: 100rpx;
 }
 .chat_box {
-  width: 400rpx;
+  width: 500rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
 }
 .chat_img {
-  width: 120rpx;
-  height: 120rpx;
+  width: 240rpx;
+  height: 240rpx;
   margin-right: 20rpx;
 }
 .chat_msg {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -887,6 +890,9 @@ page {
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
           flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
 }
 .gb_name {
   font-size: 28rpx;
@@ -903,5 +909,23 @@ page {
   padding: 2rpx;
   box-sizing: border-box;
   vertical-align: text-bottom;
+}
+.other {
+  padding-top: 20rpx;
+}
+.username {
+  position: relative;
+  height: 1rpx !important;
+}
+.username .time {
+  position: absolute;
+  top: -40rpx;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding-right: 130rpx;
+}
+.bubble {
+  max-width: 80% !important;
 }
 

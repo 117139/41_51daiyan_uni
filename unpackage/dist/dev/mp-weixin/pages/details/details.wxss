@@ -179,6 +179,8 @@ line-height: 36rpx;
   padding: 0 28rpx;
   margin-bottom: 14rpx;
   box-sizing: border-box;
+	-webkit-flex-wrap: wrap;
+	        flex-wrap: wrap;
 }
 .pri2 text.data-v-39cbb4e8{
   font-size: 23rpx;

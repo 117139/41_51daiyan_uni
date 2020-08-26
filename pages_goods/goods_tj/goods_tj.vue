@@ -212,9 +212,12 @@
 				}
 				var jkurl = '/bestGoods'
 				var datas = {
-					b:that.dy_mon?'down':'up',
-					sum:that.dy_num?'down':'up',
-					p:that.dy_pri?'down':'up',
+					// b:that.dy_mon?'down':'up',
+					// sum:that.dy_num?'down':'up',
+					// p:that.dy_pri?'down':'up',
+					b: that.dy_mon==-1 ?'':that.dy_mon==1 ? 'down' : 'up',
+					sum: that.dy_num ==-1 ?'':that.dy_num==1 ?  'down' : 'up',
+					p: that.dy_pri ==-1 ?'':that.dy_pri==1 ?  'down' : 'up',
 					page:that.page,
 					size:that.size
 				}
@@ -264,14 +267,29 @@
 			px_fuc(e){
 				var that=this
 				var type=e.currentTarget.dataset.type
-				if(type==0){
-					that.dy_mon=!that.dy_mon
+				// if(type==0){
+				// 	that.dy_mon=!that.dy_mon
+				// }
+				// if(type==1){
+				// 	that.dy_num=!that.dy_num
+				// }
+				// if(type==2){
+				// 	that.dy_pri=!that.dy_pri
+				// }
+				if (type == 0) {
+					that.dy_mon = that.dy_mon==0?1:0
+					that.dy_num =-1
+					that.dy_pri =-1
 				}
-				if(type==1){
-					that.dy_num=!that.dy_num
+				if (type == 1) {
+					that.dy_mon =-1
+					that.dy_num = that.dy_num==0?1:0
+					that.dy_pri =-1
 				}
-				if(type==2){
-					that.dy_pri=!that.dy_pri
+				if (type == 2) {
+					that.dy_mon =-1
+					that.dy_num = -1
+					that.dy_pri = that.dy_pri==0?1:0
 				}
 				that.onRetry()
 			},

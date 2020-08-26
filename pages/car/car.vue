@@ -59,7 +59,7 @@
 					<view class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id" v-for="(item,index) in rand_data">
 						<image class="goods_img" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"  mode="aspectFill"></image>
 						<view class="goods_msg">
-							<view class="oh1">{{item.g_title}}</view>
+							<view class="dis_flex aic"><text v-if="item.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item.g_title}}</text></view>
 							<view class="goods_pri">
 								<text>￥{{item.g_price}}</text>
 								<!-- <text class="pr2">￥{{item.g_original_price}}</text> -->
