@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="header_box">
 			<view class="index_box1">
-				<image v-if="!hasLogin" class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+				<image v-if="!hasLogin" class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/mr_tx.jpg')"></image>
 				<image v-else class="user_tx" :src="loginMsg.avatarurl"></image>
 				<view class="sousuo_box" @tap="jump" data-url="/pages/search/search">
 					<text class="iconfont iconsousuo"></text>搜索人名代言号/商品/品牌
@@ -326,7 +326,7 @@
 				promise.then((res) => {
 					console.log('提交资料成功')
 				}).catch((err) => {
-					console.warn('updateMyProfile error:', imError); // 更新资料失败的相关信息
+					console.warn('updateMyProfile error:', err); // 更新资料失败的相关信息
 				});
 			},
 			//获取消息列表

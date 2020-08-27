@@ -60,7 +60,8 @@
 				<view v-for="(item,index) in conversationList" :key="index" @click="toRoom(item)">
 					<view class="item-box">
 						<view class="item-img">
-							<img :src="item.userProfile.avatar" alt="">
+							<img v-if="item.userProfile.avatar" :src="filter.imgIP(item.userProfile.avatar)" alt="">
+							<img v-else :src="filter.imgIP('/static_s/51daiyan/images/mr_tx.jpg')" alt="">
 						</view>
 						<view class="item-text">
 							<view class="item-user">
@@ -117,14 +118,16 @@
 			if(this.hasLogin){
 				console.log('...')
 				console.log(this.conversationList)
-				let userInfo = JSON.parse(uni.getStorageSync('userInfo'))
+				console.log(uni.getStorageSync('userInfo'))
+				// let userInfo = JSON.parse(uni.getStorageSync('userInfo'))
+				let userInfo =this.loginMsg
 				this.friendList = []
-				userList.forEach(item => {
-					if (item.userId != userInfo.userId) {
-						console.log(item)
-						this.friendList.push(item)
-					}
-				})
+				// userList.forEach(item => {
+				// 	if (item.userId != userInfo.userId) {
+				// 		console.log(item)
+				// 		this.friendList.push(item)
+				// 	}
+				// })
 			}
 			
 		
@@ -256,9 +259,9 @@
 				// 拉取会话列表
 				let promise = this.tim.getConversationList();
 				promise.then((res) => {
+						uni.stopPullDownRefresh();
 					let conversationList = res.data.conversationList; // 会话列表，用该列表覆盖原有的会话列表
 					if (conversationList.length>0) {
-						uni.stopPullDownRefresh();
 						//将返回的会话列表拼接上 用户的基本资料  
 						//说明：如果已经将用户信息 提交到tim服务端了 就不需要再次拼接
 						this.$store.commit("updateConversationList", conversationList);

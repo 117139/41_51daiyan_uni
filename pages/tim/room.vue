@@ -44,7 +44,7 @@
 										{{'自定义参数3:'+getarg(item.payload.extension,'a2',item.payload.data)}}
 										{{'自定义参数4:'+getarg(item.payload.extension,'a3',item.payload.data)}}
 									</view>
-									<view v-if="item.payload.data=='custom_good'"  class="chat_box" @tap="jump" :data-url="getarg(item.payload.extension,'a2',item.payload.data)">
+									<view v-if="item.payload.data=='custom_good'"  class="chat_box" @tap="jump" :data-url="'/pages/details/details?id='+getarg(item.payload.extension,'a2',item.payload.data)">
 										<image class="chat_img" :src="getarg(item.payload.extension,'a3',item.payload.data)"
 										 mode="aspectFill" style="width: 196upx;height: 196upx;"></image>
 										<view class="chat_msg">
@@ -98,7 +98,7 @@
 										{{'自定义参数3:'+getarg(item.payload.extension,'a2',item.payload.data)}}
 										{{'自定义参数4:'+getarg(item.payload.extension,'a3',item.payload.data)}}
 									</view>
-									<view v-if="item.payload.data=='custom_good'"  class="chat_box" @tap="jump" :data-url="getarg(item.payload.extension,'a2',item.payload.data)">
+									<view v-if="item.payload.data=='custom_good'"  class="chat_box" @tap="jump" :data-url="'/pages/details/details?id='+getarg(item.payload.extension,'a2',item.payload.data)">
 										<image class="chat_img" :src="getarg(item.payload.extension,'a3',item.payload.data)"
 										 mode="aspectFill" style="width: 196upx;height: 196upx;"></image>
 										<view class="chat_msg">
@@ -347,6 +347,7 @@
 				this.msg_type=option.type
 			}
 			this.toUserId =option.id?option.id: this.$store.state.toUserId
+			console.log('toUserId===============>'+this.toUserId)
 			this.conversationActive = this.$store.state.conversationActive
 			this.TIM = this.$TIM
 			//获取聊天对象的用户信息---有后端的情况这里 使用后端api请求、
@@ -435,9 +436,7 @@
 					url:e.currentTarget.dataset.url
 				})
 			},
-			onPullDownRefresh: function () {
-			  uni.stopPullDownRefresh();
-			},
+			
 			// 滚动到列表bottom
 			scrollToBottom () {
 			  if (this.isShow) {
@@ -945,7 +944,7 @@
 										var ext={
 											a:that.goods_pri,
 											a1:'a1',
-											a2:'/pages/details/details?id='+that.goods_id,
+											a2:that.goods_id,
 											a3:service.imgurl+that.goods_img,
 										}
 										ext=JSON.stringify(ext)

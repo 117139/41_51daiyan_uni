@@ -5,7 +5,7 @@
 		  <view class="header_box">
 		    <view class="user_box" v-if="!hasLogin">
 		      <view class="user_tx" data-url="/pages/login/login" @tap='jump'>
-		        <image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+		        <image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/mr_tx.jpg')"></image>
 		      </view>
 		      <view class="user_msg" data-url="/pages/login/login" @tap='jump'>
 		        <view class="user_name">登录</view>
