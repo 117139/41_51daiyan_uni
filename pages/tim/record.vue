@@ -11,7 +11,7 @@
 		</view> -->
 		<!-- 聊天记录 会话列表 -->
 		<view class="conversition-box" v-if="hasLogin">
-			<view class="xx_li" bindtap="jump" data-url="/pages/xiaoxi_list/xiaoxi_list?type=0">
+			<view class="xx_li" @tap="jump" data-url="/pagesA/xiaoxi_list/xiaoxi_list?type=0">
 				<view class="user_tx" >
 					<image class="user_tx"  :src="filter.imgIP('/static_s/51daiyan/images/xtxx.png')"></image>
 					<text></text>
@@ -41,7 +41,7 @@
 					</view>
 				</view>
 			</view> -->
-			<view class="xx_li" bindtap="jump" data-url="/pages/xiaoxi_list/xiaoxi_list?type=1">
+			<view class="xx_li" @tap="jump" data-url="/pagesA/xiaoxi_list/xiaoxi_list?type=1">
 				<view class="user_tx" >
 					<image class="user_tx"  :src="filter.imgIP('/static_s/51daiyan/images/dyxx.png')"></image>
 					<text></text>
@@ -100,6 +100,7 @@
 
 <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
 <script>
+	import service from '../../service.js';
 	import userList from '../../commen/tim/user.js'
 	import {
 		mapState,
@@ -109,6 +110,7 @@
 		name: 'record',
 		data() {
 			return {
+				btnkg:0,
 				userList: userList,
 				friendList: [],
 				isActive: 0, //默认聊天记录
@@ -133,6 +135,7 @@
 		
 		},
 		onShow() {
+			this.btnkg=0
 			if(this.hasLogin){
 				if (this.isSDKReady) {
 					console.log('2222')
@@ -181,7 +184,19 @@
 
 		},
 		methods: {
-			
+			jump(e) {
+				var that =this
+				console.log(e.currentTarget.dataset.type)
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+					setTimeout(function (){
+						that.btnkg=0
+					},1000)
+				}
+				service.jump(e)
+			},
 			gologin(){
 				uni.navigateTo({
 					url:'/pages/login/login'

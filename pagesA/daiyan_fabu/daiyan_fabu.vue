@@ -54,15 +54,15 @@
 		    </view>
 		  </view>
 		  <view class='dis_flex ju_a w100 pb40 pt20 bgfff tab_box'>
-		    <block  v-for="(item,idx) in datalist">
+		    <!-- <block  v-for="(item,idx) in datalist"> -->
 		      <!-- <view :class="type==idx?'typecur':'c9'" :data-type="idx" @tap='bindcur'><text>{{item}}</text></view> -->
 					<view :class="type==1?'typecur':'c9'" :data-type="1" @tap='bindcur'><text>图片代言</text></view>
 					<view :class="type==2?'typecur':'c9'" :data-type="2" @tap='bindcur'><text>视频代言</text></view>
 					<view v-if="dy_fb_list.length==1" :class="type==3?'typecur':'c9'" :data-type="3" @tap='bindcur'><text>海报代言</text></view>
-		    </block>
+		    <!-- </block> -->
 		
 		  </view>
-		  <view class="fw_list" v-show="type==0">
+		  <view class="fw_list" v-show="type==1">
 		    <view class="fuwu_li">
 		      <view class="d1">上传商品图片</view>
 		      <view class="fw_msg">
@@ -83,7 +83,7 @@
 		
 		
 		  </view>
-		  <view class="fw_list"  v-show="type==1">
+		  <view class="fw_list"  v-show="type==2">
 		    <view class="fuwu_li">
 		      <view class="d1">上传商品视频</view>
 		      <view class="fw_msg">
@@ -104,7 +104,7 @@
 		
 		
 		  </view>
-		  <view class="fw_list" v-show="type==2">
+		  <view class="fw_list" v-show="type==3">
 		    <!-- <view class="haibao" @tap="getPosterHandle">生成海报</view> -->
 		    <!-- <view class="haibao" @tap="renderToCanvas">生成海报</view> -->
 		    <view class="haibao" @tap="shareFc()">生成海报</view>
@@ -751,10 +751,12 @@
 									type: 'image',
 									id: 'productImage',
 									// url: _this.count % 2 === 0 ? '/static/1.png' : '/static/2.jpg',
-									url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/xcxm.png',
+									// url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/ewm.png',
+									url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/xcxm.jpg',
 									dx: 254,
 									dy: 494,
 									serialNum: 0,
+									circleSet:true,
 									infoCallBack(imageInfo) {
 										let width;
 										let height;

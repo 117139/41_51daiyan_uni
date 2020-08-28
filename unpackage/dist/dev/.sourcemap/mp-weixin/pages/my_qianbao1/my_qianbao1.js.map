@@ -1,1 +1,0 @@
-{"version":3,"sources":["uni-app:///main.js"],"names":["createPage","Page"],"mappings":";;;;wEAAA,qBACA,sBACA,qI,mDACAA,EAAWC,a","file":"pages/my_qianbao1/my_qianbao1.js","sourcesContent":["import 'uni-pages';\nimport Vue from 'vue'\nimport Page from './pages/my_qianbao1/my_qianbao1.vue'\ncreatePage(Page)"],"sourceRoot":""}

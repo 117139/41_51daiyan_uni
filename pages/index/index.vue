@@ -71,7 +71,7 @@
 				<view class="goods_tip">已为您更新{{datas.advocacyVideoArr.length>0?datas.advocacyVideoArr.length:0}}个视频</view>
 				<view class="goods_list">
 					<view v-if="idx<2" class="goods_li" v-for="(item,idx) in datas.advocacyVideoArr" 
-					 @tap.stop="jump" :data-url="'/pages/xvideo/xvideo?idx='+item.id">
+					 @tap.stop="jump" :data-url="'/pages_goods/xvideo/xvideo?idx='+item.id">
 						<image class="goods_img" :src="filter.imgIP_video(item.img[0])" mode="aspectFill"></image>
 						<image class="goods_play" :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
 					</view>

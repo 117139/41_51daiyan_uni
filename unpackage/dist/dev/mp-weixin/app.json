@@ -13,8 +13,6 @@
     "pages/Order/Order",
     "pages/my_index/my_index",
     "pages/search/search",
-    "pages/xiaoxi_list/xiaoxi_list",
-    "pages/xvideo/xvideo",
     "pages/my_video/my_video",
     "pages/getTel/getTel"
   ],
@@ -22,6 +20,7 @@
     {
       "root": "pagesA",
       "pages": [
+        "xiaoxi_list/xiaoxi_list",
         "about/about",
         "mymsg/mymsg",
         "my_name/my_name",
@@ -57,6 +56,7 @@
     {
       "root": "pages_goods",
       "pages": [
+        "xvideo/xvideo",
         "game_js/game_js",
         "daiyan_find/daiyan_find",
         "daiyan_sc/daiyan_sc",

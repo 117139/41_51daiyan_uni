@@ -703,14 +703,17 @@
 							setBgObj,
 							getBgObj
 						}) {
-							return [{
+							return [
+								{
 									type: 'image',
 									id: 'productImage',
 									// url: _this.count % 2 === 0 ? '/static/1.png' : '/static/2.jpg',
-									url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/xcxm.png',
+									// url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/ewm.png',
+									url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/xcxm.jpg',
 									dx: 254,
 									dy: 494,
 									serialNum: 0,
+									circleSet:true,
 									infoCallBack(imageInfo) {
 										let width;
 										let height;
@@ -723,7 +726,27 @@
 											dHeight: height
 										}
 									}
-								},{
+								},
+								/*{
+									type: 'qrcode',
+									text: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/xcxm.jpg',
+									serialNum: 0,
+									allInfoCallback({
+										drawArray
+									}) {
+										const productImage = drawArray.find(item => item.id === 'productImage')
+										const addHeight = getBgObj().height - productImage.dHeight;
+										const widthSize = getBgObj().width * .4;
+										const heightSize = addHeight;
+										const countSize = widthSize > heightSize ? heightSize : widthSize;
+										const size = countSize * .9;
+										return {
+											size: 244,
+											dx: 254,
+											dy: 494
+										}
+									}
+								},*/{
 									type: 'image',
 									id: 'userImage',
 									// url: _this.count % 2 === 0 ? '/static/1.png' : '/static/2.jpg',
@@ -859,26 +882,7 @@
 										}
 									}
 								},
-								/*{
-									type: 'qrcode',
-									text: '123456',
-									serialNum: 4,
-									allInfoCallback({
-										drawArray
-									}) {
-										const productImage = drawArray.find(item => item.id === 'productImage')
-										const addHeight = getBgObj().height - productImage.dHeight;
-										const widthSize = getBgObj().width * .4;
-										const heightSize = addHeight;
-										const countSize = widthSize > heightSize ? heightSize : widthSize;
-										const size = countSize * .9;
-										return {
-											size: size,
-											dx: getBgObj().width - countSize * .95,
-											dy: getBgObj().height - countSize * .95
-										}
-									}
-								}*/
+								
 							]
 						}
 					})

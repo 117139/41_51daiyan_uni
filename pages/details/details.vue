@@ -1,6 +1,10 @@
 <template>
 	<view>
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		
+		<view v-if="htmlReset==0&&!goodsData" class="loading_def">
+			<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+		</view>
 		<view v-if="goodsData" :class="sheetshow1||sheetshow?'container-ban':'container'">
 		  <view class="swiper_box">
 		    <swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay"
