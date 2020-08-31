@@ -1,6 +1,9 @@
 <template>
 	<view>
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==0&&!datas" class="loading_def">
+			<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+		</view>
 		<view class="container">
 			<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/my_indexbg_02.jpg')"></image>
 			<view class="h_main">
@@ -179,6 +182,7 @@
 		data() {
 			return {
 				uid:'',
+				htmlReset:0,
 				btn_kg: 0,
 				data_last:false,
 				exceed_number_bl:-1,
@@ -260,6 +264,7 @@
 		methods: {
 			onRetry(){
 				this.getdata()
+				this.data_list=[]
 				this.getdata_cy()
 			},
 			

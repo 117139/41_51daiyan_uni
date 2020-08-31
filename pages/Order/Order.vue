@@ -2,6 +2,9 @@
 	<view style="height: 100vh;overflow: scroll;">
 		<view class="hengxian"></view>
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==0&&data_list.length==0" class="loading_def">
+			<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+		</view>
 		<view class="container" v-if="data_list.length>0">
 		
 		  <view class="address" data-url="/pagesA/myaddress/myaddress?type=1" @tap="jump">

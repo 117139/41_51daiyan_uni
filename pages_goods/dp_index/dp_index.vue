@@ -2,6 +2,9 @@
 	<view>
 		<view class="container">
 			<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+			<view v-if="htmlReset==0&&!datas" class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+			</view>
 			<block v-if="htmlReset==0&&datas">
 				<view v-if="datas" class="dp_box">
 				  <view class="dp_b1">

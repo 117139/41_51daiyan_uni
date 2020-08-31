@@ -48,6 +48,21 @@
 				</view>
 				<view class="xx_msg">
 					<view class="to_name">
+						<text >定向代言</text>
+						<text class="time">17:30</text>
+					</view>
+					<view class="to_msg oh1">
+						您收到了华为的代言邀请，快去看看吧
+					</view>
+				</view>
+			</view>
+			<view class="xx_li" @tap="jump" data-url="/pagesA/xiaoxi_list/xiaoxi_list?type=1">
+				<view class="user_tx" >
+					<image class="user_tx"  :src="filter.imgIP('/static_s/51daiyan/images/dyxx.png')"></image>
+					<text></text>
+				</view>
+				<view class="xx_msg">
+					<view class="to_name">
 						<text >代言收益</text>
 						<text class="time">17:30</text>
 					</view>

@@ -27,7 +27,7 @@
 							<!-- </block> -->
 							<view class="yhq_pri">
 								<view class="d1"  v-if="item.coupon_setting_type==1"><text>¥{{item.c_money}}元 </text> {{item.coupon_setting_type_value}}</view>
-								<view class="d1"  v-if="item.coupon_setting_type==2"><text>¥{{item.discount_ratio}}折 </text> {{item.coupon_setting_type_value}}</view>
+								<view class="d1"  v-if="item.coupon_setting_type==2"><text>¥{{item.discount_ratio?item.discount_ratio/10:item.discount_ratio}}折 </text> {{item.coupon_setting_type_value}}</view>
 								<view class="d1"  v-if="item.coupon_setting_type==3"><text>全额抵扣</text> {{item.coupon_setting_type_value}}</view>
 								<view class="d2">{{filter.getDate_ymd(item.use_start_time,'.')}}-{{filter.getDate_ymd(item.use_end_time,'.')}}</view>
 							</view>

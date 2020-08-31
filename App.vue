@@ -537,9 +537,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		background: #fff;
 	}
 	.loading_def_img{
-		width: 400rpx;
-		height: 300rpx;
+		width: 200rpx;
+		height: 200rpx;
 	}
 </style>

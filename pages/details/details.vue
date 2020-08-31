@@ -5,6 +5,28 @@
 		<view v-if="htmlReset==0&&!goodsData" class="loading_def">
 			<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
 		</view>
+		<view v-if="htmlReset==2">
+			<view class="zanwu" style="">商品已下架</view>
+			<!-- 猜你喜欢 -->
+			<view class="you_like">
+				<view class="like_tit">
+					<text></text>猜你喜欢<text></text>
+				</view>
+				<view class="goods_list">
+					<view class="like_goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.g_id" v-for="(item,index) in like_goods">
+						<image class="goods_img" :lazy-load='true' :src="filter.imgIP(item.g_img[0])"  mode="aspectFill"></image>
+						<view class="goods_msg">
+							<view class="dis_flex aic"><text v-if="item.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item.g_title}}</text></view>
+							<view class="goods_pri">
+								<text>￥{{item.g_current_price}}</text>
+								<!-- <text class="pr2">￥{{item.g_original_price}}</text> -->
+							</view>
+						</view>
+					</view>
+					
+				</view>
+			</view>
+		</view>
 		<view v-if="goodsData" :class="sheetshow1||sheetshow?'container-ban':'container'">
 		  <view class="swiper_box">
 		    <swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay"
@@ -429,6 +451,9 @@
 				ggshow1_jjj:[],
 				cnum: 0,//数量
 				goods_sku_id: 0,  //商品id
+				
+				page:1,
+				like_goods:[]
 			}
 		},
 		components: {
@@ -493,6 +518,9 @@
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
+			if(this.htmlReset==2){
+				this.getdatalist()
+			}
 		},
 		
 		/**
@@ -502,6 +530,65 @@
 		
 		},
 		methods: {
+			getdatalist() {
+			
+				let that = this
+				var jkurl = '/goods/getGoodsList'
+				var datas = {
+					token: that.loginMsg.userToken,
+					page: that.page,
+					cateId:3,
+				}
+				if(that.data_last) return
+				if(that.btn_kg==1){
+					return
+				}else{
+					that.btn_kg=1
+				}
+				// 单个请求
+				service.P_get(jkurl, datas).then(res => {
+					
+					that.btn_kg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						// console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						if (datas.length==0) {
+							// uni.showToast({
+							// 	icon: 'none',
+							// 	title: '暂无更多数据'
+							// })
+							if(that.page==1){
+								that.like_goods=datas
+							}else{
+								that.data_last=true
+							}
+							return
+						}
+						if(that.page==1){
+							that.like_goods=datas
+						}else{
+							
+							that.like_goods = that.like_goods.concat(datas)
+						}
+			
+						that.page++
+					}
+				}).catch(e => {
+						that.btn_kg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+				
+			},
+			
 			toroom(id){
 				if(!this.hasLogin){
 					uni.navigateTo({
@@ -570,6 +657,9 @@
 				this.getStarTextlist()
 				this.LaterBuy_page=1
 				this.getLaterBuylist()
+				this.page=1
+				this.like_goods=[]
+				this.getdatalist()
 			},
 			//获取优惠列表
 			getyhlist() {
@@ -1013,14 +1103,20 @@
 							title:'商品详情'
 						})
 					}else{
+						uni.setNavigationBarTitle({
+							title:'商品详情'
+						})
 						if(res.msg='商品已下架'){
-							setTimeout(()=>{
-								uni.navigateBack({
-									delta:1
-								})
-							},3000)
+							// setTimeout(()=>{
+							// 	uni.navigateBack({
+							// 		delta:1
+							// 	})
+							// },3000)
+							// that.getdatalist()
+							that.htmlReset=2
+						}else{
+							that.htmlReset=1
 						}
-						that.htmlReset=1
 					}
 				}).catch(e => {
 				  console.log(e)
@@ -2479,5 +2575,67 @@ color: transparent;
 .container-ban{
   height: 100vh;
   overflow: hidden;
+}
+
+
+
+/* like_tit */
+.you_like{
+	width: 100%;
+	background: #fff;
+}
+.like_tit{
+	height: 80rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 30rpx;
+}
+.like_tit text{
+	width: 60rpx;
+	height: 1px;
+	background: #eee;
+	margin: 0 20rpx;
+}
+.goods_list{
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0 28rpx 40rpx;
+  box-sizing: border-box;
+}
+.like_goods_li{
+	width:338rpx;
+	height:468rpx;
+	background:rgba(255,255,255,1);
+	box-shadow:0px 3rpx 20rpx 0px rgba(119,119,119,0.3);
+	border-radius:10rpx;
+	margin-bottom: 16rpx;
+}
+.like_goods_li:nth-child(2n){
+	margin-left: 16rpx;
+	/* margin-right: 0; */
+}
+ .like_goods_li .goods_img{
+	width: 100%;
+	height:338rpx;
+	border-radius:10rpx 10rpx 0px 0px;
+}
+.like_goods_li .goods_msg{
+	width: 100%;
+	box-sizing: border-box;
+	padding: 15rpx 24rpx;
+	font-size: 28rpx;
+	color: #333;
+}
+.like_goods_li .goods_pri{
+	color: #e53030;
+	font-size: 36rpx;
+}
+.like_goods_li .goods_pri .pr2{
+	  font-size: 28rpx;
+	  font-family: "PingFangSC";
+	  color: rgb(153, 153, 153);
+	  text-decoration: line-through;
 }
 </style>

@@ -12,7 +12,8 @@
 				</view>
 				<view class="list_tit_1">
 					<view :class="ph_type1==1?'cur':''" @tap="ph_fuc1" data-type="1">代言数量排行</view>
-					<view :class="ph_type1==2?'cur':''" @tap="ph_fuc1" data-type="2">代言收益排行</view>
+					<!-- <view :class="ph_type1==2?'cur':''" @tap="ph_fuc1" data-type="2">代言收益排行</view> -->
+					<view :class="ph_type1==2?'cur':''" @tap="ph_fuc1" data-type="2">影响力排行</view>
 					<view :class="ph_type1==3?'cur':''" @tap="ph_fuc1" data-type="3">公益之星排行</view>
 				</view>
 				

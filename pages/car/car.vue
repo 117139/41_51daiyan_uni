@@ -38,7 +38,9 @@
 						</view>
 		        <view class="goodspri1">
 							
-							<text class="fz30 c9">库存：{{item.sku_number}}</text>
+							<!-- <text class="fz30 c9">库存：{{item.sku_number}}</text> -->
+							<text class="fz30 c9" v-if="item.sku_number < item.number">库存不足</text>
+							<text class="fz30 c9" v-else></text>
 						
 							<view class="vstepper steppera">
 								<view @tap.stop="onNum" :data-idx="idx" data-ad="-" :data-id="item.g_id" class="vantjian c9">-</view>
@@ -151,9 +153,9 @@
 			  let that = this
 			  
 			  if (!that.data_list[idx].xuan) {
-					if(that.data_list[idx].sku_number>that.data_list[idx].number){
+					//if(that.data_list[idx].sku_number>=that.data_list[idx].number){ //库存充足是可以点击
 						that.$set(that.data_list[idx],'xuan',true)
-					}else if(that.data_list[idx].sku_number>0){
+					/*}else if(that.data_list[idx].sku_number>0){
 						uni.showToast({
 							icon: 'none',
 							title: '该商品库存不足请减少购买数量'
@@ -163,7 +165,7 @@
 							icon: 'none',
 							title: '该商品库存不足'
 						})
-					}
+					}*/
 			  } else {
 					that.$set(that.data_list[idx],'xuan',false)
 			  }
@@ -215,9 +217,9 @@
 			  for (var i=0;i<that.data_list.length;i++) {
 						
 						if(kg){
-							if(that.data_list[i].sku_number>that.data_list[i].number){
+							//if(that.data_list[i].sku_number>that.data_list[i].number){
 								that.$set(that.data_list[i],'xuan',true)
-							}else if(that.data_list[i].sku_number>0){
+							/*}else if(that.data_list[i].sku_number>0){
 								// uni.showToast({
 								// 	icon: 'none',
 								// 	title: '该商品库存不足请减少购买数量'
@@ -229,7 +231,7 @@
 								// 	title: '该商品库存不足'
 								// })
 								that.$set(that.data_list[i],'xuan',false)
-							}
+							}*/
 						}else{
 							that.$set(that.data_list[i],'xuan',kg)
 						}
@@ -263,15 +265,23 @@
 			  let xuanG = that.data_list
 			  let idG = ''
 			  var xzarr = []
+				var kc_tip=false
 			  // for (let i in xuanG) {
 				for(var i=0; i<xuanG.length;i++){
 			    if (xuanG[i].xuan) {
-			      if (idG == '') {
-			        idG = xuanG[i].c_id
-			
-			      } else {
-			        idG += ',' + xuanG[i].c_id
-			      }
+						if(xuanG[i].number>xuanG[i].sku_number){
+							kc_tip=true
+							that.all=false
+							that.$set(that.data_list[i],'xuan',false)
+						}else{
+							if (idG == '') {
+							  idG = xuanG[i].c_id
+										
+							} else {
+							  idG += ',' + xuanG[i].c_id
+							}
+						}
+			     
 			      // xzarr.push(that.goods[i])
 			    }
 			
@@ -280,15 +290,33 @@
 			  // xzarr = JSON.stringify(xzarr)
 			  // console.log(xzarr)
 			  console.log(idG)
-			  if (idG !== '') {
+				if(kc_tip&&idG !== ''){
+					uni.showToast({
+						icon:'none',
+						title:'部分商品库存不足已被取消选择'
+					})
+					setTimeout(()=>{
+						wx.navigateTo({
+						  url: '/pages/Order/Order?type=2&g_data='+idG
+						})
+					},1500)
+				}else if (idG !== '') {
 			   wx.navigateTo({
 			     url: '/pages/Order/Order?type=2&g_data='+idG
 			   })
 			  }else{
-					uni.showToast({
-						icon:'none',
-						title:'请选择商品'
-					})
+					if(kc_tip){
+						uni.showToast({
+							icon:'none',
+							title:'请选择库存充足的商品'
+						})
+					}else{
+						uni.showToast({
+							icon:'none',
+							title:'请选择商品'
+						})
+					}
+					
 				}
 			},
 			//加减
