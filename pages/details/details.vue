@@ -86,7 +86,7 @@
 		    </view>
 		  </view>
 		  <!-- <view class="goods_xmsg" @tap="jump" data-url="/pagesA/my_yhq/my_yhq"> -->
-		  <view v-if="yh_list.length==0" class="goods_xmsg" @tap="yhq_get">
+		  <view v-if="yh_list.length>0" class="goods_xmsg" @tap="yhq_get">
 		    <view class="v1">优惠券</view>
 		    <view class="v2">
 		      <text class="yhq_box">领券</text>
@@ -288,7 +288,7 @@
 							<view class="dis_flex d1">抵扣</view>
 						</view>
 						<view class="flex_1 goods_yhmsg">
-							<view class="yh_type">{{item.name}}</view>
+							<view class="yh_type">{{item.type_value}}</view>
 							<view class="yh_time">
 								<view>有效日期</view>
 								<view>{{filter.getDate_ymd(item.use_start_time,'-')}}-{{filter.getDate_ymd(item.use_end_time,'-')}}</view>
