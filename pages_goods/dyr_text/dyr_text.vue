@@ -691,7 +691,7 @@
 .quan_msg_img image.one{
   /* min-width:352rpx; */
   max-width: 100%;
-  border-radius:10px;
+  border-radius:10rpx;
 }
 .quan_goods{
   margin-top: 30rpx;

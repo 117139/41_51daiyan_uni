@@ -447,7 +447,7 @@ page{
 .iconnext{
 	font-size: 24rpx;
 	color: #919191;
-	margin-left: 10px;
+	margin-left: 10rpx;
 }
 .definebtn{
   margin: 20rpx auto 50rpx;

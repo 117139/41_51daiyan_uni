@@ -1729,7 +1729,7 @@ view.haibao_box{
 	}
 
 	.border_radius_10px {
-		border-radius: 10px;
+		border-radius: 10rpx;
 	}
 
 	.padding1vh {

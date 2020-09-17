@@ -545,7 +545,7 @@
 	.ss_goods_img {
 		width: 195rpx;
 		height: 196rpx;
-		border-radius: 10px;
+		border-radius: 10rpx;
 	}
 
 	.goods_msg {

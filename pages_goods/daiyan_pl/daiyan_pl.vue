@@ -1437,7 +1437,7 @@
 		width: 410rpx;
 		max-width: 410rpx;
 		height: 410rpx;
-		border-radius: 10px;
+		border-radius: 10rpx;
 	}
 
 	.quan_li_cz {

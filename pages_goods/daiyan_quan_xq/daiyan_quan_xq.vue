@@ -835,7 +835,7 @@
 	.quan_msg_img image.one {
 
 		max-width: 100%;
-		border-radius: 10px;
+		border-radius: 10rpx;
 	}
 
 	.quan_msg_img .one_one {

@@ -121,7 +121,7 @@
 		</view>
 		<!-- 抽屉栏 -->
 		<view class="popup-layer" :class="popupLayerClass" @touchmove.stop.prevent="discard">
-			<!-- 表情 -->
+			<!-- 表情 --> 
 			<swiper class="emoji-swiper" :class="{hidden:hideEmoji}" indicator-dots="true" duration="150">
 				<swiper-item v-for="(page,pid) in emojiList" :key="pid">
 					<view v-for="(em,eid) in page" :key="eid" @tap="addEmoji(em)">
@@ -138,9 +138,9 @@
 					<view class="box" @tap="camera">
 						<view class="icon paizhao"></view>
 					</view>
-					<view class="box" @tap="handRedEnvelopes">
+					<!-- <view class="box" @tap="handRedEnvelopes">
 						<view class="icon hongbao"></view>
-					</view>
+					</view> -->
 					<view v-if="msg_type==2" class="box" @tap="customModal">
 						<view class="iconfont iconzidingyi"></view>
 					</view>

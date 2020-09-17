@@ -25,16 +25,27 @@
 		      <view class="j_lv">{{datas.award[1].title}} <text>{{datas.award[1].number}}人</text></view>
 		      <view class="j_mon">¥{{datas.award[1].bonus}}/人</view>
 		    </view>
+				<view v-else style="opacity: 0;">
+					<image :src="filter.imgIP('/static_s/51daiyan/images/hdxq_jl2.png')"></image>
+				</view>
 		    <view v-if="datas.award[0]">
 		      <image :src="filter.imgIP('/static_s/51daiyan/images/hdxq_jl1.png')"></image>
 		      <view class="j_lv">{{datas.award[0].title}} <text>{{datas.award[0].number}}人</text></view>
 		      <view class="j_mon">¥{{datas.award[0].bonus}}/人</view>
 		    </view>
+				<view v-else  style="opacity: 0;">
+					<image :src="filter.imgIP('/static_s/51daiyan/images/hdxq_jl1.png')"></image>
+				</view>
 		    <view v-if="datas.award[2]">
 		      <image :src="filter.imgIP('/static_s/51daiyan/images/hdxq_jl3.png')"></image>
 		      <view class="j_lv">{{datas.award[2].title}} <text>{{datas.award[2].number}}人</text></view>
 		      <view class="j_mon">¥{{datas.award[2].bonus}}/人</view>
 		    </view>
+				<view v-else style="opacity: 0;">
+					<image :src="filter.imgIP('/static_s/51daiyan/images/hdxq_jl3.png')"></image>
+					<!-- <view class="j_lv">{{datas.award[2].title}} <text>{{datas.award[2].number}}人</text></view>
+					<view class="j_mon">¥{{datas.award[2].bonus}}/人</view> -->
+				</view>
 		  </view>
 		  <!-- 活动商品 -->
 		  <view class="box_tit">参选商品</view>
@@ -455,7 +466,7 @@
 .goods_img{
   width:330rpx;
   height:330rpx;
-  border-radius:10px 10px 0px 0px;
+  border-radius:10rpx 10rpx 0px 0px;
 }
 .goods_msg{
   width: 100%;

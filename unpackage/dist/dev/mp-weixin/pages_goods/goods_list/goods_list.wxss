@@ -71,7 +71,7 @@
 .goods_img.data-v-0c8e61fd{
 	width: 100%;
 	height:338rpx;
-	border-radius:10px 10px 0px 0px;
+	border-radius:10rpx 10rpx 0px 0px;
 }
 .goods_msg.data-v-0c8e61fd{
 	width: 100%;

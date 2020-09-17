@@ -50,7 +50,7 @@ page.data-v-1ecef8ab{
 .iconnext.data-v-1ecef8ab{
 	font-size: 24rpx;
 	color: #919191;
-	margin-left: 10px;
+	margin-left: 10rpx;
 }
 .definebtn.data-v-1ecef8ab{
   margin: 20rpx auto 50rpx;

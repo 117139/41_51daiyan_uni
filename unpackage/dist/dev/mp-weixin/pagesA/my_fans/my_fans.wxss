@@ -177,7 +177,7 @@
 .ss_goods_img.data-v-a90e635a{
 	width:195rpx;
 	height:196rpx;
-	border-radius:10px;
+	border-radius:10rpx;
 }
 .goods_msg.data-v-a90e635a{
 	-webkit-box-flex: 1;

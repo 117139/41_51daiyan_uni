@@ -1112,7 +1112,7 @@ button.data-v-a44611c6 {
   width:410rpx;
   max-width: 410rpx;
   height:410rpx;
-  border-radius:10px;
+  border-radius:10rpx;
 }
 .quan_li_cz.data-v-a44611c6{
   width: 100%;

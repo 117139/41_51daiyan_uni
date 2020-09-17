@@ -949,7 +949,7 @@ view.haibao_box.data-v-e29025ea{
 		background-color: white;
 }
 .border_radius_10px.data-v-e29025ea {
-		border-radius: 10px;
+		border-radius: 10rpx;
 }
 .padding1vh.data-v-e29025ea {
 		padding: 1vh;

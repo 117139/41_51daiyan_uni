@@ -473,7 +473,7 @@
 .quan_msg_img image.one.data-v-6520e7fd{
   /* min-width:352rpx; */
   max-width: 100%;
-  border-radius:10px;
+  border-radius:10rpx;
 }
 .quan_goods.data-v-6520e7fd{
   margin-top: 30rpx;

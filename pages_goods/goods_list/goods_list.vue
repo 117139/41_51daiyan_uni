@@ -264,7 +264,7 @@
 .goods_img{
 	width: 100%;
 	height:338rpx;
-	border-radius:10px 10px 0px 0px;
+	border-radius:10rpx 10rpx 0px 0px;
 }
 .goods_msg{
 	width: 100%;

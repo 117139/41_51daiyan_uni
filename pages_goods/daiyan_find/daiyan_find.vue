@@ -53,10 +53,10 @@
 					<view class="pp_jjc">
 						<view class="pp_jjc_tit">奖金池</view>
 						<view class="pp_ph_list">
-							<view v-for="(item1,idx1) in item.award" class="pp_ph_li">
-								<view>{{item1.title}}</view>
-								<view>第{{item1.ranking}}名</view>
-								<view>¥{{item1.bonus}}</view>
+							<view v-for="(item1,idx1) in 3" class="pp_ph_li">
+								<view v-if="item.award[idx1]">{{item.award[idx1].title}}</view>
+								<view v-if="item.award[idx1]">第{{item.award[idx1].ranking}}名</view>
+								<view v-if="item.award[idx1]">¥{{item.award[idx1].bonus}}</view>
 							</view>
 							
 						</view>

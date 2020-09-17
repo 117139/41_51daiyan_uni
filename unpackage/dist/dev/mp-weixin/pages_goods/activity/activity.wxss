@@ -179,7 +179,7 @@
 .goods_img.data-v-3748f3fd{
   width:330rpx;
   height:330rpx;
-  border-radius:10px 10px 0px 0px;
+  border-radius:10rpx 10rpx 0px 0px;
 }
 .goods_msg.data-v-3748f3fd{
   width: 100%;

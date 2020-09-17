@@ -120,7 +120,9 @@
 			])
 		},
 		onShow() {
-			this.onRetry()
+			if(this.hasLogin){
+				this.onRetry()
+			}
 		},
 		
 		/**
