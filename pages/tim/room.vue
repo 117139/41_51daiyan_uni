@@ -326,7 +326,8 @@
 			},
 		},
 		onLoad(option) {
-			console.log(option.id)
+			console.log('对方聊天id'+option.id)
+			console.log('对方聊天type'+option.type)
 			if(!this.hasLogin){
 				uni.navigateBack({
 					delta:1
@@ -555,6 +556,9 @@
 				// 历史消息列表
 					let conversationID = this.conversationActive.conversationID
 					let promise = this.tim.getMessageList({conversationID: conversationID, count: this.count});
+					console.log(conversationID)
+					console.log(this.count)
+					console.log(promise)
 					promise.then((res)=> {
 						console.log(res.data)
 						if(!res.data.nextReqMessageID){

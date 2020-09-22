@@ -3,7 +3,7 @@
 		<view class="container">
 		  
 			<view class="h_main">
-			
+				<view v-if="LaterBuy_list.length==0" class="zanwu">暂无数据</view>
 				<view class="goods_list">
 					<view v-for="(item,idx) in LaterBuy_list" class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
 						<image class="goods_img" :lazy-load='true' :src="filter.imgIP(item.img[0])"  mode="aspectFill"></image>
