@@ -3,7 +3,8 @@
 	width: 100%;
 	background: #FFF;
 	padding: 20rpx 22rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	border-bottom: 1px solid #eee;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -15,7 +16,8 @@
 .user_tx.data-v-e929523e{
 	width:82rpx;
 	height:82rpx;
-	border-radius:50%;
+	-webkit-border-radius:50%;
+	        border-radius:50%;
 	position: relative;
 	margin-right: 20rpx;
 }
@@ -23,7 +25,8 @@
 	width:14rpx;
 	height:14rpx;
 	background:rgba(254,58,53,1);
-	border-radius:50%;
+	-webkit-border-radius:50%;
+	        border-radius:50%;
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -120,8 +123,10 @@
 	color: #666;
 	font-size: 28rpx;
 	border: 1px solid #F56C6C;
-	border-top-left-radius: 25rpx;
-	border-bottom-left-radius: 25rpx;
+	-webkit-border-top-left-radius: 25rpx;
+	        border-top-left-radius: 25rpx;
+	-webkit-border-bottom-left-radius: 25rpx;
+	        border-bottom-left-radius: 25rpx;
 }
 .tab-item1.data-v-e929523e {
 	float: left;
@@ -131,8 +136,10 @@
 	color: #666;
 	font-size: 28rpx;
 	border: 1px solid #F56C6C;
-	border-top-right-radius: 25rpx;
-	border-bottom-right-radius: 25rpx;
+	-webkit-border-top-right-radius: 25rpx;
+	        border-top-right-radius: 25rpx;
+	-webkit-border-bottom-right-radius: 25rpx;
+	        border-bottom-right-radius: 25rpx;
 }
 .tab-item-active.data-v-e929523e {
 	color: #fff;
@@ -166,13 +173,15 @@
 	float: left;
 	width: 70rpx;
 	height: 70rpx;
-	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 	overflow: hidden;
 }
 .user-img image.data-v-e929523e {
 	width: 70rpx;
 	height: 70rpx;
-	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 }
 .user-name.data-v-e929523e {
 	float: left;
@@ -191,7 +200,8 @@
 .item-msg-icon.data-v-e929523e {
 	width: 40rpx;
 	height: 40rpx;
-	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 	background: #f06c7a;
 	color: #fff;
 	line-height: 40rpx;
@@ -208,7 +218,8 @@
 	height: 70rpx;
 	line-height: 70rpx;
 	padding: 0 40rpx;
-	border-radius: 25rpx;
+	-webkit-border-radius: 25rpx;
+	        border-radius: 25rpx;
 	color: #fff;
 	background: #F56C6C;
 	font-size: 26rpx;

@@ -5,9 +5,8 @@ import event from 'commen/event.js'
 // 管理账号信息
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
-const IPurl = 'http://51daiyan.com.aa.800123456.top/api/';
+const IPurl = 'https://51daiyan.com.aa.800123456.top/api/';
 const imgurl = 'http://51daiyan.test.upcdn.net/';
-
 /**
  * 请求头
  */
@@ -68,6 +67,7 @@ function request(url, params, method, onSuccess, onFailed) {
 				// 	return
 
 				// }
+				store.commit('logout')
 				uni.showToast({
 					icon: 'none',
 					title: '请先授权登录'
@@ -236,9 +236,9 @@ const wxlogin=function (num){
 												// 	})
 												// 	return
 												// }
-												store.commit('login', res.data.data)
 	                      uni.setStorageSync('token', res.data.data.userToken)
 	                      uni.setStorageSync('loginmsg', res.data.data)
+												store.commit('login', res.data.data)
 												
 												event.trigger({
 												    type:'test',
@@ -372,6 +372,7 @@ const http =({url ='',param ={},method='',header={'content-type': 'application/x
           if(res.statusCode ==200){//请求成功
 					
 						if(res.data.code==-1){
+							store.commit('logout')
 							uni.navigateTo({
 								url:'/pages/login/login'
 							})

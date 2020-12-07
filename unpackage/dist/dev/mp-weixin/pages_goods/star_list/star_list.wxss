@@ -25,7 +25,8 @@
 	width: 694rpx;
 	/* height:1022rpx; */
 	border: 8rpx solid rgba(255, 255, 255, 0.5);
-	border-radius: 18rpx;
+	-webkit-border-radius: 18rpx;
+	        border-radius: 18rpx;
 	position: absolute;
 	top: 246rpx;
 	left: 28rpx;
@@ -42,18 +43,22 @@
 	-webkit-box-align: center;
 	-webkit-align-items: center;
 	        align-items: center;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 .js_box1.data-v-c140bf96 {
 	width: 100%;
 	background: #Fff;
-	border-radius: 16rpx;
+	-webkit-border-radius: 16rpx;
+	        border-radius: 16rpx;
 }
 .js_msg.data-v-c140bf96 {
 	width: 100%;
 	height: 963rpx;
 
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+
+	        box-sizing: border-box;
 	font-size: 24rpx;
 	font-family: PingFang SC;
 	color: #666666;
@@ -69,7 +74,8 @@
 	height: 103rpx;
 	border-bottom: 1px solid #eee;
 	padding: 0 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	margin-bottom: 10rpx;
 }
 .show_type_li.data-v-c140bf96 {
@@ -86,7 +92,8 @@
 	width: 310rpx;
 	height: 54rpx;
 	border: 1px solid rgba(191, 191, 191, 1);
-	border-radius: 27rpx;
+	-webkit-border-radius: 27rpx;
+	        border-radius: 27rpx;
 	padding: 0 15rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -106,7 +113,8 @@
 .star_li.data-v-c140bf96 {
 	width: 100%;
 	padding: 38rpx 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	border-bottom: 1px solid #eee;
 }
 .star_msg.data-v-c140bf96 {
@@ -120,7 +128,8 @@
 .user_tx.data-v-c140bf96 {
 	width: 100rpx;
 	height: 100rpx;
-	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 	position: relative;
 }
 .user_v.data-v-c140bf96 {
@@ -134,7 +143,8 @@
 	width: 122rpx;
 	height: 56rpx;
 	border: 2rpx solid rgba(254, 135, 53, 1);
-	border-radius: 28rpx;
+	-webkit-border-radius: 28rpx;
+	        border-radius: 28rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -172,18 +182,21 @@
 	width: 100%;
 	padding-top: 20rpx;
 	padding-left: 120rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 .dy_sp.data-v-c140bf96 {
 	width: 334rpx;
 	height: 191rpx;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	position: relative;
 }
 .play_box.data-v-c140bf96 {
 	background: rgba(0, 0, 0, .5);
 	position: absolute;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	top: 0;
 	left: 0;
 	right: 0;

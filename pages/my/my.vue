@@ -206,14 +206,16 @@
 			])
 		},
 		watch: {
-			hasLogin(val) {
-				//hasLogin == true 
-				if (val) {
-					this.getdata()
+			hasLogin(newval,oldval){
+				var that =this
+				console.log(newval)
+				if(newval==true){
+					this.btn_kg=0
+					setTimeout(()=>{
+						that.getdata()
+					},1000)
 				}
-			},
-		
-		
+			}
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作

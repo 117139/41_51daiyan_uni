@@ -37,8 +37,10 @@ page.data-v-0baf85d3{
   width: 100%;  
   height:280rpx;
   background:rgba(238,238,238,1);
-  border-radius:10rpx;
+  -webkit-border-radius:10rpx;
+          border-radius:10rpx;
   padding: 20rpx;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 

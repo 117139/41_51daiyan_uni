@@ -41,13 +41,15 @@
 	width: 50rpx;
 	height: 6rpx;
 	background: #F9B234;
-	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	        border-radius: 3px;
 }
 .daiyan_msg.data-v-159b569d {
 	background: #fff;
 	width: 100%;
 	padding: 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -59,7 +61,8 @@
 .dy_logo.data-v-159b569d {
 	width: 160rpx;
 	height: 157rpx;
-	border-radius: 80rpx;
+	-webkit-border-radius: 80rpx;
+	        border-radius: 80rpx;
 }
 .dy_msg.data-v-159b569d {
 	margin-left: 20rpx;
@@ -80,7 +83,8 @@
 	width: 62rpx;
 	height: 34rpx;
 	background: rgba(254, 135, 53, 1);
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	color: #fff;
 	margin-right: 10rpx;
 	display: -webkit-inline-box;
@@ -114,7 +118,8 @@
 .goods_img.data-v-159b569d {
 	width: 156rpx;
 	height: 156rpx;
-	border-radius: 12rpx;
+	-webkit-border-radius: 12rpx;
+	        border-radius: 12rpx;
 	position: relative;
 	z-index: 1
 }
@@ -135,7 +140,8 @@
 	width: 100%;
 	background: #fff;
 	padding: 23rpx 28rpx 0;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 .quan_li+.quan_li.data-v-159b569d {
 	margin-top: 20rpx;
@@ -152,7 +158,8 @@
 	width: 74rpx;
 	height: 74rpx;
 	/* background:rgba(252,68,56,1); */
-	border-radius: 37rpx;
+	-webkit-border-radius: 37rpx;
+	        border-radius: 37rpx;
 	margin-right: 22rpx;
 }
 .quan_user_btn.data-v-159b569d {
@@ -170,7 +177,8 @@
 	width: 168rpx;
 	height: 56rpx;
 	background: rgba(254, 58, 53, 1);
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	margin-left: 20rpx;
 }
 .quan_user_msg.data-v-159b569d {
@@ -212,7 +220,8 @@
 .quan_msg.data-v-159b569d {
 	width: 100%;
 	padding-left: 96rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	margin-top: 16rpx;
 	font-size: 30rpx;
 	color: #333;
@@ -224,7 +233,8 @@
 .quan_msg_img image.data-v-159b569d {
 	width: 196rpx;
 	height: 196rpx;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	margin-right: 4rpx;
 	margin-bottom: 4rpx;
 }
@@ -234,7 +244,8 @@
 .quan_msg_img image.one.data-v-159b569d {
 
 	max-width: 100%;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 }
 .quan_msg_img .one_one.data-v-159b569d {
 	width: 300rpx;
@@ -245,10 +256,13 @@
 	width: 100%;
 	height: 238rpx;
 	background: rgba(255, 255, 255, 1);
-	box-shadow: 0px 3px 20rpx 0px rgba(119, 119, 119, 0.3);
-	border-radius: 10rpx;
+	-webkit-box-shadow: 0px 3px 20rpx 0px rgba(119, 119, 119, 0.3);
+	        box-shadow: 0px 3px 20rpx 0px rgba(119, 119, 119, 0.3);
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	padding: 20rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -256,7 +270,8 @@
 .quan_goods_img.data-v-159b569d {
 	width: 196rpx;
 	height: 196rpx;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	margin-right: 20rpx;
 }
 .quan_goods_msg.data-v-159b569d {
@@ -297,7 +312,8 @@
 	height: 40rpx;
 	line-height: 40rpx;
 	background: rgba(254, 135, 53, 1);
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	color: #fff;
 }
 .goods_btn2 text.data-v-159b569d {
@@ -347,17 +363,21 @@
 .list_box.data-v-159b569d {
 	width: 100%;
 	padding: 0 28rpx 20rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	background: #fff;
 }
 .star_li.data-v-159b569d {
 	margin: 20rpx auto;
 	width: 100%;
 	padding: 38rpx 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	background: rgba(255, 255, 255, 1);
-	box-shadow: 0px 3rpx 20rpx 0px rgba(119, 119, 119, 0.3);
-	border-radius: 18rpx;
+	-webkit-box-shadow: 0px 3rpx 20rpx 0px rgba(119, 119, 119, 0.3);
+	        box-shadow: 0px 3rpx 20rpx 0px rgba(119, 119, 119, 0.3);
+	-webkit-border-radius: 18rpx;
+	        border-radius: 18rpx;
 }
 .star_msg.data-v-159b569d {
 	display: -webkit-box;
@@ -370,7 +390,8 @@
 .user_tx.data-v-159b569d {
 	width: 100rpx;
 	height: 100rpx;
-	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 	position: relative;
 }
 .user_v.data-v-159b569d {
@@ -384,7 +405,8 @@
 	width: 122rpx;
 	height: 56rpx;
 	border: 2rpx solid rgba(254, 135, 53, 1);
-	border-radius: 28rpx;
+	-webkit-border-radius: 28rpx;
+	        border-radius: 28rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -427,13 +449,15 @@
 .dy_sp.data-v-159b569d {
 	width: 334rpx;
 	height: 191rpx;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	position: relative;
 }
 .play_box.data-v-159b569d {
 	background: rgba(0, 0, 0, .5);
 	position: absolute;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -458,9 +482,11 @@
 .list_tab.data-v-159b569d {
 	width: 100%;
 	background: #Fff;
-	border-radius: 12rpx;
+	-webkit-border-radius: 12rpx;
+	        border-radius: 12rpx;
 	padding: 20rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	margin: 20rpx 0px;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -511,10 +537,12 @@
 }
 .goods_li2.data-v-159b569d {
 	width: 100%;
-	border-radius: 12rpx;
+	-webkit-border-radius: 12rpx;
+	        border-radius: 12rpx;
 	background: #fff;
 	padding: 24rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	margin-bottom: 20rpx;
 }
 .goods_li2_d1.data-v-159b569d {
@@ -530,7 +558,8 @@
 .goods_img2.data-v-159b569d {
 	width: 196rpx;
 	height: 196rpx;
-	border-radius: 12rpx;
+	-webkit-border-radius: 12rpx;
+	        border-radius: 12rpx;
 }
 .goods_msg.data-v-159b569d {
 	height: 196rpx;
@@ -591,7 +620,8 @@
 	width: 152rpx;
 	height: 66rpx;
 	background: #FE8735;
-	border-radius: 33rpx;
+	-webkit-border-radius: 33rpx;
+	        border-radius: 33rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -608,7 +638,8 @@
 	width: 100%;
 	height: 58rpx;
 	background: rgba(250, 251, 253, 1);
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -616,12 +647,14 @@
 	-webkit-align-items: center;
 	        align-items: center;
 	padding: 0 13rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 .dy_tx.data-v-159b569d {
 	width: 38rpx;
 	height: 38rpx;
-	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 }
 .dy_star.data-v-159b569d {
 	font-size: 24rpx;
@@ -660,8 +693,10 @@
 	width: 56rpx;
 	height: 56rpx;
 	background: rgba(255, 255, 255, 1);
-	box-shadow: 0px 3rpx 10rpx 0px rgba(119, 119, 119, 0.2);
-	border-radius: 50%;
+	-webkit-box-shadow: 0px 3rpx 10rpx 0px rgba(119, 119, 119, 0.2);
+	        box-shadow: 0px 3rpx 10rpx 0px rgba(119, 119, 119, 0.2);
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -696,7 +731,8 @@
 	padding: 0 19rpx;
 	height: 40rpx;
 	background: rgba(254, 135, 53, 1);
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;

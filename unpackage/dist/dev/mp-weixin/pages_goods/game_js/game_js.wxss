@@ -12,7 +12,8 @@
 	width:694rpx;
 	height:1166rpx;
 	background:rgba(255,255,255,1);
-	border-radius:18px;
+	-webkit-border-radius:18px;
+	        border-radius:18px;
 	position: absolute;
 	top: 404rpx;
 	left: 28rpx;
@@ -29,7 +30,8 @@
 	-webkit-box-align: center;
 	-webkit-align-items: center;
 	        align-items: center;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 .js_tit.data-v-23dc30cb{
 	width: 238rpx;

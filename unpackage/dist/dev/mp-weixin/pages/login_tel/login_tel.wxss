@@ -33,7 +33,8 @@
 	        flex: 1;
 	min-width: 0;
 	padding-left: 15px;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	font-size: 28rpx;
 }
 .mb60.data-v-f664dadc {
@@ -42,9 +43,11 @@
 .tjbtn.data-v-f664dadc {
 	width: 560rpx;
 	height: 80rpx;
+	background: -webkit-gradient(linear, left bottom, left top, from(rgba(252, 132, 26, 1)), to(rgba(247, 183, 51, 1)));
 	background: -webkit-linear-gradient(bottom, rgba(252, 132, 26, 1), rgba(247, 183, 51, 1));
 	background: linear-gradient(0deg, rgba(252, 132, 26, 1), rgba(247, 183, 51, 1));
-	border-radius: 40rpx;
+	-webkit-border-radius: 40rpx;
+	        border-radius: 40rpx;
 	color: #fff;
 	position: relative;
 	display: -webkit-box;

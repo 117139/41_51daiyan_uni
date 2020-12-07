@@ -355,6 +355,9 @@
 			  // const pageState1 = pageState.default(this)
 			  // /cart
 			  let that = this
+				if(!that.address.id){
+					return
+				}
 				var jkurl = '/makeOrder/calculatePrice'
 				var newarr=[]
 				for(var i=0;i<that.data_list.length;i++){

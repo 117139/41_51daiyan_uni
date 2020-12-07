@@ -196,7 +196,7 @@
 			  console.log('picker发送选择改变，携带值为', e.detail.value)
 			  this.index= e.detail.value
 			},
-			bindPickerChange: function(e) {
+			bindPickerChange1: function(e) {
 			
 			  console.log('picker发送选择改变，携带值为', e.detail.value)
 			  this.index1= e.detail.value
@@ -241,6 +241,13 @@
 							wx.showToast({
 								title: '操作成功',
 							})
+							// reset_type
+							var pages = getCurrentPages();   //当前页面
+							var prevPage = pages[pages.length - 2];   //上一页面
+							prevPage.setData({
+							  //直接给上一个页面赋值
+							  reset_type: true,
+							});
 							setTimeout(function () {
 							  wx.navigateBack()
 							}, 1000)

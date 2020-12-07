@@ -24,7 +24,8 @@
 .tx_mon_box.data-v-3446569f{
 	width: 100%;
 	padding: 22rpx 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	background: #fff;
 	margin-bottom: 20rpx;
 }
@@ -102,7 +103,8 @@
 	width:38rpx;
 	height:38rpx;
 	border:1px solid rgba(210,210,210,1);
-	border-radius:50%;
+	-webkit-border-radius:50%;
+	        border-radius:50%;
 }
 .cur .tx_type2.data-v-3446569f{
 	border: 0;
@@ -139,7 +141,8 @@
 	width:352rpx;
 	height:80rpx;
 	background:rgba(254,135,53,1);
-	border-radius:10rpx;
+	-webkit-border-radius:10rpx;
+	        border-radius:10rpx;
 	font-size: 30rpx;
 	color: #fff;
 	margin: 50rpx auto;
@@ -148,6 +151,7 @@
 	width: 100%;
 	height: 130rpx;
 	padding: 25rpx 40rpx 25rpx 20rpx;
+	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	display: -webkit-box;
 	display: -webkit-flex;

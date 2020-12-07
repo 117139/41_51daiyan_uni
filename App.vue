@@ -7,7 +7,6 @@
 		mapMutations
 	} from 'vuex'
 	export default {
-		
 		onLaunch: function() {
 			var that =this
 			console.log('App Launch')
@@ -24,7 +23,7 @@
 						Vue.prototype.CustomBar = e.statusBarHeight + 45;
 					};
 					// #endif
-			
+					
 					// #ifdef MP-WEIXIN || MP-QQ
 					Vue.prototype.StatusBar = e.statusBarHeight;
 					let capsule = wx.getMenuButtonBoundingClientRect();
@@ -540,7 +539,7 @@
 		background: #fff;
 	}
 	.loading_def_img{
-		width: 200rpx;
-		height: 200rpx;
+		width: 200rpx!important;
+		height: 200rpx!important
 	}
 </style>

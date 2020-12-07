@@ -8,7 +8,8 @@
 	width: 100%;
 	background: #FFF;
 	padding: 20rpx 22rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	border-bottom: 1px solid #eee;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -20,7 +21,8 @@
 .user_tx.data-v-0e703547{
 	width:82rpx;
 	height:82rpx;
-	border-radius:50%;
+	-webkit-border-radius:50%;
+	        border-radius:50%;
 	position: relative;
 	margin-right: 20rpx;
 }
@@ -28,7 +30,8 @@
 	width:14rpx;
 	height:14rpx;
 	background:rgba(254,58,53,1);
-	border-radius:50%;
+	-webkit-border-radius:50%;
+	        border-radius:50%;
 	position: absolute;
 	top: 0;
 	right: 0;

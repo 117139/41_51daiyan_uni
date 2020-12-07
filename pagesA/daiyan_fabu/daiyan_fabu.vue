@@ -31,7 +31,7 @@
 		  <!-- <wxml-to-canvas class="widget"></wxml-to-canvas> -->
 		  <image :src="src" style="width: 375px; height: 667px;position:fixed;top:-9999999px;"></image>
 		  <view class="goodsBox w100">
-		    <view v-if="open_type>idx" class="quan_goods" v-for="(item,idx) in dy_fb_list" @tap="jump" data-url="/pages/details/details">
+		    <view v-if="open_type>idx" class="quan_goods" v-for="(item,idx) in dy_fb_list" @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
 		      <image v-if="item.gd_vice_pic.length>0" class="quan_goods_img" :src="filter.imgIP(item.gd_vice_pic[0])" mode="aspectFill"></image>
 		      <image v-else class="quan_goods_img" :src="filter.imgIP(item.gd_mastr_pic[0])" mode="aspectFill"></image>
 					

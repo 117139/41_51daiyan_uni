@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view v-if="htmlReset==1" class="chongshi" @tap='cload'>重试</view>
-		<view class="container" v-if="htmlReset==0">
+		<view class="container">
 		  <!-- <view class="hengxian"></view> -->
 		  <view class='dis_flex ju_a w100 pb40 pt20 bgfff tab_box'>
 		    <block  v-for="(item,idx) in datalist">
@@ -9,7 +9,7 @@
 		    </block>
 		
 		  </view>
-		  <view class="goodsBox w100">
+		  <view  v-if="htmlReset==0" class="goodsBox w100">
 				<view class="zanwu" v-if="datas.length==0">暂无内容</view>
 		    
 		    <view class="goodsBox contbox">
@@ -34,6 +34,7 @@
 		
 		              <view class="goodspri1">
 		                <text class="fz24 c6 ">数量：{{item1.may_retreat_number}}</text>
+										<text v-if="type==2">{{item1.s_status_value}}</text>
 		              </view>
 		            </view>
 		
@@ -83,6 +84,7 @@
 				// goods_sele: [],
 				xuan: false,
 				all: false,
+				show_num:0
 			}
 		},
 		computed:{
@@ -102,7 +104,18 @@
 			// this.page=1
 			// this.goods_sele=[]
 			// this.all=false
-			// this.onRetry()
+			let pages = getCurrentPages();
+			let currPage = pages[pages.length - 1];
+			if (currPage.data.reset_type) {  
+			      //将携带的参数赋值
+			    this.type=1
+			   this.onRetry()
+				 currPage.data.reset_type=false
+					
+			  console.log(this.address, '地址')
+				
+			}
+			
 			// this.getOrderList('onshow')
 		},
 		

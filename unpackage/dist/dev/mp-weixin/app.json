@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/index0/index0",
     "pages/faxian/faxian",
     "pages/car/car",
     "pages/tim/record",
@@ -157,5 +156,5 @@
     "van-stepper": "./wxcomponents/vant/stepper/index",
     "van-popup": "./wxcomponents/vant/popup/index"
   },
-  "sitemapLocation": "sitemap23.json"
+  "sitemapLocation": "sitemap97.json"
 }

@@ -101,7 +101,8 @@
 				data_last:false,
 				data_list: [], //代言列表
 				page:1,
-				size:20
+				size:20,
+				showtk:0
 			}
 		},
 		computed: {
@@ -115,7 +116,7 @@
 			this.onRetry()
 		},
 		onShow() {
-			this.onRetry()
+			// this.onRetry()
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作

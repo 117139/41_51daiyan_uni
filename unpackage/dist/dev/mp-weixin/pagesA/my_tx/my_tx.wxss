@@ -24,7 +24,8 @@
 .tx_mon_box.data-v-e210fd4a {
 	width: 100%;
 	padding: 22rpx 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	background: #fff;
 	margin-bottom: 20rpx;
 }
@@ -110,6 +111,7 @@
 	font-size: 26rpx;
 	color: #666;
 	height: 88rpx;
+	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	padding: 0 28rpx;
 }
@@ -125,7 +127,9 @@
 		width: 38rpx!important;
 		height: 38rpx!important;
 		border: 1px solid rgba(210, 210, 210, 1);
-		border-radius: 50%;
+		-webkit-border-radius: 50%;
+		        border-radius: 50%;
+		-webkit-box-sizing: border-box;
 		box-sizing: border-box;
 		margin-right: 0!important;
 }
@@ -145,7 +149,8 @@
 	width: 352rpx;
 	height: 80rpx;
 	background: rgba(254, 135, 53, 1);
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	font-size: 30rpx;
 	color: #fff;
 	margin: 50rpx auto;

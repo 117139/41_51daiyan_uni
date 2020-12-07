@@ -9,12 +9,6 @@
 				"navigationBarTextStyle": "white"
 			}
 		},
-		{
-			"path": "pages/index0/index0",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		},
 
 		{
 			"path": "pages/faxian/faxian",
@@ -117,7 +111,7 @@
             "path" : "pages/getTel/getTel",
             "style" : {}
         }
-    ],
+  ],
 
 	"subPackages": [{
 			"root": "pagesA",

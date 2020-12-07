@@ -21,7 +21,8 @@
 	        flex: 1;
   height:77rpx;
   border:1rpx solid rgba(247,172,57,1);
-  border-radius:39rpx;
+  -webkit-border-radius:39rpx;
+          border-radius:39rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

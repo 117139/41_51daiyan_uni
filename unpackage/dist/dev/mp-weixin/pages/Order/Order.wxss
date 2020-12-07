@@ -17,7 +17,8 @@ image.data-v-4e7b0aa4{
 	width: 100%;
 	height: 153rpx;
 	padding: 0 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	background-color: #fff;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
@@ -70,7 +71,8 @@ image.data-v-4e7b0aa4{
 .goodsOne.data-v-4e7b0aa4{
 	width: 100%;
 	padding: 0 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	background-color: #fff;
 	margin-bottom: 17rpx;
 }
@@ -108,7 +110,8 @@ image.data-v-4e7b0aa4{
 .goods2.data-v-4e7b0aa4{
 	width: 100%;
 	padding:20rpx 0 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -140,7 +143,8 @@ image.data-v-4e7b0aa4{
 	width: 750rpx;
 	height: 70rpx;
 	padding: 0 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	background-color: #fff;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -225,7 +229,8 @@ image.data-v-4e7b0aa4{
 .contbox.data-v-4e7b0aa4{
 	width: 100%;
 	padding: 10rpx 0;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	background-color: #fff;
 }
 .goodsImg image.data-v-4e7b0aa4{
@@ -241,14 +246,16 @@ image.data-v-4e7b0aa4{
 	-webkit-align-items: center;
 	        align-items: center;
 	padding: 28rpx 28rpx 0;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	font-size: 26rpx;
 	color: #333;
 }
 .dp_logo.data-v-4e7b0aa4{
 	width:60rpx;
 	height:60rpx;
-	border-radius:50%;
+	-webkit-border-radius:50%;
+	        border-radius:50%;
 	margin-right: 10rpx;
 }
 .dianpu_tit .iconfont.data-v-4e7b0aa4{
@@ -264,7 +271,8 @@ image.data-v-4e7b0aa4{
 .goods1.data-v-4e7b0aa4{
 	width: 100%;
 	padding: 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -281,7 +289,8 @@ image.data-v-4e7b0aa4{
 	width: 46rpx;
 	height: 46rpx;
 	line-height: 46rpx;
-	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 	background-color: #999;
 	color: #fff;
 	font-size: 26rpx;
@@ -316,9 +325,11 @@ image.data-v-4e7b0aa4{
 .xuanze1.data-v-4e7b0aa4{
 	width: 34rpx;
 	height: 34rpx;
-	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 	border: 1px solid #ddd;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -345,7 +356,8 @@ image.data-v-4e7b0aa4{
 	color: #333333;
 	padding-right: 20rpx;
 	margin-bottom: 20rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	display:-webkit-box !important;  
 	overflow:hidden;
 	text-overflow:ellipsis;
@@ -376,7 +388,8 @@ image.data-v-4e7b0aa4{
 .goods2.data-v-4e7b0aa4{
 	width: 100%;
 	padding:20rpx 28rpx 28rpx;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -395,7 +408,8 @@ image.data-v-4e7b0aa4{
   width: 100%;
   height: 80rpx;
   padding: 0 28rpx;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -428,15 +442,18 @@ text.data-v-4e7b0aa4{
   width:6rpx;
   height:28rpx;
   background:rgba(247,85,89,1);
-  border-radius:3rpx;
+  -webkit-border-radius:3rpx;
+          border-radius:3rpx;
   margin-right: 6rpx;
 }
 .xuanze1.data-v-4e7b0aa4{
 	width: 34rpx;
 	height: 34rpx;
-	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 	border: 1px solid #ddd;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
