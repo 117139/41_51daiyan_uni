@@ -229,14 +229,28 @@ const wxlogin=function (num){
 	                    if (res.data.code == 1) {
 	                      console.log('登录成功')
 	                      console.log(res.data)
-												//获取手机号
-												// if(!res.data.phone){
-												// 	uni.navigateTo({
-												// 		url:'/pages/getTel/getTel'
-												// 	})
-												// 	return
-												// }
 	                      uni.setStorageSync('token', res.data.data.userToken)
+												//获取手机号
+												if(!res.data.data.phone){
+													uni.showToast({
+														icon:'none',
+														title:'请先绑定手机号'
+													})
+													if(num==1){
+														setTimeout(()=>{
+															uni.redirectTo({
+																url:'/pages/getTel/getTel'
+															})
+														},1000)
+													}else{
+														setTimeout(()=>{
+															uni.navigateTo({
+																url:'/pages/getTel/getTel'
+															})
+														},1000)
+													}
+													return
+												}
 	                      uni.setStorageSync('loginmsg', res.data.data)
 												store.commit('login', res.data.data)
 												

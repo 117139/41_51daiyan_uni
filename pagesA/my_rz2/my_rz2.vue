@@ -9,7 +9,8 @@
 		  
 		    <!-- 身份证信息 -->
 		    <view class="msg_box b0">
-		      <text class="msg_name">填写信息</text>
+		      <!-- <text class="msg_name">填写信息</text> -->
+		      <text class="msg_name">补充信息</text>
 		      <view class="dis_flex aic msg_val"></view>
 		
 		    </view>
@@ -18,7 +19,7 @@
 		        <text>姓名</text>
 		        <input name="sfz_name" placeholder="请输入姓名"></input>
 		      </view> -->
-		      <view class="sfxx_box">
+		      <!-- <view class="sfxx_box">
 		        <text>微博账号</text>
 		        <input name="wb_id" placeholder="请输入微博账号"></input>
 		      </view>
@@ -29,7 +30,10 @@
 		      <view class="sfxx_box">
 		        <text>快手账号</text>
 		        <input name="ks_id" placeholder="请输入快手账号"></input>
-		      </view>
+		      </view> -->
+					<view class="sfxx_box">
+					  <textarea name="approve_replenish_msg" value="" placeholder="请输入" maxlength="100"/>
+					</view>
 		     <!-- <view class="sfxx_box">
 		        <text>手机号码</text>
 		        <input name="tel" type="number" placeholder="请输入手机号码"></input>
@@ -104,31 +108,16 @@
 				
 				var tip_text='是否提交'
 				
-				if (!fs.ks_id) {
-				  // wx.showToast({
-				  //   icon: 'none',
-				  //   title: '请输入快手账号'
-				  // })
-				  // return
-					tip_text= '您还没有填写快手账号，是否提交'
-				}
+				// if (!fs.ks_id) {
+				// 	tip_text= '您还没有填写快手账号，是否提交'
+				// }
 				
-				if (!fs.dy_id) {
-				  // wx.showToast({
-				  //   icon: 'none',
-				  //   title: '请输入抖音账号'
-				  // })
-				  // return
-					tip_text= '您还没有填写抖音账号，是否提交'
-				}
-			  if (!fs.wb_id) {
-			    // wx.showToast({
-			    //   icon: 'none',
-			    //   title: '请输入微博账号'
-			    // })
-			    // return
-					tip_text= '您还没有填写微博账号，是否提交'
-			  }
+				// if (!fs.dy_id) {
+				// 	tip_text= '您还没有填写抖音账号，是否提交'
+				// }
+			 //  if (!fs.wb_id) {
+				// 	tip_text= '您还没有填写微博账号，是否提交'
+			 //  }
 				
 			  // if (!fs.tel || !(/^1\d{10}$/.test(fs.tel))) {
 			  //   wx.showToast({
@@ -159,9 +148,10 @@
 			      	    "id_number": that.renzheng.sfz_id,
 			      	    "start_validity": that.renzheng.yxtime1,
 			      	    "end_validity": that.renzheng.yxtime2,
-			      	    "weibo_account": fs.wb_id,
-			      	    "douyin_account": fs.dy_id,
-			      	    "kuaishou_account": fs.ks_id
+			      	    // "weibo_account": fs.wb_id,
+			      	    // "douyin_account": fs.dy_id,
+			      	    // "kuaishou_account": fs.ks_id,
+									"approve_replenish_msg":fs.approve_replenish_msg
 			      }
 			      service.post(jkurl, data,
 			      	function(res) {
@@ -193,7 +183,7 @@
 			      			} else {
 			      				uni.showToast({
 			      					icon: 'none',
-			      					title: '获取身份失败'
+			      					title: '操作失败'
 			      				})
 			      			}
 			      		}
@@ -203,7 +193,7 @@
 			      		
 			      			uni.showToast({
 			      				icon: 'none',
-			      				title: '获取数据失败'
+			      				title: '操作失败'
 			      			})
 			      	
 			      	}
@@ -322,7 +312,7 @@ page{
 }
 .sfxx_box{
   width:100%;
-  height:85rpx;
+  min-height:85rpx;
   border:1px solid rgba(229,229,229,1);
   border-radius:10rpx;
   display: flex;
@@ -342,6 +332,15 @@ page{
   font-size: 30rpx;
   color: #333;
   text-align: right;
+}
+.sfxx_box textarea{
+	width: 100%;
+	height: 300upx;
+	resize: none;
+	border: 0;
+	padding: 28upx 0;
+	font-size: 30rpx;
+	color: #333;
 }
 .sf_time{
   flex: 1;

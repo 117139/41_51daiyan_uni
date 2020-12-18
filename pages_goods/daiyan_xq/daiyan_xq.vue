@@ -1,114 +1,7 @@
 <template>
 	<view class="container">
-		<view class="header_box">
-			<view class="index_box1">
-				<image v-if="!hasLogin" class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/mr_tx.jpg')" data-url="/pages/login/login" @tap='jump'></image>
-				<image v-else class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+loginMsg.id"  :src="loginMsg.avatarurl"></image>
-				<view class="sousuo_box" @tap="jump" data-url="/pages/search/search">
-					<text class="iconfont iconsousuo"></text>搜索人名代言号/商品/品牌
-				</view>
-				<view class="game_js" @tap="jump" data-url="/pages_goods/game_js/game_js">
-					<text class="iconfont iconic_help_px"></text>
-					玩法介绍
-				</view>
-			</view>
-			<view class="index_box1 index_box2">
-				<view class="cur">代言动态<text></text></view>
-				<view @tap="jump" data-url="/pages_goods/daiyan_sc/daiyan_sc">代言商城</view>
-				<view @tap="jump" data-url="/pages_goods/star_list/star_list?type=1">明星</view>
-				<view @tap="jump" data-url="/pages_goods/star_list/star_list?type=2">达人</view>
-				<view @tap="jump" data-url="/pagesA/my_friends/my_friends">好友</view>
-				<view @tap="jump" data-url="/pages_goods/daiyan_ph/daiyan_ph">排行</view>
-			</view>
-		</view>
 		
-		<view v-if="htmlReset==1" class="zanwu" @tap='getdata'>请求失败，请点击重试</view>
-		<view class="index_box1 index_box3" v-if="datas.wdyNumber>0" @tap="jump" data-url="/pagesA/OrderList/OrderList?type=5"
-		 data-login="true" :data-haslogin="hasLogin">
-			<text class="iconfont iconyiping"></text>
-			<view>您还有{{datas.wdyNumber}}件商品未代言，快来代言吧～</view>
-		</view>
-		<view v-if="start_li.length>0" class="index_box1 index_box4" @tap="jump" data-url="/pages_goods/star_list/star_list?type=1">
-			<view>明星达人代言人推荐：</view>
-			<text>各种玩法尽在明星达人代言秀</text>
-		</view>
-		<scroll-view  v-if="start_li.length>0" class="start_list" scroll-x>
-			<view class="start_list1">
-				<view class="start_li" v-for="(item,index) in start_li">
-					<view class="star_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
-						<image :src="item.head_portrait" mode="aspectFill" ></image>
-						
-						<!-- mingxing -->
-						<view v-if="item.identity_id==1" class="star_v star_v1">
-							<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-						</view>
-						
-						<!-- daren -->
-						<view v-if="item.identity_id==2" class="star_v star_v1">
-							<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
-							<text class="iconv iconfont"></text>
-							<text class="user_v_lv">{{item.user_grade_num?item.user_grade_num:0}}</text>
-						</view>
-						<!-- <view>
-							<image v-if="item.identity_id==1" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-							<image v-if="item.identity_id==2" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
-						</view> -->
-					</view>
-					<view class="star_name oh1">{{item.nickname}}</view>
-					<view v-if="item.is_attention==1" class="star_btn" @tap.stop="guanzhuFuc(item.user_id,'affirm')">关注</view>
-					<view v-if="item.is_attention==2" class="star_btn star_btn1" @tap.stop="guanzhuFuc(item.user_id,'cancel')">已关注</view>
-				</view>
-			</view>
-		</scroll-view>
-		<view class="find_star" v-if="datas.activityArr.length>0" @tap="jump" data-url="/pages_goods/daiyan_find/daiyan_find">
-			<view class="find_tit">
-				<view>寻找代言人:</view>
-				<text>（赏金任务）</text>
-			</view>
-			<view class="find_sj">
-				<view class="sj_list">
-					<image v-for="(item,idx) in datas.activityArr" class="sj_li" :src="filter.imgIP(item.head_portrait)" mode="aspectFill"></image>
-					<!-- <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
-	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
-	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image>
-	        <image class="sj_li" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')" mode="aspectFill"></image> -->
-				</view>
-				<text class="iconfont iconnext3"></text>
-			</view>
-		</view>
-		<view class="goods_index" v-if="datas.advocacyVideoArr.length>0||datas.goodStuffArr.length>0">
-			<view>
-				<view class="goodstype_name">代言人短视频 <image :src="filter.imgIP('/static_s/51daiyan/images/goods_type1.png')"></image>
-				</view>
-				<view class="goods_tip">已为您更新{{datas.advocacyVideoArr.length>0?datas.advocacyVideoArr.length:0}}个视频</view>
-				<view class="goods_list">
-					<view v-if="idx<2" class="goods_li" v-for="(item,idx) in datas.advocacyVideoArr" 
-					 @tap.stop="jump" :data-url="'/pages_goods/xvideo/xvideo?idx='+item.id">
-						<image class="goods_img" :src="filter.imgIP_video(item.img[0])" mode="aspectFill"></image>
-						<image class="goods_play" :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
-					</view>
-					<!-- <view class="goods_li">
-	          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
-	          <image class="goods_play" :src="filter.imgIP('/static_s/51daiyan/images/goods_play.png')"></image>
-	        </view> -->
-				</view>
-				<!-- <image src="/static/images/goods_type1.png"></image> -->
-			</view>
-			<view @tap="jump" data-url="/pages_goods/goods_tj/goods_tj">
-				<view class="goodstype_name goodstype_name1">好货推荐<image :src="filter.imgIP('/static_s/51daiyan/images/goods_type2.png')"></image>
-				</view>
-				<view class="goods_tip">发现更多人气代言好货</view>
-				<view class="goods_list">
-					<view class="goods_li" v-for="(item,idx) in datas.goodStuffArr">
-						<image class="goods_img" :src="filter.imgIP(item.img[0])" mode="aspectFill"></image>
-					</view>
-					<!-- <view class="goods_li">
-	          <image class="goods_img" :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill"></image>
-	        </view> -->
-				</view>
-				<!-- <image src="/static/images/goods_type2.png"></image> -->
-			</view>
-		</view>
+		
 		<!-- 代言圈 -->
 		<view class="quan_list">
 			<view class="quan_li" v-for="(item,idx) in data_list">
@@ -120,7 +13,6 @@
 							<view v-if="item.use_identity_id==1" class="star_v">
 								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 							</view>
-							
 							<!-- daren -->
 							<view v-if="item.use_identity_id==2" class="star_v">
 								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
@@ -139,8 +31,7 @@
 					<view v-if="item.a_activity_id>0&&item.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-id="item.user_id" :data-idx="idx">为我投票</view>
 					<view v-if="item.a_activity_id>0&&item.is_vote==1" class="quan_user_btn quan_user_btn1">已投票</view>
 				</view>
-				<view class="quan_msg" @tap="jump" 
-				 :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item1.g_id+'&dy_id='+item.id+'&advocacyviceId='+item1.id">
+				<view class="quan_msg">
 					<view class="oh4  quan_msg_text">{{item.content}}</view>
 					<view v-if="item.img.length==1" class="quan_msg_img">
 						<image v-if="item.type==1||item.type==3" class="one one_one" :lazy-load='true' :src="filter.imgIP(item.img[0])" mode="aspectFill" :data-src="filter.imgIP(item.img[0])"
@@ -160,7 +51,7 @@
 						 @tap.stop="pveimg"></image> -->
 					</view>
 				</view>
-				<view v-if="idx1<1" v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" 
+				<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" 
 				 :data-url="'/pages/details/details?id='+item1.g_id+'&dy_id='+item.id+'&advocacyviceId='+item1.id">
 					<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill"></image>
 					<view class="quan_goods_msg">
@@ -174,11 +65,6 @@
 							<view class="goods_btn2"><text>{{item1.g_advocacy_mannumber}}</text>代言人</view>
 						</view>
 					</view>
-				</view>
-				<view class="goods_more" v-if="item.goods.length>1" >
-				  <view>共{{item.goods.length}}件</view>
-				  <view class="gm_more" @tap="jump" 
-				 :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item1.g_id+'&dy_id='+item.id+'&advocacyviceId='+item1.id">点击查看</view>
 				</view>
 				<view class="quan_li_cz">
 					<!-- <text class="iconfont iconcaozuo" @tap.stop=""></text>
@@ -550,7 +436,7 @@
 			},
 			getdatalist() {
 
-				var that = this
+				let that = this
 				var jkurl = '/getAdvocacyList'
 				var datas = {
 					token: that.loginMsg.userToken,
@@ -581,7 +467,7 @@
 							that.data_last=true
 							return
 						}
-						that.data_list = that.data_list.concat(datas)
+						that.datas = that.datas.concat(datas)
 
 						that.page++
 					}
@@ -818,14 +704,14 @@
 
 	}
 
-	/* .star_tx view image {
+	.star_tx view image {
 		width: 27rpx;
 		height: 28rpx;
 		position: absolute;
 		bottom: 0;
 		right: -5rpx;
 		z-index: 2;
-	} */
+	}
 
 	.star_name {
 		max-width: 100%;
@@ -1155,20 +1041,7 @@
 		font-size: 24rpx;
 		color: #333;
 	}
-	.goods_more{
-	  width: 100%;
-	  display: flex;
-	  align-items: center;
-	  justify-content: space-between;
-	  font-size: 24rpx;
-	  color: #333;
-	  height: 80rpx;
-	
-	}
-	.gm_more{
-	  color: rgba(254,135,53,1);
-	}
-	
+
 	.goods_btn1 {
 		padding: 0 9rpx;
 		height: 40rpx;

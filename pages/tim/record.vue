@@ -11,19 +11,20 @@
 		</view> -->
 		<!-- 聊天记录 会话列表 -->
 		<view class="conversition-box" v-if="hasLogin">
-			<view class="xx_li" @tap="jump" data-url="/pagesA/xiaoxi_list/xiaoxi_list?type=0">
+			<view v-if="datas.xtxx" class="xx_li" @tap="jump" data-url="/pagesA/xiaoxi_list/xiaoxi_list?type=3">
 				<view class="user_tx" >
 					<image class="user_tx"  :src="filter.imgIP('/static_s/51daiyan/images/xtxx.png')"></image>
-					<text></text>
+					<text v-if="datas.xtxx.is_read==1"></text>
 				</view>
 				<view class="xx_msg">
 					<view class="to_name">
 						<text >系统消息</text>
-						<text class="time">17:30</text>
+						<text v-if="datas.xtxx.create_time" class="time">{{filter.getDateTime(datas.xtxx.create_time)}}</text>
 					</view>
-					<view class="to_msg oh1">
-						您参与的【华为优选代言人活动】即将开始，敬请关注。
+					<view v-if="datas.xtxx.msg" class="to_msg oh1">
+						{{datas.xtxx.msg}}
 					</view>
+					<view v-else class="to_msg oh1">暂无消息</view>
 				</view>
 			</view>
 			<!-- <view class="xx_li" bindtap="jump" data-url="/pages/lts/lts">
@@ -41,34 +42,36 @@
 					</view>
 				</view>
 			</view> -->
-			<view class="xx_li" @tap="jump" data-url="/pagesA/xiaoxi_list/xiaoxi_list?type=1">
+			<view v-if="datas.dxdy" class="xx_li" @tap="jump" data-url="/pagesA/xiaoxi_list/xiaoxi_list?type=1">
 				<view class="user_tx" >
 					<image class="user_tx"  :src="filter.imgIP('/static_s/51daiyan/images/dyxx.png')"></image>
-					<text></text>
+					<text v-if="datas.dxdy.is_read==1"></text>
 				</view>
 				<view class="xx_msg">
 					<view class="to_name">
 						<text >定向代言</text>
-						<text class="time">17:30</text>
+						<text v-if="datas.dxdy.create_time" class="time">{{filter.getDateTime(datas.dxdy.create_time)}}</text>
 					</view>
-					<view class="to_msg oh1">
-						您收到了华为的代言邀请，快去看看吧
+					<view v-if="datas.dxdy.msg" class="to_msg oh1">
+						{{datas.dxdy.msg}}
 					</view>
+					<view v-else class="to_msg oh1">暂无消息</view>
 				</view>
 			</view>
-			<view class="xx_li" @tap="jump" data-url="/pagesA/xiaoxi_list/xiaoxi_list?type=1">
+			<view v-if="datas.dysy" class="xx_li" @tap="jump" data-url="/pagesA/xiaoxi_list/xiaoxi_list?type=2">
 				<view class="user_tx" >
 					<image class="user_tx"  :src="filter.imgIP('/static_s/51daiyan/images/dyxx.png')"></image>
-					<text></text>
+					<text v-if="datas.dysy.is_read==1"></text>
 				</view>
 				<view class="xx_msg">
 					<view class="to_name">
 						<text >代言收益</text>
-						<text class="time">17:30</text>
+						<text v-if="datas.dysy.create_time" class="time">{{filter.getDateTime(datas.dysy.create_time)}}</text>
 					</view>
-					<view class="to_msg oh1">
-						您代言钱包进账3元，余额变为¥235。
+					<view v-if="datas.dysy.msg" class="to_msg oh1">
+						{{datas.dysy.msg}}
 					</view>
+					<view v-else class="to_msg oh1">暂无消息</view>
 				</view>
 			</view>
 			<view class="list-box" v-if="conversationList && conversationList.length>0">
@@ -127,12 +130,14 @@
 			return {
 				btnkg:0,
 				userList: userList,
+				datas:[],
 				friendList: [],
 				isActive: 0, //默认聊天记录
 			}
 		},
 		onLoad() {
 			if(this.hasLogin){
+				this.getxcx_msg()
 				console.log('...')
 				console.log(this.conversationList)
 				console.log(uni.getStorageSync('userInfo'))
@@ -166,6 +171,7 @@
 		 */
 		onPullDownRefresh: function() {
 			if(this.hasLogin){
+				this.getxcx_msg()
 				if (this.isSDKReady) {
 					console.log('2222')
 					this.getConversationList()
@@ -199,6 +205,53 @@
 
 		},
 		methods: {
+			getxcx_msg(){
+				var that =this
+				var jkurl='/message'
+				var datas={
+					token: that.loginMsg.userToken || ''
+				}
+				if(this.btnkg==1){
+					return
+				}
+				this.btnkg=1
+				service.P_get(jkurl, datas).then(res => {
+					that.btnkg=0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+					
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(datas)
+						
+						that.datas=datas
+						
+					
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btnkg=0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			},
 			jump(e) {
 				var that =this
 				console.log(e.currentTarget.dataset.type)
@@ -510,7 +563,7 @@
 	}
 
 	.item-msg {
-		float: left;
+		float: right;
 		width: 40rpx;
 		height: 100rpx;
 	}

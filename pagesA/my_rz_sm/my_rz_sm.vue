@@ -2,22 +2,8 @@
 	<view>
 		<form class="w100" @submit="formSubmit">
 		  <view class='container'>
-		    <image class="rz_jd" :src="filter.imgIP('/static_s/51daiyan/images/rz_jd_02.jpg')"></image>
-		    <view class="hx10"></view>
-		    <picker class="w100" @change="bindPickerChange" :value="index" :range="catelist" range-key='title'>
-		      <view class="msg_box">
-		        <text class="msg_name">认证身份</text>
-		        <view v-if="catelist.length>0" class="dis_flex aic msg_val">{{catelist[index].title}}
-		
-		        </view>
-		        <text class="iconfont iconnext3 c9 fz30"></text>
-		      </view>
-		      <input class="hidden" name="sfid" type="text" :value="catelist[index].id" disabled/>
-		
-		    </picker>
-		    <view class="hx10"></view>
 		    <view class="sfrz_tit">请提交身份证信息，仅用于平台审核</view>
-		    <view class="sf_sfz">
+		   <!-- <view class="sf_sfz">
 		      <view @tap="scpic" data-type="1">
 		        <image class="sfzimg" :src="sfimg1?filter.imgIP(sfimg1):filter.imgIP('/static_s/51daiyan/images/rz_img_05.jpg')" mode="aspectFill"></image>
 		        <input class="hidden" name="sfimg1" type="text" :value="sfimg1" disabled/>
@@ -28,7 +14,7 @@
 		        <input class="hidden" name="sfimg2" type="text" :value="sfimg2" disabled/>
 		        <text class="fz30">身份证国徽面</text>
 		      </view>
-		    </view>
+		    </view> -->
 		    <!-- 身份证信息 -->
 		    <view class="msg_box b0">
 		      <text class="msg_name">身份证信息</text>
@@ -44,7 +30,7 @@
 		        <text>身份证号</text>
 		        <input name="sfz_id" placeholder="请输入身份证号"></input>
 		      </view>
-		      <view class="sfxx_box">
+		      <!-- <view class="sfxx_box">
 		        <text>有效期</text>
 		        <view class="sf_time">
 		          <picker class="yx_time" mode="date" @change="bindTimeChange" :value="index">
@@ -58,9 +44,9 @@
 		            <input class="hidden" name="yxtime2" type="text" :value="yxtime2" disabled/>
 		          </picker>
 		        </view>
-		      </view>
+		      </view> -->
 		    </view>
-		    <button class="definebtn" form-type="submit">保存并进行下一步</button>
+		    <button class="definebtn" form-type="submit">提交</button>
 		  </view>
 		</form>
 	</view>
@@ -94,6 +80,13 @@
 		 */
 		onPullDownRefresh: function () {
 		  wx.stopPullDownRefresh();
+		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'renzheng'
+			])
 		},
 		methods: {
 			...mapMutations(['saverz','login']),
@@ -257,13 +250,13 @@
 			
 			
 			  var fs = e.detail.value
-			  if (!fs.sfimg1 & !fs.sfimg2) {
-			    wx.showToast({
-			      icon: 'none',
-			      title: '请上传身份证图片'
-			    })
-			    return
-			  }
+			  // if (!fs.sfimg1 & !fs.sfimg2) {
+			  //   wx.showToast({
+			  //     icon: 'none',
+			  //     title: '请上传身份证图片'
+			  //   })
+			  //   return
+			  // }
 			
 			  if (!fs.sfz_name) {
 			    wx.showToast({
@@ -289,6 +282,64 @@
 					})
 					return  
 				} 
+
+				
+				
+				var jkurl='/user/realNameApprove'
+				var data={
+					"token": that.loginMsg.userToken,
+						"real_name": fs.sfz_name,
+						"id_number": fs.sfz_id,
+					    
+				}
+				service.post(jkurl, data,
+					function(res) {
+						
+						// if (res.data.code == 1) {
+						if (res.data.code == 1) {
+							var datas = res.data.data
+							// console.log(typeof datas)
+							
+							if (typeof datas == 'string') {
+								datas = JSON.parse(datas)
+							}
+							wx.showToast({
+							  icon: 'none',
+							  title: '提交成功',
+							  duration: 2000
+							})
+							service.wxlogin()
+							setTimeout(function () {
+							 uni.navigateBack({
+							 	delta:1
+							 })
+							}, 1000)
+						} else {
+							if (res.data.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.data.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '操作失败'
+								})
+							}
+						}
+					},
+					function(err) {
+						that.btnkg=0
+						
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+					
+					}
+				)
+				
+				return
 
 			  if (!fs.yxtime1) {
 			    wx.showToast({

@@ -19,8 +19,18 @@
 				 <view  v-if="data_list.length>0" class="li_box" v-for="(item,idx) in data_list">
 						<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.u_id">
 							<image  class="user_tx" :src="filter.imgIP(item.head_portrait)"></image>
-							<image v-if="item.identity_id==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-							<image v-if="item.identity_id==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+							<!-- mingxing -->
+							<view v-if="item.identity_id==1" class="star_v star_v1">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							</view>
+							<!-- daren -->
+							<view v-if="item.identity_id==2" class="star_v star_v1">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
+								<text class="iconv iconfont"></text>
+								<text class="user_v_lv">{{item.user_grade_num?item.user_grade_num:0}}</text>
+							</view>
+							<!-- <image v-if="item.identity_id==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<image v-if="item.identity_id==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image> -->
 						</view>
 						<view class="user_name oh1">{{item.nickname}}</view>
 						<view  v-if="item.is_friend==1"  @tap="guanzhuFuc(2,item.u_id,'affirm')" :data-idx="idx" class="user_btn">+关注</view>
@@ -356,13 +366,13 @@
 	border-radius:50%;
 	position: relative;
 }
-.user_v{
+/* .user_v{
 	position: absolute;
 	bottom: 0;
 	right: 0;
 	width:27rpx;
 	height:28rpx;
-}
+} */
 .user_name{
 	padding: 0 20rpx;
 	box-sizing: border-box;

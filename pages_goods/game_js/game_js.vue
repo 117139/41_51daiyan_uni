@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="container">
-			<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/game_jsbg_02.jpg')"></image>
+			<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/game_jsbg_02.jpg')"></image>
 			<view class="js_box">
 				<image class="js_tit" :src="filter.imgIP('/static_s/51daiyan/images/game_js6.png')"></image>
 				<scroll-view class="js_msg" scroll-y>

@@ -41,7 +41,7 @@
 		          </view>
 		
 		          <view class="o_cz">
-		            <view v-if="type==0" @tap="jump" :data-url="'/pagesA/OrderList_sh_tk/OrderList_sh_tk?item='+JSON.stringify(item1)">申请售后</view>
+		            <view v-if="type==0"  @tap.stop="jump" :data-url="'/pagesA/OrderList_sh_tk/OrderList_sh_tk?item='+JSON.stringify(item1)">申请售后</view>
 		            <view v-if="type==1" @tap.stop='del_order(item1.id)'>取消售后</view>
 		          </view>
 		        </block>

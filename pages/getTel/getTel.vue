@@ -59,11 +59,12 @@
 			
 			},
 			onGetPhoneNumber(e){  
+				var that =this
 					if(e.detail.errMsg=="getPhoneNumber:fail user deny"){       //用户决绝授权  
 	
 							//拒绝授权后弹出一些提示  
 							//用户按了拒绝按钮
-							uni.showModal({
+							/*uni.showModal({
 								title: '警告',
 								content: '您点击了拒绝授权获取手机号，将无法登录小程序，请点击返回授权!!!',
 								showCancel: false,
@@ -73,27 +74,77 @@
 										console.log('用户点击了“返回授权”')
 									}
 								}
-							})
+							})*/
 					}else{      //允许授权  
 							console.log(e.detail.encryptedData)  
-							e.detail.encryptedData      //加密的用户信息  
-							e.detail.iv     //加密算法的初始向量  时要用到  
+							//e.detail.encryptedData      //加密的用户信息  
+							//e.detail.iv     //加密算法的初始向量  时要用到  
 							 wx.login({  
 									success: (res) => {  
 											if (res.code) {         //微信登录成功 已拿到code  
 													// ...doSomething  
-													 uni.request({  
-																url: 'https://www.xx123.com//common/decode.do',        //演示地址，请以你的后端接口为准  
-																method:'POST',  
-																data: {  
-																		iv:e.detail.iv,  
-																		encryptedData: e.detail.encryptedData ,             
-																		code:res.code         
-																},  
-																success: (res) => {  
-																		console.log(res.data)       //res.data 即为后端返回的解密数据  
-																}  
-														});  
+													
+													var token=uni.getStorageSync('token')
+													var data = {
+														encryptedData:e.detail.encryptedData,
+														iv:e.detail.iv,
+														code:res.code,
+														token:token,
+														type:2
+													}
+													//selectSaraylDetailByUserCard
+													var jkurl = '/user/decodePhone'
+													 service.post(jkurl, data,
+													 	function(res) {
+													 		
+													 		// if (res.data.code == 1) {
+													 		if (res.data.code == 1) {
+													 			var datas = res.data.data
+													 			console.log(typeof datas)
+													 			
+													 			if (typeof datas == 'string') {
+													 				datas = JSON.parse(datas)
+													 			}
+													 			uni.showToast({
+													 				icon: 'none',
+													 				title: '绑定成功'
+													 			})
+																setTimeout(()=>{
+																	uni.showLoading({
+																		title:'正在登录',
+																		mask:true
+																	})
+																	service.wxlogin(1)
+																},100)
+													 			
+													 			
+													 			
+													 
+													 		} else {
+													 			that.btnkg=0
+													 			if (res.data.msg) {
+													 				uni.showToast({
+													 					icon: 'none',
+													 					title: res.data.msg
+													 				})
+													 			} else {
+													 				uni.showToast({
+													 					icon: 'none',
+													 					title: '操作失败'
+													 				})
+													 			}
+													 		}
+													 },
+													 	function(err) {
+													 		that.btnkg=0
+													 		
+													 			uni.showToast({
+													 				icon: 'none',
+													 				title: '获取数据失败'
+													 			})
+													 	
+													 	}
+													 )  
 											} else {  
 													console.log('登录失败！' + res.errMsg)  
 											}  

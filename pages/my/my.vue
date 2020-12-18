@@ -14,11 +14,19 @@
 		
 		    <view v-else class="user_box">
 		      <view class="user_tx">
-		        <image class="user_tx" :src="loginMsg.avatarurl"></image>
+		        <image class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+loginMsg.id" :src="loginMsg.avatarurl"></image>
 						<!-- mingxing -->
-		        <image v-if="loginMsg.identity_id==1" class="star_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+						<view v-if="loginMsg.identity_id==1" class="star_v star_v1">
+							<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+						</view>
+						
 						<!-- daren -->
-		        <image v-if="loginMsg.identity_id==2" class="star_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+						<view v-if="loginMsg.identity_id==2" class="star_v star_v1">
+							<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
+							<text class="iconv iconfont"></text>
+							<text class="user_v_lv">{{loginMsg.user_grade_num?loginMsg.user_grade_num:0}}</text>
+						</view>
+						
 		      </view>
 		      <!-- <view class="user_tx">
 						<image class="user_tx" src="../../static/images/tx.jpg"></image>
@@ -36,7 +44,7 @@
 		      </view>
 		    </view>
 		    <view class="user_money user_money1">
-		      <view class="user_money_tit" data-url="/pagesA/my_tx/my_tx" @tap="jump" data-login="true" :data-haslogin="hasLogin">
+		      <view class="user_money_tit" data-url="/pagesA/my_tx/my_tx" @tap="jump_money" data-login="true" :data-haslogin="hasLogin">
 		        <view class="v1">
 		          <text class="iconfont iconyue"></text>
 		          <view class="v1_tit">余额</view>
@@ -248,6 +256,27 @@
 		
 		},
 		methods: {
+			jump_money(e){
+				if(this.loginMsg.id_number){
+					service.jump(e)
+				}else{
+					wx.showModal({
+					  title: '提示',
+					  content: '请先完成实名认证',
+					  success(res) {
+					    if (res.confirm) {
+					      console.log('用户点击确定')
+					     uni.navigateTo({
+					     	url:'/pagesA/my_rz_sm/my_rz_sm'
+					     })
+					    } else if (res.cancel) {
+					      console.log('用户点击取消')
+					    }
+					  }
+					})
+				}
+				
+			},
 			getdata() {
 				var that = this
 				var datas = {
@@ -312,13 +341,7 @@
 	margin-right: 30rpx;
 	position: relative;
 }
-.star_v{
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	width: 28rpx;
-	height: 28rpx;
-}
+
 .user_msg{
 	flex: 1;
 	display: flex;

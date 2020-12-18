@@ -65,72 +65,13 @@
 			    //用户按了允许授权按钮后需要处理的逻辑方法体
 			    console.log(e.detail.userInfo)
 					this.wxshouquan(e.detail.userInfo)
+					uni.showLoading({
+						title:'正在登录',
+						mask:true
+					})
 					service.wxlogin(1)
-					/*uni.login({
-					  success: function (res) {
-					    // 发送 res.code 到后台换取 openId, sessionKey, unionId
-					    var uinfo = e.detail.userInfo
-					    let data = {
-					      code: res.code,
-					      nickname: uinfo.nickName,
-					      avatarurl: uinfo.avatarUrl
-					    }
-					    let rcode = res.code
-					    console.log(res.code)
-					    uni.request({
-					      url: service.IPurl+'/login',
-					      data: data,
-					      header: {
-					        'content-type': 'application/x-www-form-urlencoded'
-					      },
-					      dataType: 'json',
-					      method: 'POST',
-					      success(res) {
-					        console.log(res.data)
-					        if (res.data.code == 1) {
-					          console.log('登录成功')
-					          console.log(res.data)
-										that.login(res.data.data)
-										// console.lo('loginMsg----------------->')
-										// console.lo(that.loginMsg)
-										return
-					          uni.setStorageSync('token', res.data.data.userToken)
-					          uni.setStorageSync('loginmsg', res.data.data)
-										
-					        } else {
-					          uni.removeStorageSync('userInfo')
-					          uni.removeStorageSync('token')
-					          if(res.data.msg){
-											uni.showToast({
-											  icon: 'none',
-											  title: res.data.msg,
-											})
-										}else{
-											uni.showToast({
-											  icon: 'none',
-											  title: '登录失败',
-											})
-										}
-					        }
-						
-					      },
-					      fail() {
-					        uni.showToast({
-					          icon: 'none',
-					          title: '登录失败'
-					        })
-					      }
-					    })
-					  }
-					})*/
 					
-					// uni.redirectTo({
-					// 	url: '/pages/login_index/login_index'
-					// })
-			    // app.globalData.userInfo = e.detail.userInfo
 			    uni.setStorageSync('userInfo', e.detail.userInfo)
-					// uni.setStorageSync('userWxmsg', e.detail.userInfo)
-			    // app.dologin('shouquan')
 			    
 			  } else {
 			    //用户按了拒绝按钮

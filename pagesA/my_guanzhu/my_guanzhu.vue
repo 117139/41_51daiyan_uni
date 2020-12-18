@@ -39,8 +39,18 @@
 					 <view v-if="item.is_public==2||item.is_public==3||item.is_public==5" class="li_box">
 						<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.obj_id">
 							<image class="user_tx" :src="item.obj_img"></image>
-							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<!-- mingxing -->
+							<view v-if="item.identity_id==1" class="star_v star_v1">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							</view>
+							<!-- daren -->
+							<view v-if="item.identity_id==2" class="star_v star_v1">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
+								<text class="iconv iconfont"></text>
+								<text class="user_v_lv">{{item.user_grade_num?item.user_grade_num:0}}</text>
+							</view>
+							<!-- <image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image> -->
 						</view>
 						<view class="user_name oh1">{{item.remark?item.remark:item.obj_nickname}}</view>
 						<!-- <view  v-if="item.tp_type==1"   @tap="guanzhuFuc(2,item.obj_id,'affirm')" :data-idx="idx" class="user_btn">+关注</view> -->

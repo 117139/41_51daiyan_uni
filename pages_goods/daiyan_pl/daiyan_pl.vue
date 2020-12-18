@@ -402,14 +402,14 @@
 					sheetshow1: false
 				})
 			},
-			sheetshow() {
+			sheetshow_fuc() {
 				this.setData({
 					sheetshow: true,
 					btnkg: 0
 				})
 
 			},
-			sheetshow1() {
+			sheetshow1_fuc() {
 				this.setData({
 					sheetshow1: true,
 					btnkg: 0

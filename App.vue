@@ -10,6 +10,10 @@
 		onLaunch: function() {
 			var that =this
 			console.log('App Launch')
+			// #ifdef MP-WEIXIN
+			// 获取用户信息
+			service.wxlogin()
+			// #endif
 			uni.getSystemInfo({
 				success: function(e) {
 					console.log(e.platform);
@@ -43,110 +47,7 @@
 					// #endif
 				}
 			})
-			// #ifdef MP-WEIXIN 
-			// 获取用户信息
-			uni.getSetting({
-			  success: res => {
-			   console.log(res)
-			    if (res.authSetting['scope.userInfo']==true) {
-			      // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-			      console.log('已经授权')
-						uni.getUserInfo({
-							success(res) {
-								var userInfo = res.userInfo
-								console.log(userInfo)
-								uni.setStorageSync('userInfo', res.userInfo)
-								if(!userInfo){
-								
-								}else{
-			            uni.login({
-			              success: function (res) {
-			                // 发送 res.code 到后台换取 openId, sessionKey, unionId
-			                var uinfo = userInfo
-			                let data = {
-			                  code: res.code,
-			                  nickname: uinfo.nickName,
-			                  avatarurl: uinfo.avatarUrl
-			                }
-			                let rcode = res.code
-			                console.log(res.code)
-											// return
-			                uni.request({
-			                  url: service.IPurl+'/login',
-			                  data: data,
-			                  header: {
-			                    'content-type': 'application/x-www-form-urlencoded'
-			                  },
-			                  dataType: 'json',
-			                  method: 'POST',
-			                  success(res) {
-			                    console.log(res.data)
-			                    if (res.data.code == 1) {
-			                      console.log('登录成功')
-			                      console.log(res.data)
-														//获取手机号
-														// if(!res.data.phone){
-														// 	uni.navigateTo({
-														// 		url:'/pages/getTel/getTel.vue'
-														// 	})
-														// 	return
-														// }
-														that.login(res.data.data)
-														console.log('loginMsg----------------->')
-														// console.lo(that.loginMsg)
-			                      uni.setStorageSync('token', res.data.data.userToken)
-			                      uni.setStorageSync('loginmsg', res.data.data)
-														that.event.trigger({
-														    type:'test',
-														    page:'/pages/index/index',
-														    //obj和test是举的例子，随意啥都行，这个传过去在on中的args中都可以获取到
-														    obj:{
-														
-														    },
-														    test:{
-																	'loginmsg': res.data.data
-														    },
-														    success:function(data){
-														        //data为on中返回的数据
-														    }
-														});
-														
-			                    } else {
-			                      uni.removeStorageSync('userInfo')
-			                      uni.removeStorageSync('token')
-			                      if(res.data.msg){
-			                      	uni.showToast({
-			                      	  icon: 'none',
-			                      	  title: res.data.msg,
-			                      	})
-			                      }else{
-			                      	uni.showToast({
-			                      	  icon: 'none',
-			                      	  title: '登录失败',
-			                      	})
-			                      }
-			                    }
 			
-			                  },
-			                  fail() {
-			                    uni.showToast({
-			                      icon: 'none',
-			                      title: '登录失败'
-			                    })
-			                  }
-			                })
-			              }
-			            })
-								}
-							}
-						})
-						
-			    }else{
-					  
-			    }
-			  }
-			})
-			// #endif
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -541,5 +442,46 @@
 	.loading_def_img{
 		width: 200rpx!important;
 		height: 200rpx!important
+	}
+	
+	
+	
+	
+	.star_v {
+		width: 35rpx;
+		height: 35rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		margin: 0 8upx;
+	}
+	.star_v1{
+		position: absolute;
+		bottom: 0;
+		right: 0;
+	}
+	
+	.star_v image{
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 20;
+	}
+	.star_v .iconv{
+		font-size: 25upx;
+		color: #fff;
+		position: relative;
+		z-index: 21;
+	}
+	.star_v .user_v_lv{
+		font-size: 12upx;
+		color: #fff;
+		margin-left: -10upx;
+		margin-top: 4upx;
+		position: relative;
+		z-index: 21;
 	}
 </style>

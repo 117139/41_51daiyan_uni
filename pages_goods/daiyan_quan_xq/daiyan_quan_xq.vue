@@ -14,7 +14,7 @@
 					<view class="dy_msg">
 						<!-- <view class="pd_name">体育</view> -->
 						<view class="pd_name dis_flex aic">{{datas.title}}
-
+							
 							<view v-if="!datas.is_follow" @tap="guanzhuFuc(3,datas.id,'affirm')" class="user_btn">+关注</view>
 							<view v-if="datas.is_follow" @tap="guanzhuFuc(3,datas.id,'cancel')" class="user_btn user_btn1">已关注</view>
 
@@ -32,8 +32,18 @@
 							<view class="quan_user_msg">
 								<view class="quan_user_name">{{item.user_nickname}}
 									<!-- <image src="/static/images/star_b.png"></image> -->
-									<image v-if="item.use_identity_id==1" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-									<image v-if="item.use_identity_id==2" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+									<!-- mingxing -->
+									<view v-if="item.use_identity_id==1" class="star_v">
+										<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+									</view>
+									<!-- daren -->
+									<view v-if="item.use_identity_id==2" class="star_v">
+										<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
+										<text class="iconv iconfont"></text>
+										<text class="user_v_lv">{{item.user_grade_num?item.user_grade_num:0}}</text>
+									</view>
+									<!-- <image v-if="item.use_identity_id==1" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+									<image v-if="item.use_identity_id==2" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image> -->
 								</view>
 								<view class="quan_user_time">
 									<text>{{filter.getDateTime(item.create_time)}}</text>
@@ -112,8 +122,18 @@
 					<view class="star_msg">
 						<view class="user_tx" @tap="jump" data-url="/pages/my_index/my_index">
 							<image class="user_tx" :lazy-load='true' :src="filter.imgIP(item.head_pic)"></image>
-							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+							<!-- mingxing -->
+							<view v-if="item.identity_id==1" class="star_v">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							</view>
+							<!-- daren -->
+							<view v-if="item.identity_id==2" class="star_v">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
+								<text class="iconv iconfont"></text>
+								<text class="user_v_lv">{{item.user_grade_num?item.user_grade_num:0}}</text>
+							</view>
+							<!-- <image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<image class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image> -->
 						</view>
 						<view class="user_msg">
 							<view class="fwb ">{{item.nickname}}</view>
@@ -790,11 +810,11 @@
 		align-items: center;
 	}
 
-	.quan_user_name image {
+	/* .quan_user_name image {
 		width: 28rpx;
 		height: 28rpx;
 		margin-left: 10rpx;
-	}
+	} */
 
 	.quan_user_time {
 		font-size: 22rpx;

@@ -2,7 +2,7 @@
 	<view>
 		<view class="container">
 			<view class="dy_sc_bg">
-				<image class="dy_sc_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/dy_sc1_02.jpg')"></image>
+				<image class="dy_sc_bg" :src="filter.imgIP('/static_s/51daiyan/images/dy_sc1_02.jpg')"></image>
 			</view>
 			<view class="h_main">
 				<view class="dy_sc_lj" @tap="jump" data-url="/pagesA/about/about">

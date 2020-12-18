@@ -532,13 +532,13 @@
 			  }
 			  
 			  
-				if(!that.yname){
-					wx.showToast({
-					  icon: 'none',
-			      title: '请填写您的代言',
-					})
-					return
-				}
+				// if(!that.yname){
+				// 	wx.showToast({
+				// 	  icon: 'none',
+			 //      title: '请填写您的代言',
+				// 	})
+				// 	return
+				// }
 				
 				var jkurl='/advocacy/add'
 				var data={
@@ -947,7 +947,7 @@
 					      // var newdata = that.imgb
 					      // console.log(i)
 					      // newdata.push(ndata.msg)
-					      that.src= ndata.msg
+					      _this.src= ndata.msg
 								 wx.showToast({
 									 icon: "none",
 									 title: "上传成功"

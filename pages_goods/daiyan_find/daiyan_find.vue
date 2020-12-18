@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="container">
-			<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/find_dy_02.jpg')"></image>
+			<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/find_dy_02.jpg')"></image>
 			<view class="xx_box">
 				<view class="xx_box1">
 					<image class="hd_js" :src="filter.imgIP('/static_s/51daiyan/images/hd_js.png')"></image>
@@ -24,7 +24,8 @@
 					<image class="hd_bg_tit" :src="filter.imgIP('/static_s/51daiyan/images/hd_jl_tit.png')"></image>
 					<view class="hdtit_tit">他们在寻找代言人</view>
 				</view>
-				<scroll-view class="find_user" scroll-x>
+				<view v-if="store.length==0" class="zanwu">暂无数据</view>
+				<scroll-view v-else class="find_user" scroll-x>
 					<view class="find_user1">
 						<view class="find_uimg" v-for="(item,idx) in store" @tap="jump"
 						 :data-url="'/pages_goods/dp_index/dp_index?id='+item.group_code">
@@ -37,7 +38,8 @@
 					<image class="hd_bg_tit" :src="filter.imgIP('/static_s/51daiyan/images/hd_jl_tit.png')"></image>
 					<view class="hdtit_tit">品牌代言人招募</view>
 				</view>
-				<view class="xx_box1 xx_box2" v-for="(item,idx) in activity">
+				<view v-if="activity.length==0" class="zanwu">暂无数据</view>
+				<view v-else class="xx_box1 xx_box2" v-for="(item,idx) in activity">
 					<view class="pp_v1">
 						<view class="pp_img">
 							<image class="pp_img" :src="filter.imgIP(item.head_portrait)"></image>

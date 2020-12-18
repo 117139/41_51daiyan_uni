@@ -18,8 +18,18 @@
 					<view class="td1">
 						<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.u_id">
 							<image class="user_tx" :src="filter.imgIP(item.head_portrait)"></image>
-							<image v-if="item.identity_id==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-							<image v-if="item.identity_id==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+							<!-- mingxing -->
+							<view v-if="item.identity_id==1" class="star_v star_v1">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							</view>
+							<!-- daren -->
+							<view v-if="item.identity_id==2" class="star_v star_v1">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
+								<text class="iconv iconfont"></text>
+								<text class="user_v_lv">{{item.user_grade_num?item.user_grade_num:0}}</text>
+							</view>
+							<!-- <image v-if="item.identity_id==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<image v-if="item.identity_id==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image> -->
 						</view>
 						<text>{{item.nickname}}</text>
 					</view>
@@ -307,13 +317,13 @@ page,.container{
 	border-radius:50%;
 	position: relative;
 }
-.user_v{
+/* .user_v{
 	position: absolute;
 	bottom: 0;
 	right: 0;
 	width:27rpx;
 	height:28rpx;
-}
+} */
 view.user_tx{
   margin-right: 10rpx;
 }

@@ -4,15 +4,24 @@
 		<view v-if="htmlReset==0&&!datas" class="loading_def">
 			<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
 		</view>
-		<view class="container">
+		<view v-if="datas" class="container">
 			<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/my_indexbg_02.jpg')"></image>
 			<view class="h_main">
 				<view class="my_index_box1">
 					<view class="my_index">
 						<view class="user_tx">
 							<image class="user_tx" :src="datas.head_portrait"></image>
-							<image v-if="item.identity_id==1" class="star_v" :src="filter.imgIP('/static_s/51daiyan/images/images/star_b.png')"></image>
-							<image v-if="item.identity_id==2" class="star_v" :src="filter.imgIP('/static_s/51daiyan/images/images/star_d.png')"></image>
+							<!-- mingxing -->
+							<view v-if="datas.identity_id==1" class="star_v star_v1">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							</view>
+							
+							<!-- daren -->
+							<view v-if="datas.identity_id==2" class="star_v star_v1">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
+								<text class="iconv iconfont"></text>
+								<text class="user_v_lv">{{datas.user_grade_num?datas.user_grade_num:0}}</text>
+							</view>
 						</view>
 						<view class="user_msg">
 							<view class="user_name">
@@ -624,14 +633,7 @@
 		position: relative;
 	}
 
-	.star_v {
-		width: 27rpx;
-		height: 28rpx;
-		position: absolute;
-		bottom: 0;
-		right: 0;
-	}
-
+	
 	.user_msg {
 		height: 102rpx;
 		flex: 1;

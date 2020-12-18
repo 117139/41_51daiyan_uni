@@ -189,7 +189,7 @@
 				console.log(e.currentTarget.dataset.id)
 				let id=e.currentTarget.dataset.id
 				wx.showModal({
-					content:"确定要删除改地址吗?",
+					content:"确定要删除该地址吗?",
 					success(res) {
 						if (res.confirm) {
 							console.log('用户点击确定')

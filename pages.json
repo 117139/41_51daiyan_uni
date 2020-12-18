@@ -99,24 +99,22 @@
 			"style": {
 				"navigationBarTitleText": "搜索"
 			}
-		},{
-            "path" : "pages/my_video/my_video",
-            "style": {
-            	"disableScroll": true,
-            	"navigationBarTextStyle": "white",
-            	"navigationStyle": "custom"
-            }
-        }
-        ,{
-            "path" : "pages/getTel/getTel",
-            "style" : {}
-        }
-  ],
+		}, {
+			"path": "pages/my_video/my_video",
+			"style": {
+				"disableScroll": true,
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/getTel/getTel",
+			"style": {}
+		}
+	],
 
 	"subPackages": [{
 			"root": "pagesA",
-			"pages": [
-				{
+			"pages": [{
 					"path": "xiaoxi_list/xiaoxi_list",
 					"style": {
 						"navigationBarTitleText": "消息列表",
@@ -124,7 +122,7 @@
 						"navigationBarBackgroundColor": "#F5C33D",
 						"navigationBarTextStyle": "white"
 					}
-				},{
+				}, {
 					"path": "about/about",
 					"style": {
 						"navigationBarTitleText": "关于我们"
@@ -290,21 +288,25 @@
 					"style": {
 						"navigationBarTitleText": "设置备注"
 					}
+				}, {
+					"path": "ysxy/ysxy",
+					"style": {}
+				}, {
+					"path": "daiyan_edit/daiyan_edit",
+					"style": {}
+				}, {
+					"path": "my_rz_sm/my_rz_sm",
+					"style": {
+						"navigationBarTitleText": "实名认证",
+						"enablePullDownRefresh": false
+					}
+
 				}
-			    ,{
-                    "path" : "ysxy/ysxy",
-                    "style" : {}
-                }
-                ,{
-                    "path" : "daiyan_edit/daiyan_edit",
-                    "style" : {}
-                }
-            ]
+			]
 		},
 		{
 			"root": "pages_goods",
-			"pages": [
-				{
+			"pages": [{
 					"path": "xvideo/xvideo",
 					"style": {
 						"disableScroll": true,
@@ -442,15 +444,21 @@
 						"navigationBarTitleText": "好友代言",
 						"backgroundColor": "#f5f5f5"
 					}
-				}
-				,{
-							"path" : "d_video/d_video",
-							"style": {
-								"disableScroll": true,
-								"navigationBarTextStyle": "white",
-								"navigationStyle": "custom"
-							}
+				}, {
+					"path": "d_video/d_video",
+					"style": {
+						"disableScroll": true,
+						"navigationBarTextStyle": "white",
+						"navigationStyle": "custom"
 					}
+				}, {
+					"path": "daiyan_xq/daiyan_xq",
+					"style": {
+						"navigationBarTitleText": "代言详情",
+						"enablePullDownRefresh": false
+					}
+
+				}
 			]
 		}
 	],

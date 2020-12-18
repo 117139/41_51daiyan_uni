@@ -29,8 +29,18 @@
 				 <view v-else class="li_box" v-for="(item,idx) in data_list">
 						<view class="user_tx"  @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
 							<image class="user_tx" :lazy-load='true' :src="filter.imgIP(item.head_portrait)"></image>
-							<image v-if="item.identity_id==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-							<image v-if="item.identity_id==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
+							<!-- mingxing -->
+							<view v-if="item.identity_id==1" class="star_v">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							</view>
+							<!-- daren -->
+							<view v-if="item.identity_id==2" class="star_v">
+								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
+								<text class="iconv iconfont"></text>
+								<text class="user_v_lv">{{item.user_grade_num?item.user_grade_num:0}}</text>
+							</view>
+							<!-- <image v-if="item.identity_id==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<image v-if="item.identity_id==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image> -->
 						
 						</view>
 						<view class="user_name">{{item.nickname}} 
