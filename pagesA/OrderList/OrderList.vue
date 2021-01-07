@@ -18,10 +18,10 @@
 		          <text class="flex_1">{{item.order.store_name}}</text>
 		          <text v-if="item.order.o_paystatus==1">待支付</text>
 		          <text v-if="item.order.o_ddstatus==2&&item.order.o_paystatus==2">待发货</text>
-		          <text v-if="datas.o_paystatus==3">已退款</text>
-		          <text v-if="datas.o_paystatus==4">已取消</text>
-		          <text  v-if="datas.o_ddstatus==4||datas.o_ddstatus==5">待收货</text>
-		          <text  v-if="datas.o_ddstatus==1">已完成</text>
+		          <text v-if="item.order.o_paystatus==3">已退款</text>
+		          <text v-if="item.order.o_paystatus==4">已取消</text>
+		          <text  v-if="item.order.o_ddstatus==4||item.order.o_ddstatus==5">待收货</text>
+		          <text  v-if="item.order.o_ddstatus==1">已完成</text>
 		        </view>
 		        <block v-for="(item1,idx1) in item.order_goods">
 		          <view class="goods1" @tap="jump" :data-url="'/pagesA/OrderDetails/OrderDetails?id='+item.order.o_id+'&type='+type">
@@ -67,7 +67,7 @@
 		          <!-- <view v-if="item1.is_comment==2" @tap.stop="jump" data-url="/pages_goods/goods_pj/goods_pj">评价</view> -->
 		          <!-- <view v-if="type==0||type==4}}" @tap.stop="jump" data-url="/pages/daiyan_fabu/daiyan_fabu">我要代言</view> -->
 		          <view v-if="item.order.o_ddstatus==4||item.order.o_ddstatus==5" @tap.stop="get_goods(item.order.o_id)">确认收货</view>
-		          <view v-if="item.order.o_paystatus==1">付款</view>
+		          <view v-if="item.order.o_paystatus==1" @tap.stop="order_pay(item.order.o_id)">付款</view>
 		          <!-- <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view> -->
 		        </view>
 		      </view>
@@ -129,6 +129,7 @@
 				// goods_sele: [],
 				xuan: false,
 				all: false,
+				show_num:0
 			}
 		},
 		computed:{
@@ -144,13 +145,16 @@
 			if(option.type){
 				this.type=option.type
 			}
-			// this.onRetry()
+			this.onRetry()
 		},
 		onShow(){
-			this.page=1
-			this.goods_sele=[]
-			this.all=false
-			this.onRetry()
+			if(this.show_num>1){
+				this.page=1
+				this.goods_sele=[]
+				this.all=false
+				this.onRetry()
+			}
+			this.show_num++
 			// this.getOrderList('onshow')
 		},
 		/**
@@ -174,6 +178,71 @@
 				this.btnkg=0
 				this.data_last=false
 				this.getdatalist()
+			},
+			order_pay(id){
+				var that =this
+				var jkurl='/order/goPay'
+				var datas={
+					token:that.loginMsg.userToken,
+					ids:id
+				}
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+				}
+			
+				service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						service.wxpay(res.data, 'fwb').then(res => {
+							uni.showToast({
+								icon: 'none',
+								title: '支付成功'
+							})
+							setTimeout(function() {
+								that.onRetry()
+							}, 1000)
+						}).catch(e => {
+							that.btnkg = 0
+							uni.showToast({
+								icon: 'none',
+								title: '微信支付失败'
+							})
+										
+						})
+				
+				
+				
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btnkg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
+				})
 			},
 			del_order(id){
 				var that =this

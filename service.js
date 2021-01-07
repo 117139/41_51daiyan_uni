@@ -537,6 +537,50 @@ const gettime=function (mj){
 		}
 	}
 }
+
+
+const wxpay=function (datas,type){
+	if(!datas) return
+	uni.showLoading({
+		mask:true,
+		title:'正在拉起支付'
+	})
+	if (typeof datas == 'string') {
+		datas=JSON.parse(datas)
+	}
+	
+	return new Promise((resolve,reject)=>{
+		uni.hideLoading()
+		uni.requestPayment({
+		    provider: 'wxpay',
+		    timeStamp: datas.timeStamp||String(Date.now()),
+		    nonceStr:  datas.nonceStr,
+		    package:  datas.package,
+		    signType: datas.signType,
+		    paySign:  datas.paySign,
+		    success: function (res) {
+		        console.log('success:' + JSON.stringify(res));
+					
+						resolve(res)
+						
+		    },
+		    fail: function (err) {
+					if(!reject){
+						uni.showToast({
+							icon: 'none',
+							title: '微信支付失败'
+						})
+					}else{
+						
+						reject(err);
+					}
+		        console.log('fail:' + JSON.stringify(err));
+		    }
+		});
+	})
+	
+}
+
 export default {
 	getUsers,
 	addUser,
@@ -554,5 +598,6 @@ export default {
 	P_post,
 	P_put,
 	P_delete,
-	gettime
+	gettime,
+	wxpay
 }

@@ -2,8 +2,7 @@
 .about_box.data-v-88e59fea{
   width: 100%;
   padding: 20rpx 28rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   font-size: 28rpx;
   color: #333;
 }

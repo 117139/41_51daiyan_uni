@@ -428,6 +428,35 @@
 			//选择视频
 			chooseVideo: function () {
 			  var that = this
+				uni.showActionSheet({
+						itemList: ['拍照', '相册'],
+						success: function (res) {
+								console.log('选中了第' + (res.tapIndex + 1) + '个按钮');
+								var sourceType=['camera', 'album']
+								if(res.tapIndex==0){
+									 sourceType=['camera']
+								}else{
+									sourceType=['album']
+								}
+							 uni.chooseVideo({
+							    count: 1,
+									sizeType: ['original', 'compressed'],
+									sourceType:sourceType,
+									success: function(res) {
+										console.log(res)
+										that.uploadvideo(res)
+									}
+								});
+						},
+						fail: function (res) {
+							uni.showToast({
+								icon:'none',
+								title:'操作失败'
+							})
+								console.log(res.errMsg);
+						}
+						
+				});
 			  wx.chooseVideo({
 			    success: function (res) {
 			      // that.sp_url= res.tempFilePath
@@ -460,13 +489,25 @@
 							  title: "上传成功"
 							})
 						} else {
-						  wx.showToast({
-						    icon: "none",
-						    title: "上传失败"
-						  })
+						  if(ndata.msg){
+								wx.showToast({
+								  icon: "none",
+								  title:ndata.msg
+								})
+							}else{
+								wx.showToast({
+								  icon: "none",
+								  title: "上传失败"
+								})
+							}
 						}
 			    },
 			    fail: function () {
+						uni.hideLoading()
+						wx.showToast({
+						  icon: "none",
+						  title: "上传失败"
+						})
 			      console.log('接口调用失败')
 			    }
 			  })
@@ -630,7 +671,53 @@
 			},
 			scpic() {
 			  var that = this
-			  wx.chooseImage({
+				var z_count = 9 - that.imgb.length
+				uni.showActionSheet({
+						itemList: ['拍照', '相册'],
+						success: function (res) {
+								console.log('选中了第' + (res.tapIndex + 1) + '个按钮');
+								var sourceType=['camera', 'album']
+								if(res.tapIndex==0){
+									 sourceType=['camera']
+								}else{
+									sourceType=['album']
+								}
+								uni.chooseImage({
+									count: z_count,
+									sizeType: ['original', 'compressed'],
+									sourceType:sourceType,
+									success: function(res) {
+										console.log(res)
+										const tempFilePaths = res.tempFilePaths
+								
+										const imglen = that.sj_img.length
+								
+										if (imglen == 9) {
+											wx.showToast({
+												icon: 'none',
+												title: '最多可上传九张'
+											})
+											return
+										} else {
+											// that.sj_img=that.sj_img.concat(res.tempFilePaths).slice(0,9)
+										}
+										// return
+										
+										that.upimg(tempFilePaths, 0)
+									}
+								});
+						},
+						fail: function (res) {
+							uni.showToast({
+								icon:'none',
+								title:'操作失败'
+							})
+								console.log(res.errMsg);
+						}
+						
+				});
+							
+				/** wx.chooseImage({
 			    count: 9,
 			    sizeType: ['original', 'compressed'],
 			    sourceType: ['album', 'camera'],
@@ -643,7 +730,7 @@
 			      that.upimg(tempFilePaths, 0)
 			     
 			    }
-			  })
+			  })*/
 			},
 			upimg(imgs, i) {
 			  var that = this
@@ -689,12 +776,26 @@
 			          that.upimg(imgs, i)
 			        }
 			      } else {
-			        wx.showToast({
-			          icon: "none",
-			          title: "上传失败"
-			        })
+			        if(ndata.msg){
+			        	wx.showToast({
+			        	  icon: "none",
+			        	  title:ndata.msg
+			        	})
+			        }else{
+			        	wx.showToast({
+			        	  icon: "none",
+			        	  title: "上传失败"
+			        	})
+			        }
 			      }
-			    }
+			    },
+					fail(err){
+						console.log(err)
+						wx.showToast({
+						  icon: "none",
+						  title: "上传失败"
+						})
+					}
 			  })
 			},
 			//付款

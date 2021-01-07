@@ -145,7 +145,7 @@
 						<view class="omsgp  dis_flex ju_b"><text>运费：</text><text>+ {{datas.o_price}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>优惠：</text><text>- {{datas.o_discount_coupon_price}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>代言豆抵扣：</text><text>- {{datas.use_bean_number_price}}</text></view>
-						<view class="omsgp dis_flex ju_b"><text>支付方式：</text><text>代言豆支付</text></view>
+						<view class="omsgp dis_flex ju_b"><text>支付方式：</text><text>{{datas.o_paytype_value}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>实付款：</text><text>{{datas.o_price}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>订单编号：</text><text>{{datas.o_order_num}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>创建时间：</text><text>{{filter.getDate_ymd(datas.o_create_time)}}</text></view>
@@ -158,8 +158,8 @@
 				</view>
 				<view class="o_cz">
 
-					<view v-if="data.o_ddstatus==4||data.o_ddstatus==5" @tap.stop="get_goods(data.o_id)">确认收货</view>
-					<view v-if="data.o_paystatus==1">付款</view>
+					<view v-if="datas.o_ddstatus==4||data.o_ddstatus==5" @tap.stop="get_goods(datas.o_id)">确认收货</view>
+					<view v-if="datas.o_paystatus==1" @tap="order_pay(datas.o_id)">付款</view>
 					<!-- <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view> -->
 				</view>
 			</view>
@@ -228,6 +228,72 @@
 		},
 		methods: {
 			...mapMutations(['dy_fb_fuc']),
+			order_pay(id){
+				var that =this
+				var jkurl='/order/goPay'
+				var datas={
+					token:that.loginMsg.userToken,
+					ids:id
+				}
+				if(that.btnkg==1){
+					return
+				}else{
+					that.btnkg=1
+				}
+			
+				service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						service.wxpay(res.data, 'fwb').then(res => {
+							uni.showToast({
+								icon: 'none',
+								title: '支付成功'
+							})
+							setTimeout(function() {
+								that.onRetry()
+							}, 1000)
+						}).catch(e => {
+							that.btnkg = 0
+							uni.showToast({
+								icon: 'none',
+								title: '微信支付失败'
+							})
+										
+						})
+				
+				
+				
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btnkg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
+				})
+			},
+			
 			jump(e) {
 				service.jump(e)
 			},

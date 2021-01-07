@@ -47,8 +47,7 @@
   height:60rpx;
   background:rgba(255,255,255,1);
   border:1px solid rgba(191,191,191,1);
-  -webkit-border-radius:10rpx;
-          border-radius:10rpx;
+  border-radius:10rpx;
   color: #333;
   margin: 0 10rpx;
   display: -webkit-box;
@@ -74,8 +73,7 @@
   -webkit-align-items: center;
           align-items: center;
   padding: 0 28rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   font-size: 28rpx;
   color: #999999;
 }
@@ -83,10 +81,8 @@
 .dy_list.data-v-0460313b{
 	width: 100%;
 	background: #fff;
-  -webkit-box-shadow:0px 4px 30rpx 0px rgba(119,119,119,0.3);
-          box-shadow:0px 4px 30rpx 0px rgba(119,119,119,0.3);
-  -webkit-border-radius:0 0 10rpx 10rpx;
-          border-radius:0 0 10rpx 10rpx;
+  box-shadow:0px 4px 30rpx 0px rgba(119,119,119,0.3);
+  border-radius:0 0 10rpx 10rpx;
 }
 .dy_box.data-v-0460313b{
 	width: 100%;
@@ -103,8 +99,7 @@
 	-webkit-align-items: center;
 	        align-items: center;
 	padding: 20rpx 28rpx;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 }
 .pl_num.data-v-0460313b{
 	width: 38rpx;
@@ -128,8 +123,7 @@ view.pl_num.data-v-0460313b{
 .pl_tx.data-v-0460313b{
 	width:72rpx;
 	height:72rpx;
-	-webkit-border-radius:50%;
-	        border-radius:50%;
+	border-radius:50%;
 }
 view.pl_tx.data-v-0460313b{
 	margin-right: 26rpx;
@@ -162,8 +156,7 @@ view.pl_tx.data-v-0460313b{
 	width:132rpx;
 	height:63rpx;
 	background:rgba(255,162,89,1);
-	-webkit-border-radius:10rpx;
-	        border-radius:10rpx;
+	border-radius:10rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -182,8 +175,7 @@ view.pl_tx.data-v-0460313b{
 .li_dy.data-v-0460313b{
 	padding-left: 84rpx;
 	padding-right: 28rpx;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 	margin-top: 10rpx;
 	font-size: 24rpx;
 	color: #999;
@@ -191,8 +183,7 @@ view.pl_tx.data-v-0460313b{
 .list.data-v-0460313b{
 	width: 100%;
 	background:rgba(255,255,255,1);
-	-webkit-border-radius:10rpx;
-	        border-radius:10rpx;
+	border-radius:10rpx;
 	overflow: hidden;
 }
 .list_tit.data-v-0460313b{
@@ -202,10 +193,8 @@ view.pl_tx.data-v-0460313b{
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
-  -webkit-box-shadow:0px 4px 30rpx 0px rgba(119,119,119,0.3);
-          box-shadow:0px 4px 30rpx 0px rgba(119,119,119,0.3);
-  -webkit-border-radius:10rpx 10rpx 0 0;
-          border-radius:10rpx 10rpx 0 0;
+  box-shadow:0px 4px 30rpx 0px rgba(119,119,119,0.3);
+  border-radius:10rpx 10rpx 0 0;
 }
 .list_tit.cur.data-v-0460313b{
 	background:rgba(255,76,0,1);
@@ -252,8 +241,7 @@ view.pl_tx.data-v-0460313b{
 .db_main.data-v-0460313b{
   width: 100%;
   padding: 0 28rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 /* daiyantit */
 .hd_db_img.data-v-0460313b{
@@ -264,8 +252,7 @@ view.pl_tx.data-v-0460313b{
   width: 694rpx;
   height: 404rpx;
   margin: 20rpx auto;
-  -webkit-box-shadow:0px 4rpx 30rpx 0px rgba(119,119,119,0.3);
-          box-shadow:0px 4rpx 30rpx 0px rgba(119,119,119,0.3);
+  box-shadow:0px 4rpx 30rpx 0px rgba(119,119,119,0.3);
   position: relative;
 }
 image.hd_db_bg.data-v-0460313b{
@@ -309,16 +296,14 @@ image.hd_db_bg.data-v-0460313b{
 .dp_msg image.data-v-0460313b{
   width:147rpx;
   height:147rpx;
-  -webkit-border-radius:18rpx;
-          border-radius:18rpx;
+  border-radius:18rpx;
   margin-bottom: 20rpx;
 }
 .dp_msg view.data-v-0460313b{
   width:255rpx;
   height:77rpx;
   background:rgba(255,76,0,1);
-  -webkit-border-radius:39rpx;
-          border-radius:39rpx;
+  border-radius:39rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -339,8 +324,7 @@ image.hd_db_bg.data-v-0460313b{
 .hd_js.data-v-0460313b{
   width: 100%;
   padding: 35rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 .dyr_tit.data-v-0460313b{
   font-size: 28rpx;
@@ -354,7 +338,6 @@ image.hd_db_bg.data-v-0460313b{
 .hd_js video.data-v-0460313b{
   width:621rpx;
   height:350rpx;
-  -webkit-border-radius:10rpx;
-          border-radius:10rpx;
+  border-radius:10rpx;
 }
 

@@ -19,12 +19,12 @@
 		          <text>{{item.store_name}}</text>
 		        </view> -->
 		        <block v-for="(item1,idx1) in item.order_goods">
-		          <view class="goods1">
+		          <view class="goods1"  @tap="jump_sh" :data-url="'/pagesA/OrderDetails_sh/OrderDetails_sh?id='+item1.id+'&type='+type">
 		            <!-- <view v-if="type==4}}" class="xuanze" data-selec="idx}}" data-selec1="idx1}}" catchtap="select">
 		            <view class="xuanze1 {{goods_sele[idx][idx1].xuan==true? 'xuanze2':''}}">
 		              <icon v-if="goods_sele[idx][idx1].xuan==true}}" type="success" size="14" color="#F7B43B" />
 		            </view>
-		          </view> -->
+								</view> -->
 		            <view class="goodsImg">
 		              <image class="goodsImg" :src="filter.imgIP(item1.gd_vice_pic)" mode="aspectFill"></image>
 		            </view>
@@ -42,7 +42,8 @@
 		
 		          <view class="o_cz">
 		            <view v-if="type==0"  @tap.stop="jump" :data-url="'/pagesA/OrderList_sh_tk/OrderList_sh_tk?item='+JSON.stringify(item1)">申请售后</view>
-		            <view v-if="type==1" @tap.stop='del_order(item1.id)'>取消售后</view>
+		            <view v-if="type==1&&item1.s_status==1" @tap.stop='del_order(item1.id)'>取消售后</view>
+		            <view v-if="type==1&&item1.s_status==2" @tap="jump_sh" :data-url="'/pagesA/OrderDetails_sh/OrderDetails_sh?id='+item1.id+'&type='+type">商家已同意</view>
 		          </view>
 		        </block>
 		
@@ -115,7 +116,13 @@
 			  console.log(this.address, '地址')
 				
 			}
-			
+			if (currPage.data.sh_wl) {  
+			      //将携带的参数赋值
+			 that.onRetry()
+				currPage.setData({
+					sh_wl:false
+				})
+			}
 			// this.getOrderList('onshow')
 		},
 		
@@ -322,7 +329,12 @@
 			jump(e) {
 			  service.jump(e)
 			},
-			
+			jump_sh(e) {
+				if(this.type==0){
+					return
+				}
+			  service.jump(e)
+			},
 		}
 	}
 </script>

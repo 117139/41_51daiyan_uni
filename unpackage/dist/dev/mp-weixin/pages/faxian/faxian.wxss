@@ -17,9 +17,7 @@
 	        align-items: center;
 	margin-bottom: 3rpx;
 	
-	-webkit-box-sizing: border-box;
-	
-	        box-sizing: border-box;
+	box-sizing: border-box;
 }
 .li_icon.data-v-4354c0b4{
   width: 90rpx;
@@ -53,8 +51,7 @@
 	width: 14rpx;
 	height: 14rpx;
 	background: #FE3A35;
-	-webkit-border-radius:50%;
-	        border-radius:50%;
+	border-radius:50%;
 }
 .iconnext3.data-v-4354c0b4{
 	margin-left: 20rpx;

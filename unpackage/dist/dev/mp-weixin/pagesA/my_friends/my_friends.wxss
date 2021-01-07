@@ -42,8 +42,7 @@ page.data-v-0548ecab,.container.data-v-0548ecab{
 .box_tit.data-v-0548ecab{
 	min-height: 80rpx;
 	padding: 20rpx 28rpx;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 	border-bottom: 1px solid #eee;
 }
 .box_li .td1.data-v-0548ecab{
@@ -59,17 +58,16 @@ page.data-v-0548ecab,.container.data-v-0548ecab{
 .user_tx.data-v-0548ecab{
 	width:82rpx;
 	height:82rpx;
-	-webkit-border-radius:50%;
-	        border-radius:50%;
+	border-radius:50%;
 	position: relative;
 }
-.user_v.data-v-0548ecab{
+/* .user_v{
 	position: absolute;
 	bottom: 0;
 	right: 0;
 	width:27rpx;
 	height:28rpx;
-}
+} */
 view.user_tx.data-v-0548ecab{
   margin-right: 10rpx;
 }

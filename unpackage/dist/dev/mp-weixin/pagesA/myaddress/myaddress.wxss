@@ -7,8 +7,7 @@
 .addressOne.data-v-171654bd{
 	width: 100%;
 	padding: 24rpx 28rpx 20rpx;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -84,8 +83,7 @@ word-break:break-all;
 	width: 24rpx;
 	height: 24rpx;
 	border:1px solid #bababa;
-	-webkit-border-radius: 50%;
-	        border-radius: 50%;
+	border-radius: 50%;
 	margin-right: 20rpx;
 }
 .mricon1.data-v-171654bd{
@@ -95,8 +93,7 @@ word-break:break-all;
 .fixbottom.data-v-171654bd{
 	width: 100%;
 	padding: 0 28rpx;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 	height: 140rpx;
 	background-color: #eeeeee;
 	position: fixed;

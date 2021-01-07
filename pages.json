@@ -301,8 +301,24 @@
 						"enablePullDownRefresh": false
 					}
 
+				}, {
+					"path": "OrderDetails_sh/OrderDetails_sh",
+					"style": {
+						"navigationBarTitleText": "售后",
+						"enablePullDownRefresh": false
+					}
+
 				}
-			]
+			    ,{
+                    "path" : "OrderDetails_sh_th/OrderDetails_sh_th",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 		},
 		{
 			"root": "pages_goods",

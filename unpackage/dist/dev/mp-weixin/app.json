@@ -49,7 +49,10 @@
         "daiyan_fabu_ok/daiyan_fabu_ok",
         "my_setBeizhu/my_setBeizhu",
         "ysxy/ysxy",
-        "daiyan_edit/daiyan_edit"
+        "daiyan_edit/daiyan_edit",
+        "my_rz_sm/my_rz_sm",
+        "OrderDetails_sh/OrderDetails_sh",
+        "OrderDetails_sh_th/OrderDetails_sh_th"
       ]
     },
     {
@@ -76,7 +79,8 @@
         "activity/activity",
         "activity_db/activity_db",
         "friends_daiyan/friends_daiyan",
-        "d_video/d_video"
+        "d_video/d_video",
+        "daiyan_xq/daiyan_xq"
       ]
     }
   ],
@@ -156,5 +160,5 @@
     "van-stepper": "./wxcomponents/vant/stepper/index",
     "van-popup": "./wxcomponents/vant/popup/index"
   },
-  "sitemapLocation": "sitemap97.json"
+  "sitemapLocation": "sitemap95.json"
 }

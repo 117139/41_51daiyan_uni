@@ -27,7 +27,6 @@ page.data-v-dd99a4d2{
 	-webkit-align-items: center;
 	        align-items: center;
 	padding: 20rpx 24rpx 50rpx;
-	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	font-size: 30rpx;
 	color: #333;
@@ -36,8 +35,7 @@ page.data-v-dd99a4d2{
 .tx_box image.data-v-dd99a4d2{
 	width: 165rpx;
 	height: 165rpx;
-	-webkit-border-radius: 50%;
-	        border-radius: 50%;
+	border-radius: 50%;
   margin-bottom: 30rpx;
 }
 .msg_box.data-v-dd99a4d2{
@@ -56,7 +54,6 @@ page.data-v-dd99a4d2{
 	-webkit-align-items: center;
 	        align-items: center;
 	padding: 0 24rpx;
-	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	background-color: #fff;
 }
@@ -80,11 +77,9 @@ page.data-v-dd99a4d2{
 	margin-bottom: 100rpx;
 width:480rpx;
 height:80rpx;
-background-image:-webkit-gradient(linear, left top, right top, from(#59cafe), color-stop(50%, #5ebdff), to(#63b1ff));
 background-image:-webkit-linear-gradient(left, #59cafe 0%, #5ebdff 50%, #63b1ff 100%);
 background-image:linear-gradient(90deg, #59cafe 0%, #5ebdff 50%, #63b1ff 100%);
--webkit-border-radius:40rpx;
-        border-radius:40rpx;
+border-radius:40rpx;
 display:-webkit-box;
 display:-webkit-flex;
 display:flex;
@@ -108,7 +103,6 @@ border: 0;
 	-webkit-flex: 1;
 	        flex: 1;
 	padding: 0 10rpx;
-	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .msg_box1.data-v-dd99a4d2{

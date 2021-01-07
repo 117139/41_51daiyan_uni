@@ -55,6 +55,9 @@
 						</view> -->
 					</view>
 					<view class="star_name oh1">{{item.nickname}}</view>
+					<view class="star_name_label oh1">
+						<text v-for="(item1,index1) in item.label_arr">{{item1}}</text>
+					</view>
 					<view v-if="item.is_attention==1" class="star_btn" @tap.stop="guanzhuFuc(item.user_id,'affirm')">关注</view>
 					<view v-if="item.is_attention==2" class="star_btn star_btn1" @tap.stop="guanzhuFuc(item.user_id,'cancel')">已关注</view>
 				</view>
@@ -139,8 +142,8 @@
 					<view v-if="item.a_activity_id>0&&item.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-id="item.user_id" :data-idx="idx">为我投票</view>
 					<view v-if="item.a_activity_id>0&&item.is_vote==1" class="quan_user_btn quan_user_btn1">已投票</view>
 				</view>
-				<view class="quan_msg" @tap="jump" 
-				 :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item1.g_id+'&dy_id='+item.id+'&advocacyviceId='+item1.id">
+				<!-- <view class="quan_msg"> -->
+				<view class="quan_msg" @tap="jump" :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item.id">
 					<view class="oh4  quan_msg_text">{{item.content}}</view>
 					<view v-if="item.img.length==1" class="quan_msg_img">
 						<image v-if="item.type==1||item.type==3" class="one one_one" :lazy-load='true' :src="filter.imgIP(item.img[0])" mode="aspectFill" :data-src="filter.imgIP(item.img[0])"
@@ -178,7 +181,7 @@
 				<view class="goods_more" v-if="item.goods.length>1" >
 				  <view>共{{item.goods.length}}件</view>
 				  <view class="gm_more" @tap="jump" 
-				 :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item1.g_id+'&dy_id='+item.id+'&advocacyviceId='+item1.id">点击查看</view>
+				 :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item.id">点击查看</view>
 				</view>
 				<view class="quan_li_cz">
 					<!-- <text class="iconfont iconcaozuo" @tap.stop=""></text>
@@ -784,13 +787,13 @@
 	.start_list1 {
 		padding: 10rpx 29rpx 40rpx;
 		box-sizing: border-box;
-		height: 286rpx;
+		height: 336rpx;
 	}
 
 	.start_li {
 		display: inline-flex;
 		width: 198rpx;
-		height: 246rpx;
+		height: 286rpx;
 		background: rgba(255, 255, 255, 1);
 		box-shadow: 0px 3rpx 20rpx 0px rgba(119, 119, 119, 0.3);
 		border-radius: 10rpx;
@@ -830,11 +833,18 @@
 	.star_name {
 		max-width: 100%;
 		font-size: 30rpx;
-		line-height: 30rpx;
-		margin-bottom: 20rpx;
+		line-height: 40rpx;
+		/* margin-bottom:10rpx; */
 		color: #333;
 	}
-
+	.star_name_label{
+		max-width: 100%;
+		font-size: 24rpx;
+		line-height: 30rpx;
+		height: 30upx;
+		margin-bottom: 10rpx;
+		color: #333;
+	}
 	.star_btn {
 		width: 100%;
 		height: 56rpx;

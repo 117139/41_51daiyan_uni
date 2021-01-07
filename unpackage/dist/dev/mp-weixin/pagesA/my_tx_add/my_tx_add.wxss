@@ -9,7 +9,6 @@ page.data-v-40d9fd9f{
 	
 	background: #fff;
   padding: 20rpx 28rpx;
-	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .set_name.data-v-40d9fd9f{
@@ -24,14 +23,12 @@ page.data-v-40d9fd9f{
   -webkit-justify-content: space-between;
           justify-content: space-between; 
 	background:rgba(245,245,245,1);
-	-webkit-border-radius:10rpx;
-	        border-radius:10rpx;
+	border-radius:10rpx;
   height: 95rpx;
   border-bottom: 1px solid #eee;
 	margin-bottom: 20rpx;
 	padding: 0 28rpx;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 }
 .set_l.data-v-40d9fd9f{
   font-size: 30rpx;
@@ -75,8 +72,7 @@ page.data-v-40d9fd9f{
 	width:694rpx;
 	height:80rpx;
 	background:rgba(254,135,53,1);
-	-webkit-border-radius:10rpx;
-	        border-radius:10rpx;
+	border-radius:10rpx;
 	font-size: 30rpx;
 	color: #fff;
 	margin: 50rpx auto;

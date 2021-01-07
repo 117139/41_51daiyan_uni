@@ -3,56 +3,60 @@
 		
 		
 		<!-- 代言圈 -->
-		<view class="quan_list">
-			<view class="quan_li" v-for="(item,idx) in data_list">
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+		</view>
+		<view v-if="htmlReset==0" class="quan_list">
+			<view class="quan_li">
 				<view class="quan_user_box">
-					<image @tap="jump"  :data-url="'/pages/my_index/my_index?id='+item.user_id" class="quan_user_tx" :src="item.user_head_portrait" mode="aspectFill"></image>
+					<image @tap="jump"  :data-url="'/pages/my_index/my_index?id='+datas.user_id" class="quan_user_tx" :src="datas.user_head_portrait" mode="aspectFill"></image>
 					<view class="quan_user_msg">
-						<view class="quan_user_name">{{item.user_nickname}}
+						<view class="quan_user_name">{{datas.user_nickname}}
 							<!-- mingxing -->
-							<view v-if="item.use_identity_id==1" class="star_v">
+							<view v-if="datas.use_identity_id==1" class="star_v">
 								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 							</view>
 							<!-- daren -->
-							<view v-if="item.use_identity_id==2" class="star_v">
+							<view v-if="datas.use_identity_id==2" class="star_v">
 								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
 								<text class="iconv iconfont"></text>
-								<text class="user_v_lv">{{item.user_grade_num?item.user_grade_num:0}}</text>
+								<text class="user_v_lv">{{datas.user_grade_num?datas.user_grade_num:0}}</text>
 							</view>
-							<!-- <image v-if="item.use_identity_id==1" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
-							<image v-if="item.use_identity_id==2" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image> -->
+							<!-- <image v-if="datas.use_identity_id==1" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+							<image v-if="datas.use_identity_id==2" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image> -->
 						</view>
 						<view class="quan_user_time">
-							<text>{{filter.getDateTime(item.create_time)}}</text>
-							<text v-if="item.use_identity_id==1">明星</text>
-							<text v-if="item.use_identity_id==2">达人</text>
+							<text>{{filter.getDateTime(datas.create_time)}}</text>
+							<text v-if="datas.use_identity_id==1">明星</text>
+							<text v-if="datas.use_identity_id==2">达人</text>
 						</view>
 					</view>
-					<view v-if="item.a_activity_id>0&&item.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-id="item.user_id" :data-idx="idx">为我投票</view>
-					<view v-if="item.a_activity_id>0&&item.is_vote==1" class="quan_user_btn quan_user_btn1">已投票</view>
+					<view v-if="datas.a_activity_id>0&&datas.is_vote==2" class="quan_user_btn" @tap.stop="toupiao" :data-id="datas.user_id" :data-idx="idx">为我投票</view>
+					<view v-if="datas.a_activity_id>0&&datas.is_vote==1" class="quan_user_btn quan_user_btn1">已投票</view>
 				</view>
 				<view class="quan_msg">
-					<view class="oh4  quan_msg_text">{{item.content}}</view>
-					<view v-if="item.img.length==1" class="quan_msg_img">
-						<image v-if="item.type==1||item.type==3" class="one one_one" :lazy-load='true' :src="filter.imgIP(item.img[0])" mode="aspectFill" :data-src="filter.imgIP(item.img[0])"
+					<view class="oh4  quan_msg_text">{{datas.content}}</view>
+					<view v-if="datas.img.length==1" class="quan_msg_img">
+						<image v-if="datas.type==1||datas.type==3" class="one one_one" :lazy-load='true' :src="filter.imgIP(datas.img[0])" mode="aspectFill" :data-src="filter.imgIP(datas.img[0])"
 						 @tap.stop="pveimg"></image>
-						<image v-if="item.type==2" class="one one_one" :lazy-load='true' :src="filter.imgIP_video(item.img[0])" mode="aspectFill" :data-src="filter.imgIP_video(item.img[0])"
-						 @tap.stop="jump" data-type="sp" :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx=0&a_id='+item.id"></image>
+						<image v-if="datas.type==2" class="one one_one" :lazy-load='true' :src="filter.imgIP_video(datas.img[0])" mode="aspectFill" :data-src="filter.imgIP_video(datas.img[0])"
+						 @tap.stop="jump" data-type="sp" :data-spurl="datas.img" :data-url="'/pages_goods/d_video/d_video?idx=0&a_id='+datas.id"></image>
 					</view>
 					<view v-else class="quan_msg_img">
-						<image v-if="item.type==1" v-for="(item1,idx1) in item.img"
-						 :src="filter.imgIP(item1)" mode="aspectFill" :lazy-load='true' :data-src="filter.imgIP(item1)" :data-array="filter.getgimgarrIP(item.img)"
+						<image v-if="datas.type==1" v-for="(item1,idx1) in datas.img"
+						 :src="filter.imgIP(item1)" mode="aspectFill" :lazy-load='true' :data-src="filter.imgIP(item1)" :data-array="filter.getgimgarrIP(datas.img)"
 						 @tap.stop="pveimg"></image>
-						<image v-if="item.type==2" v-for="(item1,idx1) in item.img" :lazy-load='true' :src="filter.imgIP_video(item1)" mode="aspectFill" 
-						 @tap.stop="jump" data-type="sp" :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx='+idx1+'&a_id='+item.id"></image>
+						<image v-if="datas.type==2" v-for="(item1,idx1) in datas.img" :lazy-load='true' :src="filter.imgIP_video(item1)" mode="aspectFill" 
+						 @tap.stop="jump" data-type="sp" :data-spurl="datas.img" :data-url="'/pages_goods/d_video/d_video?idx='+idx1+'&a_id='+datas.id"></image>
 						<!-- <image :src="filter.imgIP('/static_s/51daiyan/images/goods1.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods1.png')"
 						 @tap.stop="pveimg"></image>
 						<image :src="filter.imgIP('/static_s/51daiyan/images/goods.png')" mode="aspectFill" :data-src="filter.imgIP('/static_s/51daiyan/images/goods.png')"
 						 @tap.stop="pveimg"></image> -->
 					</view>
 				</view>
-				<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" 
-				 :data-url="'/pages/details/details?id='+item1.g_id+'&dy_id='+item.id+'&advocacyviceId='+item1.id">
+				<view v-for="(item1,idx1) in datas.goods" class="quan_goods" @tap="jump" 
+				 :data-url="'/pages/details/details?id='+item1.g_id+'&dy_id='+datas.id+'&advocacyviceId='+item1.id">
 					<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill"></image>
 					<view class="quan_goods_msg">
 						<view class="quan_goods_name dis_flex aic"><text v-if="item1.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item1.g_title}}</text></view>
@@ -77,13 +81,13 @@
 	           <text class="iconfont iconpinglun"></text>评论
 	          </view>
 	        </view> -->
-					<view class="cz_li">跟随购买：{{item.follow_buy_number}}</view>
-					<view class="cz_li" @tap.stop="jump" :data-url="'/pages_goods/daiyan_pl/daiyan_pl?id='+item.id"><text class="iconfont iconpinglun"></text>{{item.comment_number}}</view>
-					<view class="cz_li" v-if="item.is_praise==2" @tap="guanzhuFuc_dz(4,item.id,'affirm')" :data-id="idx">
-						<text class="iconfont iconzan"></text>{{item.praise_number}}
+					<view class="cz_li">跟随购买：{{datas.follow_buy_number}}</view>
+					<view class="cz_li" @tap.stop="jump" :data-url="'/pages_goods/daiyan_pl/daiyan_pl?id='+datas.id"><text class="iconfont iconpinglun"></text>{{datas.comment_number}}</view>
+					<view class="cz_li" v-if="datas.is_praise==2" @tap="guanzhuFuc_dz(4,datas.id,'affirm')" :data-id="idx">
+						<text class="iconfont iconzan"></text>{{datas.praise_number}}
 					</view>
-					<view class="cz_li" v-if="item.is_praise==1" @tap="guanzhuFuc_dz(4,item.id,'cancel')" :data-id="idx">
-						<text class="iconfont icondianzan2" style="color: #f00;"></text>{{item.praise_number}}
+					<view class="cz_li" v-if="datas.is_praise==1" @tap="guanzhuFuc_dz(4,datas.id,'cancel')" :data-id="idx">
+						<text class="iconfont icondianzan2" style="color: #f00;"></text>{{datas.praise_number}}
 					</view>
 				</view>
 			</view>
@@ -106,38 +110,19 @@
 		data() {
 			return {
 				btn_kg:0,
-				htmlReset:0,
+				htmlReset:-1,
 				datas: '',
 				page: 2,
 				banner: '',
 				homeSeek: '',
 				homeTeacher: '',
-				homeVideo: '',
-				start_li: [], //明星达人
-				data_list: [], //代言列表
-				data_last:false,
-				indicatorDots: true,
-				autoplay: true,
-				interval: 3000,
-				duration: 1000,
-				circular: true
+				homeVideo: ''
 			}
 		},
-		onLoad() {
+		onLoad(option) {
 			var that = this
+			this.id=option.id
 			that.getdata()
-			that.event.on('/pages/index/index', 'test', function(args) {
-				//args为trigger中所有的参数，可自定义数据，除了type和page及success
-				console.log('testindex:' + args);
-				console.log(args);
-				that.getdata()
-				that.Imlogin()
-				//返回数据，在trigger中success方法可以收到
-				return {
-
-				};
-
-			});
 		},
 		onShow() {
 			this.btn_kg=0
@@ -193,73 +178,7 @@
 		},
 		methods: {
 			...mapMutations(['setAbout']),
-			Imlogin(){
-				var that =this
-				var userInfo=this.loginMsg
-				if (userInfo) {
-					let promise = that.tim.login({
-						userID: userInfo.identification_id,
-						userSig: userInfo.IMSign
-					});
-					promise.then((res) => {
-						console.log(res)
-						//登录成功后 更新登录状态
-						that.$store.commit("toggleIsLogin", true);
-						//自己平台的用户基础信息
-						// uni.setStorageSync('userInfo', JSON.stringify(userInfo))
-						//tim 返回的用户信息
-						uni.setStorageSync('userTIMInfo', JSON.stringify(res.data))
-						console.log('userTIMInfo========>'+JSON.stringify(res.data))
-						// uni.reLaunch({
-						// 	url: '../tim/record'
-						// })
-					}).catch((err) => {
-						console.warn('login error:', err); // 登录失败的相关信息
-					});
-				} else {
-					uni.showToast({
-						icon: 'none',
-						title: '用户不存在',
-						duration: 1500
-					});
-				}
-			},
 			
-			//提交用户的基础信息到Im
-			updateUserInfo() {
-				var that =this
-				//将已经登陆的用户信息 提交到IM中
-				// let userInfo = JSON.parse(uni.getStorageSync('userInfo'))
-				console.log('将已经登陆的用户信息 提交到IM中')
-				let promise = this.tim.updateMyProfile({
-					nick: that.loginMsg.nickname,
-					avatar: that.loginMsg.avatarurl,
-					gender: this.$TIM.TYPES.GENDER_MALE,
-					selfSignature: that.loginMsg.introduction,
-					allowType: this.$TIM.TYPES.ALLOW_TYPE_ALLOW_ANY
-				});
-				promise.then((res) => {
-					console.log('提交资料成功')
-				}).catch((err) => {
-					console.warn('updateMyProfile error:', err); // 更新资料失败的相关信息
-				});
-			},
-			//获取消息列表
-			getConversationList() {
-				// 拉取会话列表
-				let promise = this.tim.getConversationList();
-				promise.then((res) => {
-					let conversationList = res.data.conversationList; // 会话列表，用该列表覆盖原有的会话列表
-					if (conversationList.length>0) {
-			
-						//将返回的会话列表拼接上 用户的基本资料  
-						//说明：如果已经将用户信息 提交到tim服务端了 就不需要再次拼接
-						this.$store.commit("updateConversationList", conversationList);
-					}
-				}).catch((err) => {
-					console.warn('getConversationList error:', err); // 获取会话列表失败的相关信息
-				});
-			},
 			guanzhuFuc_dz(type, id, key) {
 				var that = this
 				var data = {
@@ -289,17 +208,12 @@
 						return
 					} else if (res.code == 1) {
 						// that.onRetry()
-						for (var i = 0; i < that.data_list.length; i++) {
-							if (that.data_list[i].id == id) {
-								if (key == 'affirm') {
-									that.$set(that.data_list[i], 'is_praise', 1)
-									that.$set(that.data_list[i], 'praise_number', that.data_list[i].praise_number-1+2)
-								} else {
-									that.$set(that.data_list[i], 'is_praise', 2)
-									that.$set(that.data_list[i], 'praise_number', that.data_list[i].praise_number-1)
-								}
-			
-							}
+						if (key == 'affirm') {
+							that.$set(datas, 'is_praise', 1)
+							that.$set(datas, 'praise_number', datas.praise_number-1+2)
+						} else {
+							that.$set(datas, 'is_praise', 2)
+							that.$set(datas, 'praise_number', datas.praise_number-1)
 						}
 						uni.showToast({
 							icon: 'none',
@@ -407,19 +321,15 @@
 				var that = this
 				var datas = {
 					token: that.loginMsg.userToken,
+					id:that.id
 				}
 				// 单个请求
-				service.P_get('', datas).then(res => {
+				service.P_get('/publicAdvocacy/details', datas).then(res => {
 					console.log(res)
 					if (res.code == 1) {
 						that.htmlReset=0
 						that.datas = res.data
-						that.setAbout(res.data.aboutAs)
-						that.start_li = res.data.publicUserArr
-						//代言数据
-						that.data_list = res.data.advocacyArr
-						that.page = 2
-						that.data_last=false
+						
 					}else{
 						that.htmlReset=1
 					}

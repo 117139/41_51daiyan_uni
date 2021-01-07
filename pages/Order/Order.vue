@@ -15,6 +15,7 @@
 		      <view v-if="address.name" class="al_2">{{address.province}}{{address.city}}{{address.area}}{{address.address}}</view>
 		      <view v-if="!address.name" class="fz30">请选择地址</view>
 		    </view>
+				
 		    <!-- <view class="add_r"> -->
 		    <text class="iconfont iconnext"></text>
 		    <!-- </view> -->
@@ -63,7 +64,7 @@
 					    <!-- <view>10元</view> -->
 					  </view>
 					  <!-- <view class="guige_r"> -->
-					  <view class="fz26 c9">{{yunfei.length==0? '':yunfei[idx].postage==0? '免运费':'+￥'+yunfei[idx].postage}}</view>
+					  <view class="fz26 c9">{{yunfei.length==0? '免运费':yunfei[idx].postage==0? '免运费':'+￥'+yunfei[idx].postage}}</view>
 					  <!-- <text class="iconfont iconsangedian fz36 c9"></text> -->
 					  <!-- </view> -->
 					</view>
@@ -546,30 +547,53 @@
 			  service.P_post(jkurl, datas).then(res => {
 			  	that.btnkg=0
 			  	console.log(res)
+					if(res.code==1001){
+						uni.showToast({
+							icon: 'none',
+							title: '购买成功'
+						})
+						service.wxlogin()
+						setTimeout(()=>{
+							uni.hideLoading()
+						
+							that.btnkg=0
+								uni.redirectTo({
+									url:'/pagesA/OrderList/OrderList'
+								})
+						},1000)
+						return
+					}
 			  	if (res.code == 1) {
 			  		var datas = res.data
-			  		// console.log(typeof datas)
+			  		console.log(typeof datas)
 			  			
 			  		if (typeof datas == 'string') {
 			  			datas = JSON.parse(datas)
 			  		}
-			  	
-			  			uni.showLoading({
-			  				title:'正在拉起支付'
-			  			})
-							setTimeout(()=>{
-								uni.hideLoading()
-								uni.showToast({
-									icon:'none',
-									title:'拉起操作'
+						service.wxpay(res.data).then(res => {
+							uni.showToast({
+								icon: 'none',
+								title: '购买成功'
+							})
+							service.wxlogin()
+							setTimeout(() => {
+								uni.redirectTo({
+									url:'/pagesA/OrderList/OrderList'
 								})
-								that.btnkg=0
-								setTimeout(function (){
-									uni.redirectTo({
-										url:'/pagesA/OrderList/OrderList'
-									})
-								},1000)
-							},1000)
+							}, 1000)
+						}).catch(e => {
+							that.btn_kg=0
+							uni.showToast({
+								icon: 'none',
+								title: '微信支付失败'
+							})
+							service.wxlogin()
+							setTimeout(() => {
+								uni.redirectTo({
+									url:'/pagesA/OrderList/OrderList'
+								})
+							}, 1000)
+						})
 			  	}
 			  }).catch(e => {
 			  	that.btnkg=0

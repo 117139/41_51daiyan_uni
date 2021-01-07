@@ -107,11 +107,20 @@
 		      <text class="iconfont iconcaozuo"></text>
 		    </view>
 		  </view>
-		  <view v-if="goodsData.distribution" class="goods_xmsg"  @tap="jump" data-url="/pagesA/myaddress/myaddress?type=1">
+		  <!-- <view v-if="goodsData.distribution" class="goods_xmsg"  @tap="jump" data-url="/pagesA/myaddress/myaddress?type=1"> -->
+		  <view v-if="goodsData.city_distribution" class="goods_xmsg" >
+		    <view class="v1">配 送</view>
+		    <view class="v2">
+		      <text class="yhq_box">同城</text>{{goodsData.city_distribution}}</view>
+		    <view class="v3" style="opacity: 0;">
+		      <text class="iconfont iconcaozuo"></text>
+		    </view>
+		  </view>
+		  <view v-else-if="goodsData.distribution" class="goods_xmsg" >
 		    <view class="v1">配 送</view>
 		    <view class="v2">
 		      <text class="yhq_box">同城</text>{{goodsData.distribution}}</view>
-		    <view class="v3">
+		    <view class="v3"  style="opacity: 0;">
 		      <text class="iconfont iconcaozuo"></text>
 		    </view>
 		  </view>
