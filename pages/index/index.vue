@@ -28,6 +28,8 @@
 			<text class="iconfont iconyiping"></text>
 			<view>您还有{{datas.wdyNumber}}件商品未代言，快来代言吧～</view>
 		</view>
+		
+		<!-- <web-view src="https://51daiyan.com.aa.800123456.top/api/cron/orderReleaseCost"></web-view> -->
 		<view v-if="start_li.length>0" class="index_box1 index_box4" @tap="jump" data-url="/pages_goods/star_list/star_list?type=1">
 			<view>明星达人代言人推荐：</view>
 			<text>各种玩法尽在明星达人代言秀</text>

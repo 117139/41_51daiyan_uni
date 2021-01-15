@@ -128,7 +128,7 @@
 				<view class="o_cz">
 
 					<view v-if="datas.s_status==2&&datas.type!=1&&datas.logistics_name==''" @tap="jump" :data-url="'/pagesA/OrderDetails_sh_th/OrderDetails_sh_th?id='+datas.id">退货</view>
-					<view v-if="datas.o_paystatus==1" @tap="order_pay(datas.o_id)">付款</view>
+					<!-- <view v-if="datas.o_paystatus==1" @tap="order_pay(datas.o_id)">付款</view> -->
 					<!-- <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view> -->
 				</view>
 			</view>

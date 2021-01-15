@@ -131,7 +131,7 @@
 				</view>
 			</view>
 
-			<view class="ordermsg" v-show="order_status!==''">
+			<view class="ordermsg" >
 				<view class="msgtit">
 					订单信息
 				</view>
@@ -157,8 +157,7 @@
 
 				</view>
 				<view class="o_cz">
-
-					<view v-if="datas.o_ddstatus==4||data.o_ddstatus==5" @tap.stop="get_goods(datas.o_id)">确认收货</view>
+					<view v-if="datas.o_ddstatus==4||datas.o_ddstatus==5" @tap.stop="get_goods(datas.o_id)">确认收货</view>
 					<view v-if="datas.o_paystatus==1" @tap="order_pay(datas.o_id)">付款</view>
 					<!-- <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view> -->
 				</view>

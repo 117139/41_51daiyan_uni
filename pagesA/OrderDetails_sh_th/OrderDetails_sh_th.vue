@@ -7,13 +7,13 @@
 			</view>
 			<picker @change="bindPickerChange" data-type="wl_list" value="" :range="wl_list"   class="set_name">
 				<!-- <input class="set_int" placeholder="请填写您的售后物流公司" v-model="wl_gs" maxlength="20"></input> -->
-				<view class="picker_box" @tap="wl_gs=''">
+				<view class="picker_box" >
 					<view>{{wl_list[wl_idx]}}</view>
 					<text class="iconfont iconnext3"></text>
 				</view>
 			</picker>
 			<view class="set_name">
-				<input class="set_int" placeholder="请填写您的售后物流单号" v-model="wl_num" maxlength="20"></input>
+				<input class="set_int" placeholder="请填写您的售后物流单号" v-model="wl_num" maxlength="50"></input>
 				<view class="set_btn" @tap="wl_num=''">
 					<text class="iconfont iconguanbi1"></text>
 				</view>
