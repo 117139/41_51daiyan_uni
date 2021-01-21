@@ -90,6 +90,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	var djs_fuc
 	export default {
 		data() {

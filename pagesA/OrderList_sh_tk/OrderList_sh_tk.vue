@@ -97,6 +97,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -152,9 +153,24 @@
 			// wx.setNavigationBarTitle({
 			// 	title: '订单列表'
 			// })
+			that =this
 			if(option.item){
-				this.datas=JSON.parse(option.item)
+				that.datas=JSON.parse(option.item)
 				console.log(option.item)
+				if(that.datas.after_sale_btn==1){
+					that.zhaungtai=[
+					  { name: '没收到货,或与卖家协商同意不用退货', value: '1' },
+					  { name: '已收到货,需要退货退款', value: '2' },
+					  { name: '已收到货,需要换货', value: '3' },
+					]
+				}
+				if(that.datas.after_sale_btn==2){
+					that.zhaungtai=[
+					  // { name: '没收到货,或与卖家协商同意不用退货', value: '1' },
+					  // { name: '已收到货,需要退货退款', value: '2' },
+					  { name: '已收到货,需要换货', value: '3' },
+					]
+				}
 			}
 			
 			
@@ -224,7 +240,7 @@
 					number:that.cnum,
 					content:that.yname,
 					ov_id:that.datas.id,
-					type:that.index-1+2,
+					type:that.zhaungtai[that.index].value,
 					pic:imgs
 				}
 				service.post(jkurl, data,

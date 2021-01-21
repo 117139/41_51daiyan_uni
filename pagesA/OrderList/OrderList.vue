@@ -67,6 +67,7 @@
 		          <!-- <view v-if="item1.is_comment==2" @tap.stop="jump" data-url="/pages_goods/goods_pj/goods_pj">评价</view> -->
 		          <!-- <view v-if="type==0||type==4}}" @tap.stop="jump" data-url="/pages/daiyan_fabu/daiyan_fabu">我要代言</view> -->
 		          <view v-if="item.order.o_ddstatus==4||item.order.o_ddstatus==5" @tap.stop="get_goods(item.order.o_id)">确认收货</view>
+		          <view v-if="item.order.o_ddstatus==4||item.order.o_ddstatus==5" @tap.stop="jump" :data-url="'/pagesA/Order_wuliu/Order_wuliu?id='+item.order.o_id">查看物流</view>
 		          <view v-if="item.order.o_paystatus==1" @tap.stop="order_pay(item.order.o_id)">付款</view>
 		          <!-- <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view> -->
 		        </view>
@@ -456,18 +457,46 @@
 						return
 					}
 					console.log(that.goods_sele)
-					that.dy_fb_fuc(that.goods_sele)
+					uni.showModal({
+					    title: '提示',
+					    content: '是否发布代言',
+					    success: function (res) {
+					        if (res.confirm) {
+					            console.log('用户点击确定');
+											that.dy_fb_fuc(that.goods_sele)
+											wx.navigateTo({
+											  url: '/pagesA/daiyan_fabu/daiyan_fabu',
+											})
+					        } else if (res.cancel) {
+					            console.log('用户点击取消');
+					        }
+					    }
+					});
+					
 				}else{
 					var arr=[]
 					arr.push(item)
-					that.dy_fb_fuc(arr)
+					uni.showModal({
+					    title: '提示',
+					    content: '是否发布代言',
+					    success: function (res) {
+					        if (res.confirm) {
+					            console.log('用户点击确定');
+											that.dy_fb_fuc(arr)
+											wx.navigateTo({
+											  url: '/pagesA/daiyan_fabu/daiyan_fabu',
+											})
+					        } else if (res.cancel) {
+					            console.log('用户点击取消');
+					        }
+					    }
+					});
+					
 				}
 			 
 				
 				
-				wx.navigateTo({
-				  url: '/pagesA/daiyan_fabu/daiyan_fabu',
-				})
+				
 		
 			  
 			},

@@ -126,7 +126,20 @@
 			this.onRetry()
 		},
 		onShow() {
-			// this.onRetry()
+			var that =this
+			let pages = getCurrentPages();
+			let currPage = pages[pages.length - 1];
+			if (currPage.data.daiyan_newtype) {  
+			      //将携带的参数赋值
+			        
+			   this.onRetry()
+				 currPage.setData({
+				   //直接给上一个页面赋值
+				   daiyan_newtype: false,
+				 });
+				
+			}
+			
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作

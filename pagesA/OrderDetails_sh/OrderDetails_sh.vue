@@ -91,11 +91,28 @@
 
 				</view>
 			</view>
-
-			<view class="ordermsg" v-show="order_status!==''">
-				<view class="msgtit">
-					售后信息
+			<view class="th_tit" v-if="datas.sh_info&&datas.sh_info.sh_name">
+				退货地址
+			</view>
+			<view class="address goods" v-if="datas.sh_info&&datas.sh_info.sh_name">
+				<view class="add_r">
+					<image :src="filter.imgIP('/static_s/51daiyan/images/address23.png')"></image>
 				</view>
+				<view class="add_l">
+					<view class="al_1">{{datas.sh_info.sh_name}} <text class="l_tel">{{datas.sh_info.sh_phone}}</text></view>
+					<view class="al_2">{{datas.sh_info.sh_address}} </view>
+				</view>
+			
+			</view>
+			<!-- <view style="width: 100%;height: 20upx;background: #000;"></view> -->
+			
+			<view class="th_tit">
+				售后信息
+			</view>
+			<view class="ordermsg">
+				<!-- <view class="msgtit">
+					售后信息
+				</view> -->
 
 				<view class="msginr">
 					<!-- <view hidden='{{order_status===0}}' class="orderewm">
@@ -108,12 +125,13 @@
 						<view v-if="datas.type!=3" class="omsgp dis_flex ju_b"><text>需退代言豆：</text><text>{{datas.retreat_bean}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>售后编号：</text><text>{{datas.o_order_sernum}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>申请时间：</text><text>{{filter.getDate_ymd(datas.create_time)}}</text></view>
-						<view v-if="datas.zc_logistics.length>0" class="omsgp dis_flex ju_b"><text>支持的物流：</text>
-						<text>
-							<block v-for="(item,index) in datas.zc_logistics">
-								{{item +' '}} 
-							</block>
-						</text>
+						<view v-if="datas.zc_logistics.length>0" class="omsgp dis_flex ju_b">
+							<text>支持的物流：</text>
+							<text>
+								<block v-for="(item,index) in datas.zc_logistics">
+									{{item +' '}} 
+								</block>
+							</text>
 						</view>
 						<view v-if="datas.s_status_time" class="omsgp dis_flex ju_b"><text>商家处理时间：</text><text>{{filter.getDate_ymd(datas.s_status_time)}}</text></view>
 						<view v-if="datas.s_status==3" class="omsgp dis_flex ju_b"><text>商家拒绝原因：</text><text>{{datas.s_status_refuse}}</text></view>
@@ -971,18 +989,29 @@
 
 	.msgtit {
 		width: 100%;
-		padding-left: 10rpx;
+		padding-left: 20rpx;
 		box-sizing: border-box;
-		height: 26rpx;
-		border-left: 8rpx solid #F8BE3A;
+		/* height: 26rpx; */
+		/* border-left: 8rpx solid #F8BE3A; */
 		font-size: 30rpx;
 		color: #333;
 		display: flex;
 		font-weight: 500;
 		align-items: center;
 		margin-bottom: 30rpx;
+		position: relative;
+		
 	}
-
+	.msgtit::before{
+		position: absolute;
+		content: '';
+		top: 50%;
+		left: 0;
+		width: 7upx;
+		height: 30upx;
+		background: #F8BE3A;
+		margin-top: -15upx;
+	}
 	.msginr {
 		width: 100%;
 		display: flex;
@@ -1512,5 +1541,28 @@
 
 	.ot_msg .d2 {
 		font-size: 24rpx;
+	}
+	.th_tit{
+		width: 100%;
+		padding: 0 50upx;
+		height: 90upx;
+		display: flex;
+		align-items: center;
+		font-size: 26upx;
+		color: #333;
+		position: relative;
+		background: #fff;
+		box-sizing: border-box;
+		border-bottom: 1px solid #eee;
+	}
+	.th_tit::before{
+		position: absolute;
+		content: '';
+		top: 50%;
+		left: 30upx;
+		width: 7upx;
+		height: 30upx;
+		background: #F8BE3A;
+		margin-top: -15upx;
 	}
 </style>

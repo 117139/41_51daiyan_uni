@@ -158,6 +158,7 @@
 				</view>
 				<view class="o_cz">
 					<view v-if="datas.o_ddstatus==4||datas.o_ddstatus==5" @tap.stop="get_goods(datas.o_id)">确认收货</view>
+					<view v-if="datas.o_ddstatus==4||datas.o_ddstatus==5" @tap.stop="jump" :data-url="'/pagesA/Order_wuliu/Order_wuliu?id='+datas.o_id">查看物流</view>
 					<view v-if="datas.o_paystatus==1" @tap="order_pay(datas.o_id)">付款</view>
 					<!-- <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view> -->
 				</view>
@@ -317,18 +318,48 @@
 						return
 					}
 					console.log(that.goods_sele)
-					that.dy_fb_fuc(that.goods_sele)
+					
+					uni.showModal({
+					    title: '提示',
+					    content: '是否发布代言',
+					    success: function (res) {
+					        if (res.confirm) {
+					            console.log('用户点击确定');
+											that.dy_fb_fuc(that.goods_sele)
+											wx.navigateTo({
+											  url: '/pagesA/daiyan_fabu/daiyan_fabu',
+											})
+					        } else if (res.cancel) {
+					            console.log('用户点击取消');
+					        }
+					    }
+					});
 				} else {
 					var arr = []
 					arr.push(item)
-					that.dy_fb_fuc(arr)
+					
+					uni.showModal({
+					    title: '提示',
+					    content: '是否发布代言',
+					    success: function (res) {
+					        if (res.confirm) {
+					            console.log('用户点击确定');
+											that.dy_fb_fuc(arr)
+											wx.navigateTo({
+											  url: '/pagesA/daiyan_fabu/daiyan_fabu',
+											})
+					        } else if (res.cancel) {
+					            console.log('用户点击取消');
+					        }
+					    }
+					});
 				}
 
 
 
-				wx.navigateTo({
-					url: '/pagesA/daiyan_fabu/daiyan_fabu',
-				})
+				// wx.navigateTo({
+				// 	url: '/pagesA/daiyan_fabu/daiyan_fabu',
+				// })
 
 
 			},

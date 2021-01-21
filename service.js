@@ -580,7 +580,32 @@ const wxpay=function (datas,type){
 	})
 	
 }
-
+const getimg = function(img) {
+	if (!img) return
+	// console.log(imgurl+img)
+	if (img.indexOf('://') == -1) {
+		img = imgurl + img
+	}
+	return img
+}
+const getimgarr = function(imgs, type) {
+	if (!imgs) return
+	if (!type) {
+		type = ','
+	}
+	imgs = imgs.split(type)
+	// console.log(imgurl+img)
+	var newimgs = []
+	for (var i = 0; i < imgs.length; i++) {
+		var img = imgs[i]
+		if (img.indexOf('://') == -1) {
+			img = imgurl + img
+		}
+		newimgs.push(img)
+	}
+	// console.log(newimgs)
+	return newimgs
+}
 export default {
 	getUsers,
 	addUser,
@@ -599,5 +624,7 @@ export default {
 	P_put,
 	P_delete,
 	gettime,
+	getimg,
+	getimgarr,
 	wxpay
 }

@@ -308,9 +308,23 @@
 						"enablePullDownRefresh": false
 					}
 
+				}, {
+					"path": "OrderDetails_sh_th/OrderDetails_sh_th",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+
+				}, {
+					"path": "Order_wuliu/Order_wuliu",
+					"style": {
+						"navigationBarTitleText": "物流详情",
+						"enablePullDownRefresh": false
+					}
+
 				}
 			    ,{
-                    "path" : "OrderDetails_sh_th/OrderDetails_sh_th",
+                    "path" : "share/share",
                     "style" :                                                                                    
                 {
                     "navigationBarTitleText": "",

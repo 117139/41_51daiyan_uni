@@ -77,14 +77,22 @@
 		
 		  </view>
 		  <view class="fw_list" v-show="type==3">
-		    <!-- <view class="haibao" @tap="getPosterHandle">生成海报</view> -->
-		    <!-- <view class="haibao" @tap="renderToCanvas">生成海报</view> -->
+				
+				<view class="fuwu_li">
+					<view class="d1">选择海报模板</view>
+					<view class="fw_msg">
+					
+					</view>
+				</view>
+				<scroll-view scroll-x class="hb_moban_list">
+					<view class="hb_moban_li" :class="mb_cur==index?'cur':''" @tap="mb_cur=index" v-for="(item,index) in moban_list">
+						<image :src="getimg(item.url)" mode=""></image>
+					</view>
+				</scroll-view>
 		    <view class="haibao" @tap="shareFc()">生成海报</view>
-		    <!-- <view class="haibao" @tap="extraImage">下载海报</view> -->
-		    <!-- <view class="haibao" @tap="ctxc">生成海报</view> -->
 		    <view  class="haibao_box">
 		      <!-- <image class="haibao_box" src="{{filter.imgIP(haibao)}}"></image> -->
-		      <image v-if="src" class="haibao_box" :src="filter.imgIP(src)"></image>
+		      <image @tap="saveImage" v-if="src" class="haibao_box" :src="filter.imgIP(src)"></image>
 		    </view>
 		    <!-- <view  class="haibao_box haibao_box1">
 		      <image v-if="src" class="haibao_box haibao_box1" :src="src"></image>
@@ -128,6 +136,7 @@
 	import {
 		getSharePoster
 	} from '../../utils/QS-SharePoster/QS-SharePoster.js';
+	var that
 	export default {
 		data() {
 			return {
@@ -162,7 +171,33 @@
 				xdxy_type:1,
 				
 				
-				
+				moban_list:[
+					{
+						url:'/static_s/51daiyan/images/hb_moban1.jpg',
+						url_bg:'/static_s/51daiyan/images/hbbg.jpg',
+						dx: 254,
+						dy: 494,
+						width:244,
+						height:244,
+					},
+					{
+						url:'/static_s/51daiyan/images/hb_moban2.jpg',
+						url_bg:'/static_s/51daiyan/images/hdhb1.jpg',
+						dx: 270,
+						dy: 572,
+						width:208,
+						height:208,
+					},
+					{
+						url:'/static_s/51daiyan/images/hb_moban3.jpg',
+						url_bg:'/static_s/51daiyan/images/hdhb2.jpg',
+						dx: 283,
+						dy: 517,
+						width:208,
+						height:208,
+					},
+				],
+				mb_cur:0,
 				poster: {
 					width:750,
 					height:1334
@@ -181,7 +216,7 @@
 			])
 		},
 		onLoad(option) {
-			var that =this
+			that =this
 			if(option.id){
 				that.id=option.id
 			}
@@ -198,7 +233,9 @@
 			// this.getOrderList('onshow')
 		},
 		methods: {
-			
+			getimg(img){
+				return service.getimg(img)
+			},
 			onRetry(){
 				this.getdata_dy()
 			},
@@ -264,57 +301,6 @@
 			},
 			open_more(){
 			  this.open_type=10000
-			},
-			renderToCanvas() {
-			  // var that=this
-			  wx.showLoading({
-			    title: '正在生成中'
-			  })
-			  const p1 = this.widget.renderToCanvas({ wxml, style })
-			  p1.then((res) => {
-			    console.log('container', res.layoutBox)
-			    this.container = res
-			    wx.hideLoading()
-			    this.extraImage()
-			    
-			  })
-			},
-			extraImage() {
-			  console.log('xiazai')
-			  const p2 = this.widget.canvasToTempFilePath()
-			  p2.then(res => {
-			    wx.showLoading({
-			      title: '正在保存'
-			    })
-			    wx.saveImageToPhotosAlbum({
-			      filePath: res.tempFilePath,
-			      success(res1) {
-			        console.log(res1)
-			        wx.hideLoading()
-			        setTimeout(function (){
-			          wx.showToast({
-			            title: '保存成功',
-			          })
-			        },1000)
-			      },
-			      fail(err){
-			        wx.hideLoading()
-			        wx.showToast({
-			          icon:'none',
-			          title: '保存失败',
-			        })
-			        console.log(err)
-			      },
-			      complete(err){
-			        wx.hideLoading()
-			      }
-			    })
-			    this.setData({
-			      src: res.tempFilePath,
-			      width: 750,
-			      height: 1334
-			    })
-			  })
 			},
 			cload(){
 				var pages=1
@@ -394,6 +380,36 @@
 			//选择视频
 			chooseVideo: function () {
 			  var that = this
+				uni.showActionSheet({
+						itemList: ['拍摄', '相册'],
+						success: function (res) {
+								console.log('选中了第' + (res.tapIndex + 1) + '个按钮');
+								var sourceType=['camera', 'album']
+								if(res.tapIndex==0){
+									 sourceType=['camera']
+								}else{
+									sourceType=['album']
+								}
+							 uni.chooseVideo({
+							    count: 1,
+									sizeType: ['original', 'compressed'],
+									sourceType:sourceType,
+									success: function(res) {
+										console.log(res)
+										that.uploadvideo(res)
+									}
+								});
+						},
+						fail: function (res) {
+							uni.showToast({
+								icon:'none',
+								title:'操作失败'
+							})
+								console.log(res.errMsg);
+						}
+						
+				});
+				return
 			  wx.chooseVideo({
 			    success: function (res) {
 			      // that.sp_url= res.tempFilePath
@@ -535,6 +551,13 @@
 								icon:'none',
 								title: '操作成功'
 							})
+							var pages = getCurrentPages();   //当前页面
+							var prevPage = pages[pages.length - 2];   //上一页面
+							prevPage.setData({
+							  //直接给上一个页面赋值
+							  daiyan_newtype: true,
+							});
+										
 							setTimeout(function () {
 							  uni.navigateBack({
 							  	delta:1,
@@ -600,6 +623,52 @@
 			},
 			scpic() {
 			  var that = this
+				var z_count = 9 - that.imgb.length
+				uni.showActionSheet({
+						itemList: ['拍照', '相册'],
+						success: function (res) {
+								console.log('选中了第' + (res.tapIndex + 1) + '个按钮');
+								var sourceType=['camera', 'album']
+								if(res.tapIndex==0){
+									 sourceType=['camera']
+								}else{
+									sourceType=['album']
+								}
+								uni.chooseImage({
+									count: z_count,
+									sizeType: ['original', 'compressed'],
+									sourceType:sourceType,
+									success: function(res) {
+										console.log(res)
+										const tempFilePaths = res.tempFilePaths
+								
+										const imglen = that.imgb.length
+								
+										if (imglen == 9) {
+											wx.showToast({
+												icon: 'none',
+												title: '最多可上传九张'
+											})
+											return
+										} else {
+											// that.sj_img=that.sj_img.concat(res.tempFilePaths).slice(0,9)
+										}
+										// return
+										
+										that.upimg(tempFilePaths, 0)
+									}
+								});
+						},
+						fail: function (res) {
+							uni.showToast({
+								icon:'none',
+								title:'操作失败'
+							})
+								console.log(res.errMsg);
+						}
+						
+				});
+				return
 			  wx.chooseImage({
 			    count: 9,
 			    sizeType: ['original', 'compressed'],
@@ -680,7 +749,7 @@
 					const d = await getSharePoster({
 						_this: _this, //若在组件中使用 必传
 						type: 'testShareType',
-						backgroundImage:'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/hbbg.jpg',
+						backgroundImage:service.imgurl+that.moban_list[that.mb_cur].url_bg,
 						formData: {
 							//访问接口获取背景图携带自定义数据
 			
@@ -709,17 +778,19 @@
 									id: 'productImage',
 									// url: _this.count % 2 === 0 ? '/static/1.png' : '/static/2.jpg',
 									// url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/ewm.png',
-									url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/xcxm.jpg',
-									dx: 254,
-									dy: 494,
+									// url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/xcxm.jpg',
+									url: that.loginMsg.personal_code,
+									// url: service.imgurl+'/static_s/51daiyan/images/xcx_zs.jpg',
+									dx: that.moban_list[that.mb_cur].dx,
+									dy: that.moban_list[that.mb_cur].dy,
 									serialNum: 0,
 									circleSet:true,
 									infoCallBack(imageInfo) {
 										let width;
 										let height;
 										
-										width=244
-										height=244
+										width=that.moban_list[that.mb_cur].width
+										height=that.moban_list[that.mb_cur].height
 										
 										return {
 											dWidth: width,
@@ -727,30 +798,12 @@
 										}
 									}
 								},
-								/*{
-									type: 'qrcode',
-									text: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/xcxm.jpg',
-									serialNum: 0,
-									allInfoCallback({
-										drawArray
-									}) {
-										const productImage = drawArray.find(item => item.id === 'productImage')
-										const addHeight = getBgObj().height - productImage.dHeight;
-										const widthSize = getBgObj().width * .4;
-										const heightSize = addHeight;
-										const countSize = widthSize > heightSize ? heightSize : widthSize;
-										const size = countSize * .9;
-										return {
-											size: 244,
-											dx: 254,
-											dy: 494
-										}
-									}
-								},*/{
+								{
 									type: 'image',
 									id: 'userImage',
 									// url: _this.count % 2 === 0 ? '/static/1.png' : '/static/2.jpg',
 									url: _this.loginMsg.avatarurl,
+									// url:service.imgurl+'/static_s/51daiyan/images/logo.png',
 									dx: 100,
 									dy: 900,
 									serialNum: 0,
@@ -772,6 +825,7 @@
 									type: 'text',
 									id: 'productName',
 									text: _this.loginMsg.nickname,
+									// text: '51代言',
 									color: '#000',
 									serialNum: 1,
 									allInfoCallback({
@@ -819,6 +873,7 @@
 								{
 									type: 'text',
 									text: _this.loginMsg.advocacy_goods_number+'件',
+									// text: '10件',
 									serialNum: 3,
 									allInfoCallback({
 										drawArray
@@ -841,6 +896,7 @@
 								{
 									type: 'text',
 									text: _this.loginMsg.follow_buy_goods_number+'件',
+									// text: '100件',
 									serialNum: 3,
 									allInfoCallback({
 										drawArray
@@ -863,6 +919,7 @@
 								{
 									type: 'text',
 									text: _this.loginMsg.exceed_number+'%好友',
+									// text: '100%好友',
 									serialNum: 3,
 									allInfoCallback({
 										drawArray
@@ -906,6 +963,7 @@
 					      // console.log(i)
 					      // newdata.push(ndata.msg)
 					      _this.src= ndata.msg
+								_this.poster.finalPath=service.imgurl+ndata.msg
 								 wx.showToast({
 									 icon: "none",
 									 title: "上传成功"
@@ -926,15 +984,50 @@
 			},
 			saveImage() {
 				// #ifndef H5
-				uni.saveImageToPhotosAlbum({
-					filePath: this.poster.finalPath,
-					success(res) {
-						_app.showToast('保存成功');
-					}
-				})
+				uni.showModal({
+				    title: '提示',
+				    content: '是否保存',
+				    success: function (res) {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+										// uni.saveImageToPhotosAlbum({
+										// 	filePath: that.poster.finalPath,
+										// 	success(res) {
+										// 		_app.showToast('保存成功');
+										// 	}
+										// })
+										uni.downloadFile({
+										    url: service.imgurl+that.src,
+										    success: (res) => {
+										        if (res.statusCode === 200) {
+										            console.log('下载成功');
+																uni.hideLoading()
+																uni.saveImageToPhotosAlbum({
+																	filePath: res.tempFilePath,
+																	success(res) {
+																		uni.showToast({
+																			title:'保存成功'
+																		});
+																	},
+																	fail(res) {
+																		console.log(res)
+																		uni.showToast({
+																			title:res
+																		});
+																	},
+																})
+										        }
+										    }
+										});
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+				
 				// #endif
 				// #ifdef H5
-				_app.showToast('保存了');
+				// _app.showToast('保存了');
 				// #endif
 			},
 			share() {
@@ -1473,8 +1566,8 @@ view.haibao_box{
   margin: 20rpx 0;
 }
 .haibao_box{
-  width:190rpx;
-  height:338rpx;
+	 width:190rpx;
+	 height:338rpx;
   border-radius:10rpx;
 }
 .haibao_box1{
@@ -1747,5 +1840,37 @@ view.haibao_box{
 
 	.marginTop2vh {
 		margin-top: 2vh;
+	}
+	
+	
+	
+	
+	
+	.hb_moban_list{
+		width: 100%;
+	    background: #fff;
+	    height: 345rpx;
+	    display: -webkit-box;
+	    display: -webkit-flex;
+	    display: flex;
+	    white-space: nowrap;
+	    margin-bottom: 20rpx;
+	}
+	.hb_moban_li{
+		width:190rpx;
+		height:338rpx;
+		border-radius:10rpx;
+		margin-right: 15upx;
+		border:1px solid #fff;
+		display: inline-flex;
+	}
+	.hb_moban_li image{
+		width:190rpx;
+		height:338rpx;
+	}
+	.hb_moban_li.cur{
+		/* width:195rpx;
+		height:345rpx; */
+		border:1px solid #FF0000;
 	}
 </style>

@@ -17,7 +17,7 @@
 		    </view>
 				
 		    <!-- <view class="add_r"> -->
-		    <text class="iconfont iconnext"></text>
+		    <text class="iconfont iconnext3"></text>
 		    <!-- </view> -->
 		  </view>
 		  <view class="orderbder">
@@ -558,7 +558,8 @@
 						
 							that.btnkg=0
 								uni.redirectTo({
-									url:'/pagesA/OrderList/OrderList'
+									// url:'/pagesA/OrderList/OrderList'
+									url:'/pagesA/OrderList/OrderList?type=5'
 								})
 						},1000)
 						return
@@ -578,7 +579,8 @@
 							service.wxlogin()
 							setTimeout(() => {
 								uni.redirectTo({
-									url:'/pagesA/OrderList/OrderList'
+									// url:'/pagesA/OrderList/OrderList'
+									url:'/pagesA/OrderList/OrderList?type=5'
 								})
 							}, 1000)
 						}).catch(e => {

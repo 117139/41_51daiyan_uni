@@ -105,14 +105,23 @@
 		
 		  </view>
 		  <view class="fw_list" v-show="type==3">
-		    <!-- <view class="haibao" @tap="getPosterHandle">生成海报</view> -->
-		    <!-- <view class="haibao" @tap="renderToCanvas">生成海报</view> -->
+		    <view class="fuwu_li">
+		    	<view class="d1">选择海报模板</view>
+		    	<view class="fw_msg">
+		    	
+		    	</view>
+		    </view>
+		    <scroll-view scroll-x class="hb_moban_list">
+		    	<view class="hb_moban_li" :class="mb_cur==index?'cur':''" @tap="mb_cur=index" v-for="(item,index) in moban_list">
+		    		<image :src="getimg(item.url)" mode=""></image>
+		    	</view>
+		    </scroll-view>
 		    <view class="haibao" @tap="shareFc()">生成海报</view>
 		    <!-- <view class="haibao" @tap="extraImage">下载海报</view> -->
 		    <!-- <view class="haibao" @tap="ctxc">生成海报</view> -->
 		    <view  class="haibao_box">
 		      <!-- <image class="haibao_box" src="{{filter.imgIP(haibao)}}"></image> -->
-		      <image v-if="src" class="haibao_box" :src="filter.imgIP(src)"></image>
+		      <image @tap="saveImage" v-if="src" class="haibao_box" :src="filter.imgIP(src)"></image>
 		    </view>
 		    <!-- <view  class="haibao_box haibao_box1">
 		      <image v-if="src" class="haibao_box haibao_box1" :src="filter.imgIP(src)"></image>
@@ -166,6 +175,7 @@
 	import {
 		getSharePoster
 	} from '../../utils/QS-SharePoster/QS-SharePoster.js';
+	var that
 	export default {
 		data() {
 			return {
@@ -212,7 +222,33 @@
 				xdxy_type:1,
 				
 				
-				
+				moban_list:[
+					{
+						url:'/static_s/51daiyan/images/hb_moban1.jpg',
+						url_bg:'/static_s/51daiyan/images/hbbg.jpg',
+						dx: 254,
+						dy: 494,
+						width:244,
+						height:244,
+					},
+					{
+						url:'/static_s/51daiyan/images/hb_moban2.jpg',
+						url_bg:'/static_s/51daiyan/images/hdhb1.jpg',
+						dx: 270,
+						dy: 572,
+						width:208,
+						height:208,
+					},
+					{
+						url:'/static_s/51daiyan/images/hb_moban3.jpg',
+						url_bg:'/static_s/51daiyan/images/hdhb2.jpg',
+						dx: 283,
+						dy: 517,
+						width:208,
+						height:208,
+					},
+				],
+				mb_cur:0,
 				poster: {
 					width:750,
 					height:1334
@@ -231,7 +267,7 @@
 			])
 		},
 		onLoad(option) {
-			var that =this
+			that =this
 			this.sheetshow_fuc()
 			if(option.type){
 				that.type=option.type
@@ -252,6 +288,9 @@
 			// this.getOrderList('onshow')
 		},
 		methods: {
+			getimg(img){
+				return service.getimg(img)
+			},
 			getdata_xy() {
 				var that = this
 				var datas = {
@@ -299,57 +338,7 @@
 			open_more(){
 			  this.open_type=10000
 			},
-			renderToCanvas() {
-			  // var that=this
-			  wx.showLoading({
-			    title: '正在生成中'
-			  })
-			  const p1 = this.widget.renderToCanvas({ wxml, style })
-			  p1.then((res) => {
-			    console.log('container', res.layoutBox)
-			    this.container = res
-			    wx.hideLoading()
-			    this.extraImage()
-			    
-			  })
-			},
-			extraImage() {
-			  console.log('xiazai')
-			  const p2 = this.widget.canvasToTempFilePath()
-			  p2.then(res => {
-			    wx.showLoading({
-			      title: '正在保存'
-			    })
-			    wx.saveImageToPhotosAlbum({
-			      filePath: res.tempFilePath,
-			      success(res1) {
-			        console.log(res1)
-			        wx.hideLoading()
-			        setTimeout(function (){
-			          wx.showToast({
-			            title: '保存成功',
-			          })
-			        },1000)
-			      },
-			      fail(err){
-			        wx.hideLoading()
-			        wx.showToast({
-			          icon:'none',
-			          title: '保存失败',
-			        })
-			        console.log(err)
-			      },
-			      complete(err){
-			        wx.hideLoading()
-			      }
-			    })
-			    this.setData({
-			      src: res.tempFilePath,
-			      width: 750,
-			      height: 1334
-			    })
-			  })
-			},
+			
 			cload(){
 				var pages=1
 				var goods=[1,1,]
@@ -367,53 +356,7 @@
 			onPullDownRefresh: function () {
 			  wx.stopPullDownRefresh();
 			},
-			drawImage() {
-			  let _this = this;
-			  var drawimg = new Wxml2Canvas({
-			    width: _this.data.width,
-			    height: _this.data.height,
-			    element: 'canvas1',
-			    background: '#000000',
-			    progress(percent) {
-			    },
-			    finish(url) {
-			      wx.hideLoading();
-			      wx.saveImageToPhotosAlbum({
-			        filePath: url
-			      })
-			    },
-			    error(res) {
-			    }
-			  });
-			
-			  let data = {
-			    list: [
-			      {   //绘制矩形
-			        type: 'rect',
-			        x: 0,
-			        y: 50,
-			        style: {
-			          width: _this.data.width,
-			          height: _this.data.height - 60,
-			          fill: '#fff'
-			        }
-			      },
-			      {   //根据wxml绘制,
-			        type: 'wxml',
-			        class: '.hb_canvas .draw_canvas',
-			        limit: '.hb_canvas',
-			        x: 5,
-			        y: 70
-			      }]
-			  }
-			  drawimg.draw(data);
-			},
-			getPosterHandle() {
-			  wx.showLoading({
-			    title: '海报生成中...',
-			  })
-			  this.drawImage();
-			},
+		
 			
 			
 			
@@ -429,7 +372,7 @@
 			chooseVideo: function () {
 			  var that = this
 				uni.showActionSheet({
-						itemList: ['拍照', '相册'],
+						itemList: ['拍摄', '相册'],
 						success: function (res) {
 								console.log('选中了第' + (res.tapIndex + 1) + '个按钮');
 								var sourceType=['camera', 'album']
@@ -457,6 +400,7 @@
 						}
 						
 				});
+				return
 			  wx.chooseVideo({
 			    success: function (res) {
 			      // that.sp_url= res.tempFilePath
@@ -690,7 +634,7 @@
 										console.log(res)
 										const tempFilePaths = res.tempFilePaths
 								
-										const imglen = that.sj_img.length
+										const imglen = that.imgb.length
 								
 										if (imglen == 9) {
 											wx.showToast({
@@ -825,7 +769,8 @@
 					const d = await getSharePoster({
 						_this: _this, //若在组件中使用 必传
 						type: 'testShareType',
-						backgroundImage:'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/hbbg.jpg',
+						// backgroundImage:'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/hbbg.jpg',
+						backgroundImage:service.imgurl+that.moban_list[that.mb_cur].url_bg,
 						formData: {
 							//访问接口获取背景图携带自定义数据
 			
@@ -853,17 +798,18 @@
 									id: 'productImage',
 									// url: _this.count % 2 === 0 ? '/static/1.png' : '/static/2.jpg',
 									// url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/ewm.png',
-									url: 'http://51daiyan.test.upcdn.net/static_s/51daiyan/images/xcxm.jpg',
-									dx: 254,
-									dy: 494,
+									url: that.loginMsg.personal_code,
+									// url: service.imgurl+'/static_s/51daiyan/images/xcx_zs.jpg',
+									dx: that.moban_list[that.mb_cur].dx,
+									dy: that.moban_list[that.mb_cur].dy,
 									serialNum: 0,
 									circleSet:true,
 									infoCallBack(imageInfo) {
 										let width;
 										let height;
 										
-										width=244
-										height=244
+										width=that.moban_list[that.mb_cur].width
+										height=that.moban_list[that.mb_cur].height
 										
 										return {
 											dWidth: width,
@@ -1049,6 +995,7 @@
 					      // console.log(i)
 					      // newdata.push(ndata.msg)
 					      _this.src= ndata.msg
+								_this.poster.finalPath=service.imgurl+ndata.msg
 								 wx.showToast({
 									 icon: "none",
 									 title: "上传成功"
@@ -1069,12 +1016,46 @@
 			},
 			saveImage() {
 				// #ifndef H5
-				uni.saveImageToPhotosAlbum({
-					filePath: this.poster.finalPath,
-					success(res) {
-						_app.showToast('保存成功');
-					}
-				})
+				uni.showModal({
+				    title: '提示',
+				    content: '是否保存',
+				    success: function (res) {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+										// uni.saveImageToPhotosAlbum({
+										// 	filePath: that.poster.finalPath,
+										// 	success(res) {
+										// 		_app.showToast('保存成功');
+										// 	}
+										// })
+										uni.downloadFile({
+										    url: that.poster.finalPath,
+										    success: (res) => {
+										        if (res.statusCode === 200) {
+										            console.log('下载成功');
+																uni.hideLoading()
+																uni.saveImageToPhotosAlbum({
+																	filePath: res.tempFilePath,
+																	success(res) {
+																		uni.showToast({
+																			title:'保存成功'
+																		});
+																	},
+																	fail(res) {
+																		console.log(res)
+																		uni.showToast({
+																			title:res
+																		});
+																	},
+																})
+										        }
+										    }
+										});
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
 				// #endif
 				// #ifdef H5
 				_app.showToast('保存了');
@@ -1890,5 +1871,36 @@ view.haibao_box{
 
 	.marginTop2vh {
 		margin-top: 2vh;
+	}
+	
+	
+	
+	
+	.hb_moban_list{
+		width: 100%;
+	    background: #fff;
+	    height: 345rpx;
+	    display: -webkit-box;
+	    display: -webkit-flex;
+	    display: flex;
+	    white-space: nowrap;
+	    margin-bottom: 20rpx;
+	}
+	.hb_moban_li{
+		width:190rpx;
+		height:338rpx;
+		border-radius:10rpx;
+		margin-right: 15upx;
+		border:1px solid #fff;
+		display: inline-flex;
+	}
+	.hb_moban_li image{
+		width:190rpx;
+		height:338rpx;
+	}
+	.hb_moban_li.cur{
+		/* width:195rpx;
+		height:345rpx; */
+		border:1px solid #FF0000;
 	}
 </style>
