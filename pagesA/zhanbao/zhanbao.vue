@@ -104,7 +104,7 @@
 					</view>
 					
 					<view v-if="datas.my_ranking>0" class="jx_li jx_li1">
-						<view class="my_num"><text>{{datas.my_ranking}}</text>名</view>
+						<view class="my_num">{{datas.my_ranking}}<text>名</text></view>
 						<!-- <image class="jx_li_tx" src="http://51daiyan.test.upcdn.net//static_s/51daiyan/images/tx.png" mode="aspectFill"></image> -->
 						<image class="jx_li_tx" :src="filter.imgIP(loginMsg.avatarurl)" mode="aspectFill"></image>
 						<view class="jx_li_name " style="width: 2em;">本人</view>
@@ -520,11 +520,13 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 24upx;
+		font-size: 32upx;
 		color: #fff;
 		margin-right: 20upx;
 	}
 	.my_num text{
-		font-size: 32upx;
+		position: relative;
+		top: 4upx;
+		font-size: 24upx;
 	}
 </style>
