@@ -13,7 +13,7 @@
 				<view class="cw_list"	v-for="(item1,idx1) in cw_data">
 					<view class="cw1">
 						<view class="fz28 c3">{{item1.change_type_value}}</view>
-						<view v-if="item1.BeiZhuName!==''" class="fz24 c9">{{item1.BeiZhuName}}</view>
+						<view v-if="item1.desc!==''" class="fz24 c9">{{item1.desc}}</view>
 					</view>
 					<view class="cw1 cw2">
 						<view class="fz32 cee1111">{{item1.symbol}}{{item1.price}}</view>

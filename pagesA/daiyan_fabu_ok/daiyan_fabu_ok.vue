@@ -7,6 +7,7 @@
 		    <view class="btn1" v-if="type==3" @tap='share'>保存海报图片</view>
 		    <!-- <button class="btn1" v-if="type==2" open-type=''>保存海报图片</button> -->
 		    <view class="btn2" @tap="goindex">回到首页</view>
+		    <view v-if="activity_id>0" class="btn2" @tap="goshare" :data-url="'/pagesA/share/share?id='+activity_id">活动分享</view>
 		  </view>
 		</view>
 	</view>
@@ -24,15 +25,24 @@
 			return {
 				type:'',
 				path:'',
+				activity_id:''
 			}
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
+		},
 		onLoad: function (options) {
 			if(options.type){
 				this.type=options.type
 				this.path=options.path
+				this.activity_id=options.activity_id
 			}
 		},
 		
@@ -92,6 +102,12 @@
 			// }
 		},
 		methods: {
+			goshare(e) {
+				var that =this
+			  wx.reLaunch({
+			    url: '/pagesA/share/share?id='+that.activity_id+'&user_id='+that.loginMsg.id
+			  })
+			},
 			share(){
 				var that=this
 				uni.showLoading({

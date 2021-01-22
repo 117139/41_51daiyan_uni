@@ -2,9 +2,17 @@
 	<view>
 		<view class="container">
 		  <view class="avtivity_box">
-		    <image class="avtivity_box"  :src="filter.imgIP(datas.img[0])" mode="aspectFill"></image>
+		    <image class="avtivity_box"  :src="filter.imgIP(datas.act_img[0])" mode="aspectFill"></image>
 		    <view class="hd_time">活动截止时间：{{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>
 		  </view>
+			<view class="share_main">
+				<image class="share_main_bg" :src="filter.imgIP('/static_s/51daiyan/images/tp_bg_02.jpg')" mode="widthFix"></image>
+				<view class="share_main_box">
+					<image class="share_main_tx" @tap.stop="toupiao" :src="loginMsg.avatarurl" mode="aspectFill"></image>
+					<view class="share_main_text">我在参与{{datas.act_title}}活动，需要您的宝贵一票</view>
+					<image class="share_main_ewm" :src="loginMsg.personal_code" mode="aspectFill"></image>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -21,22 +29,33 @@
 		data() {
 			return {
 				datas:'',
+				ad_id:'',
+				user_id:''
 			}
 		},
-		onLoad() {
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginMsg',
+				'wxlogin'
+			])
+		},
+		onLoad(option) {
+			
 			that=this
+			that.ad_id=option.id
+			that.user_id=option.user_id
 			that.getdatalist()
 		},
 		methods: {
 			getdatalist() {
 			
 				let that = this
-				var jkurl = '/activity/activityHit'
+				var jkurl = '/activity/activityDetailsVote'
 				var datas = {
 					token: that.loginMsg.userToken,
-					page: that.page,
-					size:that.size,
-					id:that.ad_id
+					act_id:that.ad_id,
+					user_id:that.user_id
 				}
 				if(that.data_last) return
 				if (that.btn_kg == 1) {
@@ -56,7 +75,7 @@
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-						that.hd_type=res.data.is_act_open
+						that.datas=res.data
 						
 					}
 				}).catch(e => {
@@ -70,7 +89,33 @@
 				})
 				
 			},
-			
+			toupiao(e) {
+			  // var id = this.user_id
+			  // var idx = e.currentTarget.dataset.idx
+				var that =this
+			  var datas = {
+			  	token: that.loginMsg.userToken,
+			  	aau_id:that.user_id,
+					activity_id:that.ad_id
+			  }
+			  // 单个请求
+			  service.P_post('/activity/vote', datas).then(res => {
+			  	console.log(res)
+			  	if (res.code == 1) {
+			  		
+			  		uni.showToast({
+			  			icon: 'none',
+			  			title: '投票成功'
+			  		})
+			  	}
+			  }).catch(e => {
+			  	console.log(e)
+			  	uni.showToast({
+			  		icon: 'none',
+			  		title: '操作失败'
+			  	})
+			  })
+			},
 		}
 	}
 </script>
@@ -78,9 +123,9 @@
 <style scoped>
 	.container{
 		width: 100%;
-		min-height: 100vh;
+		height: 100vh;
+		overflow: hidden;
 		background: #fff;
-	  padding-bottom: 50rpx;
 	  position: relative;
 	}
 	.avtivity_box{
@@ -100,5 +145,51 @@
 	  width:750rpx;
 	  height:110rpx;
 	  position: relative;
+	}
+	.share_main{
+		width: 100%;
+		min-height: calc(100vh - 336upx);
+		position: relative;
+	}
+	.share_main_bg{
+		width: 100%;
+		min-height: calc(100vh - 336upx);
+		position: relative;
+		z-index: 0;
+		top: 0;
+		left: 0;
+	}
+	.share_main_box{
+		position: absolute;
+		z-index: 1;
+		width: 100%;
+		top: 0;
+		left: 0;
+	}
+	.share_main_tx{
+		width: 146upx;
+		height: 146upx;
+		border-radius: 50%;
+		position: absolute;
+		top: 122upx;
+		left: 307upx;
+	}
+	.share_main_text{
+		position: absolute;
+		top: 570upx;
+		left: 50%;
+		width: 690upx;
+		margin-left: -345upx;
+		font-size: 30upx;
+		color: #333;
+		font-weight: bold;
+		text-align: center;
+	}
+	.share_main_ewm{
+		position: absolute;
+		width: 143upx;
+		height: 143upx;
+		top: 628upx;
+		left: 562upx;
 	}
 </style>

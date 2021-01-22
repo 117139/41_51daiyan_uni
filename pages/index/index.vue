@@ -525,7 +525,7 @@
 			getdata() {
 				var that = this
 				var datas = {
-					token: that.loginMsg.userToken,
+					token: that.loginMsg.userToken||'',
 				}
 				// 单个请求
 				service.P_get('', datas).then(res => {

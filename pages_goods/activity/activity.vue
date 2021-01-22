@@ -1,6 +1,8 @@
 <template>
 	<view>
 		<view class="container">
+			<view  @tap="jump" :data-url="'/pagesA/zhanbao/zhanbao?id='+ad_id">活动战报</view>
+			<view  @tap="jump" :data-url="'/pagesA/share/share?id='+ad_id+'&user_id='+loginMsg.id">活动分享</view>
 		  <view class="avtivity_box">
 		    <image  class="avtivity_box" :src="filter.imgIP(datas.img[0])" mode="aspectFill"></image>
 		    <view class="hd_time">活动截止时间：{{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>
@@ -64,32 +66,42 @@
 		    
 		  </view>
 		  <view class="hd_tip">提示！活动开始前完成购买代言，即刻开始拉票！</view>
-		  <view class="hd_db" v-if="hd_type==2">
-		    <view>本期优选代言人排行榜</view>
-		    <view class="jump_btn" @tap="jump" :data-url="'/pages_goods/activity_db/activity_db?id='+ad_id">进入打榜页<text class="iconfont iconnext3"></text></view>
-		  </view>
-		  <view class="dy_list" v-if="hd_type==2">
-		    <view class="dy_box" v-for="(item,idx) in star_list">
-		      <view class="dy_li">
-		        <view class="pl_num">
-		          <image v-if="idx==0" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_1.png')"></image>
-		          <image v-if="idx==1" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_2.png')"></image>
-		          <image v-if="idx==2" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_3.png')"></image>
-		          <text v-if="idx>2">{{idx+1}}</text>
-		        </view>
-		        <view class="pl_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
-		          <image class="pl_tx" :src="filter.imgIP(item.head_portrait)" mode="aspectFill"></image>
-		        </view>
-		        <view class="ph_name">{{item.nickname}}</view>
-		        <view class="ph_num"><text>{{item.popularity}}</text>人气值</view>
-		        <view v-if="item.is_vote==2" @tap.stop="toupiao"  :data-id="item.user_id" :data-idx="idx" class="ph_btn">投票</view>
-		        <view  v-else class="ph_btn ph_btn1">已投票</view>
-		      </view>
-		      <view class="li_dy">代言说：{{item.say}}</view>
-		    </view>
-				
-				<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
-		  </view>
+		  <block v-if="hd_type==2">
+				<view class="hd_db">
+				  <view>本期优选代言人排行榜</view>
+				  <view class="jump_btn" @tap="jump" :data-url="'/pages_goods/activity_db/activity_db?id='+ad_id">进入打榜页<text class="iconfont iconnext3"></text></view>
+				</view>
+				<view class="dy_list">
+				  <view class="dy_box" v-for="(item,idx) in star_list">
+				    <view class="dy_li">
+				      <view class="pl_num">
+				        <image v-if="idx==0" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_1.png')"></image>
+				        <image v-if="idx==1" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_2.png')"></image>
+				        <image v-if="idx==2" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_3.png')"></image>
+				        <text v-if="idx>2">{{idx+1}}</text>
+				      </view>
+				      <view class="pl_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
+				        <image class="pl_tx" :src="filter.imgIP(item.head_portrait)" mode="aspectFill"></image>
+				      </view>
+				      <view class="ph_name">{{item.nickname}}</view>
+				      <view class="ph_num"><text>{{item.popularity}}</text>人气值</view>
+				      <view v-if="item.is_vote==2" @tap.stop="toupiao"  :data-id="item.user_id" :data-idx="idx" class="ph_btn">投票</view>
+				      <view  v-else class="ph_btn ph_btn1">已投票</view>
+				    </view>
+				    <view class="li_dy">代言说：{{item.say}}</view>
+				  </view>
+					
+					<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
+				</view>
+			</block>
+			<view class="hd_js" v-else>
+				<view class="pl_li1">活动介绍</view>
+				<view class="dyr_tit" v-if="datas.title">{{datas.title}}：</view>
+				<view class="dyr_tit" v-else>{{datas.store_name}}优选代言人：</view>
+				<view class="dyr_msg" v-html="datas.content">
+					<!-- 选出最会玩，最有影响力的代言人，人人都可参与的代言人活动。自拍短视频上传，并拉动朋友参与优选投票。你就有机会成为该品牌的优选代言人，并获得现金激励。 -->
+				</view>
+			</view>
 		</view>
 		
 	</view>
@@ -613,5 +625,30 @@ view.pl_tx{
 	margin-top: 10rpx;
 	font-size: 24rpx;
 	color: #999;
+}
+
+.hd_js{
+	width: 100%;
+	padding: 0 30upx;
+	box-sizing: border-box;
+}
+.pl_li1{
+	width: 100%;
+	height: 100upx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 32upx;
+	color: #333;
+	font-weight: bold;
+}
+.dyr_tit{
+  font-size: 28rpx;
+  color: #333;
+}
+.dyr_msg{
+  font-size: 28rpx;
+  color: #999;
+  margin: 20rpx auto;
 }
 </style>

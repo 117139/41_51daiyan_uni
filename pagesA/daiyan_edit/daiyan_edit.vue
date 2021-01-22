@@ -21,10 +21,18 @@
 		        </view>
 		      </view>
 		    </view>
-		    <view class="goods_more" v-if="open_type==2">
-		      <view>共{{dy_fb_list.length}}件</view>
-		      <view class="gm_more" @tap="open_more">点击查看更多</view>
-		    </view>
+		    
+		    <block v-if="dy_fb_list.length>1">
+		    	
+		    	<view class="goods_more" v-if="open_type==1">
+		    	  <view>共{{dy_fb_list.length}}件</view>
+		    	  <view class="gm_more" @tap="open_more">点击查看更多</view>
+		    	</view>
+		    	<view class="goods_more" v-else>
+		    	  <view>共{{dy_fb_list.length}}件</view>
+		    	  <view class="gm_more" @tap="open_type=1">点击收起</view>
+		    	</view>
+		    </block>
 		  </view>
 		  <view class='dis_flex ju_a w100 pb40 pt20 bgfff tab_box'>
 		    <!-- <block  v-for="(item,idx) in datalist"> -->
@@ -1144,7 +1152,7 @@ page{
 
 .goodsBox{
 	width: 100%;
-  padding: 20rpx 28rpx 0;
+  padding: 20rpx 28rpx;
   box-sizing: border-box;
   background: #fff;
   border-bottom: 20rpx solid #f5f5f5;

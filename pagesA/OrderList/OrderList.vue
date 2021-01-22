@@ -571,8 +571,10 @@
 					  for (var j=0;j<that.datas[i].order_goods.length;j++) {
 							console.log(i,j)
 							console.log(that.datas[i].order_goods[j])
-					    that.$set(that.datas[i].order_goods[j],'xuan',kg)
-							new_sele.push(that.datas[i].order_goods[j])
+							if(that.datas[i].order_goods[j].activity_id==0){
+								that.$set(that.datas[i].order_goods[j],'xuan',kg)
+								new_sele.push(that.datas[i].order_goods[j])
+							}
 					  }
 					}
 					that.goods_sele=new_sele
@@ -582,7 +584,11 @@
 			    for (var i=0 ;i<that.datas.length;i++) {
 			      
 			      for (var j=0;j<that.datas[i].order_goods.length;j++) {
-			        that.$set(that.datas[i].order_goods[j],'xuan',kg)
+							
+							if(that.datas[i].order_goods[j].activity_id==0){
+								 that.$set(that.datas[i].order_goods[j],'xuan',kg)
+							}
+			       
 			      }
 			    }
 			  }

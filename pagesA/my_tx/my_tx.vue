@@ -258,19 +258,28 @@
 					})
 					return
 				}
+				
+				var jkurl 
+				var datas
 				if(that.tx_type==0){
-					uni.showToast({
-						icon: 'none',
-						title: '微信提现',
-					})
-					return 
+					// uni.showToast({
+					// 	icon: 'none',
+					// 	title: '微信提现',
+					// })
+					jkurl = '/user/withDrawLooseChange'
+					datas = {
+						token: that.loginMsg.userToken,
+						money:that.tx_mon
+					}
+				}else{
+					jkurl = '/user/withDraw'
+					datas = {
+						token: that.loginMsg.userToken,
+						card_id:that.bank_list[that.tx_crad].id,
+						money:that.tx_mon
+					}
 				}
-				var jkurl = '/user/withDraw'
-				var datas = {
-					token: that.loginMsg.userToken,
-					card_id:that.bank_list[that.tx_crad].id,
-					money:that.tx_mon
-				}
+				
 				
 				// 单个请求
 				service.P_post(jkurl, datas).then(res => {

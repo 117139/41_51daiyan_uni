@@ -322,9 +322,16 @@
 						"enablePullDownRefresh": false
 					}
 
+				}, {
+					"path": "share/share",
+					"style": {
+						"navigationBarTitleText": "活动分享",
+						"enablePullDownRefresh": false
+					}
+
 				}
 			    ,{
-                    "path" : "share/share",
+                    "path" : "zhanbao/zhanbao",
                     "style" :                                                                                    
                 {
                     "navigationBarTitleText": "",

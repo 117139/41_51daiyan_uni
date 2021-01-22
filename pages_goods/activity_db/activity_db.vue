@@ -70,7 +70,8 @@
 		    </view>
 		    <view class="dy_list" v-if="ph_type=='1'">
 		      <view class="hd_js">
-		        <view class="dyr_tit">{{datas.store_name}}优选代言人：</view>
+		        <view class="dyr_tit" v-if="datas.title">{{datas.title}}：</view>
+		        <view class="dyr_tit" v-else>{{datas.store_name}}优选代言人：</view>
 						<view class="dyr_msg" v-html="datas.content">
 							<!-- 选出最会玩，最有影响力的代言人，人人都可参与的代言人活动。自拍短视频上传，并拉动朋友参与优选投票。你就有机会成为该品牌的优选代言人，并获得现金激励。 -->
 						</view>

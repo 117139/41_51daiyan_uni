@@ -517,6 +517,8 @@
 			if(options.dy_id){
 				
 				this.dy_id=options.dy_id
+			}
+			if(options.advocacyviceId){
 				this.advocacyviceId=options.advocacyviceId
 			}
 			this.onRetry()

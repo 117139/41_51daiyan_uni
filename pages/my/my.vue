@@ -231,7 +231,7 @@
 		onPullDownRefresh: function () {
 		  if(this.hasLogin){
 				service.wxlogin()
-				this.getdata()
+				
 			}else{
 				uni.stopPullDownRefresh();
 			}
@@ -239,6 +239,10 @@
 		onLoad() {
 			if(this.hasLogin){
 				service.wxlogin()
+			}
+		},
+		onShow() {
+			if(this.hasLogin){
 				this.getdata()
 			}
 		},
