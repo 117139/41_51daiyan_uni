@@ -568,15 +568,24 @@
 					  this.nextReqMessageID =  res.data.nextReqMessageID // 用于续拉，分页续拉时需传入该字段。
 					  this.isCompleted =  res.data.isCompleted
 					  this.scrollToView = res.data.messageList[res.data.messageList.length-1].ID
+						
+						setTimeout(function (){
+							this.scrollTop = 9999;
+							this.$nextTick(function() {
+								this.scrollAnimation = true;
+							});
+						},10)
 					});
+					
+					
 				// 滚动到底部
-				this.$nextTick(function() {
-					//进入页面滚动到底部
-					this.scrollTop = 9999;
-					this.$nextTick(function() {
-						this.scrollAnimation = true;
-					});
-				});
+				// this.$nextTick(function() {
+				// 	//进入页面滚动到底部
+				// 	this.scrollTop = 9999;
+				// 	this.$nextTick(function() {
+				// 		this.scrollAnimation = true;
+				// 	});
+				// });
 			},
 			//处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
 			setPicSize(content){

@@ -47,7 +47,8 @@
 						<view class="pp_msg">
 							<view class="pp_d1">
 								<view class="pp_name oh1">{{item.title}}</view>
-								<view class="pp_to" @tap="jump" :data-url="'/pages_goods/activity/activity?id='+item.id">活动详情<text class="iconfont iconnext3"></text></view>
+								<view v-if="item.is_finish==2" class="pp_to" @tap="jump" :data-url="'/pages_goods/activity/activity?id='+item.id">活动详情<text class="iconfont iconnext3"></text></view>
+								<view v-else class="pp_to" @tap="jump" :data-url="'/pagesA/zhanbao/zhanbao?id='+item.id">活动战报<text class="iconfont iconnext3"></text></view>
 							</view>
 							<view class="pp_d2">招募<text>{{item.recruit_number}}</text>人</view>
 						</view>
@@ -63,10 +64,14 @@
 							
 						</view>
 					</view>
-					<view class="pp_tip">
+					<view  v-if="item.is_finish==2" class="pp_tip">
 						<view class="tip_text">活动起止时间：{{filter.getDate_ymd(item.start_time)}}-{{filter.getDate_ymd(item.end_time)}}</view>
 						<view v-if="item.is_apply=='1'" class="tip_btn" :data-id="item.id" @tap="bm_fuc">报名</view>
 						<view v-else class="tip_btn" style="background-color: #ddd;">已报名</view>
+					</view>
+					<view v-else class="pp_tip">
+						<view class="tip_text">活动起止时间：已结束</view>
+						<view class="tip_btn" style="background-color: #ddd;">已结束</view>
 					</view>
 				</view>
 			</view>

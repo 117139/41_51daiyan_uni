@@ -217,7 +217,13 @@
 			uni.showLoading({
 				title:'正在加载中'
 			})
-			this.uid = options.id
+			if(options.id){
+				this.uid = options.id
+			}
+			if(options.scene){
+				const scene = decodeURIComponent(options.scene)
+				this.uid = scene.id
+			}
 			this.getdata()
 			this.getdata_cy()
 		},

@@ -6,7 +6,7 @@
 		    <view class="hd_time">活动截止时间：{{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>
 		  </view>
 			<view class="share_main">
-				<image class="share_main_bg" :src="filter.imgIP('/static_s/51daiyan/images/tp_bg_02.jpg')" mode="widthFix"></image>
+				<image class="share_main_bg" :src="filter.imgIP('/static_s//51daiyan/images/tp_bg_02.jpg')" mode="widthFix"></image>
 				<view class="share_main_box">
 					<image class="share_main_tx" @tap.stop="toupiao" :src="loginMsg.avatarurl" mode="aspectFill"></image>
 					<view class="share_main_text">我在参与{{datas.act_title}}活动，需要您的宝贵一票</view>
@@ -39,6 +39,10 @@
 				'loginMsg',
 				'wxlogin'
 			])
+		},
+		
+		onShareAppMessage() {
+			
 		},
 		onLoad(option) {
 			

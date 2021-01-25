@@ -64,6 +64,7 @@
 	export default {
 		data() {
 			return {
+				btnkg:0,
 				datas:''
 			}
 		},
@@ -77,19 +78,28 @@
 		onLoad() {
 			this.getdata()
 		},
+		onPullDownRefresh() {
+			this.getdata()
+		},
 		methods: {
 			getdata() {
 				var that = this
+				if(that.btnkg=1){
+					return
+				}
+				that.btnkg=1
 				var datas = {
 					token: that.loginMsg.userToken,
 				}
 				// 单个请求
 				service.P_get('', datas).then(res => {
 					console.log(res)
+					that.btnkg=0
 					if (res.code == 1) {
 						that.datas = res.data.activityArr
 					}
 				}).catch(e => {
+					that.btnkg=0
 					console.log(e)
 					uni.showToast({
 						icon: 'none',

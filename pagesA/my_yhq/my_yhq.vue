@@ -66,6 +66,7 @@
 							<image v-if="idx==2" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_10.png')"  mode="aspectFill"></image> -->
 							<view class="yhq_pri">
 								<view class="d1" v-if="item.coupon_setting_type==1"><text>¥{{item.money}}元 </text> 满减券</view>
+								<view class="d2" v-if="item.use_scope==4">定向邀约优惠券</view>
 								<view class="d1" v-if="item.coupon_setting_type==2"><text>{{item.coupon_discount_ratio}}折 </text> 折扣券</view>
 								<view class="d1" v-if="item.coupon_setting_type==3"><text>全额抵扣</text></view>
 								<view class="d2">{{filter.getDate_ymd(item.coupon_use_start_time,'.')}}-{{filter.getDate_ymd(item.coupon_use_end_time,'.')}}</view>
@@ -328,7 +329,6 @@
 		}
 	}
 </script>
-
 <style scoped>
 page{
 	width: 100%;

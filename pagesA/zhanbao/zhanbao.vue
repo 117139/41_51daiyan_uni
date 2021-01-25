@@ -138,8 +138,11 @@
 				datas:'',
 				ad_id:'',
 				ph_list1:[],
+				page1:1,
 				ph_list2:[],
+				page2:1,
 				ph_list3:[],
+				page3:1,
 			}
 		},
 		computed: {
@@ -148,6 +151,9 @@
 				'loginMsg',
 				'wxlogin'
 			])
+		},
+		onShareAppMessage() {
+			
 		},
 		onLoad(option) {
 			
@@ -203,10 +209,20 @@
 			
 				let that = this
 				var jkurl = '/activity/getDAwardPm'
+				var page_page=this.page1
+				if(num==1){
+					page_page=this.page1
+				}
+				if(num==2){
+					page_page=this.page2
+				}
+				if(num==3){
+					page_page=this.page3
+				}
 				var datas = {
 					token: that.loginMsg.userToken,
-					page: 1,
-					size:1,
+					page: page_page,
+					size:20,
 					jdj:num,
 					ad_id:that.ad_id
 				}
@@ -222,14 +238,55 @@
 					
 					that.btn_kg=0
 					if (res.code == 1) {
-						var datas = res.data.user_data
+						var datas = res.data
 						// console.log(typeof datas)
 			
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-						that.datas=res.data
-						
+						// that.datas=res.data
+						if(page_page==1){
+							// that.datas=datas
+							if(num==1){
+								that.ph_list1=datas
+							}
+							if(num==2){
+								that.ph_list2=datas
+							}
+							if(num==3){
+								that.ph_list2=datas
+							}
+						}else{
+							if(datas.length==0){
+							
+								uni.showToast({
+									icon:'none',
+									title:'到底了~'
+								})
+								
+								return
+							}
+							// that.datas=that.datas.concat(datas)
+							if(num==1){
+								that.ph_list1=that.ph_list1.concat(datas)
+							}
+							if(num==2){
+								that.ph_list2=that.ph_list2.concat(datas)
+							}
+							if(num==3){
+								that.ph_list3=that.ph_list3.concat(datas)
+							}
+						}
+						if(num==1){
+							
+							that.page1++
+						}
+						if(num==2){
+							that.page2++
+						}
+						if(num==3){
+							that.page3++
+						}
 					}
 				}).catch(e => {
 					
@@ -350,7 +407,7 @@
 	
 	.zb_bl {
 		position: absolute;
-		top: 23upx;
+		top: 17upx;
 		width: 156upx;
 		height: 52upx;
 	}
@@ -428,7 +485,7 @@
 	
 	.jx_list {
 		width: 100%;
-		min-height: 500upx;
+		/* min-height: 500upx; */
 		background: #FFFFFF;
 		border-radius: 10upx;
 		/* padding-top: 76upx; */
