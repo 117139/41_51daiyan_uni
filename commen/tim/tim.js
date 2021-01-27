@@ -3,7 +3,7 @@ import COS from "cos-wx-sdk-v5";
 
 
 const options = {
-  SDKAppID: 1400382074 // 接入时需要将0替换为您的即时通信应用的 SDKAppID
+  SDKAppID: 1400480669 // 接入时需要将0替换为您的即时通信应用的 SDKAppID
 };
 // 创建 SDK 实例，TIM.create() 方法对于同一个 SDKAppID 只会返回同一份实例
 const tim = TIM.create(options); // SDK 实例通常用 tim 表示
@@ -15,9 +15,9 @@ tim.registerPlugin({'cos-wx-sdk': COS});
 
 /* eslint-disable require-jsdoc */
 function genTestUserSig(userID) {
-  const SDKAPPID = 1400382074;
+  const SDKAPPID = 1400480669;
   const EXPIRETIME = 604800;
-  const SECRETKEY = 'ade83a64b9d6c06c7beef62f8218f10e3f1cb5eaa8b8bacaa950f172dfc68d9d';
+  const SECRETKEY = 'ffc4e1cd51c7bd639647a09362247e6828e2cc8e4e474f4145d78f4f85575d60';
  
   if (SDKAPPID === '' || SECRETKEY === '') {
     alert(

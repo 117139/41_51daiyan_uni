@@ -49,4 +49,12 @@
 	opacity:0 ;
 	width: 100%;
 }
+.goback_btn.data-v-b237504c{
+		width: 690rpx;
+		height: 95rpx;
+		margin: 30px auto;
+		background: #fff;
+		border-radius: 95rpx;
+		border: 1px solid #eee;
+}
 

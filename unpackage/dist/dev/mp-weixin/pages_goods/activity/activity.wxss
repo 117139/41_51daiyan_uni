@@ -337,6 +337,12 @@ view.pl_tx.data-v-3748f3fd{
           flex-direction: column;
 	font-size: 24rpx;
 	color: #BBBBBB;
+	-webkit-box-flex: 0;
+	-webkit-flex: none;
+	        flex: none;
+	-webkit-box-align: end;
+	-webkit-align-items: flex-end;
+	        align-items: flex-end;
 }
 .ph_num text.data-v-3748f3fd{
 	font-size: 36rpx;
@@ -371,5 +377,35 @@ view.pl_tx.data-v-3748f3fd{
 	margin-top: 10rpx;
 	font-size: 24rpx;
 	color: #999;
+}
+.hd_js.data-v-3748f3fd{
+	width: 100%;
+	padding: 0 30rpx;
+	box-sizing: border-box;
+}
+.pl_li1.data-v-3748f3fd{
+	width: 100%;
+	height: 100rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	font-size: 32rpx;
+	color: #333;
+	font-weight: bold;
+}
+.dyr_tit.data-v-3748f3fd{
+  font-size: 28rpx;
+  color: #333;
+}
+.dyr_msg.data-v-3748f3fd{
+  font-size: 28rpx;
+  color: #999;
+  margin: 20rpx auto;
 }
 

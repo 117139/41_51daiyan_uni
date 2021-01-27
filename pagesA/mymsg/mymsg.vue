@@ -363,16 +363,16 @@
 			                title: '提交成功',
 			                duration: 2000
 			              })
-			              app.dologin()
+			              service.get_info()
 			              setTimeout(function () {
 			                wx.navigateBack()
 			              }, 1000)
 			
 			            } else {
-			              if (res.data.returnstr) {
+			              if (res.data.msg) {
 			                wx.showToast({
 			                  icon: 'none',
-			                  title: res.data.returnstr
+			                  title: res.data.msg
 			                })
 			              } else {
 			                wx.showToast({

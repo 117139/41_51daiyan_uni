@@ -13,10 +13,9 @@
 				    </view>
 				    <view class="dp_msg">
 				      <view class="dp_name oh2">{{datas.store_name}}</view>
-							<view>
+							<view class="dis_flex">
 								<view class="dp_lv">
 								  <image v-if="idx<5" v-for="(item,idx) in datas.rank" :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
-								 
 								</view>
 							</view>
 				     
@@ -639,7 +638,7 @@
   margin-top: 10rpx;
   display: flex;
   align-items: center;
-  width:158rpx;
+  max-width:158rpx;
   height:38rpx;
   background:rgba(255,255,255,.8);
   border-radius:10rpx;
@@ -648,7 +647,9 @@
 .dp_lv image{
   width:31rpx;
   height:25rpx;
-  margin-right: 10rpx;
+}
+.dp_lv image+image{
+	margin-left: 10upx;
 }
 .dp_bq{
   font-size: 24rpx;

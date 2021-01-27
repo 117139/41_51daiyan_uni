@@ -11,7 +11,7 @@
 			<!-- 提现金额 -->
 			<view class="tx_mon_box">
 				<view class="tx_mon_box_tit">提现金额</view>
-				<view class="tx_int"><text>￥</text><input type="number" placeholder="0.00" @input="get_val" :value="uname" /></view>
+				<view class="tx_int"><text>￥</text><input type="digit" placeholder="0.00" @input="get_val" :value="uname" /></view>
 			</view>
 			<view class="tx_mon_box">
 				<view class="tx_mon_box_tit">提现方式</view>
@@ -296,7 +296,7 @@
 							icon:'none',
 							title:'提交成功，请耐心等待'
 						})
-						service.wxlogin()
+						service.get_info()
 				
 					}
 				}).catch(e => {

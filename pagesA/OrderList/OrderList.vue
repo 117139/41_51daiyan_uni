@@ -209,6 +209,7 @@
 								icon: 'none',
 								title: '支付成功'
 							})
+							service.get_info()
 							setTimeout(function() {
 								that.onRetry()
 							}, 1000)

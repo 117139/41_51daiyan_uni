@@ -6,7 +6,7 @@
 			<view class="xx_li" v-for="(item,idx) in datas">
 				<view class="user_tx">
 					<image v-if="item.send_type!=1" class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/xtxx.png')"></image>
-					<image v-else class="user_tx" :src="filter.imgIP(item.head_portrait)"></image>
+					<image v-else class="user_tx" :src="filter.imgIP(item.head_portrait)"  @tap="xz_fuc(item)"></image>
 				</view>
 				<view class="xx_msg">
 
@@ -16,7 +16,7 @@
 					<view v-else-if="item.send_type==3" class="to_msg oh2"  @tap="jump" :data-url="'/pages_goods/activity/activity?id='+item.send_type_obj_id">
 						{{item.msg}}
 					</view>
-					<view v-else class="to_msg oh2">
+					<view v-else class="to_msg oh2" @tap="xz_fuc(item)">
 						{{item.msg}}
 					</view>
 					<view class="to_name">
@@ -28,6 +28,57 @@
 				</view>
 			</view>
 			<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
+			<view v-if="tk_show==true" class="tk_box"  @touchmove.stop.prevent='test'>
+				
+				<view class="tk_main">
+					<text class="iconfont iconguanbi" @tap="tk_show=false"></text>
+					<image  @tap="jump" :data-url="'/pages/details/details?id='+tk_data.goodsDataArr.id" class="tk_goodsimg" :src="filter.imgIP(tk_data.goodsDataArr.img[0])" mode="aspectFill"></image>
+					<view  @tap="jump" :data-url="'/pages/details/details?id='+tk_data.goodsDataArr.id" class="tk_goodsname oh1">{{tk_data.goodsDataArr.title}}</view>
+					<view  @tap="jump" :data-url="'/pages/details/details?id='+tk_data.goodsDataArr.id" class="tk_goods_pri">
+						<view class="tk_pri1">¥<text>{{tk_data.goodsDataArr.current_price}}</text></view>
+						<view class="tk_pri2">代言费:<text>¥{{tk_data.goodsDataArr.advocacy_price}}</text></view>
+					</view>
+					<view  v-if="tk_data.merchantDataArr" class="dp_b1"  @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+tk_data.merchantDataArr.id">
+					  <view class="dp_logo">
+					    <image :src="filter.imgIP(tk_data.merchantDataArr.head_portrait)" mode="aspectFill"></image>
+					  </view>
+					  <view class="dp_msg">
+					    <view class="dp_name oh1">{{tk_data.merchantDataArr.store_name}}</view>
+							<view class="dis_flex">
+								<view class="dp_lv">
+								  <image v-if="idx<5" v-for="(item,idx) in tk_data.merchantDataArr.rank" :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
+								</view>
+							</view>
+					   
+					    <view class="dp_bq">
+					      <text>代言 {{tk_data.merchantDataArr.advocacy_number?tk_data.merchantDataArr.advocacy_number:'0'}}</text>
+					      <text class="flex_1">粉丝数 {{tk_data.merchantDataArr.fans_number?tk_data.merchantDataArr.fans_number:'0'}}</text>
+					    </view>
+						
+					  </view>
+					</view>
+					
+					<view v-if="tk_data.couponDataArr" class="yhq_li_img">
+						<!-- <image v-if="item.is_use==2" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_bg_10.png')"  mode="aspectFill"></image>
+						<block v-if="item.is_use==1"> -->
+							<!-- <image class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/mj.png')"  mode="aspectFill"></image> -->
+							<image v-if="tk_data.couponDataArr.coupon_setting_type==1" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/mj.png')"  mode="aspectFill"></image>
+							<image v-if="tk_data.couponDataArr.coupon_setting_type==2" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_zk.png')"  mode="aspectFill"></image>
+							<image v-if="tk_data.couponDataArr.coupon_setting_type==3" class="yhq_li_img" :src="filter.imgIP('/static_s/51daiyan/images/yhq_mf.png')"  mode="aspectFill"></image>
+						<!-- </block> -->
+						<view class="yhq_pri">
+							<view class="d1" v-if="tk_data.couponDataArr.coupon_setting_type==1"><text>¥{{tk_data.couponDataArr.coupon_c_money*1}}元 </text> {{tk_data.couponDataArr.coupon_setting_type_value}}</view>
+							<view class="d1" v-if="tk_data.couponDataArr.coupon_setting_type==2"><text>¥{{tk_data.couponDataArr.coupon_discount_ratio?tk_data.couponDataArr.coupon_discount_ratio/10:tk_data.couponDataArr.coupon_discount_ratio}}折 </text> {{tk_data.couponDataArr.coupon_setting_type_value}}</view>
+							<view class="d1" v-if="tk_data.couponDataArr.coupon_setting_type==3"><text>全额抵扣</text> {{tk_data.couponDataArr.coupon_setting_type_value}}</view>
+							<view class="d2">{{filter.getDate_ymd(tk_data.couponDataArr.coupon_use_start_time,'.')}}-{{filter.getDate_ymd(tk_data.couponDataArr.coupon_use_end_time,'.')}}</view>
+						</view>
+						
+					</view>
+					<view class="tk_tip">欢迎您领券免费拿商品，如果您体验还不错，希望您能为我们的商品代言！</view>
+					<view v-if="tk_data.couponDataArr.is_draw==1" class="tk_sub_btn">已领取</view>
+					<view v-else class="tk_sub_btn" @tap="get_yh(tk_data,tk_data.couponDataArr.id)">立即领取</view>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -51,7 +102,9 @@
 				data_last: false,
 				page: 1,
 				size: 20,
-				msg: ''
+				msg: '',
+				tk_data:'',
+				tk_show:false
 			}
 		},
 		computed: {
@@ -99,7 +152,60 @@
 
 		},
 		methods: {
-
+			test(){},
+			xz_fuc(item){
+				var that =this
+				
+				var jkurl='/message/getDxyyInfo'
+				var datas={
+					token:that.loginMsg.userToken,
+					id:item.send_type_obj_id
+				}
+				service.P_get(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(datas)
+						
+						if(datas.goodsDataArr.is_set==1){
+							that.tk_data=datas
+							that.tk_show=true
+						}else{
+							uni.showToast({
+								icon:'none',
+								title:'该商品已下架'
+							})
+						}
+						
+				
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btnkg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			},
 			onRetry() {
 				this.data_list = []
 				this.page = 1
@@ -113,6 +219,15 @@
 					token:that.loginMsg.userToken,
 					id:id
 				}
+				// uni.showToast({
+				// 	icon:'none',
+				// 	title:'领取成功'
+				// })
+				// setTimeout(()=>{
+				// 	that.tk_show=false
+				// 	that.onRetry()
+				// },1000)
+				// return
 				service.P_post('/goods/getInviteCoupon',data).then(res => {
 					console.log(res)
 					that.btnkg=0
@@ -132,7 +247,11 @@
 							icon:'none',
 							title:'领取成功'
 						})
-						Vue.set(item,'is_draw',1)
+						// Vue.set(item,'is_draw',1)
+						setTimeout(()=>{
+							that.tk_show=false
+							that.onRetry()
+						},1000)
 					}else{
 						if(res.msg){
 							uni.showToast({
@@ -305,5 +424,177 @@
 	.get_btn1{
 		color: #999;
 		border:1px solid #999;
+	}
+	.tk_box{
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 900;
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(0,0,0,.5);
+	}
+	.tk_main{
+		width: 568upx;
+		max-height: 98%;
+		background: #FFFFFF;
+		border-radius: 4upx;
+		padding: 20upx;
+		position: relative;
+		overflow-y: scroll;
+	}
+	.tk_goodsimg{
+		width: 450upx;
+		height: 450upx;
+		display: block;
+		margin: 0 auto 20upx;
+	}
+	.tk_goodsname{
+		font-size: 30upx;
+		line-height: 40upx;
+		color: #666;
+		width: 480upx;
+		margin: 0 auto 10upx;
+	}
+	.tk_goods_pri{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 480upx;
+		margin: 0 auto 10upx;
+	}
+	.tk_pri1{
+		font-size: 26upx;
+		color: #F85951;
+	}
+	.tk_pri1 text{
+		font-size: 36upx;
+		color: #F85951;
+	}
+	.tk_pri2{
+		font-size: 26upx;
+		color: #666;
+	}
+	.tk_pri2 text{
+		font-size: 30upx;
+		color: #F85951;
+	}
+	
+	.dp_b1{
+	  width: 532upx;
+	  /* height: 130upx; */
+	  background: #FFFFFF;
+	  box-shadow: 0px 0px 18upx 0px rgba(0, 0, 0, 0.13);
+	  border-radius: 4upx;
+	  display: flex;
+		padding: 12upx;
+		margin: 0 auto 15upx;
+	}
+	.dp_logo{
+	 width: 101upx;
+	 height: 101upx;
+	 border-radius: 10upx;
+	}
+	.dp_logo image{
+	 width: 101upx;
+	 height: 101upx;
+	 border-radius: 10upx;
+	}
+	.dp_msg{
+	  flex: 1;
+	  height: 101upx;
+	  margin-left: 20rpx;
+	  /* display: flex; */
+	  flex-direction: column;
+	  justify-content: space-between;
+	}
+	.dp_name{
+	  font-size: 24rpx;
+	  color: #333;
+	}
+	.dp_lv{
+	  margin-top: 10rpx;
+	  display: flex;
+	  align-items: center;
+	  max-width:158rpx;
+	  height:31rpx;
+	  background:#FFEEDC;
+	  border-radius:4rpx;
+	  padding: 0 4rpx;
+	}
+	.dp_lv image{
+	  width:25rpx;
+	  height:21rpx;
+	}
+	.dp_lv image+image{
+	  margin-left: 5upx;
+	}
+	.dp_bq{
+	  font-size: 22rpx;
+	  color: #333;
+	  display: flex;
+	  align-items: center;
+	}
+	
+	.yhq_li_img{
+		/* width:650rpx; */
+	  width:568upx;
+		/* height:236rpx; */
+		height:206rpx;
+		position: relative;
+		z-index: 1;
+	}
+	.yhq_pri{
+		width:350upx;
+		height:206rpx;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 9;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	.yhq_pri .d1{
+		font-size:30rpx;
+		color: #fff;
+	}
+	.yhq_pri .d1 text{
+		font-size:  38rpx;
+	}
+	.yhq_pri .d2{
+		margin-top: 10rpx;
+		font-size: 20rpx;
+		color: #fff;
+	}
+	.tk_tip{
+		width: 532upx;
+		margin: 25upx auto ;
+		font-size: 28upx;
+		color: #333;
+		font-size: 28upx;
+	}
+	.tk_sub_btn{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 492upx;
+		height: 59upx;
+		background: rgba(254, 135, 53, 1);
+		border-radius: 30upx;
+		margin: 0 auto;
+		color: #fff;
+		font-size: 30upx;
+	}
+	.iconguanbi{
+		position: absolute;
+		top: 10upx;
+		right: 10upx;
+		font-size: 30upx;
+		color: #B3B3B3;
 	}
 </style>

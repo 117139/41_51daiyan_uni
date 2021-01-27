@@ -552,7 +552,7 @@
 							icon: 'none',
 							title: '购买成功'
 						})
-						service.wxlogin()
+						service.get_info()
 						setTimeout(()=>{
 							uni.hideLoading()
 						
@@ -576,7 +576,7 @@
 								icon: 'none',
 								title: '购买成功'
 							})
-							service.wxlogin()
+							service.get_info()
 							setTimeout(() => {
 								uni.redirectTo({
 									// url:'/pagesA/OrderList/OrderList'
@@ -589,7 +589,8 @@
 								icon: 'none',
 								title: '微信支付失败'
 							})
-							service.wxlogin()
+							// service.wxlogin()
+							
 							setTimeout(() => {
 								uni.redirectTo({
 									url:'/pagesA/OrderList/OrderList'

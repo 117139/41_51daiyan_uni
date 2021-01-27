@@ -153,7 +153,7 @@
 		  
 		  <view class="daiyan_cz">
 		    
-		    <view class="sq_btn" @tap="save_val">编辑代言</view>
+		    <view class="sq_btn" @tap="save_val">发布代言</view>
 		  </view>
 			<uni-popup ref="popup" type="center" @change="tkchange">
 				<view class="dyxy_box">

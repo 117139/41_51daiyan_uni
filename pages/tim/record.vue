@@ -150,6 +150,7 @@
 				// 		this.friendList.push(item)
 				// 	}
 				// })
+				// service.get_info()
 			}
 			
 		

@@ -45,7 +45,7 @@
 				title:'正在获取状态',
 				mask:true
 			})
-			service.wxlogin()
+			service.get_info()
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作

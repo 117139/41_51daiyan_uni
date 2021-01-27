@@ -52,7 +52,10 @@
         "daiyan_edit/daiyan_edit",
         "my_rz_sm/my_rz_sm",
         "OrderDetails_sh/OrderDetails_sh",
-        "OrderDetails_sh_th/OrderDetails_sh_th"
+        "OrderDetails_sh_th/OrderDetails_sh_th",
+        "Order_wuliu/Order_wuliu",
+        "share/share",
+        "zhanbao/zhanbao"
       ]
     },
     {
@@ -160,5 +163,5 @@
     "van-stepper": "./wxcomponents/vant/stepper/index",
     "van-popup": "./wxcomponents/vant/popup/index"
   },
-  "sitemapLocation": "sitemap69.json"
+  "sitemapLocation": "sitemap59.json"
 }
