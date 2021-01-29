@@ -129,7 +129,21 @@
 			uni.setNavigationBarTitle({
 				title:'正在加载中...'
 			})
-			this.dpid=options.id
+			
+			if(options.id){
+				this.dpid=options.id
+			}
+			console.log('options.scene-------------------------》')
+			console.log(options.scene)
+			if(options.scene){
+				const scene = decodeURIComponent(options.scene)
+				console.log(scene)
+				var arr=scene.split('=')
+				console.log(scene)
+				var obj = {};
+				obj[arr[0]] = arr[1]
+				this.dpid=obj.group_code
+			}
 			this.getdata()
 			this.onRetry()
 		},

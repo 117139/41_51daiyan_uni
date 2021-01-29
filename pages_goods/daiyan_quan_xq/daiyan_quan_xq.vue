@@ -120,7 +120,7 @@
 				<!-- <view class="zanwu" v-if="data_list.length==0">暂无数据</view> -->
 				<view class="star_li" v-for="(item,idx) in data_list">
 					<view class="star_msg">
-						<view class="user_tx" @tap="jump" data-url="/pages/my_index/my_index">
+						<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.id">
 							<image class="user_tx" :lazy-load='true' :src="filter.imgIP(item.head_pic)"></image>
 							<!-- mingxing -->
 							<view v-if="item.identity_id==1" class="star_v">

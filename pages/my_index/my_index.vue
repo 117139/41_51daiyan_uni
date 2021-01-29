@@ -220,9 +220,16 @@
 			if(options.id){
 				this.uid = options.id
 			}
+			console.log('options.scene-------------------------》')
+			console.log(options.scene)
 			if(options.scene){
 				const scene = decodeURIComponent(options.scene)
-				this.uid = scene.id
+				console.log(scene)
+				var arr=scene.split('=')
+				console.log(scene)
+				var obj = {};
+				obj[arr[0]] = arr[1]
+				this.uid = obj.id
 			}
 			this.getdata()
 			this.getdata_cy()
