@@ -161,6 +161,9 @@
 				if (this.isSDKReady) {
 					console.log('2222')
 					this.getConversationList()
+					
+					//更新用户自己的基础资料（头像+昵称+个性签名）
+					// this.updateUserInfo()
 				} else {
 					console.log('333333')
 				}
@@ -197,7 +200,7 @@
 				//isSDKReady == true 
 				if (val) {
 					//更新用户自己的基础资料（头像+昵称+个性签名）
-					this.updateUserInfo()
+					// this.updateUserInfo()
 					//请求会话列表
 					this.getConversationList()
 				}
@@ -206,6 +209,25 @@
 
 		},
 		methods: {
+			//提交用户的基础信息到Im
+			updateUserInfo() {
+				var that =this
+				//将已经登陆的用户信息 提交到IM中
+				// let userInfo = JSON.parse(uni.getStorageSync('userInfo'))
+				console.log('将已经登陆的用户信息 提交到IM中')
+				let promise = that.tim.updateMyProfile({
+					nick: that.loginMsg.nickname,
+					avatar: that.loginMsg.avatarurl,
+					gender: that.$TIM.TYPES.GENDER_MALE,
+					selfSignature: that.loginMsg.introduction||'这个人比较懒还没有简介~~',
+					allowType: that.$TIM.TYPES.ALLOW_TYPE_ALLOW_ANY
+				});
+				promise.then((res) => {
+					console.log('提交资料成功')
+				}).catch((err) => {
+					console.warn('updateMyProfile error:', err); // 更新资料失败的相关信息
+				});
+			},
 			getxcx_msg(){
 				var that =this
 				var jkurl='/message'

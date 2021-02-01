@@ -350,12 +350,12 @@
 				//将已经登陆的用户信息 提交到IM中
 				// let userInfo = JSON.parse(uni.getStorageSync('userInfo'))
 				console.log('将已经登陆的用户信息 提交到IM中')
-				let promise = this.tim.updateMyProfile({
+				let promise = that.tim.updateMyProfile({
 					nick: that.loginMsg.nickname,
 					avatar: that.loginMsg.avatarurl,
-					gender: this.$TIM.TYPES.GENDER_MALE,
-					selfSignature: that.loginMsg.introduction,
-					allowType: this.$TIM.TYPES.ALLOW_TYPE_ALLOW_ANY
+					gender: that.$TIM.TYPES.GENDER_MALE,
+					selfSignature: that.loginMsg.introduction||'这个人比较懒还没有简介~~',
+					allowType: that.$TIM.TYPES.ALLOW_TYPE_ALLOW_ANY
 				});
 				promise.then((res) => {
 					console.log('提交资料成功')
