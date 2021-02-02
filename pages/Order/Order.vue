@@ -271,6 +271,8 @@
 					}
 				}
 				if(type=='yh'){
+					yh=yh.toFixed(2)
+					yh=yh*1
 					return '-￥'+yh+'元'
 				}
 				zj=zj-yh*1+yunfei*1

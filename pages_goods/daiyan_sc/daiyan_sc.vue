@@ -5,7 +5,7 @@
 				<image class="dy_sc_bg" :src="filter.imgIP('/static_s/51daiyan/images/dy_sc1_02.jpg')"></image>
 			</view>
 			<view class="h_main">
-				<view class="dy_sc_lj" @tap="jump" data-url="/pagesA/about/about">
+				<view class="dy_sc_lj" @tap="jump" data-url="/pagesA/ysxy/ysxy?type=about">
 					<view><image class="c_bl" :src="filter.imgIP('/static_s/51daiyan/images/images/lj_bl_05.jpg')"></image>1分钟了解51代言</view>
 					<text class="iconfont iconnext3"></text>
 				</view>
@@ -47,11 +47,11 @@
 								<view class="goods_tximg">
 									<image class="goods_tximg" :lazy-load='true' :src="item.user_head_portrait"></image>
 								</view>
-								<view class="goods_mon">￥688</view>
+								<view class="goods_mon">￥{{item.g_current_price*1}}</view>
 							</view>
 							<view class="hy_sy">
 									<view class="hy_sy_box">代言收益</view>
-									<view class="sy_mon">￥30</view>
+									<view class="sy_mon">￥{{item.advocacy_earnings*1}}</view>
 							</view>
 						</view>
 					</view>
@@ -59,6 +59,7 @@
 				<!-- box3 -->
 				<view class="b_list">
 					<view class="b_list_tab">
+						<view  :class="s_type==-1?'cur':''"  @tap="ss_type" data-type="-1">全部</view>
 						<view v-for="(item,idx) in datas.cateData" :class="s_type==idx?'cur':''"  @tap="ss_type" :data-type="idx">{{item.title}}</view>
 					</view>
 					<view class="b_li_box">
@@ -78,12 +79,12 @@
 									<view class="goods_tximg" v-if="item.user_head_portrait">
 										<image class="goods_tximg" :lazy-load='true' :src="item.user_head_portrait"></image>
 									</view>
-									<view class="goods_mon flex_1">￥{{item.g_current_price}}</view>
+									<view class="goods_mon flex_1">￥{{item.g_current_price*1}}</view>
 									<view class="sy_xl" style="font-size: 20upx;">销量：{{item.g_sale}}</view>
 								</view>
 								<view class="hy_sy">
 										<view class="hy_sy_box">代言收益</view>
-										<view class="sy_mon">￥{{item.advocacy_earnings}}</view>
+										<view class="sy_mon">￥{{item.advocacy_earnings*1}}</view>
 										
 								</view>
 							</view>
@@ -109,7 +110,7 @@
 		data() {
 			return {
 				btn_kg:0,
-				s_type:0,
+				s_type:-1,
 				datas:'',
 				data_list:[],
 				data_last:false,
@@ -222,7 +223,7 @@
 				var datas = {
 					token: that.loginMsg.userToken,
 					page: that.page,
-					cateId:that.datas.cateData[that.s_type].id,
+					cateId:that.s_type==-1?'':that.datas.cateData[that.s_type].id,
 				}
 				if(that.data_last) return
 				if(that.btn_kg==1){

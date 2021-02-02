@@ -43,7 +43,7 @@
 						</view>
 					</view>
 					<!-- 一等奖 -->
-					<view v-if="ph_list1.length>0" class="jx_list">
+					<view v-if="datas.award.length>0" class="jx_list">
 						<view class="jx_list_tit">
 							<view class="jx_list_tit_num" style="opacity: 0;"><text>{{datas.award[0].win_user_count}}</text>人</view>
 							<!-- <image class="jx_list_tit_img" src="http://51daiyan.test.upcdn.net//static_s/51daiyan/images/zb_15.png" mode="aspectFit"></image> -->
@@ -60,10 +60,11 @@
 							<view class="flex_1"></view>
 							<view class="jx_list_tit_num"><text>{{item.popularity}}</text>票</view>
 						</view>
-						<view class="get_more" @tap="getdatalist(1)">更多<text class="iconfont iconoff"></text></view>
+						<view v-if="ph_list1.length>0" class="get_more"  @tap="getdatalist(1)">更多<text class="iconfont iconoff"></text></view>
+						<view v-else class="zanwu" >暂无数据</view>
 					</view>
 					<!-- 二等奖 -->
-					<view  v-if="ph_list2.length>0" class="jx_list">
+					<view  v-if="datas.award.length>1" class="jx_list">
 						<view class="jx_list_tit">
 							<view class="jx_list_tit_num" style="opacity: 0;"><text>{{datas.award[1].win_user_count}}</text>人</view>
 							<!-- <image class="jx_list_tit_img" src="http://51daiyan.test.upcdn.net//static_s/51daiyan/images/zb_22.png" mode="aspectFit"></image> -->
@@ -81,10 +82,11 @@
 							<view class="flex_1"></view>
 							<view class="jx_list_tit_num"><text>{{item.popularity}}</text>票</view>
 						</view>
-						<view class="get_more"  @tap="getdatalist(2)">更多<text class="iconfont iconoff"></text></view>
+						<view v-if="ph_list2.length>0" class="get_more"  @tap="getdatalist(2)">更多<text class="iconfont iconoff"></text></view>
+						<view v-else class="zanwu" >暂无数据</view>
 					</view>
 					<!-- 三等奖 -->
-					<view v-if="ph_list3.length>0"  class="jx_list">
+					<view v-if="datas.award.length>2"  class="jx_list">
 						<view class="jx_list_tit">
 							<view class="jx_list_tit_num" style="opacity: 0;"><text>{{datas.award[2].win_user_count}}</text>人</view>
 							<!-- <image class="jx_list_tit_img" src="http://51daiyan.test.upcdn.net//static_s/51daiyan/images/zb_28.png" mode="aspectFit"></image> -->
@@ -100,7 +102,8 @@
 							<view class="flex_1"></view>
 							<view class="jx_list_tit_num"><text>{{item.popularity}}</text>票</view>
 						</view>
-						<view class="get_more"  @tap="getdatalist(3)">更多<text class="iconfont iconoff"></text></view>
+						<view v-if="ph_list3.length>0" class="get_more"  @tap="getdatalist(3)">更多<text class="iconfont iconoff"></text></view>
+						<view v-else class="zanwu" >暂无数据</view>
 					</view>
 					
 					<view v-if="datas.my_ranking>0" class="jx_li jx_li1">

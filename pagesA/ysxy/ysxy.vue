@@ -20,6 +20,18 @@
 					title:'隐私协议'
 				})
 			}
+			if(option.type=='hz'){
+				this.type=2
+				uni.setNavigationBarTitle({
+					title:'共享经济合作伙伴协议'
+				})
+			}
+			if(option.type=='about'){
+				this.type='about'
+				uni.setNavigationBarTitle({
+					title:'关于我们'
+				})
+			}
 			this.getdata_xy()
 		},
 		methods: {
@@ -48,6 +60,16 @@
 				var that = this
 				var datas = {
 					keyword: 'ysxy',
+				}
+				if(that.type==2){
+					datas = {
+						keyword: 'hzxy',
+					}
+				}
+				if(that.type=='about'){
+					datas = {
+						keyword: 'about',
+					}
 				}
 				// 单个请求
 				service.P_get('/getClause', datas).then(res => {

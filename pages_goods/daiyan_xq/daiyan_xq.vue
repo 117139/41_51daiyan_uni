@@ -81,6 +81,11 @@
 	           <text class="iconfont iconpinglun"></text>评论
 	          </view>
 	        </view> -->
+					
+					<view class="cz_li" style="position: relative;">
+						<button type="default" open-type="share" :data-id="item.id" style="position: absolute;top: 0;opacity: 0;width: 100%;height: 100%;"></button>
+						<text class="iconfont iconfenxiang2" style="color: #f00;"></text>
+					</view>
 					<view class="cz_li">跟随购买：{{datas.follow_buy_number}}</view>
 					<view class="cz_li" @tap.stop="jump" :data-url="'/pages_goods/daiyan_pl/daiyan_pl?id='+datas.id"><text class="iconfont iconpinglun"></text>{{datas.comment_number}}</view>
 					<view class="cz_li" v-if="datas.is_praise==2" @tap="guanzhuFuc_dz(4,datas.id,'affirm')" :data-id="idx">
@@ -129,7 +134,7 @@
 			if(this.hasLogin){
 				if (this.isSDKReady) {
 					console.log('2222')
-					this.getConversationList()
+					// this.getConversationList()
 				} else {
 					console.log('333333')
 				}
@@ -150,8 +155,22 @@
 		/**
 		 * 用户点击右上角分享
 		 */
-		onShareAppMessage: function() {
-
+		onShareAppMessage(res) {
+		
+			if (res.from === 'button') {
+				console.log(res.target.dataset.type)
+				// this.setData({
+				// 	sharetype:'share'
+				// })
+			}
+			
+			return {
+				title: '51代言',
+				path: '/pages_goods/daiyan_xq/daiyan_xq?id=' + res.target.dataset.id,
+				success: function(res) {
+					console.log('成功', res)
+				}
+			}
 		},
 		computed: {
 			...mapState([

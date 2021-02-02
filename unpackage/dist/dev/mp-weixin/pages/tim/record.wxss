@@ -62,40 +62,43 @@
 }
 .item-box.data-v-e929523e {
 	width: auto;
-	height: 130rpx;
+	/* height: 130rpx; */
 	padding: 20rpx;
 	overflow: hidden;
 	border-bottom: 1px solid #eee;
 }
 .item-img.data-v-e929523e {
 	float: left;
-	margin-top: 20rpx;
+	/* margin-top: 20rpx; */
 	width: 80rpx;
 	height: 80rpx;
+	border-radius: 50%;
 }
 .item-img ._img.data-v-e929523e {
 	width: 80rpx;
 	height: 80rpx;
+	border-radius: 50%;
 }
 .item-text.data-v-e929523e {
 	float: left;
 	margin-left: 30rpx;
 	width: 500rpx;
-	height: 100rpx;
+	height: 80rpx;
 	color: #666;
 	font-size: 28rpx;
 }
 .item-user.data-v-e929523e {
 	width: auto;
-	height: 60rpx;
-	line-height: 60rpx;
+	/* height: 60rpx;
+	line-height: 60rpx; */
 	color: 333;
-	font-size: 32rpx;
+	font-size: 30rpx;
+	margin-bottom: 10rpx;
 }
 .item-text-info.data-v-e929523e {
 	width: auto;
-	height: 60rpx;
-	line-height: 60rpx;
+	/* height: 60rpx;
+	line-height: 60rpx; */
 	color: #666;
 	font-szie: 24rpx;
 	overflow: hidden;
@@ -186,7 +189,7 @@
 .item-msg.data-v-e929523e {
 	float: right;
 	width: 40rpx;
-	height: 100rpx;
+	height: 80rpx;
 }
 .item-msg-icon.data-v-e929523e {
 	width: 40rpx;

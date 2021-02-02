@@ -324,11 +324,11 @@
 		          <view class="tk_user_tx">
 		            <image class="tk_user_tx" :src="filter.imgIP(item.head_portrait)"  mode="aspectFill"></image>
 								<!-- mingxing -->
-								<view v-if="item.identity_id==1" class="star_v">
+								<view v-if="item.identity_id==1" class="star_v star_v1">
 									<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 								</view>
 								<!-- daren -->
-								<view v-if="item.identity_id==2" class="star_v">
+								<view v-if="item.identity_id==2" class="star_v star_v1">
 									<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
 									<text class="iconv iconfont"></text>
 									<text class="user_v_lv">{{item.user_grade_num?item.user_grade_num:0}}</text>

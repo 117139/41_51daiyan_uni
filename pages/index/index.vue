@@ -196,6 +196,10 @@
 	           <text class="iconfont iconpinglun"></text>评论
 	          </view>
 	        </view> -->
+					<view class="cz_li" style="position: relative;">
+						<button type="default" open-type="share" :data-id="item.id" style="position: absolute;top: 0;opacity: 0;width: 100%;height: 100%;"></button>
+						<text class="iconfont iconfenxiang2" style="color: #f00;"></text>
+					</view>
 					<view class="cz_li">跟随购买：{{item.follow_buy_number}}</view>
 					<view class="cz_li" @tap.stop="jump" :data-url="'/pages_goods/daiyan_pl/daiyan_pl?id='+item.id"><text class="iconfont iconpinglun"></text>{{item.comment_number}}</view>
 					<view class="cz_li" v-if="item.is_praise==2" @tap="guanzhuFuc_dz(4,item.id,'affirm')" :data-id="idx">
@@ -284,8 +288,22 @@
 		/**
 		 * 用户点击右上角分享
 		 */
-		onShareAppMessage: function() {
-
+		onShareAppMessage(res) {
+		
+			if (res.from === 'button') {
+				console.log(res.target.dataset.type)
+				// this.setData({
+				// 	sharetype:'share'
+				// })
+			}
+			
+			return {
+				title: '51代言',
+				path: '/pages_goods/daiyan_xq/daiyan_xq?id=' + res.target.dataset.id,
+				success: function(res) {
+					console.log('成功', res)
+				}
+			}
 		},
 		computed: {
 			...mapState([

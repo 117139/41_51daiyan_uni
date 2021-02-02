@@ -39,7 +39,7 @@
 									<!-- 图片消息 -->
 									<view v-if="item.type==TIM.TYPES.MSG_IMAGE" class="bubble">
 										<image @tap="previmg" :data-url="item.payload.imageInfoArray[0].imageUrl" :src="item.payload.imageInfoArray[0].imageUrl"
-										 mode="aspectFill" style="width: 240upx;height: 240upx;"></image>
+										 mode="aspectFill" lazy-load="true" style="width: 240upx;height: 240upx;"></image>
 									</view>
 									<!-- 自定义消息 -->
 									<view v-if="item.type==TIM.TYPES.MSG_CUSTOM" class="bubble">

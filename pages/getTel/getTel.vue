@@ -6,7 +6,7 @@
 			    获取手机号</button>
 		</view>
 		<!-- <view  class="login_tel" @tap="jump" data-url="/pages/login_tel/login_tel">手机号码登陆/注册</view> -->
-		<view class="login_tip"  @tap="jump" data-url="/pagesA/ysxy/ysxy?type=协议">登陆代表您已同意<text>51代言用户服务协议、隐私协议</text></view>
+		<view class="login_tip" >登陆代表您已同意<text  @tap="jump" data-url="/pagesA/ysxy/ysxy?type=协议">51代言用户服务协议、隐私协议、</text><text @tap="jump" data-url="/pagesA/ysxy/ysxy?type=hz">共享经济合作伙伴协议</text></view>
 	</view>
 </template>
 

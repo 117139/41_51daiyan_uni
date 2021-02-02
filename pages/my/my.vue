@@ -183,7 +183,7 @@
 		        <view class="fx_tit">我的代言豆</view>
 		        <text class="iconfont iconnext3"></text>
 		      </view>
-		      <view class="fx_li" @tap="jump" data-url="/pagesA/about/about">
+		      <view class="fx_li" @tap="jump" data-url="/pagesA/ysxy/ysxy?type=about">
 		        <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/ny_18.png')"></image>
 		        <view class="fx_tit">关于51代言</view>
 		        <text class="iconfont iconnext3"></text>

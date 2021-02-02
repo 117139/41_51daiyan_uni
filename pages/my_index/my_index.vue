@@ -42,6 +42,7 @@
 					<view class="dy_bq">
 						<view>
 							<!-- <text class="iconfont iconnv"></text> -->
+							<!-- {{datas.birthday?getB(datas.birthday):0}}岁 -->
 							{{datas.age?datas.age:0}}岁
 						</view>
 						<view v-if="datas.school">{{datas.school}}</view>
@@ -77,6 +78,11 @@
 				<!-- 动态 -->
 				<view v-if="s_type==1" class="my_list">
 					<view class="time_li" v-for="(item,idx) in data_list">
+						
+						<view class="cz_li" >
+							<button type="default" open-type="share" :data-id="item.id" style="position: absolute;top: 0;opacity: 0;width: 100%;height: 100%;"></button>
+							<text class="iconfont iconfenxiang_2" style="color: #f00;"></text>
+						</view>
 						<view class="time_v">
 							<view v-if="gettime1(idx)">
 								<text >{{gettime(item.create_time,1)}}</text><text class="month">{{gettime(item.create_time,2)}}月</text>
@@ -280,10 +286,34 @@
 		/**
 		 * 用户点击右上角分享
 		 */
-		onShareAppMessage: function() {
-
+		onShareAppMessage(res) {
+		
+			if (res.from === 'button') {
+				console.log(res.target.dataset.type)
+				// this.setData({
+				// 	sharetype:'share'
+				// })
+			}
+			
+			return {
+				title: '51代言',
+				path: '/pages_goods/daiyan_xq/daiyan_xq?id=' + res.target.dataset.id,
+				success: function(res) {
+					console.log('成功', res)
+				}
+			}
 		},
 		methods: {
+			getB(b_time){
+				if(!b_time){
+					return 0
+				}
+				b_time=b_time.split('-')
+				var now=new Date()
+				now_y=now.getFullYear()
+				bbb=now_y-b_time
+				return bbb
+			},
 			onRetry(){
 				this.getdata()
 				this.data_list=[]
@@ -868,8 +898,24 @@
 		padding: 18rpx 28rpx;
 		box-sizing: border-box;
 		display: flex;
+		position: relative;
 	}
-
+	.cz_li {
+		position: absolute;
+		top: 15upx;
+		right: 5upx;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		color: #999;
+		font-size: 24rpx;
+	}
+	
+	.cz_li text {
+		font-size: 26rpx;
+		color: #999;
+		margin-right: 10rpx;
+	}
 	.time_v {
 		width: 120rpx;
 		font-size: 40rpx;

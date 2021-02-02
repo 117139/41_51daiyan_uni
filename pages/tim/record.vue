@@ -452,7 +452,7 @@
 
 	.item-box {
 		width: auto;
-		height: 130rpx;
+		/* height: 130rpx; */
 		padding: 20rpx;
 		overflow: hidden;
 		border-bottom: 1px solid #eee;
@@ -460,38 +460,41 @@
 
 	.item-img {
 		float: left;
-		margin-top: 20rpx;
+		/* margin-top: 20rpx; */
 		width: 80rpx;
 		height: 80rpx;
+		border-radius: 50%;
 	}
 
 	.item-img img {
 		width: 80rpx;
 		height: 80rpx;
+		border-radius: 50%;
 	}
 
 	.item-text {
 		float: left;
 		margin-left: 30rpx;
 		width: 500rpx;
-		height: 100rpx;
+		height: 80rpx;
 		color: #666;
 		font-size: 28rpx;
 	}
 
 	.item-user {
 		width: auto;
-		height: 60rpx;
-		line-height: 60rpx;
+		/* height: 60rpx;
+		line-height: 60rpx; */
 		color: 333;
-		font-size: 32rpx;
+		font-size: 30rpx;
+		margin-bottom: 10upx;
 
 	}
 
 	.item-text-info {
 		width: auto;
-		height: 60rpx;
-		line-height: 60rpx;
+		/* height: 60rpx;
+		line-height: 60rpx; */
 		color: #666;
 		font-szie: 24rpx;
 		overflow: hidden;
@@ -588,7 +591,7 @@
 	.item-msg {
 		float: right;
 		width: 40rpx;
-		height: 100rpx;
+		height: 80rpx;
 	}
 
 	.item-msg-icon {

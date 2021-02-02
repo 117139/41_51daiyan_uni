@@ -8,9 +8,9 @@
 			<view class="share_main">
 				<image class="share_main_bg" :src="filter.imgIP('/static_s//51daiyan/images/tp_bg_02.jpg')" mode="widthFix"></image>
 				<view class="share_main_box">
-					<image class="share_main_tx" @tap.stop="toupiao" :src="loginMsg.avatarurl" mode="aspectFill"></image>
+					<image class="share_main_tx" @tap.stop="toupiao" :src="datas.user_head_portrait" mode="aspectFill"></image>
 					<view class="share_main_text">我在参与{{datas.act_title}}活动，需要您的宝贵一票</view>
-					<image class="share_main_ewm" :src="loginMsg.personal_code" mode="aspectFill"></image>
+					<image class="share_main_ewm" :src="filter.imgIP(datas.user_personal_code)" mode="aspectFill"></image>
 				</view>
 			</view>
 		</view>
