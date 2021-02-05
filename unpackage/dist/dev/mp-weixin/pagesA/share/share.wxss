@@ -1,10 +1,11 @@
 
 .container.data-v-6408bf2b{
 	width: 100%;
-	height: 100vh;
-	overflow: hidden;
+	/* height: 100vh;
+	overflow: hidden; */
 	background: #fff;
   position: relative;
+	padding-bottom: 30rpx;
 }
 .avtivity_box.data-v-6408bf2b{
   position: relative;
@@ -25,13 +26,20 @@
   position: relative;
 }
 .share_main.data-v-6408bf2b{
-	width: 100%;
-	min-height: calc(100vh - 336rpx);
+	/* width: 100%; */
+	width: 690rpx;
+	/* min-height: calc(100vh - 336upx); */
+	height: 750rpx;
 	position: relative;
+	border-radius: 30rpx;
+	margin: 10rpx auto;
+	box-shadow: 1px 3px 10px 0px rgba(0, 0, 0, 0.2);
+	overflow: hidden;
 }
 .share_main_bg.data-v-6408bf2b{
 	width: 100%;
-	min-height: calc(100vh - 336rpx);
+	/* min-height: calc(100vh - 336upx); */
+	min-height: 750rpx;
 	position: relative;
 	z-index: 0;
 	top: 0;
@@ -50,11 +58,21 @@
 	border-radius: 50%;
 	position: absolute;
 	top: 122rpx;
-	left: 307rpx;
+	/* left: 307upx; */
+	left: 50%;
+	margin-left: -73rpx;
+}
+.share_main_tx_tp.data-v-6408bf2b{
+	position: absolute;
+	top: 272rpx;
+	width: 500rpx;
+	left: 50%;
+	margin-left: -250rpx;
+	height: 100rpx;
 }
 .share_main_text.data-v-6408bf2b{
 	position: absolute;
-	top: 570rpx;
+	top: 518rpx;
 	left: 50%;
 	width: 690rpx;
 	margin-left: -345rpx;
@@ -63,11 +81,45 @@
 	font-weight: bold;
 	text-align: center;
 }
+.share_bottom.data-v-6408bf2b{
+	width: 690rpx;
+	padding: 30rpx;
+	background: #fff;
+	
+	box-shadow: 1px 3px 10px 0px rgba(0, 0, 0, 0.2);
+	border-radius: 30rpx;
+	margin-top: 10rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: stretch;
+	-webkit-align-items: stretch;
+	        align-items: stretch;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	box-sizing: border-box;
+}
+.share_tip.data-v-6408bf2b{
+	width: 480rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	font-size: 24rpx;
+	color: #333;
+}
 .share_main_ewm.data-v-6408bf2b{
-	position: absolute;
+	/* position: absolute; */
 	width: 143rpx;
 	height: 143rpx;
-	top: 628rpx;
-	left: 562rpx;
+	/* top: 628upx;
+	left: 562upx; */
 }
 

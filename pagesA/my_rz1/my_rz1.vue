@@ -4,7 +4,7 @@
 		  <view class='container'>
 		    <image class="rz_jd" :src="filter.imgIP('/static_s/51daiyan/images/rz_jd_02.jpg')"></image>
 		    <view class="hx10"></view>
-		    <picker class="w100" @change="bindPickerChange" :value="index" :range="catelist" range-key='title'>
+		    <!-- <picker class="w100" @change="bindPickerChange" :value="index" :range="catelist" range-key='title'>
 		      <view class="msg_box">
 		        <text class="msg_name">认证身份</text>
 		        <view v-if="catelist.length>0" class="dis_flex aic msg_val">{{catelist[index].title}}
@@ -14,9 +14,10 @@
 		      </view>
 		      <input class="hidden" name="sfid" type="text" :value="catelist[index].id" disabled/>
 		
-		    </picker>
+		    </picker> -->
 		    <view class="hx10"></view>
 		    <view class="sfrz_tit">请提交身份证信息，仅用于平台审核</view>
+		    <view class="sfrz_tit">请正确填写，输入错误身份信息，可能导致提现失败！</view>
 		    <view class="sf_sfz">
 		      <view @tap="scpic" data-type="1">
 		        <image class="sfzimg" :src="sfimg1?filter.imgIP(sfimg1):filter.imgIP('/static_s/51daiyan/images/rz_img_05.jpg')" mode="aspectFill"></image>

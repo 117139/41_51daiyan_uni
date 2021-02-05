@@ -6,7 +6,7 @@
 				<view class="xx_box1">
 					<image class="hd_js" :src="filter.imgIP('/static_s/51daiyan/images/hd_js.png')"></image>
 					<view class="hd_v1">平台合作品牌商征集代言人入围条件：</view>
-					<view class="hd_v2">1.购买品牌商制定的商品，购买并代言。</view>
+					<view class="hd_v2">1.购买品牌商指定的商品，购买并代言。</view>
 					<view class="hd_v2">2.由代言人拍摄短视频，制作代言海报，并上传。</view>
 					<view class="hd_v2">3.由代言人所得票数，决定代言人排位。</view>
 					<view class="hd_jl">

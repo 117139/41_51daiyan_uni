@@ -198,7 +198,7 @@
 	        </view> -->
 					<view class="cz_li" style="position: relative;">
 						<button type="default" open-type="share" :data-id="item.id" style="position: absolute;top: 0;opacity: 0;width: 100%;height: 100%;"></button>
-						<text class="iconfont iconfenxiang2" style="color: #f00;"></text>
+						<text class="iconfont iconfenxiang2" style="color: #999;"></text>分享
 					</view>
 					<view class="cz_li">跟随购买：{{item.follow_buy_number}}</view>
 					<view class="cz_li" @tap.stop="jump" :data-url="'/pages_goods/daiyan_pl/daiyan_pl?id='+item.id"><text class="iconfont iconpinglun"></text>{{item.comment_number}}</view>

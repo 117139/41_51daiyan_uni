@@ -535,8 +535,27 @@
 	font-size: 24rpx;
 	color: #999;
 }
-.sp_li_img1.data-v-4a2f8566 {
+
+/* .sp_li_img1 {
 	width: 338rpx;
 	height: 33r8px;
+} */
+.goods_more.data-v-4a2f8566{
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  font-size: 24rpx;
+  color: #333;
+  height: 80rpx;
+}
+.gm_more.data-v-4a2f8566{
+  color: rgba(254,135,53,1);
 }
 

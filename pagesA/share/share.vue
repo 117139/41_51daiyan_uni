@@ -6,12 +6,22 @@
 		    <view class="hd_time">活动截止时间：{{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>
 		  </view>
 			<view class="share_main">
-				<image class="share_main_bg" :src="filter.imgIP('/static_s//51daiyan/images/tp_bg_02.jpg')" mode="widthFix"></image>
+				<image class="share_main_bg" :src="filter.imgIP('/static_s/51daiyan/images/share_bg_02.jpg')" mode="widthFix"></image>
+				<!-- <image class="share_main_bg" src="/static/images/share_bg_02.jpg" mode="widthFix"></image> -->
 				<view class="share_main_box">
 					<image class="share_main_tx" @tap.stop="toupiao" :src="datas.user_head_portrait" mode="aspectFill"></image>
+					<view class="share_main_tx_tp" @tap.stop="toupiao"></view>
 					<view class="share_main_text">我在参与{{datas.act_title}}活动，需要您的宝贵一票</view>
-					<image class="share_main_ewm" :src="filter.imgIP(datas.user_personal_code)" mode="aspectFill"></image>
+					
 				</view>
+			</view>
+			<view class="share_bottom">
+				<view class="share_tip">
+					<view>1、点击头像即可投票</view>
+					<view>2、每次活动没人仅可投票一次</view>
+					<view>3、扫描二维码即可进入代言人的个人主页</view>
+				</view>
+				<image class="share_main_ewm" :src="filter.imgIP(datas.user_personal_code)" mode="aspectFill"></image>
 			</view>
 		</view>
 	</view>
@@ -47,8 +57,8 @@
 		onLoad(option) {
 			
 			that=this
-			that.ad_id=option.id
-			that.user_id=option.user_id
+			that.ad_id=option.id||''
+			that.user_id=option.user_id||''
 			that.getdatalist()
 		},
 		methods: {
@@ -57,7 +67,7 @@
 				let that = this
 				var jkurl = '/activity/activityDetailsVote'
 				var datas = {
-					token: that.loginMsg.userToken,
+					token: that.loginMsg.userToken||'',
 					act_id:that.ad_id,
 					user_id:that.user_id
 				}
@@ -127,10 +137,11 @@
 <style scoped>
 	.container{
 		width: 100%;
-		height: 100vh;
-		overflow: hidden;
+		/* height: 100vh;
+		overflow: hidden; */
 		background: #fff;
 	  position: relative;
+		padding-bottom: 30upx;
 	}
 	.avtivity_box{
 	  position: relative;
@@ -151,13 +162,20 @@
 	  position: relative;
 	}
 	.share_main{
-		width: 100%;
-		min-height: calc(100vh - 336upx);
+		/* width: 100%; */
+		width: 690upx;
+		/* min-height: calc(100vh - 336upx); */
+		height: 750upx;
 		position: relative;
+		border-radius: 30upx;
+		margin: 10upx auto;
+		box-shadow: 1px 3px 10px 0px rgba(0, 0, 0, 0.2);
+		overflow: hidden;
 	}
 	.share_main_bg{
 		width: 100%;
-		min-height: calc(100vh - 336upx);
+		/* min-height: calc(100vh - 336upx); */
+		min-height: 750upx;
 		position: relative;
 		z-index: 0;
 		top: 0;
@@ -176,11 +194,21 @@
 		border-radius: 50%;
 		position: absolute;
 		top: 122upx;
-		left: 307upx;
+		/* left: 307upx; */
+		left: 50%;
+		margin-left: -73upx;
+	}
+	.share_main_tx_tp{
+		position: absolute;
+		top: 272upx;
+		width: 500upx;
+		left: 50%;
+		margin-left: -250upx;
+		height: 100upx;
 	}
 	.share_main_text{
 		position: absolute;
-		top: 570upx;
+		top: 518upx;
 		left: 50%;
 		width: 690upx;
 		margin-left: -345upx;
@@ -189,11 +217,35 @@
 		font-weight: bold;
 		text-align: center;
 	}
+	
+	.share_bottom{
+		width: 690upx;
+		padding: 30upx;
+		background: #fff;
+		
+		box-shadow: 1px 3px 10px 0px rgba(0, 0, 0, 0.2);
+		border-radius: 30upx;
+		margin-top: 10upx;
+		display: flex;
+		align-items: stretch;
+		justify-content: space-between;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+	.share_tip{
+		width: 480upx;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		font-size: 24upx;
+		color: #333;
+	}
 	.share_main_ewm{
-		position: absolute;
+		/* position: absolute; */
 		width: 143upx;
 		height: 143upx;
-		top: 628upx;
-		left: 562upx;
+		/* top: 628upx;
+		left: 562upx; */
 	}
 </style>

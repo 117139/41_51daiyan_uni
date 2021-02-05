@@ -28,7 +28,8 @@
 							<view :class="item.flow=='out'?'my':'other'">
 								<!-- 左-头像 -->
 								<view class="left" v-if="item.flow!='out'">
-									<image @tap="jump" :data-url="'/pages/my_index/my_index?id='+toUserInfo.id" :src="toUserInfo.head_portrait"></image>
+									<image v-if="toUserInfo.is_merchant==1" @tap="jump" :data-url="'/pages/my_index/my_index?id='+toUserInfo.id" :src="toUserInfo.head_portrait"></image>
+									<image v-if="toUserInfo.is_merchant==2" @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+toUserInfo.group_code" :src="toUserInfo.head_portrait"></image>
 								</view>
 								<!-- 中-消息 -->
 								<view :class="item.flow=='out'?'left':'right'">
@@ -53,6 +54,9 @@
 											{{'自定义参数3:'+getarg(item.payload.extension,'a2',item.payload.data)}}
 											{{'自定义参数4:'+getarg(item.payload.extension,'a3',item.payload.data)}}
 										</view>
+										<image v-if="item.payload.data=='custom_img'" @tap="previmg" :data-url="item.payload.description"
+										 :src="item.payload.description" mode="aspectFill"
+											style="width: 240upx;height: 240upx;"></image>
 										<view v-if="item.payload.data=='custom_good'" class="chat_box" @tap="jump" :data-url="'/pages/details/details?id='+getarg(item.payload.extension,'a2',item.payload.data)">
 											<image class="chat_img" :src="getarg(item.payload.extension,'a3',item.payload.data)" mode="aspectFill" style="width: 196upx;height: 196upx;"></image>
 											<view class="chat_msg">
@@ -850,6 +854,23 @@
 
 			// 发送消息
 			sendMsg(content, type) {
+				if(that.toUserInfo.is_friend!=2&&that.toUserInfo.is_merchant==1){
+					uni.showModal({
+					    title: '提示',
+					    content: '请先互相关注',
+					    success: function (res) {
+					        if (res.confirm) {
+					            console.log('用户点击确定');
+											uni.navigateTo({
+												url:'/pages/my_index/my_index?id='+that.toUserInfo.id
+											})
+					        } else if (res.cancel) {
+					            console.log('用户点击取消');
+					        }
+					    }
+					});
+					return
+				}
 				console.log('????')
 				let message
 				console.log(type)

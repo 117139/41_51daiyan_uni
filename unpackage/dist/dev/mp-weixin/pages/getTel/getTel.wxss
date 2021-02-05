@@ -32,6 +32,9 @@
 .login_tip.data-v-72093bb4{
 	position: fixed;
 	bottom: 100rpx;
+	width: 100%;
+	padding: 0 30rpx;
+	box-sizing: border-box;
 	text-align: center;
 	font-size: 30rpx;
 	color: #999;
@@ -48,5 +51,13 @@
 	right: 0;
 	opacity:0 ;
 	width: 100%;
+}
+.goback_btn.data-v-72093bb4{
+		width:560rpx;
+		height:80rpx;
+		margin: 30px auto;
+		background: #fff;
+		border-radius: 95rpx;
+		border: 1px solid #eee;
 }
 

@@ -418,6 +418,7 @@
 		mapMutations
 	} from 'vuex'
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	var that
 	export default {
 		data() {
 			return {
@@ -472,7 +473,8 @@
 				goods_sku_id: 0,  //商品id
 				
 				page:1,
-				like_goods:[]
+				like_goods:[],
+				share_id:''    //商品分享的id
 			}
 		},
 		components: {
@@ -505,6 +507,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
+			that=this
 			this.g_id=options.id
 			uni.showLoading({
 				title:'正在加载中'
@@ -520,6 +523,11 @@
 			}
 			if(options.advocacyviceId){
 				this.advocacyviceId=options.advocacyviceId
+			}
+			if(options.share_id){
+				this.share_id=options.share_id
+				console.log('share_id---------------------------->')
+				console.log(options.share_id)
 			}
 			this.onRetry()
 		},
@@ -548,7 +556,13 @@
 		 * 用户点击右上角分享
 		 */
 		onShareAppMessage: function () {
-		
+			return {
+				title: '51代言',
+				path: '/pages/details/details?share_id=' + that.loginMsg.id+'&id='+that.g_id,
+				success: function(res) {
+					console.log('成功', res)
+				}
+			}
 		},
 		methods: {
 			getdatalist() {
@@ -762,8 +776,9 @@
 				var jkurl = '/goods/goodsAdvoacyUserDetail'
 				var datas = {
 					gid:that.g_id,
-					advocacyId:that.dy_id,
-					advocacyviceId:that.advocacyviceId,
+					advocacyId:that.dy_id||'',
+					advocacyviceId:that.advocacyviceId||'',
+					share_id:that.share_id||'',
 					token: that.loginMsg.userToken?that.loginMsg.userToken:'',
 					page: that.star_page,
 					size:that.size

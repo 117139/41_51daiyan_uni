@@ -32,6 +32,12 @@
 					title:'关于我们'
 				})
 			}
+			if(option.type=='yhxy'){
+				this.type='yhxy'
+				uni.setNavigationBarTitle({
+					title:'用户协议'
+				})
+			}
 			this.getdata_xy()
 		},
 		methods: {
@@ -69,6 +75,11 @@
 				if(that.type=='about'){
 					datas = {
 						keyword: 'about',
+					}
+				}
+				if(that.type=='yhxy'){
+					datas = {
+						keyword: 'yhxy',
 					}
 				}
 				// 单个请求

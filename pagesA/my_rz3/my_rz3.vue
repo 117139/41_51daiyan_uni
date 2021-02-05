@@ -6,7 +6,8 @@
 		    <view class="hx10"></view>
 		    <view class="hx10"></view>
 		    <view class="sh_type">  
-		      <image class="rz_sh" :src="filter.imgIP('/static_s/51daiyan/images/rz_sh.png')"></image>
+		      <!-- <image class="rz_sh" :src="filter.imgIP('/static_s/51daiyan/images/rz_sh.png')"></image> -->
+					<text class="iconfont iconduigou rz_sh"></text>
 					<!-- 1：未认证  2：审核中  3：审核通过  4：审核未通过 -->
 		      <text>{{loginMsg.auth_status==1?'未认证':loginMsg.auth_status==2?'审核中':loginMsg.auth_status==3?'审核通过':'审核未通过'}}</text>
 		      <text v-if="loginMsg.auth_status==4" class="jjyy">{{loginMsg.auth_cause}}</text>
@@ -244,5 +245,9 @@ page{
   width:80rpx;
   height:80rpx;
   margin-bottom: 40rpx;
+}
+.rz_sh{
+	font-size: 140upx;
+	color: #F5C33D;
 }
 </style>

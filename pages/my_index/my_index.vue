@@ -30,7 +30,7 @@
 							</view>
 							<view class="daiyan_lv"><text class="iconfont iconxingzhuang60kaobei2"></text>代言星级 {{datas.advocacy_grade_value}}</view>
 						</view>
-						<view v-if="loginMsg.id!=datas.id" class="gz_btn gz_btn1" @tap="toroom(datas.identification_id)" :data-url="'/pages/tim/room?id='+datas.id">私信</view>
+						<view v-if="loginMsg.id!=datas.id&&datas.is_friend==2" class="gz_btn gz_btn1" @tap="toroom(datas.identification_id)" :data-url="'/pages/tim/room?id='+datas.id">私信</view>
 						<view v-if="loginMsg.id!=datas.id&&datas.is_attention==2" class="gz_btn" @tap="guanzhuFuc(datas.id,'cancel')">已关注</view>
 						<view v-if="loginMsg.id!=datas.id&&datas.is_attention==1" class="gz_btn" @tap="guanzhuFuc(datas.id,'affirm')">+关注</view>
 					</view>
@@ -95,19 +95,19 @@
 							<view class="dt_li">
 								<view class="dt_li_d1">
 									<image v-if="item.type==2" class="dt_li_d1_img" :lazy-load='true' mode="aspectFill" :src="filter.imgIP_video(item.img[0])" :data-src="filter.imgIP_video(item.img[0])"
-									  @tap.stop="jump" :data-url="'/pages/my_video/my_video?uid='+uid+'&idx='+item.g_id"></image>
+									  @tap.stop="jump" :data-url="'/pages/my_video/my_video?uid='+uid+'&idx='+item.id"></image>
 									<image v-if="item.type!=2" class="dt_li_d1_img" :lazy-load='true' mode="aspectFill" :src="filter.imgIP(item.img[0])" :data-src="filter.imgIP(item.img[0])" :data-array="filter.getgimgarrIP(item.img)"
 									 @tap.stop="pveimg"></image>
 									<view class="d1_msg">
-										<view class="dt_text oh3">{{item.content}}</view>
+										<view class="dt_text oh3"  @tap="jump" :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item.id">{{item.content}}</view>
 										<view class="dt_cz">
 											<view>共{{item.img.length>0?item.img.length:0}}张</view>
-											<view v-if="item.a_activity_id>0&&item.is_vote==2" @tap.stop="toupiao" :data-id="item.id" :data-idx="idx" class="tp_btn">投票</view>
+											<view v-if="item.a_activity_id>0&&item.is_vote==2" @tap.stop="toupiao" :data-id="item.user_id" :data-idx="idx" class="tp_btn">投票</view>
 											<view v-if="item.a_activity_id>0&&item.is_vote==1" class="tp_btn tp_btn1">已投票</view>
 										</view>
 									</view>
 								</view>
-								<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+item1.g_id">
+								<view v-if="idx1<1" v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+item1.g_id">
 									<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill" :data-src="filter.imgIP(item1.g_img[0])"
 									 ></image>
 									<view class="quan_goods_msg">
@@ -122,6 +122,12 @@
 											<view class="goods_btn2"><text>{{item1.g_advocacy_mannumber}}</text>代言人</view>
 										</view>
 									</view>
+								</view>
+								
+								<view class="goods_more" v-if="item.goods.length>1" >
+								  <view>共{{item.goods.length}}件</view>
+								  <view class="gm_more" @tap="jump" 
+								 :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item.id">点击查看</view>
 								</view>
 							</view>
 						</view>
@@ -147,12 +153,11 @@
 				<!-- 相册 -->
 				<view v-if="s_type==3" class="my_list">
 					<view class="sp_list">
-							
 							<view class="my_li_xc" v-for="(item1,idx1) in data_list">
 								<!-- <image class="my_li_xc_img" :src="filter.imgIP(item1.img[0])" mode="aspectFill"
 								 :data-src="filter.imgIP(item1.img[0])" :data-array="filter.getgimgarrIP(item1.img)" @tap.stop="pveimg"></image> -->
 								<image class="my_li_xc_img" :lazy-load='true' :src="filter.imgIP(item1.img[0])" mode="aspectFill"
-								 :data-src="filter.imgIP(item1.img[0])" @tap.stop="pveimg"></image>
+								 :data-src="filter.imgIP(item1.img[0])" @tap.stop="pveimg"  :data-array="filter.getgimgarrIP(item1.img)"></image>
 								<!-- <view class="xc_gb"><text class="iconfont iconguanbi"></text></view> -->
 								<view class="like_num"><text class="iconfont iconhongxinicon"></text>{{item1.praise_number}}</view>
 							</view>
@@ -252,7 +257,7 @@
 		 * 生命周期函数--监听页面显示
 		 */
 		onShow: function() {
-			this.getdata()
+			// this.getdata()
 		},
 
 		/**
@@ -1123,8 +1128,24 @@
 		color: #999;
 	}
 
-	.sp_li_img1 {
+	/* .sp_li_img1 {
 		width: 338rpx;
 		height: 33r8px;
+	} */
+	
+	
+	
+	.goods_more{
+	  width: 100%;
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	  font-size: 24rpx;
+	  color: #333;
+	  height: 80rpx;
+	
+	}
+	.gm_more{
+	  color: rgba(254,135,53,1);
 	}
 </style>

@@ -3,6 +3,7 @@
 		<form class="w100" @submit="formSubmit">
 		  <view class='container'>
 		    <view class="sfrz_tit">请提交身份证信息，仅用于平台审核</view>
+		    <view class="sfrz_tit">请正确填写，输入错误身份信息，可能导致提现失败！</view>
 		   <!-- <view class="sf_sfz">
 		      <view @tap="scpic" data-type="1">
 		        <image class="sfzimg" :src="sfimg1?filter.imgIP(sfimg1):filter.imgIP('/static_s/51daiyan/images/rz_img_05.jpg')" mode="aspectFill"></image>

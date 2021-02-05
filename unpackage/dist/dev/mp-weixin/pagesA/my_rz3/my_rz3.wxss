@@ -96,4 +96,8 @@ page.data-v-2e4e726b{
   height:80rpx;
   margin-bottom: 40rpx;
 }
+.rz_sh.data-v-2e4e726b{
+	font-size: 140rpx;
+	color: #F5C33D;
+}
 

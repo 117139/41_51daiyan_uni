@@ -19,7 +19,7 @@
 		          <text>{{item.store_name}}</text>
 		        </view> -->
 		        <block v-for="(item1,idx1) in item.order_goods">
-		          <view class="goods1"  @tap="jump_sh" :data-url="'/pagesA/OrderDetails_sh/OrderDetails_sh?id='+item1.id+'&type='+type">
+		          <view class="goods1"  @tap="jump_sh" :data-url="'/pagesA/OrderDetails_sh/OrderDetails_sh?id='+item1.id+'&type='+type" :data-id="item.order.o_id">
 		            <!-- <view v-if="type==4}}" class="xuanze" data-selec="idx}}" data-selec1="idx1}}" catchtap="select">
 		            <view class="xuanze1 {{goods_sele[idx][idx1].xuan==true? 'xuanze2':''}}">
 		              <icon v-if="goods_sele[idx][idx1].xuan==true}}" type="success" size="14" color="#F7B43B" />
@@ -331,6 +331,9 @@
 			},
 			jump_sh(e) {
 				if(this.type==0){
+					uni.navigateTo({
+						url:'/pagesA/OrderDetails/OrderDetails?id='+e.currentTarget.dataset.id+'&type=0'
+					})
 					return
 				}
 			  service.jump(e)

@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="container">
-			<!-- <view  @tap="jump" :data-url="'/pagesA/zhanbao/zhanbao?id='+ad_id">活动战报</view>
-			<view  @tap="jump" :data-url="'/pagesA/share/share?id='+ad_id+'&user_id='+loginMsg.id">活动分享</view> -->
+			<!-- <view  @tap="jump" :data-url="'/pagesA/zhanbao/zhanbao?id='+ad_id">活动战报</view> -->
+			<!-- <view  @tap="jump" :data-url="'/pagesA/share/share?id='+ad_id+'&user_id='+loginMsg.id">活动分享</view> -->
 		  <view class="avtivity_box">
 		    <image  class="avtivity_box" :src="filter.imgIP(datas.img[0])" mode="aspectFill"></image>
 		    <view class="hd_time">活动截止时间：{{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>

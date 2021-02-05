@@ -1,6 +1,6 @@
 <template>
 	<view>
-			<swiper :vertical="true" :circular="true" :current="current" :skip-hidden-item-layout="true" @change="changeCurrent" @animationfinish="changeItem">
+			<swiper :vertical="true" :circular="false" :current="current" :skip-hidden-item-layout="true" @change="changeCurrent" @animationfinish="changeItem">
 			    <swiper-item :item-id="oneItemParam.a_id">
 			        <video title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(oneItemParam.img[0])" 
 							 :loop="true" :poster="filter.imgIP_video(oneItemParam.img[0])" :custom-cache="true" :controls="false" :show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
@@ -73,6 +73,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -109,6 +110,7 @@
 			}
 		},
 		onLoad: function (e) {
+			that=this
 			this.uid=e.uid
 			this.idx=e.idx
 		  // 拿到当前视频的实例

@@ -141,7 +141,7 @@
 			      var jkurl='/user/applyApprove'
 			      var data={
 			      	"token": that.loginMsg.userToken,
-			      	    "identity_id": that.renzheng.sfid,
+			      	    // "identity_id": that.renzheng.sfid,
 			      	    "id_number_front": that.renzheng.sfimg1,
 			      	    "id_number_contrary": that.renzheng.sfimg2,
 			      	    "real_name": that.renzheng.sfz_name,

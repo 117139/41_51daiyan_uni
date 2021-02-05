@@ -19,7 +19,8 @@
 		    </view> -->
 			</view>
 			<view class="wx_list boxsiz">
-				<view class="wx_li boxsiz" v-for="(item,index) in wl_data.wuliu">
+				<view class="zanwu" v-if="wl_data.wuliu.length==0">暂未查到物流数据</view>
+				<view v-else class="wx_li boxsiz" v-for="(item,index) in wl_data.wuliu">
 					<view class="wl_time">
 						<view v-html="gettime(item.time,1)">03-11</view>
 						<view v-html="gettime(item.time,2)">08:20</view>

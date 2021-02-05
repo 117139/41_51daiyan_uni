@@ -12,6 +12,26 @@
 						<image class="zhanbao_tit_bg" :src="filter.imgIP('/static_s/51daiyan/images/zb_03.png')" mode=""></image>
 						<view class="zhanbao_tit_box">寻找代言人活动战报</view>
 					</view>
+					
+					<view class="dp_box" v-if="datas.managerData">
+					  <view class="dp_b1">
+					    <view class="dp_logo" @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+datas.managerData.group_code">
+					      <image :src="filter.imgIP(datas.managerData.head_portrait)" mode="aspectFill"></image>
+					    </view>
+					    <view class="dp_msg">
+					      <view class="dp_name oh2"  @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+datas.managerData.group_code">{{datas.managerData.store_name}}</view>
+					      <view class="dp_lv">
+					        <image v-for="(item,idx) in datas.managerData.rank" :src="filter.imgIP('/static_s/51daiyan/images/dp_zuan.png')"></image>
+					      </view>
+					      <view class="dp_bq">
+					        <text>代言 {{datas.managerData.advocacy_number}}</text>
+					        <text>粉丝：{{datas.managerData.fans_number}}</text>
+					        <!-- <text class="bq">高</text> -->
+					      </view>
+							
+					    </view>
+					  </view>
+					</view>
 					<view class="zb_tj">
 						<view class="zb_tj_time">活动起止时间：{{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>
 						<view class="zb_bl">
@@ -54,10 +74,11 @@
 							<!-- <image class="jx_li_icon" src="http://51daiyan.test.upcdn.net//static_s/51daiyan/images/zb_19.png" mode="aspectFit"></image> -->
 							<image class="jx_li_icon" :src="filter.imgIP('/static_s/51daiyan/images/zb_19.png')" mode="aspectFit"></image>
 							<!-- <image class="jx_li_tx" src="http://51daiyan.test.upcdn.net//static_s/51daiyan/images/tx.png" mode="aspectFill"></image> -->
-							<image v-if="!hasLogin" data-url="/pages/login/login" @tap='jump' class="jx_li_tx" :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
+							<image v-if="!hasLogin" data-url="/pages/login/login" @tap='jump_fuc(item.advocacy_id)' class="jx_li_tx" :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
 							<image v-else @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id"  class="jx_li_tx" :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
 							<view class="jx_li_name text-cut">{{item.user_nickname}}</view>
 							<view class="flex_1"></view>
+							<view style="font-size: 28upx;color: #999;" @tap="jump" :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item.advocacy_id">查看作品</view>
 							<view class="jx_list_tit_num"><text>{{item.popularity}}</text>票</view>
 						</view>
 						<view v-if="ph_list1.length>0" class="get_more"  @tap="getdatalist(1)">更多<text class="iconfont iconoff"></text></view>
@@ -76,10 +97,11 @@
 							<image class="jx_li_icon":src="filter.imgIP('/static_s/51daiyan/images/zb_25.png')" mode="aspectFit"></image>
 							<!-- <image class="jx_li_tx" src="http://51daiyan.test.upcdn.net//static_s/51daiyan/images/tx.png" mode="aspectFill"></image> -->
 							
-							<image v-if="!hasLogin" data-url="/pages/login/login" @tap='jump' class="jx_li_tx" :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
+							<image v-if="!hasLogin" data-url="/pages/login/login" @tap='jump_fuc(item.advocacy_id)' class="jx_li_tx" :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
 							<image v-else @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id"  class="jx_li_tx" :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
 							<view class="jx_li_name text-cut">{{item.user_nickname}}</view>
 							<view class="flex_1"></view>
+							<view style="font-size: 28upx;color: #999;" @tap="jump_fuc" :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item.advocacy_id">查看作品</view>
 							<view class="jx_list_tit_num"><text>{{item.popularity}}</text>票</view>
 						</view>
 						<view v-if="ph_list2.length>0" class="get_more"  @tap="getdatalist(2)">更多<text class="iconfont iconoff"></text></view>
@@ -100,6 +122,7 @@
 							<image v-else @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id"  class="jx_li_tx" :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
 							<view class="jx_li_name text-cut">{{item.user_nickname}}</view>
 							<view class="flex_1"></view>
+							<view style="font-size: 28upx;color: #999;" @tap="jump_fuc(item.advocacy_id)" :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item.advocacy_id">查看作品</view>
 							<view class="jx_list_tit_num"><text>{{item.popularity}}</text>票</view>
 						</view>
 						<view v-if="ph_list3.length>0" class="get_more"  @tap="getdatalist(3)">更多<text class="iconfont iconoff"></text></view>
@@ -165,6 +188,18 @@
 			that.getdata()
 		},
 		methods: {
+			jump_fuc(id){
+				if(id==0){
+					uni.showToast({
+						icon:'none',
+						title:'作品暂未通过审核或者已删除'
+					})
+				}else{
+					uni.navigateTo({
+						url:'/pages_goods/daiyan_xq/daiyan_xq?id='+id
+					})
+				}
+			},
 			getdata() {
 			
 				let that = this
@@ -506,6 +541,7 @@
 	.jx_list_tit_num {
 		color: #FE9B00;
 		font-size: 24upx;
+		margin-left: 20upx;
 	}
 	
 	.jx_list_tit_num text {
@@ -588,5 +624,68 @@
 		position: relative;
 		top: 4upx;
 		font-size: 24upx;
+	}
+	
+	.dp_box{
+	  width:100%;
+	  background: #fff;
+	  border-bottom: 1px solid #eee;
+	  padding: 20rpx 28rpx;
+	  box-sizing: border-box;
+	  margin-bottom: 20upx;
+	
+	}
+	.dp_b1{
+	  width: 100%;
+	  display: flex;
+	}
+	.dp_logo{
+	  width:123rpx;
+	  height:123rpx;
+	  border-radius:10rpx;
+	  border:1px solid #eee;
+	}
+	.dp_logo image{
+	  width:123rpx;
+	  height:123rpx;
+	  border-radius:10rpx;
+	}
+	.dp_msg{
+	  flex: 1;
+	  height:123rpx;
+	  margin-left: 20rpx;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: space-between;
+	}
+	.dp_name{
+	  font-size: 28rpx;
+	}
+	.dp_lv{
+	  display: flex;
+	  align-items: center;
+	}
+	.dp_lv image{
+	  width:31rpx;
+	  height:25rpx;
+	  margin-right: 10rpx;
+	}
+	.dp_bq{
+	  font-size: 24rpx;
+	  color: #bbb;
+	  display: flex;
+	  align-items: center;
+	}
+	.dp_bq text{
+	  margin-right: 20rpx;
+	}
+	.dp_bq .bq{
+	  width:28rpx;
+	  height:28rpx;
+	  background:rgba(241,241,241,1);
+	  border-radius:50%;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
 	}
 </style>

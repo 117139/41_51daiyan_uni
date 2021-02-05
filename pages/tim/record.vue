@@ -86,7 +86,8 @@
 								{{item.userProfile.nick}}
 							</view>
 							<view class="item-text-info">
-								<rich-text :nodes="nodesFliter(item.lastMessage.messageForShow)"></rich-text>
+								<rich-text v-if="item.lastMessage.payload.data=='custom_img'" :nodes="nodesFliter('[图片]')"></rich-text>
+								<rich-text v-else :nodes="nodesFliter(item.lastMessage.messageForShow)"></rich-text>
 							</view>
 						</view>
 						<view class="item-msg">

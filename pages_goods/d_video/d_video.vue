@@ -1,6 +1,6 @@
 <template>
 	<view>
-			<swiper :vertical="true" :circular="true" :current="current" :skip-hidden-item-layout="true" @change="changeCurrent" @animationfinish="changeItem">
+			<swiper :vertical="true" :circular="false" :current="current" :skip-hidden-item-layout="true" @change="changeCurrent" @animationfinish="changeItem">
 			    <swiper-item :item-id="oneItemParam">
 			        <video title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(oneItemParam)" 
 							 :loop="true" :poster="filter.imgIP_video(oneItemParam)" :custom-cache="true" :controls="false" :show-center-play-btn="false" 
