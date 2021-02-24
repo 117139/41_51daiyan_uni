@@ -411,6 +411,7 @@
 		right: 0;
 		border-bottom: 1px solid #eee;
 		background: #fff;
+		z-index: 800;
 	}
 
 	.top_search_box {

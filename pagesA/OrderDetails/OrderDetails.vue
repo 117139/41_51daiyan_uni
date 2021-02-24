@@ -142,7 +142,7 @@
 					</view> -->
 					<view class="ordermsg_r">
 						<view class="omsgp dis_flex ju_b"><text>商品总价：</text><text>{{datas.o_totalprice}}</text></view>
-						<view class="omsgp  dis_flex ju_b"><text>运费：</text><text>+ {{datas.o_price}}</text></view>
+						<view class="omsgp  dis_flex ju_b"><text>运费：</text><text>+ {{datas.o_postage_price}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>优惠：</text><text>- {{datas.o_discount_coupon_price}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>代言豆抵扣：</text><text>- {{datas.use_bean_number_price}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>支付方式：</text><text>{{datas.o_paytype_value}}</text></view>

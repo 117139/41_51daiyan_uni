@@ -259,7 +259,7 @@
 							that.data_list=datas
 						}else{
 							
-							that.data_list = that.datas.concat(datas)
+							that.data_list = that.data_list.concat(datas)
 						}
 			
 						that.page++
