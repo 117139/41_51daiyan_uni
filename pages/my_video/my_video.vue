@@ -2,18 +2,30 @@
 	<view>
 			<swiper :vertical="true" :circular="false" :current="current" :skip-hidden-item-layout="true" @change="changeCurrent" @animationfinish="changeItem">
 			    <swiper-item :item-id="oneItemParam.a_id">
-			        <video title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(oneItemParam.img[0])" 
-							 :loop="true" :poster="filter.imgIP_video(oneItemParam.img[0])" :custom-cache="true" :controls="false" :show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			        <video v-if="type=='dp'" title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(oneItemParam.obj_pic[0])" 
+							 :loop="true" :poster="filter.imgIP_video(oneItemParam.obj_pic[0])" :custom-cache="true" :controls="false" 
+								:show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			        <video v-else title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(oneItemParam.img[0])" 
+							 :loop="true" :poster="filter.imgIP_video(oneItemParam.img[0])" :custom-cache="true" :controls="false" 
+								:show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			    </swiper-item>
 			
 			    <swiper-item :item-id="twoItemParam.a_id" v-if="videoList.length>1">
-			        <video title="2222222" id="myVideo1"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(twoItemParam.img[0])" 
-							 :loop="true" :poster="filter.imgIP_video(twoItemParam.img[0])" :custom-cache="true" :controls="false" :show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			        <video v-if="type=='dp'" title="2222222" id="myVideo1"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(twoItemParam.obj_pic[0])" 
+							 :loop="true" :poster="filter.imgIP_video(twoItemParam.obj_pic[0])" :custom-cache="true" :controls="false" 
+								:show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			        <video v-else title="2222222" id="myVideo1"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(twoItemParam.img[0])" 
+							 :loop="true" :poster="filter.imgIP_video(twoItemParam.img[0])" :custom-cache="true" :controls="false" 
+								:show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			    </swiper-item>
 			
 			    <swiper-item :item-id="threeItemParam.a_id" v-if="videoList.length>2">
-			        <video title="3333333" id="myVideo2"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(threeItemParam.img[0])"
-							 :loop="true" :poster="filter.imgIP_video(threeItemParam.img[0])" :custom-cache="true" :controls="false" :show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			        <video v-if="type=='dp'" title="3333333" id="myVideo2"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(threeItemParam.obj_pic[0])"
+							 :loop="true" :poster="filter.imgIP_video(threeItemParam.obj_pic[0])" :custom-cache="true" :controls="false" 
+								:show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+			        <video v-else title="3333333" id="myVideo2"   @fullscreenchange="fullScreen_fuc" :src="filter.imgIP(threeItemParam.img[0])"
+							 :loop="true" :poster="filter.imgIP_video(threeItemParam.img[0])" :custom-cache="true" :controls="false" 
+								:show-center-play-btn="false" :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
 			    </swiper-item>
 			
 			</swiper>
@@ -106,13 +118,18 @@
 				
 				fullScreen: false,
 				fullScreenId: 'myVideo0',
-				isFull: false
+				isFull: false,
+				
+				type:'',      //dp 店铺视屏
 			}
 		},
 		onLoad: function (e) {
 			that=this
 			this.uid=e.uid
 			this.idx=e.idx
+			if(e.type){
+				that.type=e.type
+			}
 		  // 拿到当前视频的实例
 		  this.videoContext0 = wx.createVideoContext('myVideo0')
 		  // 拿到当前视频的实例
@@ -188,6 +205,15 @@
 					page: that.page,
 					size: that.size
 				}
+				if(that.type=='dp'){
+					jkurl = jkurl='/store/adv'
+					datas = {
+					token: that.loginMsg.userToken,
+					group_code: that.uid,
+					page: that.page,
+					size: that.size
+					}
+				}
 				if (that.btn_kg == 1) {
 					return
 				} else {
@@ -218,9 +244,12 @@
 							
 							
 							that.videoList= datas
-							
-									
-							let videoIndex = that.videoList.findIndex(v => v.a_id == that.videoId)
+							let videoIndex
+							if(that.type=='dp'){
+								videoIndex = that.videoList.findIndex(v => v.a_id == that.videoId)
+							}else{
+								videoIndex = that.videoList.findIndex(v => v.a_id == that.videoId)
+							}
 							console.log(that.videoList, '-----------')
 							let current = videoIndex % 3
 									

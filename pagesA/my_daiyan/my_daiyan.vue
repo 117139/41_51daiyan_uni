@@ -116,7 +116,8 @@
 				data_list: [], //代言列表
 				page:1,
 				size:20,
-				showtk:0
+				showtk:0,
+				exceed_number_bl:0
 			}
 		},
 		computed: {
@@ -126,7 +127,11 @@
 				'wxlogin'
 			])
 		},
-		onLoad() {
+		onLoad(option) {
+			// if(option.exceed_number_bl){
+				
+			// 	this.exceed_number_bl=option.exceed_number_bl||0
+			// }
 			this.onRetry()
 		},
 		onShow() {

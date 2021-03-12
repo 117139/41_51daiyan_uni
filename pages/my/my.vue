@@ -291,7 +291,7 @@
 					console.log(res)
 					if (res.code == 1) {
 						that.exceed_number_bl = res.data.exceed_number_bl
-						
+						uni.setStorageSync('exceed_number_bl',res.data.exceed_number_bl)
 					}
 				}).catch(e => {
 					console.log(e)

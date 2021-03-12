@@ -296,7 +296,9 @@
 							icon:'none',
 							title:'提交成功，请耐心等待'
 						})
-						service.get_info()
+						setTimeout(()=>{
+							service.get_info()
+						},1000)
 				
 					}
 				}).catch(e => {

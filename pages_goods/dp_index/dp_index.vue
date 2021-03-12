@@ -60,7 +60,10 @@
 					</view>
 					<view v-if="s_type==1" class="my_list">
 						<view class="sp_list" >
-							<view class="sp_li" v-for="(item,idx) in data_list"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+							<!-- @tap="jump" :data-url="'/pages/my_video/my_video?uid='+uid+'&idx='+item.a_id" -->
+							<!-- <view class="sp_li" v-for="(item,idx) in data_list"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id"> -->
+							<view class="sp_li" v-for="(item,idx) in data_list" @tap="jump" 
+							 :data-url="'/pages/my_video/my_video?uid='+dpid+'&idx='+item.a_id+'&type=dp'">
 								<view class="sp_li_img">
 									<image v-if="item.type==2" class="sp_li_img" :src="filter.imgIP_video(item.obj_pic[0])" mode="aspectFill"></image>
 									<image v-else class="sp_li_img" :src="filter.imgIP(item.obj_pic[0])" mode="aspectFill"></image>
@@ -281,8 +284,7 @@
 						if (that.page == 1) {
 							that.data_list = datas
 						} else {
-			
-							that.data_list = that.datas.concat(datas)
+							that.data_list = that.data_list.concat(datas)
 						}
 			
 						that.page++

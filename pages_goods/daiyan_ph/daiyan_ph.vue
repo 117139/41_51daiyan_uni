@@ -32,7 +32,8 @@
 								<image class="pl_tx" :src="item.head_portrait"></image>
 							</view>
 							<view class="ph_name">{{item.nickname}}</view>
-							<view class="ph_num"><text>{{item.number}}</text>{{ph_type1==2?'元':'件'}}</view>
+							<!-- <view class="ph_num"><text>{{item.number}}</text>{{ph_type1==2?'元':'件'}}</view> -->
+							<view class="ph_num"><text>{{item.number}}</text>件</view>
 							<view class="ph_btn" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.id">去看看</view>
 						</view>
 						<view class="li_dy oh2">代言说：{{item.introduction?item.introduction:''}}</view>

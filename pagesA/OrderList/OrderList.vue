@@ -458,7 +458,12 @@
 						return
 					}
 					console.log(that.goods_sele)
-					uni.showModal({
+					that.dy_fb_fuc(that.goods_sele)
+					wx.navigateTo({
+					  url: '/pagesA/daiyan_fabu/daiyan_fabu',
+					})
+					return
+					/*uni.showModal({
 					    title: '提示',
 					    content: '是否发布代言',
 					    success: function (res) {
@@ -472,11 +477,16 @@
 					            console.log('用户点击取消');
 					        }
 					    }
-					});
+					});*/
 					
 				}else{
 					var arr=[]
 					arr.push(item)
+					that.dy_fb_fuc(arr)
+					wx.navigateTo({
+					  url: '/pagesA/daiyan_fabu/daiyan_fabu',
+					})
+					return
 					uni.showModal({
 					    title: '提示',
 					    content: '是否发布代言',

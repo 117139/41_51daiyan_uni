@@ -212,7 +212,8 @@
 				},
 				qrShow: false,
 				canvasId: 'default_PosterCanvasId',
-				count: 0
+				count: 0,
+				exceed_number_bl:0
 			}
 		},
 		computed: {
@@ -228,6 +229,8 @@
 			if(option.id){
 				that.id=option.id
 			}
+			// uni.setStorageSync('exceed_number_bl',res.data.exceed_number_bl)
+			this.exceed_number_bl=uni.getStorageSync('exceed_number_bl')||0
 			this.getdata_dy()
 			that.widget = that.selectComponent('.widget')
 		},
@@ -893,7 +896,7 @@
 											color:'#FE8735',
 											textAlign:'center',
 											lineFeed: {
-												maxWidth: 120,
+												maxWidth: 200,
 												lineNum: 1
 											},
 											dx: 150,
@@ -916,7 +919,7 @@
 											color:'#FE8735',
 											textAlign:'center',
 											lineFeed: {
-												maxWidth: 120,
+												maxWidth: 200,
 												lineNum: 1
 											},
 											dx: 360,
@@ -926,7 +929,7 @@
 								},
 								{
 									type: 'text',
-									text: _this.loginMsg.exceed_number+'%好友',
+									text: _this.exceed_number_bl+'%好友',
 									// text: '100%好友',
 									serialNum: 3,
 									allInfoCallback({
@@ -939,7 +942,7 @@
 											color:'#FE8735',
 											textAlign:'center',
 											lineFeed: {
-												maxWidth: 120,
+												maxWidth: 200,
 												lineNum: 1
 											},
 											dx: 585,

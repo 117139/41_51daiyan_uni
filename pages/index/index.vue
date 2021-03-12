@@ -148,14 +148,17 @@
 				<view class="quan_msg" @tap="jump" :data-url="'/pages_goods/daiyan_xq/daiyan_xq?id='+item.id">
 					<view class="oh4  quan_msg_text">{{item.content}}</view>
 					<view v-if="item.img.length==1" class="quan_msg_img">
-						<image v-if="item.type==1||item.type==3" class="one one_one" :lazy-load='true' :src="filter.imgIP(item.img[0])" mode="aspectFill" :data-src="filter.imgIP(item.img[0])"
+						<image v-if="item.type==1||item.type==3" class="one one_one" :lazy-load='true' 
+						 :src="filter.imgIP(item.img[0])" mode="aspectFill" :data-src="filter.imgIP(item.img[0])"
 						 @tap.stop="pveimg"></image>
-						<image v-if="item.type==2" class="one one_one" :lazy-load='true' :src="filter.imgIP_video(item.img[0])" mode="aspectFill" :data-src="filter.imgIP_video(item.img[0])"
+						<image v-if="item.type==2" class="one one_one" :lazy-load='true' 
+						 :src="filter.imgIP_video(item.img[0])" mode="aspectFill" :data-src="filter.imgIP_video(item.img[0])"
 						 @tap.stop="jump" data-type="sp" :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx=0&a_id='+item.id"></image>
 					</view>
 					<view v-else class="quan_msg_img">
 						<image v-if="item.type==1" v-for="(item1,idx1) in item.img"
-						 :src="filter.imgIP(item1)" mode="aspectFill" :lazy-load='true' :data-src="filter.imgIP(item1)" :data-array="filter.getgimgarrIP(item.img)"
+						 :src="filter.imgIP(item1)" mode="aspectFill" :lazy-load='true' :data-src="filter.imgIP(item1)" 
+							:data-array="filter.getgimgarrIP(item.img)" :data-array1="item.img" 
 						 @tap.stop="pveimg"></image>
 						<image v-if="item.type==2" v-for="(item1,idx1) in item.img" :lazy-load='true' :src="filter.imgIP_video(item1)" mode="aspectFill" 
 						 @tap.stop="jump" data-type="sp" :data-spurl="item.img" :data-url="'/pages_goods/d_video/d_video?idx='+idx1+'&a_id='+item.id"></image>
@@ -545,6 +548,9 @@
 				var datas = {
 					token: that.loginMsg.userToken||'',
 				}
+				that.datas=''
+				that.start_li=[]
+				that.data_list=[]
 				// 单个请求
 				service.P_get('', datas).then(res => {
 					console.log(res)
