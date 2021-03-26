@@ -83,7 +83,7 @@
 	        </view> -->
 					
 					<view class="cz_li" style="position: relative;">
-						<button type="default" open-type="share" :data-id="item.id" style="position: absolute;top: 0;opacity: 0;width: 100%;height: 100%;"></button>
+						<button type="default" open-type="share" :data-id="id" style="position: absolute;top: 0;opacity: 0;width: 100%;height: 100%;"></button>
 						<text class="iconfont iconfenxiang2" style="color: #999;"></text>分享
 					</view>
 					<view class="cz_li">跟随购买：{{datas.follow_buy_number}}</view>
@@ -111,6 +111,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that = this
 	export default {
 		data() {
 			return {
@@ -125,7 +126,7 @@
 			}
 		},
 		onLoad(option) {
-			var that = this
+			that = this
 			this.id=option.id
 			that.getdata()
 		},
@@ -164,9 +165,10 @@
 				// })
 			}
 			
+			
 			return {
 				title: '51代言',
-				path: '/pages_goods/daiyan_xq/daiyan_xq?id=' + res.target.dataset.id,
+				path: '/pages_goods/daiyan_xq/daiyan_xq?id='+that.id,
 				success: function(res) {
 					console.log('成功', res)
 				}

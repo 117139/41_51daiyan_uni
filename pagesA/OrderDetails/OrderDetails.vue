@@ -149,7 +149,7 @@
 						<view class="omsgp dis_flex ju_b"><text>实付款：</text><text>{{datas.o_price}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>订单编号：</text><text>{{datas.o_order_num}}</text></view>
 						<view class="omsgp dis_flex ju_b"><text>创建时间：</text><text>{{filter.getDate_ymd(datas.o_create_time)}}</text></view>
-						<view v-if="datas.o_create_time" class="omsgp dis_flex ju_b"><text>支付时间：</text><text>{{filter.getDate_ymd(datas.o_pay_addtime)}}</text></view>
+						<view v-if="datas.o_pay_addtime" class="omsgp dis_flex ju_b"><text>支付时间：</text><text>{{filter.getDate_ymd(datas.o_pay_addtime)}}</text></view>
 						<view v-if="datas.o_sub_addtime" class="omsgp dis_flex ju_b"><text>收货时间：</text><text>{{filter.getDate_ymd(datas.o_sub_addtime)}}</text></view>
 
 

@@ -232,7 +232,7 @@
 				this.uid = options.id
 			}
 			console.log('options.scene-------------------------》')
-			console.log(options.scene)
+			// console.log(options.scene)
 			if(options.scene){
 				const scene = decodeURIComponent(options.scene)
 				console.log(scene)
