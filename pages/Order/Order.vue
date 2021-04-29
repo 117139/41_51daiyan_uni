@@ -49,14 +49,33 @@
 					
 					<view class="guige" :data-url="'/pagesA/my_yhq/my_yhq?type=1&idx='+idx" @tap="jump">
 					  <view class="guige_l">
-					    <view class="guige_l_name">优惠券</view>
+					    <view class="guige_l_name">优惠券</view>	  
+						</view>
+				
 					    <!-- <view>10元</view> -->
+					  <!-- </view> -->
+					  <view class="dis_flex aic">
+					    <view class="fz26 c9">{{item.coupon.length==0?'无可用':order_ls_data[idx].yhidx==-1? '不使用':getxj(idx,'yh')}}</view>
+					    <text class="iconfont iconnext3 fz30 c9"></text>
+						</view>
+					</view>
+					<!-- <view class="guige" :data-url="'/pagesA/my_yhq/my_yhq?type=1&idx='+idx" @tap="jump">
+					  <view class="guige_l">
+					    <view class="guige_l_name">开具发票</view>
 					  </view>
 					  <view class="dis_flex aic">
 					    <view class="fz26 c9">{{item.coupon.length==0?'无可用':order_ls_data[idx].yhidx==-1? '不使用':getxj(idx,'yh')}}</view>
 					    <text class="iconfont iconnext3 fz30 c9"></text>
 					  </view>
 					</view>
+					<view class="guige">
+					  <view class="guige_l">
+					    <view class="guige_l_name">备注</view>
+					  </view>
+					  <view class="dis_flex aic">
+					    <input class="order_int" type="text" v-model="orderRemark[idx].remark" placeholder="请输入您的备注">
+					  </view>
+					</view> -->
 					
 					<view class="guige">
 					  <view class="guige_l">
@@ -158,6 +177,7 @@
 				my_dou_xuan: false,
 				zsum: 1000,
 				order_ls_data:'',
+				orderRemark:''
 			}
 		},
 		computed:{
@@ -336,6 +356,15 @@
 							uni.setNavigationBarTitle({
 								title:'填写订单'
 							})
+							var orderRemark=[]
+							for(var i=0;i<datas.length;i++){
+								var newi={
+									group_code:datas[i].group_code,
+									remark:''
+								}
+								orderRemark.push(newi)
+							}
+							that.orderRemark=orderRemark
 							that.jisuan()
 							console.log(address)
 							that.getyf()
@@ -514,7 +543,7 @@
 				}else{
 					coupon_list=JSON.stringify(coupon_list)
 				}
-				
+				var orderRemark=JSON.stringify(that.orderRemark)
 			  if(that.type==1){
 			  	datas = {
 			  		token: that.loginMsg.userToken,
@@ -526,7 +555,8 @@
 						advocacyviceId:that.advocacyviceId,
 						advocacy_user_id:that.advocacy_user_id,
 			  		number:that.sku_number,
-						coupon_list:coupon_list
+						coupon_list:coupon_list,
+						orderRemark:orderRemark
 			  	}
 			  }
 			  if(that.type==2){
@@ -536,9 +566,12 @@
 						address_id:that.address.id,
 						advocacy_bean:that.use_dou,
 			  		g_data:that.g_data,
-						coupon_list:coupon_list
+						coupon_list:coupon_list,
+						orderRemark:orderRemark
 			  	}
 			  }
+				console.log(datas)
+				// return
 				// return
 				if(that.btnkg==1){
 					return
@@ -987,5 +1020,8 @@ text{
 }
 .xuanze2{
 	border: 0;
+}
+.order_int{
+	flex: 1;
 }
 </style>

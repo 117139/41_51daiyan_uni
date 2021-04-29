@@ -329,17 +329,22 @@
 						"enablePullDownRefresh": false
 					}
 
+				}, {
+					"path": "zhanbao/zhanbao",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+
+				}, {
+					"path": "order_fapiao/order_fapiao",
+					"style": {
+						"navigationBarTitleText": "开具发票",
+						"enablePullDownRefresh": false
+					}
+
 				}
-			    ,{
-                    "path" : "zhanbao/zhanbao",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+			]
 		},
 		{
 			"root": "pages_goods",
@@ -559,12 +564,13 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "51代言",
 		"navigationBarBackgroundColor": "#fff",
-		"backgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+			// #ifdef MP-WEIXIN
+			,
 		"usingComponents": {
-			"van-stepper": "./wxcomponents/vant/stepper/index",
-			"van-popup": "./wxcomponents/vant/popup/index"
+			"van-stepper": "./wxcomponents/vant/stepper/index"
 		}
-
+		// #endif
 
 	},
 	"plugins": {

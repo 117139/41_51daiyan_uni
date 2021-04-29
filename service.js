@@ -6,6 +6,7 @@ import event from 'commen/event.js'
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
 const IPurl = 'https://wx.51daiyan.cn/api/';
+// const IPurl = 'http://192.168.20.116:81/api/';
 const imgurl = 'https://cdn.51daiyan.cn/';
 /**
  * 请求头
@@ -317,7 +318,8 @@ const get_info = function(data) {
 	uni.request({
 		url: IPurl + '/user/info',
 		data: {
-			token:store.state.loginMsg.userToken
+			token:store.state.loginMsg.userToken||'fa7b4f7fcc5df37c3fddc4af254ffad4'
+			// token:store.state.loginMsg.userToken
 		},
 		header: {
 			'content-type': 'application/x-www-form-urlencoded'

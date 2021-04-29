@@ -3,7 +3,7 @@
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
 		<view class="container" v-if="htmlReset==0">
 			<view class="zanwu_box" v-if="data_list.length==0">
-				<image  :src="filter.imgIP('/static_s/51daiyan/images/car_null.png')"></image>
+				<image  :src="getimg('/static_s/51daiyan/images/car_null.png')"></image>
 				<text>购物车空空如也，快去挑好货咯～</text>
 				<view @tap="jump" data-url="/pages_goods/daiyan_sc/daiyan_sc">逛逛代言商城</view>
 			</view>
@@ -11,7 +11,7 @@
 				:data-tab="idx"
 				 >
 		     <!-- <view class="dianpu_tit" @tap="jump" data-url="/pages/dp_index/dp_index?shop_id=1">
-					 <image class="dp_logo" :src="filter.imgIP('/static_s/51daiyan/images/tx.png')"></image>
+					 <image class="dp_logo" :src="getimg('/static_s/51daiyan/images/tx.png')"></image>
 					 <text>石说的达开旗舰店</text>
 					 <text class="iconfont iconnext3"></text>
 				 </view>  -->
@@ -26,7 +26,7 @@
 						</view>
 					</view>
 					<view class="goodsImg"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
-						<image class="goodsImg" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])" mode="aspectFill"></image>
+						<image class="goodsImg" :lazy-load='true' :src="getimg(item.g_pic[0])" mode="aspectFill"></image>
 					</view>
 					<view class="goodsinr">
 						<view class="goodsname fz30 c30 oh2"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">{{item.g_title}}</view>
@@ -59,7 +59,7 @@
 				</view>
 				<view class="goods_list">
 					<view class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id" v-for="(item,index) in rand_data">
-						<image class="goods_img" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"  mode="aspectFill"></image>
+						<image class="goods_img" :lazy-load='true' :src="getimg(item.g_pic[0])"  mode="aspectFill"></image>
 						<view class="goods_msg">
 							<view class="dis_flex aic"><text v-if="item.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item.g_title}}</text></view>
 							<view class="goods_pri">
@@ -71,7 +71,7 @@
 					
 				</view>
 			</view>
-			<view class="vbottom" v-if="goods.length!==0">
+			<view class="vbottom" v-if="data_list.length>0">
 				<view class="selecAll" @tap="selecAll">
 					<view class="xuanze1 all " :class="all==true? 'xuanze2':''">
 						<icon  v-if="all==true" type="success" size="16" color="#F7B43B" />
@@ -90,7 +90,7 @@
 	</view>
 </template>
 
-<script module="filter" lang="wxs" src="../../utils/filter.wxs"></script>
+<!-- <script module="filter" lang="wxs" src="../../utils/filter.wxs"></script> -->
 <script>
 	import service from '../../service.js';
 	import {
@@ -490,6 +490,9 @@
 			pveimg(e) {
 			  service.pveimg(e)
 			},
+			getimg(img){
+				return service.getimg(img)
+			},
 			cardel(e) {
 			  // wx.showToast({
 			  //   title: '删除成功',
@@ -772,6 +775,9 @@ page{
 	position: fixed;
 	bottom: 0;
 	z-index: 99;
+	/* #ifdef H5 */
+	bottom: 49px;
+	/* #endif */
 	background-color: #fff;
 	display: flex;
 	align-items: center;

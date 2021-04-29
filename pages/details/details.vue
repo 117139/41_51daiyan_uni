@@ -396,8 +396,17 @@
 						<text>购买数量</text>
 						<!-- <van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="goodsData.is_pond_goods==2?1:show_num"
 							@input="onChange" @change="onChange" /> -->
+							<!-- #ifdef MP-WEIXIN -->
 						<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="0" :max="show_num"
 							@input="onChange" @change="onChange" />
+							<!-- #endif -->
+							<!-- #ifndef MP-WEIXIN -->
+							<!-- <view class="vstepper steppera">
+								<view @tap.stop="onNum" :data-idx="idx" data-ad="-" :data-id="item.g_id" class="vantjian c9">-</view>
+								<input class="vanipt c6" disabled :value="item.number "></input>
+								<view @tap.stop="onNum" :data-idx="idx" data-ad="+" :data-id="item.g_id" class="vantjia c9">+</view>
+							</view> -->
+							<!-- #endif -->
 					</view>
 					<view class="b_view_o"></view>
 				</scroll-view>
@@ -1489,11 +1498,12 @@
 			  } else {
 			    that.btnkg= 1
 			  }
+				// return
 				that.onClose()
 				// advocacyId:that.dy_id,
 					// advocacyviceId:that.advocacyviceId,
 			  uni.navigateTo({
-			    url: '/pages/Order/Order?type=1&v_id='+that.v_id+'&number='+that.cnum+'&advocacy_user_id='+that.dyr_type+'&v_id='+that.v_id+'&dy_id='+that.dy_id+'&advocacyviceId='+that.advocacyviceId
+			    url: '/pages/Order/Order?type=1&v_id='+that.v_id+'&number='+that.cnum+'&advocacy_user_id='+that.dyr_type+'&dy_id='+that.dy_id+'&advocacyviceId='+that.advocacyviceId
 			  })
 			},
 			bm_fuc() {

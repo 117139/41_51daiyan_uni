@@ -12,6 +12,7 @@
 					玩法介绍
 				</view>
 			</view>
+			<!-- <view @tap="jump" data-url="/pagesA/order_fapiao/order_fapiao?id=1">发票</view> -->
 			<view class="index_box1 index_box2">
 				<view class="cur">代言动态<text></text></view>
 				<view @tap="jump" data-url="/pages_goods/daiyan_sc/daiyan_sc">代言商城</view>

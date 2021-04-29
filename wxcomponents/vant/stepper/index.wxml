@@ -1,3 +1,4 @@
+<!-- #ifdef MP-WEIXIN -->
 <wxs src="../wxs/utils.wxs" module="utils" />
 
 <view class="van-stepper custom-class">
@@ -35,3 +36,4 @@
     bind:touchend="onTouchEnd"
   />
 </view>
+<!-- #endif -->

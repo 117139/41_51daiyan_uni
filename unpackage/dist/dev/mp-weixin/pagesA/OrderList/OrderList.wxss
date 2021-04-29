@@ -11,6 +11,9 @@ page.data-v-fe1d57f6{
 .tab_box.data-v-fe1d57f6{
   position: fixed;
   top: 0;
+
+
+
   z-index: 90;
   font-size: 30rpx;
 }

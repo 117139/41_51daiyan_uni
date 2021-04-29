@@ -258,6 +258,9 @@ page.data-v-51e9b630{
 	position: fixed;
 	bottom: 0;
 	z-index: 99;
+
+
+
 	background-color: #fff;
 	display: -webkit-box;
 	display: -webkit-flex;

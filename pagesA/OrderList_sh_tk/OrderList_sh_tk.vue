@@ -43,8 +43,17 @@
 				<view class="fuwu_li bt0">
 					<view class="d1">数量</view>
 					<view class="fw_msg">
+						<!-- #ifdef MP-WEIXIN -->
 						<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum" min="1" :max="datas.may_retreat_number"
 						  @input="onChange" @change="onChange" />
+							<!-- #endif -->
+							<!-- #ifndef MP-WEIXIN -->
+							<!-- <view class="vstepper steppera">
+								<view @tap.stop="onNum" :data-idx="idx" data-ad="-" :data-id="item.g_id" class="vantjian c9">-</view>
+								<input class="vanipt c6" disabled :value="item.number "></input>
+								<view @tap.stop="onNum" :data-idx="idx" data-ad="+" :data-id="item.g_id" class="vantjia c9">+</view>
+							</view> -->
+							<!-- #endif -->
 					</view>
 					<!-- <text class="iconfont iconnext3"></text> -->
 				</view>

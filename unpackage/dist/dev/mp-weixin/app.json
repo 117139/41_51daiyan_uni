@@ -55,7 +55,8 @@
         "OrderDetails_sh_th/OrderDetails_sh_th",
         "Order_wuliu/Order_wuliu",
         "share/share",
-        "zhanbao/zhanbao"
+        "zhanbao/zhanbao",
+        "order_fapiao/order_fapiao"
       ]
     },
     {
@@ -160,8 +161,7 @@
   },
   "permission": {},
   "usingComponents": {
-    "van-stepper": "./wxcomponents/vant/stepper/index",
-    "van-popup": "./wxcomponents/vant/popup/index"
+    "van-stepper": "./wxcomponents/vant/stepper/index"
   },
   "sitemapLocation": "sitemap.json"
 }

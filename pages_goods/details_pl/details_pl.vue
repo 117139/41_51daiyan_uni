@@ -78,8 +78,17 @@
 						</block>
 						<view class="countnum">
 							<text>购买数量</text>
+							<!-- #ifdef MP-WEIXIN -->
 							<van-stepper custom-class="steppera" input-class="vanipt" plus-class="vantjia" minus-class="vantjian" v-model="cnum"
 							 min="0" :max="show_num" @input="onChange" @change="onChange" />
+							 <!-- #endif -->
+							 <!-- #ifndef MP-WEIXIN -->
+							 <!-- <view class="vstepper steppera">
+							 	<view @tap.stop="onNum" :data-idx="idx" data-ad="-" :data-id="item.g_id" class="vantjian c9">-</view>
+							 	<input class="vanipt c6" disabled :value="item.number "></input>
+							 	<view @tap.stop="onNum" :data-idx="idx" data-ad="+" :data-id="item.g_id" class="vantjia c9">+</view>
+							 </view> -->
+							 <!-- #endif -->
 						</view>
 						<view class="b_view_o"></view>
 					</scroll-view>

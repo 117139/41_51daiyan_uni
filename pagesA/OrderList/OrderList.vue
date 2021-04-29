@@ -841,6 +841,9 @@ page{
 .tab_box{
   position: fixed;
   top: 0;
+	/* #ifdef H5 */
+	top:44px;
+	/* #endif */
   z-index: 90;
   font-size: 30rpx;
 }

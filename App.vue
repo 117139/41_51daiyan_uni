@@ -10,9 +10,15 @@
 		onLaunch: function() {
 			var that =this
 			console.log('App Launch')
+			service.get_info()
+			return
 			// #ifdef MP-WEIXIN
 			// 获取用户信息
 			service.wxlogin()
+			// #endif
+			// #ifdef H5
+				
+				service.get_info()
 			// #endif
 			uni.getSystemInfo({
 				success: function(e) {

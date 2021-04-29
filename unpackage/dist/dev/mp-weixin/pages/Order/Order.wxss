@@ -454,4 +454,9 @@ text.data-v-4e7b0aa4{
 .xuanze2.data-v-4e7b0aa4{
 	border: 0;
 }
+.order_int.data-v-4e7b0aa4{
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
+}
 
