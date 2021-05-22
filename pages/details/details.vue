@@ -483,7 +483,11 @@
 				
 				page:1,
 				like_goods:[],
-				share_id:''    //商品分享的id
+				share_id:''    ,//商品分享的id
+				
+				
+				
+				live_type:'',    //1 从直播间进入
 			}
 		},
 		components: {
@@ -526,6 +530,10 @@
 			})
 		  this.getyhlist()
 			
+			if(options.live ==1 ){ //是否从直播间进入
+				
+				this.live_type=1
+			}
 			if(options.dy_id){
 				
 				this.dy_id=options.dy_id

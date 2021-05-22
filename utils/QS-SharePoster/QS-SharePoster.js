@@ -540,7 +540,8 @@ function setTextFn(Context, textItem) {
 }
 
 function countTextLength(Context, obj) {
-	_app.log('计算文字长度, obj:' + JSON.stringify(obj));
+	// _app.log('计算文字长度, obj:' + JSON.stringify(obj));
+	_app.log('计算文字长度');
 	const {
 		text,
 		size
@@ -561,10 +562,11 @@ function countTextLength(Context, obj) {
 		for (let j = 0; j < text.length; j++) {
 			let t = text.substr(j, 1);
 			const countL = countStrLength(t);
-			_app.log('计算文字宽度系数:' + countL);
+			// _app.log('计算文字宽度系数:' + countL);
 			l += countL;
 		}
-		_app.log('文字宽度总系数:' + l);
+		// _app.log('文字宽度总系数:' + l);
+		_app.log('文字宽度总系数:');
 		textLength = l * size;
 	}
 	return textLength;
