@@ -37,7 +37,7 @@
 					 </view>
 					 <!-- 用户 -->
 					 <view v-if="item.is_public==2||item.is_public==3||item.is_public==5" class="li_box">
-						<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.obj_id">
+						<view class="user_tx" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.obj_id">
 							<image class="user_tx" :src="item.obj_img"></image>
 							<!-- mingxing -->
 							<view v-if="item.identity_id==1" class="star_v star_v1">
@@ -199,12 +199,12 @@
 								that.btnkg=0
 								if(res.code==-1){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==0&&res.msg=='请先登录账号~'){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==1){

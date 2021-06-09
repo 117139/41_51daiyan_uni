@@ -90,12 +90,12 @@
 					that.btnkg=0
 					if(res.code==-1){
 						uni.navigateTo({
-							url:'/pages/login/login'
+							url:'/pagesA/login/login'
 						})
 						return
 					}else if(res.code==0&&res.msg=='请先登录账号~'){
 						uni.navigateTo({
-							url:'/pages/login/login'
+							url:'/pagesA/login/login'
 						})
 						return
 					}else if(res.code==1){

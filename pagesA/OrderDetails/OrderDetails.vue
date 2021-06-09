@@ -98,7 +98,7 @@
 						<!-- <text class="iconfont iconnext3"></text> -->
 					</view>
 					<block v-for="(item,idx) in datas.order_goods">
-						<view class="goods1" :data-tab="idx" @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+						<view class="goods1" :data-tab="idx" @tap="jump" :data-url="'/pages_goods/details/details?id='+item.g_id">
 							<view class="goodsImg">
 								<image v-if="item.gd_vice_pic.length>0" class="goodsImg" :src="filter.imgIP(item.gd_vice_pic[0])" mode="aspectFill"></image>
 								<image v-else class="goodsImg" :src="filter.imgIP(item.gd_mastr_pic[0])" mode="aspectFill"></image>
@@ -156,11 +156,48 @@
 					</view>
 
 				</view>
+				
+				<block v-if="datas.is_has_invoice==2">
+					<view class="msgtit mt20">
+						发票信息
+					</view>
+					
+					<view class="msginr">
+						<view class="ordermsg_r">
+							<view class="omsgp dis_flex ju_b"><text>发票金额：</text><text>{{datas.order_invoice.oi_money}}</text></view>
+							<view class="omsgp  dis_flex ju_b"><text>开票类型：</text><text>{{datas.order_invoice.oi_make_type_value}}</text></view>
+							<view class="omsgp dis_flex ju_b"><text>发票类型：</text><text>{{datas.order_invoice.oi_type_value}}</text></view>
+							<view class="omsgp dis_flex ju_b"><text>抬头类型：</text><text>{{datas.order_invoice.oi_rise_type_value}}</text></view>
+							<view class="omsgp dis_flex ju_b"><text>发票抬头：</text><text>{{datas.order_invoice.oi_rise_name}}</text></view>
+							<view class="omsgp dis_flex ju_b" v-if="datas.order_invoice.oi_unit_hutchet"><text>单位税号：</text><text>{{datas.order_invoice.oi_unit_hutchet}}</text></view>
+							<view class="omsgp dis_flex ju_b" v-if="datas.order_invoice.oi_reg_address"><text>注册地址：</text><text>{{datas.order_invoice.oi_reg_address}}</text></view>
+							<view class="omsgp dis_flex ju_b" v-if="datas.order_invoice.oi_reg_phone"><text>注册电话：</text><text>{{datas.order_invoice.oi_reg_phone}}</text></view>
+							<view class="omsgp dis_flex ju_b" v-if="datas.order_invoice.oi_open_bank"><text>开户银行：</text><text>{{datas.order_invoice.oi_open_bank}}</text></view>
+							<view class="omsgp dis_flex ju_b" v-if="datas.order_invoice.oi_bank_account"><text>银行账号：</text><text>{{datas.order_invoice.oi_bank_account}}</text></view>
+							<view class="omsgp dis_flex ju_b"><text>是否已经开票：</text><text>{{datas.order_invoice.oi_is_make==1?'未开票':'已开'}}</text></view>
+							<view class="omsgp dis_flex ju_b" v-if="datas.order_invoice.oi_name"><text>纸质的收票人姓名：</text><text>{{datas.order_invoice.oi_name}}</text></view>
+							<view class="omsgp dis_flex ju_b" v-if="datas.order_invoice.oi_tel"><text>纸质的收票人电话：</text><text>{{datas.order_invoice.oi_tel}}</text></view>
+							<view class="omsgp dis_flex ju_b" v-if="datas.order_invoice.oi_address"><text>纸质的收票人地址：</text><text>{{datas.order_invoice.oi_address}}</text></view>
+					
+							<view class="o_fp_imgs" v-if="datas.order_invoice.oi_img">
+								<image class="o_fp_img" v-for="(item,index) in datas.order_invoice.oi_img" :src="getimg(item)" :data-src="getimg(item)" @tap="pveimg" mode="aspectFill"></image>
+							</view>
+						</view>
+					
+					</view>
+				</block>
+				
+				
 				<view class="o_cz">
+					
+					<view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view>
 					<view v-if="datas.o_ddstatus==4||datas.o_ddstatus==5" @tap.stop="get_goods(datas.o_id)">确认收货</view>
 					<view v-if="datas.o_ddstatus==4||datas.o_ddstatus==5" @tap.stop="jump" :data-url="'/pagesA/Order_wuliu/Order_wuliu?id='+datas.o_id">查看物流</view>
 					<view v-if="datas.o_paystatus==1" @tap="order_pay(datas.o_id)">付款</view>
-					<!-- <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view> -->
+					<block v-if="datas.o_is_make_plain_invoice==1||datas.o_is_make_special_invoice==1">
+						
+						<view v-if="kp_kg" @tap="get_fp(datas.o_id)">开具发票</view>
+					</block>
 				</view>
 			</view>
 
@@ -190,7 +227,7 @@
 				htmlkg: 0,
 
 				datas: '',
-
+				kp_kg:false
 			}
 		},
 		computed: {
@@ -228,6 +265,21 @@
 		},
 		methods: {
 			...mapMutations(['dy_fb_fuc']),
+			get_fp(id){
+				var item=this.datas
+				uni.navigateTo({
+					url:'/pagesA/order_fapiao/order_fapiao?o_id='+id+'&putong='+item.o_is_make_plain_invoice+'&zengzhi='+item.o_is_make_special_invoice
+				})
+			},
+			getimg(img){
+				return service.getimg(img)
+			},
+			pveimg(e){
+				return service.pveimg(e)
+			},
+			getimgarr(img){
+				return service.getimgarr(img)
+			},
 			order_pay(id){
 				var that =this
 				var jkurl='/order/goPay'
@@ -380,6 +432,17 @@
 						that.htmlReset=0
 						// that.catelist=res.data
 						that.datas = res.data
+						if(res.datainvoice_abort_time==0){
+							that.kp_kg=true
+						}else{
+							var timestamp = Date.parse(new Date())
+							var newtime=res.data.invoice_abort_time*1000
+							if(timestamp<newtime){
+								that.kp_kg=true
+							}else{
+								that.kp_kg=false
+							}
+						}
 					}else{
 						that.htmlReset=1
 					}
@@ -425,7 +488,9 @@
 											icon: 'none',
 											title: '操作成功'
 										})
-										that.onRetry()
+										setTimeout(function(){
+											that.onRetry()
+										},1000)
 									} else {
 										that.htmlReset = 1
 										if (res.data.msg) {
@@ -488,7 +553,9 @@
 								icon: 'none',
 								title: '操作成功'
 							})
-							that.onRetry()
+							setTimeout(function(){
+								that.onRetry()
+							},1000)
 						} else {
 							that.htmlReset = 1
 							if (res.data.msg) {
@@ -865,7 +932,7 @@
 				service.Pay(that.order_id, 'info')
 			},
 			onRetry() {
-				this.onLoad()
+				that.getdata()
 			}
 		}
 	}
@@ -1558,5 +1625,20 @@
 
 	.ot_msg .d2 {
 		font-size: 24rpx;
+	}
+	
+	.o_fp_imgs{
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.o_fp_img{
+		width: 220upx;
+		height: 220upx;
+		margin-right: 10upx;
+		margin-bottom: 10upx;
+	}
+	.o_fp_img:nth-child(3n){
+		margin-right: 0;
 	}
 </style>

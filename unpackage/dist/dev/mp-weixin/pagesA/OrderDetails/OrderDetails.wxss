@@ -778,4 +778,21 @@ text.data-v-2871c4ab {
 .ot_msg .d2.data-v-2871c4ab {
 	font-size: 24rpx;
 }
+.o_fp_imgs.data-v-2871c4ab{
+	width: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	        flex-wrap: wrap;
+}
+.o_fp_img.data-v-2871c4ab{
+	width: 220rpx;
+	height: 220rpx;
+	margin-right: 10rpx;
+	margin-bottom: 10rpx;
+}
+.o_fp_img.data-v-2871c4ab:nth-child(3n){
+	margin-right: 0;
+}
 

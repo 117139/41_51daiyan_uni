@@ -33,6 +33,7 @@
 		mapMutations
 	} from 'vuex'
 	var inputt
+	var that
 	export default {
 		data() {
 			return {
@@ -56,7 +57,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
-		  var that =this
+		  that =this
 		  that.type= options.type
 		  
 			that.onRetry()
@@ -109,6 +110,12 @@
 		 */
 		onShareAppMessage: function () {
 		
+		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
 		},
 		methods: {
 			onRetry(){

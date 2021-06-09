@@ -275,7 +275,7 @@
 			toroom(id){
 				if(!this.hasLogin){
 					uni.navigateTo({
-						url: '/pages/login/login',
+						url: '/pagesA/login/login',
 					});
 					return
 				}
@@ -298,12 +298,12 @@
 						that.btnkg=0
 						if(res.code==-1){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==0&&res.msg=='请先登录账号~'){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==1){
@@ -336,12 +336,12 @@
 								that.btnkg=0
 								if(res.code==-1){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==0&&res.msg=='请先登录账号~'){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==1){
@@ -484,12 +484,12 @@
 					that.btn_kg = 0
 					if (res.code == -1) {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 0 && res.msg == '请先登录账号~') {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 1) {
@@ -762,7 +762,7 @@
 			addwgc() {
 				// if (!wx.getStorageSync('userWxmsg')) {
 				//   wx.navigateTo({
-				//     url: '/pages/login/login',
+				//     url: '/pagesA/login/login',
 				//   })
 				//   return
 				// }
@@ -870,7 +870,7 @@
 				}
 				that.onClose()
 				uni.navigateTo({
-					url: '/pages/Order/Order?type=1&v_id=' + that.v_id + '&number=' + that.cnum + '&advocacy_user_id=' + that.dyr_type +
+					url: '/pagesA/Order/Order?type=1&v_id=' + that.v_id + '&number=' + that.cnum + '&advocacy_user_id=' + that.dyr_type +
 						'&v_id=' + that.v_id+'&dy_id='+that.dy_id+'&advocacyviceId='+that.advocacyviceId
 				})
 			},

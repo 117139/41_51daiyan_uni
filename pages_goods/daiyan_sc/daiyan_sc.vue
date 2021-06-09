@@ -39,7 +39,7 @@
 						<view class="yhq_t_r" @tap="jump" data-url="/pages_goods/friends_daiyan/friends_daiyan?id=1">更多<text class="iconfont iconnext3"></text></view>
 					</view>
 					<view class="hy_goods">
-						<view v-for="(item,idx) in datas.friendGoods" class="hy_goods_li"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+						<view v-for="(item,idx) in datas.friendGoods" class="hy_goods_li"  @tap="jump" :data-url="'/pages_goods/details/details?id='+item.g_id">
 							<view class="hy_goods_img">
 								<image class="hy_goods_img" :lazy-load='true' :src="filter.imgIP(item.g_img[0])"></image>
 							</view>
@@ -65,7 +65,7 @@
 					<view class="b_li_box">
 						
 						<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
-						<view class="b_li"  v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+						<view class="b_li"  v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages_goods/details/details?id='+item.g_id">
 							<view class="li_img">
 								<image class="li_img" :lazy-load='true' :src="filter.imgIP(item.g_img[0])" mode="aspectFill"></image>
 							</view>
@@ -106,6 +106,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -127,6 +128,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
+			that=this
 			this.getdata()
 			
 		},
@@ -178,6 +180,12 @@
 		 */
 		onShareAppMessage: function () {
 	
+		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
 		},
 		methods: {
 			

@@ -24,7 +24,7 @@
 				<!-- goods_li -->
 				<view class="goods_list2">
 					<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
-					<view class="goods_li2" v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
+					<view class="goods_li2" v-for="(item,idx) in data_list" @tap="jump" :data-url="'/pages_goods/details/details?id='+item.id">
 						<view class="goods_li2_d1">
 							<view class="goods_img2">
 								<image class="goods_img2" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"></image>
@@ -67,6 +67,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -90,6 +91,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
+			that=this
 			this.getCate()
 			this.onRetry()
 		},
@@ -141,6 +143,12 @@
 		 */
 		onShareAppMessage: function () {
 		
+		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
 		},
 		methods: {
 			onRetry(){

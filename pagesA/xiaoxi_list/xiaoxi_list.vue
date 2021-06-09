@@ -32,9 +32,9 @@
 				
 				<view class="tk_main">
 					<text class="iconfont iconguanbi" @tap="tk_show=false"></text>
-					<image  @tap="jump" :data-url="'/pages/details/details?id='+tk_data.goodsDataArr.id" class="tk_goodsimg" :src="filter.imgIP(tk_data.goodsDataArr.img[0])" mode="aspectFill"></image>
-					<view  @tap="jump" :data-url="'/pages/details/details?id='+tk_data.goodsDataArr.id" class="tk_goodsname oh1">{{tk_data.goodsDataArr.title}}</view>
-					<view  @tap="jump" :data-url="'/pages/details/details?id='+tk_data.goodsDataArr.id" class="tk_goods_pri">
+					<image  @tap="jump" :data-url="'/pages_goods/details/details?id='+tk_data.goodsDataArr.id" class="tk_goodsimg" :src="filter.imgIP(tk_data.goodsDataArr.img[0])" mode="aspectFill"></image>
+					<view  @tap="jump" :data-url="'/pages_goods/details/details?id='+tk_data.goodsDataArr.id" class="tk_goodsname oh1">{{tk_data.goodsDataArr.title}}</view>
+					<view  @tap="jump" :data-url="'/pages_goods/details/details?id='+tk_data.goodsDataArr.id" class="tk_goods_pri">
 						<view class="tk_pri1">¥<text>{{tk_data.goodsDataArr.current_price}}</text></view>
 						<view class="tk_pri2">代言费:<text>¥{{tk_data.goodsDataArr.advocacy_price}}</text></view>
 					</view>
@@ -233,12 +233,12 @@
 					that.btnkg=0
 					if(res.code==-1){
 						uni.navigateTo({
-							url:'/pages/login/login'
+							url:'/pagesA/login/login'
 						})
 						return
 					}else if(res.code==0&&res.msg=='请先登录账号~'){
 						uni.navigateTo({
-							url:'/pages/login/login'
+							url:'/pagesA/login/login'
 						})
 						return
 					}else if(res.code==1){

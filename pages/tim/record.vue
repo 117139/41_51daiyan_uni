@@ -157,6 +157,9 @@
 		
 		},
 		onShow() {
+			uni.hideTabBarRedDot({
+				index:2
+			})
 			this.btnkg=0
 			if(this.hasLogin){
 				if (this.isSDKReady) {
@@ -291,7 +294,7 @@
 			},
 			gologin(){
 				uni.navigateTo({
-					url:'/pages/login/login'
+					url:'/pagesA/login/login'
 				})
 			},
 			createGroup() {

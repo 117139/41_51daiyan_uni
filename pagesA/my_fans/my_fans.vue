@@ -17,7 +17,7 @@
 				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null1.png')"></image>
 				 </view>
 				 <view  v-if="data_list.length>0" class="li_box" v-for="(item,idx) in data_list">
-						<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.u_id">
+						<view class="user_tx" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.u_id">
 							<image  class="user_tx" :src="filter.imgIP(item.head_portrait)"></image>
 							<!-- mingxing -->
 							<view v-if="item.identity_id==1" class="star_v star_v1">
@@ -178,12 +178,12 @@
 							that.btn_kg=0
 							if(res.code==-1){
 								uni.navigateTo({
-									url:'/pages/login/login'
+									url:'/pagesA/login/login'
 								})
 								return
 							}else if(res.code==0&&res.msg=='请先登录账号~'){
 								uni.navigateTo({
-									url:'/pages/login/login'
+									url:'/pagesA/login/login'
 								})
 								return
 							}else if(res.code==1){
@@ -224,12 +224,12 @@
 									that.btn_kg=0
 									if(res.code==-1){
 										uni.navigateTo({
-											url:'/pages/login/login'
+											url:'/pagesA/login/login'
 										})
 										return
 									}else if(res.code==0&&res.msg=='请先登录账号~'){
 										uni.navigateTo({
-											url:'/pages/login/login'
+											url:'/pagesA/login/login'
 										})
 										return
 									}else if(res.code==1){

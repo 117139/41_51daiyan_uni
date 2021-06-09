@@ -1,10 +1,11 @@
 <template>
 	<view class="container">
+		<hongbao ref="hongbao" :shuaxin="shuaxin"></hongbao>
 		<view class="header_box">
 			<view class="index_box1">
-				<image v-if="!hasLogin" class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/mr_tx.jpg')" data-url="/pages/login/login" @tap='jump'></image>
-				<image v-else class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+loginMsg.id"  :src="loginMsg.avatarurl"></image>
-				<view class="sousuo_box" @tap="jump" data-url="/pages/search/search">
+				<image v-if="!hasLogin" class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/mr_tx.jpg')" data-url="/pagesA/login/login" @tap='jump'></image>
+				<image v-else class="user_tx" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+loginMsg.id"  :src="loginMsg.avatarurl"></image>
+				<view class="sousuo_box" @tap="jump" data-url="/pages_goods/search/search">
 					<text class="iconfont iconsousuo"></text>搜索人名代言号/商品/品牌
 				</view>
 				<view class="game_js" @tap="jump" data-url="/pages_goods/game_js/game_js">
@@ -38,7 +39,7 @@
 		<scroll-view  v-if="start_li.length>0" class="start_list" scroll-x>
 			<view class="start_list1">
 				<view class="start_li" v-for="(item,index) in start_li">
-					<view class="star_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
+					<view class="star_tx" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.user_id">
 						<image :src="item.head_portrait" mode="aspectFill" ></image>
 						
 						<!-- mingxing -->
@@ -119,7 +120,7 @@
 		<view class="quan_list">
 			<view class="quan_li" v-for="(item,idx) in data_list">
 				<view class="quan_user_box">
-					<image @tap="jump"  :data-url="'/pages/my_index/my_index?id='+item.user_id" class="quan_user_tx" :src="item.user_head_portrait" mode="aspectFill"></image>
+					<image @tap="jump"  :data-url="'/pagesA/my_index/my_index?id='+item.user_id" class="quan_user_tx" :src="item.user_head_portrait" mode="aspectFill"></image>
 					<view class="quan_user_msg">
 						<view class="quan_user_name">{{item.user_nickname}}
 							<!-- mingxing -->
@@ -169,8 +170,16 @@
 						 @tap.stop="pveimg"></image> -->
 					</view>
 				</view>
-				<view v-if="idx1<1" v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" 
-				 :data-url="'/pages/details/details?id='+item1.g_id+'&dy_id='+item.id+'&advocacyviceId='+item1.id">
+				<view v-if="idx1<1" v-for="(item1,idx1) in item.goods" class="quan_goods por" @tap="jump" 
+				 :data-url="'/pages_goods/details/details?id='+item1.g_id+'&dy_id='+item.id+'&advocacyviceId='+item1.id">
+					<view class="goods_hb_box" v-if="item1.is_red">
+						
+						<image v-if="item1.is_red.is_have_share_red==1&&item1.is_red.is_may_share_red==1" class="goods_hb" @tap.stop="open_hb_fuc(item1,1)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image>
+						<image v-if="item1.is_red.is_have_advocacy_red==1&&item1.is_red.is_may_advocacy_red==1" class="goods_hb" @tap.stop="open_hb_fuc(item1,2)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image>
+						
+						 <!-- <image class="goods_hb" @tap.stop="open_hb_fuc(item1,1)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image>
+						<image class="goods_hb" @tap.stop="open_hb_fuc(item1,2)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image> -->
+					</view>
 					<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill"></image>
 					<view class="quan_goods_msg">
 						<view class="quan_goods_name dis_flex aic"><text v-if="item1.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item1.g_title}}</text></view>
@@ -309,6 +318,12 @@
 				}
 			}
 		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id
+			}
+		},
 		computed: {
 			...mapState([
 				'hasLogin',
@@ -334,6 +349,13 @@
 		},
 		methods: {
 			...mapMutations(['setAbout']),
+			open_hb_fuc(item,type){
+				this.$refs.hongbao.open_hb(0,item,type)
+			},
+			shuaxin(){
+				this.page=1
+				this.getdatalist()
+			},
 			Imlogin(){
 				var that =this
 				var userInfo=this.loginMsg
@@ -420,12 +442,12 @@
 					that.btn_kg = 0
 					if (res.code == -1) {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 0 && res.msg == '请先登录账号~') {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 1) {
@@ -473,12 +495,12 @@
 						that.btnkg=0
 						if(res.code==-1){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==0&&res.msg=='请先登录账号~'){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==1){
@@ -511,12 +533,12 @@
 								that.btnkg=0
 								if(res.code==-1){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==0&&res.msg=='请先登录账号~'){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==1){
@@ -592,6 +614,7 @@
 				}else{
 					that.btn_kg=1
 				}
+				var now_page=that.page
 				// 单个请求
 				service.P_get(jkurl, datas).then(res => {
 					console.log(res)
@@ -602,17 +625,21 @@
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-
-						if (datas.length==0) {
-							// uni.showToast({
-							// 	icon: 'none',
-							// 	title: '到底了。。。'
-							// })
-							that.data_last=true
-							return
+						if(now_page==1){
+							that.data_list =datas
+						}else{
+							if (datas.length==0) {
+								// uni.showToast({
+								// 	icon: 'none',
+								// 	title: '到底了。。。'
+								// })
+								that.data_last=true
+								return
+							}
+							that.data_list = that.data_list.concat(datas)
+								
 						}
-						that.data_list = that.data_list.concat(datas)
-
+						
 						that.page++
 					}
 				}).catch(e => {
@@ -641,11 +668,15 @@
 			  		// that.page=1
 			  		// that.getdatalist()
 						// that.data_list[idx].is_vote=2
-						that.$set(that.data_list[idx],'is_vote',2)
+						that.$set(that.data_list[idx],'is_vote',1)
+						// that.$refs.hongbao.open_hb(0,that.data_list[idx].a_activity_id,3)
 			  		uni.showToast({
 			  			icon: 'none',
 			  			title: '操作成功'
 			  		})
+						setTimeout(function(){
+							that.$refs.hongbao.open_hb(0,that.data_list[idx].a_activity_id,3)
+						},1000)
 			  	}
 			  }).catch(e => {
 			  	console.log(e)

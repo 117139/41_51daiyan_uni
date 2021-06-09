@@ -20,7 +20,7 @@
 							<view v-if="datas.length==0" class="zanwu">暂无数据</view>
 							<view  v-for="(item,idx) in datas" class="star_li">
 								<view class="star_msg">
-									<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.id">
+									<view class="user_tx" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.id">
 										<image class="user_tx" :src="item.head_portrait"  mode="aspectFill"></image>
 										<image v-if="s_type==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 										<image v-if="s_type==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image>
@@ -69,6 +69,7 @@
 		mapMutations
 	} from 'vuex'
 	var inputt
+	var that
 	export default {
 		data() {
 			return {
@@ -92,6 +93,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
+			that=this
 			if (options.type) {
 				this.s_type = options.type
 			}
@@ -146,6 +148,12 @@
 		 */
 		onShareAppMessage: function() {
 
+		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
 		},
 		methods: {
 			star_search(e){
@@ -257,12 +265,12 @@
 					that.btnkg=0
 					if(res.code==-1){
 						uni.navigateTo({
-							url:'/pages/login/login'
+							url:'/pagesA/login/login'
 						})
 						return
 					}else if(res.code==0&&res.msg=='请先登录账号~'){
 						uni.navigateTo({
-							url:'/pages/login/login'
+							url:'/pagesA/login/login'
 						})
 						return
 					}else if(res.code==1){

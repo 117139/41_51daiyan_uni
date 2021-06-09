@@ -12,7 +12,7 @@
 				<view class="w100" >
 				<view class="cw_list"	v-for="(item1,idx1) in cw_data">
 					<view class="cw1">
-						<view class="fz28 c3">{{item1.change_type_value}}</view>
+						<view class="fz28 c3">{{item1.change_type_value}} <text style="margin-left: 10px;font-size: 20upx;color: #666;">{{item1.is_release==1?'待入账':''}}</text></view>
 						<view v-if="item1.desc!==''" class="fz24 c9">{{item1.desc}}</view>
 					</view>
 					<view class="cw1 cw2">

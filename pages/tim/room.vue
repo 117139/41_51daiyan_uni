@@ -28,7 +28,7 @@
 							<view :class="item.flow=='out'?'my':'other'">
 								<!-- 左-头像 -->
 								<view class="left" v-if="item.flow!='out'">
-									<image v-if="toUserInfo.is_merchant==1" @tap="jump" :data-url="'/pages/my_index/my_index?id='+toUserInfo.id" :src="toUserInfo.head_portrait"></image>
+									<image v-if="toUserInfo.is_merchant==1" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+toUserInfo.id" :src="toUserInfo.head_portrait"></image>
 									<image v-if="toUserInfo.is_merchant==2" @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+toUserInfo.group_code" :src="toUserInfo.head_portrait"></image>
 								</view>
 								<!-- 中-消息 -->
@@ -57,7 +57,7 @@
 										<image v-if="item.payload.data=='custom_img'" @tap="previmg" :data-url="item.payload.description"
 										 :src="item.payload.description" mode="aspectFill"
 											style="width: 240upx;height: 240upx;"></image>
-										<view v-if="item.payload.data=='custom_good'" class="chat_box" @tap="jump" :data-url="'/pages/details/details?id='+getarg(item.payload.extension,'a2',item.payload.data)">
+										<view v-if="item.payload.data=='custom_good'" class="chat_box" @tap="jump" :data-url="'/pages_goods/details/details?id='+getarg(item.payload.extension,'a2',item.payload.data)">
 											<image class="chat_img" :src="getarg(item.payload.extension,'a3',item.payload.data)" mode="aspectFill" style="width: 196upx;height: 196upx;"></image>
 											<view class="chat_msg">
 												<view class="gb_name oh2">{{item.payload.description}}</view>
@@ -70,7 +70,7 @@
 								</view>
 								<!-- 右-头像 -->
 								<view class="right" v-if="item.flow=='out'">
-									<image @tap="jump" :data-url="'/pages/my_index/my_index?id='+loginMsg.id" :src="loginMsg.avatarurl"></image>
+									<image @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+loginMsg.id" :src="loginMsg.avatarurl"></image>
 								</view>
 							</view>
 
@@ -862,7 +862,7 @@
 					        if (res.confirm) {
 					            console.log('用户点击确定');
 											uni.navigateTo({
-												url:'/pages/my_index/my_index?id='+that.toUserInfo.id
+												url:'/pagesA/my_index/my_index?id='+that.toUserInfo.id
 											})
 					        } else if (res.cancel) {
 					            console.log('用户点击取消');

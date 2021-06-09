@@ -5,7 +5,7 @@
 			<view class="h_main">
 				<view v-if="LaterBuy_list.length==0" class="zanwu">暂无数据</view>
 				<view class="goods_list">
-					<view v-for="(item,idx) in LaterBuy_list" class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
+					<view v-for="(item,idx) in LaterBuy_list" class="goods_li" @tap="jump" :data-url="'/pages_goods/details/details?id='+item.id">
 						<image class="goods_img" :lazy-load='true' :src="filter.imgIP(item.img[0])"  mode="aspectFill"></image>
 						<view class="goods_msg">
 							<view class="oh2">{{item.title}}</view>
@@ -31,6 +31,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -59,6 +60,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
+			that=this
 			this.g_id=options.id
 			this.onRetry()
 		},
@@ -110,6 +112,12 @@
 		 */
 		onShareAppMessage: function () {
 			
+		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
 		},
 		methods: {
 			onRetry(){

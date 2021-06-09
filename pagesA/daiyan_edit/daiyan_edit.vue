@@ -6,7 +6,7 @@
 		 
 		  <image :src="src" style="width: 375px; height: 667px;position:fixed;top:-9999999px;"></image>
 		  <view class="goodsBox w100">
-		    <view v-if="open_type>idx" class="quan_goods" v-for="(item,idx) in dy_fb_list" @tap="jump" data-url="/pages/details/details">
+		    <view v-if="open_type>idx" class="quan_goods" v-for="(item,idx) in dy_fb_list" @tap="jump" data-url="/pages_goods/details/details">
 		      <image class="quan_goods_img" :src="filter.imgIP(item.g_img[0])" mode="aspectFill"></image>
 		      <view class="quan_goods_msg">
 		        <view class="quan_goods_name oh1">{{item.g_title}}</view>
@@ -562,8 +562,8 @@
 								icon:'none',
 								title: '操作成功'
 							})
-							var pages = getCurrentPages();   //当前页面
-							var prevPage = pages[pages.length - 2];   //上一页面
+							var pages = getCurrentPages();   //当前页面
+							var prevPage = pages[pages.length - 2];   //上一页面
 							prevPage.setData({
 							  //直接给上一个页面赋值
 							  daiyan_newtype: true,

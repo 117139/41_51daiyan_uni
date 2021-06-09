@@ -1,0 +1,63 @@
+
+.login_bg.data-v-bc6e7682{
+	width: 649rpx;
+	height: 353rpx;
+	margin: 100rpx auto;
+}
+.login_wx.data-v-bc6e7682{
+	width:560rpx;
+	height:80rpx;
+	background:-webkit-linear-gradient(bottom,rgba(252,132,26,1),rgba(247,183,51,1));
+	background:linear-gradient(0deg,rgba(252,132,26,1),rgba(247,183,51,1));
+	border-radius:40rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	color: #fff;
+	font-size: 30rpx;
+	position: relative;
+}
+.login_tel.data-v-bc6e7682{
+	margin-top: 50rpx;
+	text-align: center;
+	font-size: 28rpx;
+	color: #666;
+}
+.login_tip.data-v-bc6e7682{
+	position: fixed;
+	bottom: 100rpx;
+	width: 100%;
+	padding: 0 30rpx;
+	box-sizing: border-box;
+	text-align: center;
+	font-size: 30rpx;
+	color: #999;
+}
+.login_tip text.data-v-bc6e7682{
+	color: #F8AE2E;
+	font-size: 28rpx;
+}
+.bottom.data-v-bc6e7682 {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	opacity:0 ;
+	width: 100%;
+}
+.goback_btn.data-v-bc6e7682{
+		width:560rpx;
+		height:80rpx;
+		margin: 30px auto;
+		background: #fff;
+		border-radius: 95rpx;
+		border: 1px solid #eee;
+}
+

@@ -5,7 +5,7 @@
 			<view class="zanwu" v-if="datas.length==0">暂无数据</view>
 			<view class="goods_list2">
 				<view class="goods_li2" v-for="(item,idx) in datas">
-					<view class="goods_li2_d1" @tap="jump" :data-url="'/pages/details/details?id='+item.obj_id">
+					<view class="goods_li2_d1" @tap="jump" :data-url="'/pages_goods/details/details?id='+item.obj_id">
 						<view class="goods_img2">
 							<image class="goods_img2" :src="filter.imgIP(item.obj_img)"></image>
 						</view>
@@ -173,12 +173,12 @@
 								that.btnkg = 0
 								if (res.code == -1) {
 									uni.navigateTo({
-										url: '/pages/login/login'
+										url: '/pagesA/login/login'
 									})
 									return
 								} else if (res.code == 0 && res.msg == '请先登录账号~') {
 									uni.navigateTo({
-										url: '/pages/login/login'
+										url: '/pagesA/login/login'
 									})
 									return
 								} else if (res.code == 1) {

@@ -55,7 +55,7 @@
 		            <image v-if="idx==2" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_3.png')"></image>
 		            <text v-if="idx>2">{{idx+1}}</text>
 		          </view>
-		          <view class="pl_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
+		          <view class="pl_tx" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.user_id">
 		            <image class="pl_tx" :src="filter.imgIP(item.head_portrait)"></image>
 		          </view>
 		          <view class="ph_name">{{item.nickname}}</view>

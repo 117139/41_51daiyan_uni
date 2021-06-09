@@ -5,20 +5,17 @@
     "pages/car/car",
     "pages/tim/record",
     "pages/tim/room",
-    "pages/my/my",
-    "pages/login/login",
-    "pages/login_tel/login_tel",
-    "pages/details/details",
-    "pages/Order/Order",
-    "pages/my_index/my_index",
-    "pages/search/search",
-    "pages/my_video/my_video",
-    "pages/getTel/getTel"
+    "pages/my/my"
   ],
   "subPackages": [
     {
       "root": "pagesA",
       "pages": [
+        "login/login",
+        "getTel/getTel",
+        "login_tel/login_tel",
+        "my_index/my_index",
+        "Order/Order",
         "xiaoxi_list/xiaoxi_list",
         "about/about",
         "mymsg/mymsg",
@@ -62,7 +59,10 @@
     {
       "root": "pages_goods",
       "pages": [
+        "details/details",
+        "search/search",
         "xvideo/xvideo",
+        "my_video/my_video",
         "game_js/game_js",
         "daiyan_find/daiyan_find",
         "daiyan_sc/daiyan_sc",
@@ -84,7 +84,9 @@
         "activity_db/activity_db",
         "friends_daiyan/friends_daiyan",
         "d_video/d_video",
-        "daiyan_xq/daiyan_xq"
+        "daiyan_xq/daiyan_xq",
+        "hongbao_xq/hongbao_xq",
+        "zb_list/zb_list"
       ]
     }
   ],
@@ -160,8 +162,19 @@
     }
   },
   "permission": {},
+  "plugins": {
+    "routePlan": {
+      "version": "1.0.5",
+      "provider": "wx50b5593e81dd937a"
+    },
+    "live-player-plugin": {
+      "version": "1.3.0",
+      "provider": "wx2b03c6e691cd7370"
+    }
+  },
   "usingComponents": {
-    "van-stepper": "./wxcomponents/vant/stepper/index"
+    "van-stepper": "./wxcomponents/vant/stepper/index",
+    "hongbao": "/components/hongbao/hongbao"
   },
   "sitemapLocation": "sitemap.json"
 }

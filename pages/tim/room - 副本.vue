@@ -44,7 +44,7 @@
 										{{'自定义参数3:'+getarg(item.payload.extension,'a2',item.payload.data)}}
 										{{'自定义参数4:'+getarg(item.payload.extension,'a3',item.payload.data)}}
 									</view>
-									<view v-if="item.payload.data=='custom_good'"  class="chat_box" @tap="jump" :data-url="'/pages/details/details?id='+getarg(item.payload.extension,'a2',item.payload.data)">
+									<view v-if="item.payload.data=='custom_good'"  class="chat_box" @tap="jump" :data-url="'/pages_goods/details/details?id='+getarg(item.payload.extension,'a2',item.payload.data)">
 										<image class="chat_img" :src="getarg(item.payload.extension,'a3',item.payload.data)"
 										 mode="aspectFill" style="width: 196upx;height: 196upx;"></image>
 										<view class="chat_msg">
@@ -98,7 +98,7 @@
 										{{'自定义参数3:'+getarg(item.payload.extension,'a2',item.payload.data)}}
 										{{'自定义参数4:'+getarg(item.payload.extension,'a3',item.payload.data)}}
 									</view>
-									<view v-if="item.payload.data=='custom_good'"  class="chat_box" @tap="jump" :data-url="'/pages/details/details?id='+getarg(item.payload.extension,'a2',item.payload.data)">
+									<view v-if="item.payload.data=='custom_good'"  class="chat_box" @tap="jump" :data-url="'/pages_goods/details/details?id='+getarg(item.payload.extension,'a2',item.payload.data)">
 										<image class="chat_img" :src="getarg(item.payload.extension,'a3',item.payload.data)"
 										 mode="aspectFill" style="width: 196upx;height: 196upx;"></image>
 										<view class="chat_msg">

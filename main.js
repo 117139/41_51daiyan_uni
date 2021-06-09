@@ -20,6 +20,8 @@ Vue.prototype.$commen = commen
 
 Vue.prototype.event = event;
 
+import hongbao from "./components/hongbao/hongbao.vue";
+Vue.component('hongbao',hongbao)
 
 App.mpType = 'app'
 

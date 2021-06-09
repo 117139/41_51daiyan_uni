@@ -25,6 +25,11 @@
 				<view class="fx_tit">代言圈</view>
 		    <text class="iconfont iconnext3"></text>
 		  </view>
+			<view class="fx_li" @tap="jump" data-url="/pages_goods/zb_list/zb_list">
+			  <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_05.jpg')"></image>
+				<view class="fx_tit">直播</view>
+			  <text class="iconfont iconnext3"></text>
+			</view>
 		  <view class="fx_li mt20" @tap="jump" data-url="/pagesA/my_friends/my_friends" data-login="true" :data-haslogin="hasLogin">
 		    <image class="li_icon" :src="filter.imgIP('/static_s/51daiyan/images/images/faxian_11.jpg')"></image>
 				<view class="fx_tit">我的好友</view>

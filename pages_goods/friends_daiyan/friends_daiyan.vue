@@ -6,7 +6,7 @@
 					
 					<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
 					<view class="goods_li2" v-for="(item,idx) in data_list">
-						<view class="goods_li2_d1"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+						<view class="goods_li2_d1"  @tap="jump" :data-url="'/pages_goods/details/details?id='+item.g_id">
 							<view class="goods_img2">
 								<image class="goods_img2"  :lazy-load='true' :src="filter.imgIP(item.g_img[0])"></image>
 							</view>
@@ -45,6 +45,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -62,6 +63,7 @@
 			])
 		},
 		onLoad() {
+			that=this
 			this.onRetry()
 		},
 		/**
@@ -111,6 +113,12 @@
 		 */
 		onShareAppMessage: function () {
 	
+		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
 		},
 		methods: {
 			onRetry(){

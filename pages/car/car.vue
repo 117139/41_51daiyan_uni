@@ -15,7 +15,7 @@
 					 <text>石说的达开旗舰店</text>
 					 <text class="iconfont iconnext3"></text>
 				 </view>  -->
-				<!-- <view class="goods1" v-for="(item1,idx1) in item" @tap="jump" data-url="/pages/details/details?shop_id=1"> -->
+				<!-- <view class="goods1" v-for="(item1,idx1) in item" @tap="jump" data-url="/pages_goods/details/details?shop_id=1"> -->
 				<view class="goods1">
 					<!-- <view class="scbg" data-id="{{item.id}}" @tap.stop="cardel">
 						<text class="iconfont iconshanchu fz26"></text>
@@ -25,15 +25,15 @@
 							<icon  v-if="item.xuan==true" type="success" size="16" color="#F7B43B" />
 						</view>
 					</view>
-					<view class="goodsImg"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+					<view class="goodsImg"  @tap="jump" :data-url="'/pages_goods/details/details?id='+item.g_id">
 						<image class="goodsImg" :lazy-load='true' :src="getimg(item.g_pic[0])" mode="aspectFill"></image>
 					</view>
 					<view class="goodsinr">
-						<view class="goodsname fz30 c30 oh2"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">{{item.g_title}}</view>
-						<view class="goodsname1"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+						<view class="goodsname fz30 c30 oh2"  @tap="jump" :data-url="'/pages_goods/details/details?id='+item.g_id">{{item.g_title}}</view>
+						<view class="goodsname1"  @tap="jump" :data-url="'/pages_goods/details/details?id='+item.g_id">
 							<text v-for="(item1,dix) in item.attr">{{item1.value}}</text>
 						</view>
-						<view class="goodspri1"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+						<view class="goodspri1"  @tap="jump" :data-url="'/pages_goods/details/details?id='+item.g_id">
 							<text class="fz36 cf6377a fwb">￥{{item.g_price}}</text>
 						</view>
 		        <view class="goodspri1">
@@ -58,7 +58,7 @@
 					<text></text>猜你喜欢<text></text>
 				</view>
 				<view class="goods_list">
-					<view class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id" v-for="(item,index) in rand_data">
+					<view class="goods_li" @tap="jump" :data-url="'/pages_goods/details/details?id='+item.id" v-for="(item,index) in rand_data">
 						<image class="goods_img" :lazy-load='true' :src="getimg(item.g_pic[0])"  mode="aspectFill"></image>
 						<view class="goods_msg">
 							<view class="dis_flex aic"><text v-if="item.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item.g_title}}</text></view>
@@ -260,7 +260,7 @@
 			},
 			openOrder() {
 			  // wx.navigateTo({
-			  //   url: '/pages/Order/Order'
+			  //   url: '/pagesA/Order/Order'
 			  // })
 			  // return
 			  let that = this
@@ -299,12 +299,12 @@
 					})
 					setTimeout(()=>{
 						wx.navigateTo({
-						  url: '/pages/Order/Order?type=2&g_data='+idG
+						  url: '/pagesA/Order/Order?type=2&g_data='+idG
 						})
 					},1500)
 				}else if (idG !== '') {
 			   wx.navigateTo({
-			     url: '/pages/Order/Order?type=2&g_data='+idG
+			     url: '/pagesA/Order/Order?type=2&g_data='+idG
 			   })
 			  }else{
 					if(kc_tip){

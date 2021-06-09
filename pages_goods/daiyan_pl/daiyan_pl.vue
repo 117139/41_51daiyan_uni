@@ -79,6 +79,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -125,6 +126,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
+			that=this
 			if (options.id) {
 				this.ad_id = options.id
 			}
@@ -182,6 +184,12 @@
 		onShareAppMessage: function() {
 
 		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
+		},
 		methods: {
 			onRetry() {
 				this.page = 1
@@ -207,12 +215,12 @@
 					that.btn_kg = 0
 					if (res.code == -1) {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 0 && res.msg == '请先登录账号~') {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 1) {

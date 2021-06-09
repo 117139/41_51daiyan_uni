@@ -6,7 +6,7 @@
 				<view v-if="data_list.length==0" class="zanwu">暂无数据</view>
 				<view class="quan_li" v-for="(item,idx) in data_list">
 					<view class="quan_user_box">
-						<image @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id" class="quan_user_tx" :src="item.user_head_portrait"
+						<image @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.user_id" class="quan_user_tx" :src="item.user_head_portrait"
 						 mode="aspectFill"></image>
 						<view class="quan_user_msg">
 							<view class="quan_user_name">{{item.user_nickname}}
@@ -55,7 +55,7 @@
 		  				 @tap.stop="pveimg"></image> -->
 						</view>
 					</view>
-					<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+item1.g_id+'&dy_id='+item.id+'&advocacyviceId='+item1.id">
+					<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" :data-url="'/pages_goods/details/details?id='+item1.g_id+'&dy_id='+item.id+'&advocacyviceId='+item1.id">
 						<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill"></image>
 						<view class="quan_goods_msg">
 							<view class="quan_goods_name dis_flex aic"><text v-if="item1.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item1.g_title}}</text></view>
@@ -228,12 +228,12 @@
 					that.btn_kg = 0
 					if (res.code == -1) {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 0 && res.msg == '请先登录账号~') {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 1) {

@@ -58,63 +58,43 @@
 				"navigationBarBackgroundColor": "#F5C33D",
 				"navigationBarTextStyle": "white"
 			}
-		},
-		{
-			"path": "pages/login/login",
-			"style": {
-				"disableScroll": true,
-				"navigationBarTitleText": "授权登录"
-			}
-		},
-		{
-			"path": "pages/login_tel/login_tel",
-			"style": {
-				"disableScroll": true,
-				"navigationBarTitleText": "登录"
-			}
-		},
-		{
-			"path": "pages/details/details",
-			"style": {
-				"navigationBarTitleText": "51代言",
-				"backgroundColor": "#f5f5f5"
-			}
-		}, {
-			"path": "pages/Order/Order",
-			"style": {
-				"disableScroll": true,
-				"navigationBarTitleText": "填写订单"
-			}
-		},
-		{
-			"path": "pages/my_index/my_index",
-			"style": {
-				"navigationBarTitleText": "51代言",
-				"backgroundColor": "#f5f5f5",
-				"navigationBarBackgroundColor": "#F7AB38",
-				"navigationBarTextStyle": "white"
-			}
-		}, {
-			"path": "pages/search/search",
-			"style": {
-				"navigationBarTitleText": "搜索"
-			}
-		}, {
-			"path": "pages/my_video/my_video",
-			"style": {
-				"disableScroll": true,
-				"navigationBarTextStyle": "white",
-				"navigationStyle": "custom"
-			}
-		}, {
-			"path": "pages/getTel/getTel",
-			"style": {}
 		}
 	],
 
 	"subPackages": [{
 			"root": "pagesA",
-			"pages": [{
+			"pages": [
+				{
+					"path": "login/login",
+					"style": {
+						"disableScroll": true,
+						"navigationBarTitleText": "授权登录"
+					}
+				}, {
+					"path": "getTel/getTel",
+					"style": {}
+				},{
+					"path": "login_tel/login_tel",
+					"style": {
+						"disableScroll": true,
+						"navigationBarTitleText": "登录"
+					}
+				},{
+					"path": "my_index/my_index",
+					"style": {
+						"navigationBarTitleText": "51代言",
+						"backgroundColor": "#f5f5f5",
+						"navigationBarBackgroundColor": "#F7AB38",
+						"navigationBarTextStyle": "white"
+					}
+				},
+				{
+					"path": "Order/Order",
+					"style": {
+						"disableScroll": true,
+						"navigationBarTitleText": "填写订单"
+					}
+				},{
 					"path": "xiaoxi_list/xiaoxi_list",
 					"style": {
 						"navigationBarTitleText": "消息列表",
@@ -332,7 +312,7 @@
 				}, {
 					"path": "zhanbao/zhanbao",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "活动战报",
 						"enablePullDownRefresh": false
 					}
 
@@ -348,8 +328,28 @@
 		},
 		{
 			"root": "pages_goods",
-			"pages": [{
+			"pages": [
+				{
+					"path": "details/details",
+					"style": {
+						"navigationBarTitleText": "51代言",
+						"backgroundColor": "#f5f5f5"
+					}
+				}, {
+					"path": "search/search",
+					"style": {
+						"navigationBarTitleText": "搜索"
+					}
+				},{
 					"path": "xvideo/xvideo",
+					"style": {
+						"disableScroll": true,
+						"navigationBarTextStyle": "white",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "my_video/my_video",
 					"style": {
 						"disableScroll": true,
 						"navigationBarTextStyle": "white",
@@ -500,10 +500,27 @@
 						"enablePullDownRefresh": false
 					}
 
+				}, {
+					"path": "hongbao_xq/hongbao_xq",
+					"style": {
+						"navigationBarTitleText": "红包详情",
+						"enablePullDownRefresh": true
+					}
+
+				}, {
+					"path": "zb_list/zb_list",
+					"style": {
+						"navigationBarTitleText": "直播列表",
+						"enablePullDownRefresh": true
+					}
+
 				}
 			]
 		}
+
 	],
+
+	
 	"preloadRule": {
 		"pages/index/index": {
 			"network": "all",
@@ -577,6 +594,10 @@
 		"routePlan": {
 			"version": "1.0.5",
 			"provider": "wx50b5593e81dd937a"
+		},
+		"live-player-plugin": {
+			"version": "1.0.0",
+			"provider": "wx2b03c6e691cd7370"
 		}
 	}
 

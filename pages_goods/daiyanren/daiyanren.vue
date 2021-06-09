@@ -2,7 +2,7 @@
 	<view>
 		<view class="container">
 			<view v-if="goodsdata" class="goods_xx">
-				<view class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+g_id">
+				<view class="quan_goods" @tap="jump" :data-url="'/pages_goods/details/details?id='+g_id">
 				  <image class="quan_goods_img" :src="filter.imgIP(goodsdata.photo[0])" mode="aspectFill"></image>
 				  <view class="quan_goods_msg">
 				    <view class="quan_goods_name oh1">{{goodsdata.g_title}}</view>
@@ -27,7 +27,7 @@
 				 			 <image :src="filter.imgIP('/static_s/51daiyan/images/data_null.png')"></image>
 				 </view>
 				 <view v-else class="li_box" v-for="(item,idx) in data_list">
-						<view class="user_tx"  @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id">
+						<view class="user_tx"  @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.user_id">
 							<image class="user_tx" :lazy-load='true' :src="filter.imgIP(item.head_portrait)"></image>
 							<!-- mingxing -->
 							<view v-if="item.identity_id==1" class="star_v star_v1">
@@ -163,12 +163,12 @@
 						that.btnkg=0
 						if(res.code==-1){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==0&&res.msg=='请先登录账号~'){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==1){
@@ -206,12 +206,12 @@
 								that.btnkg=0
 								if(res.code==-1){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==0&&res.msg=='请先登录账号~'){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==1){

@@ -6,7 +6,7 @@
 			</view>
 			<view class="h_main">
 				<view class="goods_box1" v-if="data_tj.length>0">
-					<view class="goods_li1" v-for="(item,idx) in data_tj" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
+					<view class="goods_li1" v-for="(item,idx) in data_tj" @tap="jump" :data-url="'/pages_goods/details/details?id='+item.id">
 						<view class="goods_img">
 							<image class="goods_img" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"></image>
 							<view class="goods_dy_num"><text class="iconfont icondianzan2"></text>{{item.advocacy_mannumber}}代言</view>
@@ -38,7 +38,7 @@
 				</view>
 				<!-- goods_li -->
 				<view class="goods_list2">
-					<view class="goods_li2" v-for="(item,idx) in data_list"  @tap="jump" :data-url="'/pages/details/details?id='+item.id">
+					<view class="goods_li2" v-for="(item,idx) in data_list"  @tap="jump" :data-url="'/pages_goods/details/details?id='+item.id">
 						<view class="goods_li2_d1">
 							<view class="goods_img2">
 								<image class="goods_img2" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"></image>
@@ -77,6 +77,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -101,6 +102,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
+			that=this
 			this.onRetry()
 		},
 		
@@ -151,6 +153,12 @@
 		 */
 		onShareAppMessage: function () {
 		
+		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
 		},
 		methods: {
 			onRetry(){

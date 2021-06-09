@@ -63,7 +63,7 @@
 					</view> -->
 					<!-- <block v-for="(item,idx) in datas.goods"> -->
 					<block v-if="datas.goods">
-						<view class="goods1" :data-tab="idx" @tap="jump" :data-url="'/pages/details/details?id='+datas.goods.g_id">
+						<view class="goods1" :data-tab="idx" @tap="jump" :data-url="'/pages_goods/details/details?id='+datas.goods.g_id">
 							<view class="goodsImg">
 								<image v-if="datas.goods.gd_vice_pic.length>0" class="goodsImg" :src="filter.imgIP(datas.goods.gd_vice_pic[0])" mode="aspectFill"></image>
 								<image v-else class="goodsImg" :src="filter.imgIP(datas.goods.gd_mastr_pic[0])" mode="aspectFill"></image>
@@ -214,7 +214,7 @@
 				currPage.setData({
 					sh_wl:false
 				})
-				var prevPage = pages[pages.length - 2];   //上一页面
+				var prevPage = pages[pages.length - 2];   //上一页面
 				prevPage.setData({
 				  //直接给上一个页面赋值
 				  sh_wl: true,

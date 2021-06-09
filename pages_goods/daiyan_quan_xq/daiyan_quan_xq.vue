@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<hongbao ref="hongbao" :shuaxin="shuaxin"></hongbao>
 		<view class="container">
 			<view class="quan_tab">
 				<view :class="tab_type==0?'cur':''" data-type="0" @tap="tab_fuc">圈子介绍<text></text></view>
@@ -27,7 +28,7 @@
 					
 					<view class="quan_li" v-for="(item,idx) in data_list">
 						<view class="quan_user_box">
-							<image class="quan_user_tx" :lazy-load='true' @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id"
+							<image class="quan_user_tx" :lazy-load='true' @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.user_id"
 							 :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
 							<view class="quan_user_msg">
 								<view class="quan_user_name">{{item.user_nickname}}
@@ -78,7 +79,15 @@
 		          	 @tap.stop="pveimg"></image> -->
 							</view>
 						</view>
-						<view v-for="(item1,idx1) in item.goods" class="quan_goods" @tap="jump" :data-url="'/pages/details/details?id='+item1.g_id">
+						<view v-for="(item1,idx1) in item.goods" class="quan_goods por" @tap="jump" :data-url="'/pages_goods/details/details?id='+item1.g_id">
+							<view class="goods_hb_box" v-if="item1.is_red">
+								
+								<image v-if="item1.is_red.is_have_share_red==1&&item1.is_red.is_may_share_red==1" class="goods_hb" @tap.stop="open_hb_fuc(item1,1)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image>
+								<image v-if="item1.is_red.is_have_advocacy_red==1&&item1.is_red.is_may_advocacy_red==1" class="goods_hb" @tap.stop="open_hb_fuc(item1,2)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image>
+								
+								 <!-- <image class="goods_hb" @tap.stop="open_hb_fuc(item1,1)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image>
+								<image class="goods_hb" @tap.stop="open_hb_fuc(item1,2)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image> -->
+							</view>
 							<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill"></image>
 							<view class="quan_goods_msg">
 								<!-- <view class="quan_goods_name oh1">{{item1.g_title}}</view> -->
@@ -120,7 +129,7 @@
 				<!-- <view class="zanwu" v-if="data_list.length==0">暂无数据</view> -->
 				<view class="star_li" v-for="(item,idx) in data_list">
 					<view class="star_msg">
-						<view class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.id">
+						<view class="user_tx" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.id">
 							<image class="user_tx" :lazy-load='true' :src="filter.imgIP(item.head_pic)"></image>
 							<!-- mingxing -->
 							<view v-if="item.identity_id==1" class="star_v">
@@ -174,7 +183,7 @@
 				<view class="goods_list2">
 					<!-- <view class="zanwu" v-if="data_list.length==0">暂无数据</view> -->
 					<view class="goods_li2" v-for="(item,idx) in data_list">
-						<view class="goods_li2_d1" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
+						<view class="goods_li2_d1" @tap="jump" :data-url="'/pages_goods/details/details?id='+item.id">
 							<view class="goods_img2">
 								<image class="goods_img2" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])" mode="aspectFill"></image>
 							</view>
@@ -215,6 +224,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -243,7 +253,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
-			var that = this
+			that = this
 			console.log(options)
 			that.id = options.id
 
@@ -300,7 +310,20 @@
 		onShareAppMessage: function() {
 
 		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
+		},
 		methods: {
+			open_hb_fuc(item,type){
+				this.$refs.hongbao.open_hb(0,item,type)
+			},
+			shuaxin(){
+				this.page=1
+				this.onRetry()
+			},
 			getdy() {
 				var that = this
 				var datas = {
@@ -360,12 +383,12 @@
 					that.btn_kg = 0
 					if (res.code == -1) {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 0 && res.msg == '请先登录账号~') {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 1) {
@@ -487,12 +510,12 @@
 						that.btnkg = 0
 						if (res.code == -1) {
 							uni.navigateTo({
-								url: '/pages/login/login'
+								url: '/pagesA/login/login'
 							})
 							return
 						} else if (res.code == 0 && res.msg == '请先登录账号~') {
 							uni.navigateTo({
-								url: '/pages/login/login'
+								url: '/pagesA/login/login'
 							})
 							return
 						} else if (res.code == 1) {
@@ -529,12 +552,12 @@
 								that.btnkg = 0
 								if (res.code == -1) {
 									uni.navigateTo({
-										url: '/pages/login/login'
+										url: '/pagesA/login/login'
 									})
 									return
 								} else if (res.code == 0 && res.msg == '请先登录账号~') {
 									uni.navigateTo({
-										url: '/pages/login/login'
+										url: '/pagesA/login/login'
 									})
 									return
 								} else if (res.code == 1) {
@@ -594,6 +617,9 @@
 							icon: 'none',
 							title: '操作成功'
 						})
+						setTimeout(function(){
+							that.$refs.hongbao.open_hb(0,that.data_list[idx].a_activity_id,3)
+						},1000)
 					}
 				}).catch(e => {
 					console.log(e)

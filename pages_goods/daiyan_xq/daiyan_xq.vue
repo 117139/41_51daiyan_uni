@@ -2,6 +2,7 @@
 	<view class="container">
 		
 		
+		<hongbao ref="hongbao" :shuaxin="shuaxin"></hongbao>
 		<!-- 代言圈 -->
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
 		<view v-if="htmlReset==-1"  class="loading_def">
@@ -10,7 +11,7 @@
 		<view v-if="htmlReset==0" class="quan_list">
 			<view class="quan_li">
 				<view class="quan_user_box">
-					<image @tap="jump"  :data-url="'/pages/my_index/my_index?id='+datas.user_id" class="quan_user_tx" :src="datas.user_head_portrait" mode="aspectFill"></image>
+					<image @tap="jump"  :data-url="'/pagesA/my_index/my_index?id='+datas.user_id" class="quan_user_tx" :src="datas.user_head_portrait" mode="aspectFill"></image>
 					<view class="quan_user_msg">
 						<view class="quan_user_name">{{datas.user_nickname}}
 							<!-- mingxing -->
@@ -55,8 +56,16 @@
 						 @tap.stop="pveimg"></image> -->
 					</view>
 				</view>
-				<view v-for="(item1,idx1) in datas.goods" class="quan_goods" @tap="jump" 
-				 :data-url="'/pages/details/details?id='+item1.g_id+'&dy_id='+datas.id+'&advocacyviceId='+item1.id">
+				<view v-for="(item1,idx1) in datas.goods" class="quan_goods por" @tap="jump" 
+				 :data-url="'/pages_goods/details/details?id='+item1.g_id+'&dy_id='+datas.id+'&advocacyviceId='+item1.id">
+					<view class="goods_hb_box" v-if="item1.is_red">
+						
+						<image v-if="item1.is_red.is_have_share_red==1&&item1.is_red.is_may_share_red==1" class="goods_hb" @tap.stop="open_hb_fuc(item1,1)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image>
+						<image v-if="item1.is_red.is_have_advocacy_red==1&&item1.is_red.is_may_advocacy_red==1" class="goods_hb" @tap.stop="open_hb_fuc(item1,2)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image>
+						
+						 <!-- <image class="goods_hb" @tap.stop="open_hb_fuc(item1,1)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image>
+						<image class="goods_hb" @tap.stop="open_hb_fuc(item1,2)" :src="filter.imgIP('/static_s/51daiyan/images/pro2/hb_off.png')" mode="widthFix"></image> -->
+					</view>
 					<image class="quan_goods_img" :lazy-load='true' :src="filter.imgIP(item1.g_img[0])" mode="aspectFill"></image>
 					<view class="quan_goods_msg">
 						<view class="quan_goods_name dis_flex aic"><text v-if="item1.fk_is_way==2" class="xcxdy_zy_icon">自营</text><text class="flex_1 oh1">{{item1.g_title}}</text></view>
@@ -122,7 +131,8 @@
 				banner: '',
 				homeSeek: '',
 				homeTeacher: '',
-				homeVideo: ''
+				homeVideo: '',
+				show_num:0
 			}
 		},
 		onLoad(option) {
@@ -132,14 +142,10 @@
 		},
 		onShow() {
 			this.btn_kg=0
-			if(this.hasLogin){
-				if (this.isSDKReady) {
-					console.log('2222')
-					// this.getConversationList()
-				} else {
-					console.log('333333')
-				}
+			if(this.show_num>0){
+				that.getdata()
 			}
+			this.show_num++
 		},
 		onPullDownRefresh: function() {
 			wx.stopPullDownRefresh();
@@ -174,6 +180,12 @@
 				}
 			}
 		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
+		},
 		computed: {
 			...mapState([
 				'hasLogin',
@@ -199,7 +211,12 @@
 		},
 		methods: {
 			...mapMutations(['setAbout']),
-			
+			open_hb_fuc(item,type){
+				this.$refs.hongbao.open_hb(0,item,type)
+			},
+			shuaxin(){
+				this.getdata()
+			},
 			guanzhuFuc_dz(type, id, key) {
 				var that = this
 				var data = {
@@ -219,22 +236,22 @@
 					that.btn_kg = 0
 					if (res.code == -1) {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 0 && res.msg == '请先登录账号~') {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 1) {
 						// that.onRetry()
 						if (key == 'affirm') {
-							that.$set(datas, 'is_praise', 1)
-							that.$set(datas, 'praise_number', datas.praise_number-1+2)
+							that.$set(that.datas, 'is_praise', 1)
+							that.$set(that.datas, 'praise_number', that.datas.praise_number-1+2)
 						} else {
-							that.$set(datas, 'is_praise', 2)
-							that.$set(datas, 'praise_number', datas.praise_number-1)
+							that.$set(that.datas, 'is_praise', 2)
+							that.$set(that.datas, 'praise_number', that.datas.praise_number-1)
 						}
 						uni.showToast({
 							icon: 'none',
@@ -267,12 +284,12 @@
 						that.btnkg=0
 						if(res.code==-1){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==0&&res.msg=='请先登录账号~'){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==1){
@@ -305,12 +322,12 @@
 								that.btnkg=0
 								if(res.code==-1){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==0&&res.msg=='请先登录账号~'){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==1){
@@ -414,12 +431,12 @@
 			},
 			toupiao(e) {
 			  var id = e.currentTarget.dataset.id
-			  var idx = e.currentTarget.dataset.idx
+			  // var idx = e.currentTarget.dataset.idx
 				var that =this
 			  var datas = {
 			  	token: that.loginMsg.userToken,
 			  	aau_id:id,
-					activity_id:that.data_list[idx].a_activity_id
+					activity_id:that.datas.a_activity_id
 			  }
 			  // 单个请求
 			  service.P_post('/activity/vote', datas).then(res => {
@@ -427,12 +444,15 @@
 			  	if (res.code == 1) {
 			  		// that.page=1
 			  		// that.getdatalist()
-						// that.data_list[idx].is_vote=2
-						that.$set(that.data_list[idx],'is_vote',2)
+						// that.datas.is_vote=2
+						that.$set(that.datas,'is_vote',1)
 			  		uni.showToast({
 			  			icon: 'none',
 			  			title: '操作成功'
 			  		})
+						setTimeout(function(){
+							that.$refs.hongbao.open_hb(0,that.datas.a_activity_id,3)
+						},1000)
 			  	}
 			  }).catch(e => {
 			  	console.log(e)

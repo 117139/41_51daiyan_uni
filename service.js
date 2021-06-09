@@ -5,8 +5,11 @@ import event from 'commen/event.js'
 // 管理账号信息
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
+/* #ifndef H5 */
+// const IPurl = 'https://wx.51daiyan.cn/api/';
+/* #endif */
+// const IPurl = 'http://qsgqic.natappfree.cc/api/';
 const IPurl = 'https://wx.51daiyan.cn/api/';
-// const IPurl = 'http://192.168.20.116:81/api/';
 const imgurl = 'https://cdn.51daiyan.cn/';
 /**
  * 请求头
@@ -75,7 +78,7 @@ function request(url, params, method, onSuccess, onFailed) {
 				})
 				setTimeout(function() {
 					uni.navigateTo({
-						url: './pages/login/login?haslogin=false'
+						url: './pagesA/login/login?haslogin=false'
 					})
 				}, 1000)
 				return
@@ -138,7 +141,7 @@ const jump = function(e) {
 		console.log(datas.haslogin)
 		if (!datas.haslogin) {
 			uni.navigateTo({
-				url: '../login/login',
+				url: '/pagesA/login/login',
 			});
 			return
 		}
@@ -240,13 +243,13 @@ const wxlogin = function(num) {
 													if (num == 1) {
 														setTimeout(() => {
 															uni.redirectTo({
-																url: '/pages/getTel/getTel'
+																url: '/pagesA/getTel/getTel'
 															})
 														}, 1000)
 													} else {
 														setTimeout(() => {
 															uni.navigateTo({
-																url: '/pages/getTel/getTel'
+																url: '/pagesA/getTel/getTel'
 															})
 														}, 1000)
 													}
@@ -318,7 +321,13 @@ const get_info = function(data) {
 	uni.request({
 		url: IPurl + '/user/info',
 		data: {
-			token:store.state.loginMsg.userToken||'fa7b4f7fcc5df37c3fddc4af254ffad4'
+			token:store.state.loginMsg.userToken,
+			// token:'fa7b4f7fcc5df37c3fddc4af254ffad4',
+			// token:'e48aec7443bab4ad0398fb4f55a57363',
+			// token:'12e1c60d8de6a4259b8b689d9c8e742e',
+			// token:'70c383a3deb1008a622fb41485e05c37',
+			// token:'6fc0fd38e32d91f8ec7720fe95e1a666',
+			// token:'94c599cbfc0f8a6a0a9a5127c8b76fe2'
 			// token:store.state.loginMsg.userToken
 		},
 		header: {
@@ -457,12 +466,12 @@ const http = ({
 					if (res.data.code == -1) {
 						store.commit('logout')
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.data.code == 0 && res.msg == '请先登录账号~') {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.data.code == 0) {
@@ -650,11 +659,12 @@ const wxpay = function(datas, type) {
 
 }
 const getimg = function(img) {
-	if (!img) return
+	if (!img) return img
 	// console.log(imgurl+img)
 	if (img.indexOf('://') == -1) {
 		img = imgurl + img
 	}
+	console.log(img)
 	return img
 }
 const getimgarr = function(imgs, type) {

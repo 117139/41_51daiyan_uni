@@ -37,7 +37,7 @@
 			</cover-view>
 			
 			<!-- 代言商品 -->
-			<cover-view class="tag" @tap="jump" :data-url="'/pages/details/details?id='+videoParam.g_id">
+			<cover-view class="tag" @tap="jump" :data-url="'/pages_goods/details/details?id='+videoParam.g_id">
 			   <cover-image :src="filter.imgIP(videoParam.g_pic[0])" class="v_goods_img" ></cover-image>
 			   <cover-view class="goods_msg">
 			      <cover-view class="oh2">{{filter.textOh(videoParam.g_title)}}</cover-view>
@@ -51,7 +51,7 @@
 			  <cover-view class="sp_gz">+关注</cover-view>
 			</view> -->
 			<view class="fullBtn" >
-			  <cover-image @tap="jump" :data-url="'/pages/my_index/my_index?id='+videoParam.user_id" :src="filter.imgIP(videoParam.user_head)" class="head"></cover-image>
+			  <cover-image @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+videoParam.user_id" :src="filter.imgIP(videoParam.user_head)" class="head"></cover-image>
 			  <cover-view class="sp_gz" v-if="!videoParam.is_motion" @tap.stop="guanzhuFuc(videoParam.user_id,'affirm')">+关注</cover-view>
 			</view>
 			<view class="fullBtn fullBtn1"  @tap="videoLike">
@@ -63,7 +63,7 @@
 			  </cover-view>
 			  <cover-view class="dianzan_num">{{videoParam.praise_number}}</cover-view>
 			</view>
-			<view class="fullBtn fullBtn2"  @tap="jump" :data-url="'/pages/details/details?id='+videoParam.g_id">
+			<view class="fullBtn fullBtn2"  @tap="jump" :data-url="'/pages_goods/details/details?id='+videoParam.g_id">
 			  <cover-image :src="filter.imgIP('/static_s/51daiyan/images/v_goods.png')" class="head"></cover-image>
 			</view>
 	</view>
@@ -460,12 +460,12 @@
 					that.btn_kg = 0
 					if (res.code == -1) {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 0 && res.msg == '请先登录账号~') {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 1) {
@@ -534,12 +534,12 @@
 						that.btnkg=0
 						if(res.code==-1){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==0&&res.msg=='请先登录账号~'){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==1){
@@ -577,12 +577,12 @@
 								that.btnkg=0
 								if(res.code==-1){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==0&&res.msg=='请先登录账号~'){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==1){

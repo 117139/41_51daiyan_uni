@@ -28,13 +28,13 @@
 								<image v-if="idx==2" class="pl_num" :src="filter.imgIP('/static_s/51daiyan/images/phicon_3.png')"></image>
 								<text v-if="idx>2">{{idx}}</text>
 							</view>
-							<view class="pl_tx"  @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.id">
+							<view class="pl_tx"  @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.id">
 								<image class="pl_tx" :src="item.head_portrait"></image>
 							</view>
 							<view class="ph_name">{{item.nickname}}</view>
 							<!-- <view class="ph_num"><text>{{item.number}}</text>{{ph_type1==2?'元':'件'}}</view> -->
 							<view class="ph_num"><text>{{item.number}}</text>件</view>
-							<view class="ph_btn" @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.id">去看看</view>
+							<view class="ph_btn" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.id">去看看</view>
 						</view>
 						<view class="li_dy oh2">代言说：{{item.introduction?item.introduction:''}}</view>
 					</view>
@@ -55,6 +55,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -78,6 +79,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
+			that=this
 			this.onRetry()
 		},
 		/**
@@ -127,6 +129,12 @@
 		 */
 		onShareAppMessage: function () {
 		
+		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
 		},
 		methods: {
 			onRetry(){

@@ -4,17 +4,17 @@
 		
 		  <view class="header_box">
 		    <view class="user_box" v-if="!hasLogin">
-		      <view class="user_tx" data-url="/pages/login/login" @tap='jump'>
+		      <view class="user_tx" data-url="/pagesA/login/login" @tap='jump'>
 		        <image class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/mr_tx.jpg')"></image>
 		      </view>
-		      <view class="user_msg" data-url="/pages/login/login" @tap='jump'>
+		      <view class="user_msg" data-url="/pagesA/login/login" @tap='jump'>
 		        <view class="user_name">登录</view>
 		      </view>
 		    </view>
 		
 		    <view v-else class="user_box">
 		      <view class="user_tx">
-		        <image class="user_tx" @tap="jump" :data-url="'/pages/my_index/my_index?id='+loginMsg.id" :src="loginMsg.avatarurl"></image>
+		        <image class="user_tx" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+loginMsg.id" :src="loginMsg.avatarurl"></image>
 						<!-- mingxing -->
 						<view v-if="loginMsg.identity_id==1" class="star_v star_v1">
 							<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>

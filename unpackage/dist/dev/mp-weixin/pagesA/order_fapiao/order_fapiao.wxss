@@ -1,4 +1,7 @@
 
+view.data-v-3404e9ea,text.data-v-3404e9ea{
+	box-sizing: border-box;
+}
 .minh100.data-v-3404e9ea{
 	width: 100%;
 	padding: 30rpx;

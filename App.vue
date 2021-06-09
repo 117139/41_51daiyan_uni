@@ -10,8 +10,23 @@
 		onLaunch: function() {
 			var that =this
 			console.log('App Launch')
-			service.get_info()
-			return
+			setInterval(function(){
+				if(that.hasLogin){
+					var datas = {
+						token:that.loginMsg.userToken
+					}
+					// 单个请求
+					service.P_post('/message/userHeartbeat', datas).then(res => {
+						console.log(res)
+						
+					}).catch(e => {
+						console.log(e)
+					
+					})
+				}
+			},25000)
+			// service.get_info()
+			// return
 			// #ifdef MP-WEIXIN
 			// 获取用户信息
 			service.wxlogin()
@@ -20,6 +35,7 @@
 				
 				service.get_info()
 			// #endif
+			
 			uni.getSystemInfo({
 				success: function(e) {
 					console.log(e.platform);
@@ -57,6 +73,9 @@
 		},
 		onShow: function() {
 			console.log('App Show')
+			// uni.showTabBarRedDot({
+			// 	index:2
+			// })
 		},
 		onHide: function() {
 			console.log('App Hide')
@@ -95,6 +114,9 @@
 			onReceiveMessage({data: messageList}) {
 				// this.handleAt(messageList);
 				this.$store.commit("pushCurrentMessageList", messageList);
+				uni.showTabBarRedDot({
+					index:2
+				})
 			},
 			//根据消息列表请求聊天对象的用户信息 并完成数据拼接
 			
@@ -110,7 +132,12 @@
 	@import './static/css/flex.wxss';
 	@import './static/css/iconfont.css';
 	@import './static/css/public.css';
-	
+	@font-face {
+		font-family: 'HuXiaoBo-NanShen';
+		/* src: url('static/fonts/PINGFANG BOLD.TTF') format('truetype');*/ 
+		/* src: url('https://shouyanglawyer.com.aa.800123456.top/fonts/PINGFANG_BOLD.TTF') format('truetype'); */
+		src: url('https://cdn.51daiyan.cn/static_s/51daiyan/font/HuXiaoBo-NanShen.otf') format('truetype');
+	}
 	.sousuobtn{
 	  width: 30rpx;
 	  height: 30rpx;
@@ -489,5 +516,112 @@
 		margin-top: 4upx;
 		position: relative;
 		z-index: 21;
+	}
+	
+	
+	
+	.por{
+		position: relative;
+	}
+	.goods_hb_box{
+		position: absolute;
+		top: 70upx;
+		right: 10upx;
+	}
+	.goods_hb{
+		width: 40upx;
+		margin: 0 10upx;
+		animation: shake .5s linear infinite;
+		box-shadow: 0px 3px 10upx 0px rgb(119 119 119 / 30%);
+	}
+	
+	@keyframes shake {
+	 
+	  25% {
+	    transform: rotate(7deg);
+	  }
+	  75% {
+	    transform: rotate(-7deg);
+	  }
+	 
+	  50%,
+	  100% {
+	    transform: rotate(0);
+	  }
+	}
+	
+	
+	
+	
+	
+	.dis_flex{
+		display: flex;
+	}
+	.dis_flex_c{
+		display: flex;
+		flex-direction: column;
+	}
+	.aic{
+		align-items: center;
+	}
+	.ais{
+		align-items: stretch;
+	}
+	.aift{
+		align-items: flex-start;
+	}
+	.aife{
+		align-items: flex-end;
+	}
+	.ju_a{
+		justify-content: space-around;
+	}
+	.ju_b{
+		justify-content: space-between;
+	}
+	.ju_c{
+		justify-content: center;
+	}
+	.flex_1{
+		flex: 1;
+	}
+	.flex_0{
+		flex: none;
+	}
+	.oh1 {
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    display: -webkit-box;
+	    -webkit-line-clamp: 1;
+	    -webkit-box-orient: vertical;
+	}
+	
+	.oh2 {
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    display: -webkit-box;
+	    -webkit-line-clamp: 2;
+	    -webkit-box-orient: vertical;
+			 
+	}
+	view{
+		word-break:break-all;
+		
+		word-wrap:break-word;   
+	}
+	.oh3 {
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    display: -webkit-box;
+	    -webkit-line-clamp: 3;
+	    -webkit-box-orient: vertical;
+	}
+	
+	.oh4 {
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    display: -webkit-box;
+	    -webkit-line-clamp: 4;
+	    -webkit-box-orient: vertical;
 	}
 </style>

@@ -6,7 +6,7 @@
 		  <view class="quan_list">
 		    <view class="quan_li" v-for="(item,idx) in StarText_list">
 		      <view class="quan_user_box">
-		        <image @tap="jump" :data-url="'/pages/my_index/my_index?id='+item.user_id" class="quan_user_tx" :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
+		        <image @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.user_id" class="quan_user_tx" :src="filter.imgIP(item.user_head_portrait)" mode="aspectFill"></image>
 		        <view class="quan_user_msg">
 		          <view class="quan_user_name">{{item.user_nickname}} <image src="/static/images/star_b.png"></image></view>
 		          <view class="quan_user_time">
@@ -36,7 +36,7 @@
 								:data-url="'/pages_goods/d_video/d_video?idx='+idx1+'&a_id='+item.id"></image>
 		        </view>
 		      </view>
-		      <!-- <view class="quan_goods"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id">
+		      <!-- <view class="quan_goods"  @tap="jump" :data-url="'/pages_goods/details/details?id='+item.g_id">
 		        <image class="quan_goods_img" :src="filter.imgIP('goods.png')" mode="aspectFill"></image>
 		        <view class="quan_goods_msg">
 		          <view class="quan_goods_name oh1">苏泊尔IH家用大容量智能电饭锅</view>
@@ -255,12 +255,12 @@
 					that.btn_kg = 0
 					if (res.code == -1) {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 0 && res.msg == '请先登录账号~') {
 						uni.navigateTo({
-							url: '/pages/login/login'
+							url: '/pagesA/login/login'
 						})
 						return
 					} else if (res.code == 1) {

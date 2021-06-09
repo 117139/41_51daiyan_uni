@@ -69,7 +69,7 @@
 		          <view v-if="item.order.o_ddstatus==4||item.order.o_ddstatus==5" @tap.stop="get_goods(item.order.o_id)">确认收货</view>
 		          <view v-if="item.order.o_ddstatus==4||item.order.o_ddstatus==5" @tap.stop="jump" :data-url="'/pagesA/Order_wuliu/Order_wuliu?id='+item.order.o_id">查看物流</view>
 		          <view v-if="item.order.o_paystatus==1" @tap.stop="order_pay(item.order.o_id)">付款</view>
-		          <!-- <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view> -->
+		          <view v-if="item.order.o_paystatus==1" class="qx" @tap.stop='del_order(item.order.o_id)'>取消订单</view>
 		        </view>
 		      </view>
 		    </view>
@@ -149,7 +149,7 @@
 			this.onRetry()
 		},
 		onShow(){
-			if(this.show_num>1){
+			if(this.show_num>0){
 				this.page=1
 				this.goods_sele=[]
 				this.all=false
@@ -266,7 +266,7 @@
 												if (res.data.code == 1) {
 													var datas = res.data.data
 													// console.log(typeof datas)
-													that.htmlReset=0
+													
 													if (typeof datas == 'string') {
 														datas = JSON.parse(datas)
 													}
@@ -274,9 +274,11 @@
 														icon: 'none',
 														title: '操作成功'
 													})
-													that.onRetry()
+													setTimeout(function(){
+														that.onRetry()
+													},1000)
 												} else {
-													that.htmlReset=1
+													
 													if (res.data.msg) {
 														uni.showToast({
 															icon: 'none',
@@ -291,7 +293,7 @@
 												}
 											},
 											function(err) {
-												that.htmlReset=1
+												
 												that.btnkg=0
 												
 													uni.showToast({

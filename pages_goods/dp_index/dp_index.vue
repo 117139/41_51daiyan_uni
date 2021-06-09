@@ -47,7 +47,7 @@
 					<!-- goods_li -->
 					
 					<view v-if="s_type==0" class="goods_list">
-						<view v-for="(item,idx) in data_list" class="goods_li" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
+						<view v-for="(item,idx) in data_list" class="goods_li" @tap="jump" :data-url="'/pages_goods/details/details?id='+item.id">
 							<image class="goods_img" :src="filter.imgIP(item.photo[0])"  mode="aspectFill"></image>
 							<view class="goods_msg">
 								<view class="oh1">{{item.title}}</view>
@@ -60,10 +60,10 @@
 					</view>
 					<view v-if="s_type==1" class="my_list">
 						<view class="sp_list" >
-							<!-- @tap="jump" :data-url="'/pages/my_video/my_video?uid='+uid+'&idx='+item.a_id" -->
-							<!-- <view class="sp_li" v-for="(item,idx) in data_list"  @tap="jump" :data-url="'/pages/details/details?id='+item.g_id"> -->
+							<!-- @tap="jump" :data-url="'/pages_goods/my_video/my_video?uid='+uid+'&idx='+item.a_id" -->
+							<!-- <view class="sp_li" v-for="(item,idx) in data_list"  @tap="jump" :data-url="'/pages_goods/details/details?id='+item.g_id"> -->
 							<view class="sp_li" v-for="(item,idx) in data_list" @tap="jump" 
-							 :data-url="'/pages/my_video/my_video?uid='+dpid+'&idx='+item.a_id+'&type=dp'">
+							 :data-url="'/pages_goods/my_video/my_video?uid='+dpid+'&idx='+item.a_id+'&type=dp'">
 								<view class="sp_li_img">
 									<image v-if="item.type==2" class="sp_li_img" :src="filter.imgIP_video(item.obj_pic[0])" mode="aspectFill"></image>
 									<image v-else class="sp_li_img" :src="filter.imgIP(item.obj_pic[0])" mode="aspectFill"></image>
@@ -100,6 +100,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -126,6 +127,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
+			that=this
 			uni.showLoading({
 				title:'正在加载中'
 			})
@@ -199,6 +201,12 @@
 		 */
 		onShareAppMessage: function () {
 		
+		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
 		},
 		methods: {
 			onRetry(){
@@ -315,12 +323,12 @@
 						that.btnkg=0
 						if(res.code==-1){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==0&&res.msg=='请先登录账号~'){
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url:'/pagesA/login/login'
 							})
 							return
 						}else if(res.code==1){
@@ -353,12 +361,12 @@
 								that.btnkg=0
 								if(res.code==-1){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==0&&res.msg=='请先登录账号~'){
 									uni.navigateTo({
-										url:'/pages/login/login'
+										url:'/pagesA/login/login'
 									})
 									return
 								}else if(res.code==1){

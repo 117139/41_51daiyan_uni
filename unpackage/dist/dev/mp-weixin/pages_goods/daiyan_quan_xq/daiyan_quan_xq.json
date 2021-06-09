@@ -3,5 +3,7 @@
   "backgroundColor": "#f5f5f5",
   "navigationBarBackgroundColor": "#F7AC39",
   "navigationBarTextStyle": "white",
-  "usingComponents": {}
+  "usingComponents": {
+    "hongbao": "/components/hongbao/hongbao"
+  }
 }

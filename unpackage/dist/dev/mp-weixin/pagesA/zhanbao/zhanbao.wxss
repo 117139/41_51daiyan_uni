@@ -1,17 +1,52 @@
 
 view.data-v-7ca79bd2,text.data-v-7ca79bd2{
 	box-sizing: border-box;
+	position: relative;
+	z-index: 2;
 }
 .container.data-v-7ca79bd2 {
 	width: 100%;
 	min-height: 100vh;
-	background: #fff;
+	background: #FF861A;
 	position: relative;
+	padding: 50rpx 30rpx;
+}
+.hdzb_bg.data-v-7ca79bd2{
+	width: 100%;
+	position: absolute;
+	top: 0;
+	z-index: 0;
 }
 .avtivity_box.data-v-7ca79bd2 {
 	position: relative;
 	width: 100%;
 	height: 336rpx;
+	border-radius: 20rpx;
+	border: 10rpx solid #fff;
+	margin-bottom: 321rpx;
+}
+.view_zzc.data-v-7ca79bd2{
+	top: -34rpx;
+	z-index: 1;
+	position: absolute;
+	left: 15rpx;
+	right: 15rpx;
+	height: 100rpx;
+	background: #FFFFFF;
+	border: 10px solid #FFFFFF;
+	opacity: 0.55;
+	border-radius: 20rpx;
+}
+.view_zzc1.data-v-7ca79bd2{
+	top: -24rpx;
+	border-radius: 10rpx;
+}
+.avtivity_box_img.data-v-7ca79bd2{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	z-index: 2;
+	border-radius: 8rpx;
 }
 .hd_time.data-v-7ca79bd2 {
 	width: 100%;
@@ -28,8 +63,8 @@ view.data-v-7ca79bd2,text.data-v-7ca79bd2{
 }
 .zhanbao_box.data-v-7ca79bd2 {
 	width: 100%;
-	padding: 30rpx;
-	background: #F5F5F5;
+	/* padding: 30upx; */
+	/* background: #F5F5F5; */
 	min-height: calc(100vh - 336rpx);
 }
 .zhanbao_tit.data-v-7ca79bd2 {
@@ -65,15 +100,25 @@ view.data-v-7ca79bd2,text.data-v-7ca79bd2{
 }
 .zb_tj.data-v-7ca79bd2 {
 	width: 100%;
-	height: 257rpx;
+	height: 277rpx;
+	padding-top: 20rpx;
 	background: #FFF6E6;
 	border: 6rpx solid #FA8A54;
 	border-radius: 18rpx;
 	position: relative;
 }
+.zb_tj_t_img.data-v-7ca79bd2{
+	position: absolute;
+	left: 50%;
+	margin-left: -181rpx;
+	width: 362rpx;
+	height: 56rpx;
+	top: -28rpx;
+}
 .zb_tj_time.data-v-7ca79bd2 {
 	width: 100%;
-	padding-left: 156rpx;
+	/* padding-left: 156upx; */
+	padding-left: 30rpx;
 	padding-right: 30rpx;
 	font-size: 22rpx;
 	color: #999;
@@ -182,19 +227,23 @@ view.data-v-7ca79bd2,text.data-v-7ca79bd2{
 	/* padding-top: 76upx; */
 	margin-top: 65rpx;
 }
-.jx_list_tit.data-v-7ca79bd2 {
+/* .jx_list_tit {
 	width: 100%;
-	height: 76rpx;
-	display: -webkit-box;
-	display: -webkit-flex;
+	height: 76upx;
 	display: flex;
-	-webkit-box-align: center;
-	-webkit-align-items: center;
-	        align-items: center;
-	-webkit-box-pack: center;
-	-webkit-justify-content: center;
-	        justify-content: center;
+	align-items: center;
+	justify-content: center;
 }
+
+
+
+.jx_list_tit_img {
+	width: 150upx;
+	height: 120upx;
+	margin: 0 50upx;
+	position: relative;
+	top: -30upx;
+} */
 .jx_list_tit_num.data-v-7ca79bd2 {
 	color: #FE9B00;
 	font-size: 24rpx;
@@ -203,12 +252,29 @@ view.data-v-7ca79bd2,text.data-v-7ca79bd2{
 .jx_list_tit_num text.data-v-7ca79bd2 {
 	font-size: 36rpx;
 }
-.jx_list_tit_img.data-v-7ca79bd2 {
-	width: 150rpx;
-	height: 120rpx;
-	margin: 0 50rpx;
+.jx_list_tit1.data-v-7ca79bd2{
+	width: 100%;
+	padding: 50rpx 30rpx;
+}
+.jx_list_tit1_img.data-v-7ca79bd2{
+	height: 65rpx;
+	position: absolute;
+	top: 50rpx;
+	left: 30rpx;
+	right: 30rpx;
+	width: auto;
+	z-index: 1;
+}
+.jx_list_tit1_text.data-v-7ca79bd2{
+	color: #fff;
+	font-size: 24rpx;
 	position: relative;
-	top: -30rpx;
+	z-index: 2;
+	height: 55rpx;
+}
+.jx_list_tit1_text text.data-v-7ca79bd2{
+	position: relative;
+	left: -10px;
 }
 .jx_li.data-v-7ca79bd2 {
 	width: 100%;
@@ -272,12 +338,14 @@ view.data-v-7ca79bd2,text.data-v-7ca79bd2{
 	width: 100%;
 	height: 115rpx;
 	background: #FFFFFF;
-	border-radius: 1px;
+	border-radius: 10rpx;
 }
 .my_num.data-v-7ca79bd2{
-	width: 119rpx;
-	height: 63rpx;
-	background: #FFA259;
+	/* width: 119upx;
+	height: 63upx; */
+	width: 92rpx;
+	height: 92rpx;
+	/* background: #FFA259; */
 	border-radius: 10rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -290,12 +358,25 @@ view.data-v-7ca79bd2,text.data-v-7ca79bd2{
 	        justify-content: center;
 	font-size: 32rpx;
 	color: #fff;
-	margin-right: 20rpx;
+	/* margin-right: 20upx; */
+	margin-left: 20rpx;
+	position: relative;
+}
+.hdzb_mc.data-v-7ca79bd2{
+	position: absolute;
+	width: 92rpx;
+	height: 92rpx;
+	z-index: 1;
 }
 .my_num text.data-v-7ca79bd2{
 	position: relative;
 	top: 4rpx;
 	font-size: 24rpx;
+	z-index: 2;
+}
+.my_num text.hdzb_mc_num.data-v-7ca79bd2{
+	font-size: 32rpx;
+	top: 0;
 }
 .dp_box.data-v-7ca79bd2{
   width:100%;
@@ -382,5 +463,14 @@ view.data-v-7ca79bd2,text.data-v-7ca79bd2{
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
+}
+.go_zp.data-v-7ca79bd2{
+	font-size: 28rpx;
+	color: #999;
+	margin-right: 20rpx;
+}
+.go_zp text.data-v-7ca79bd2{
+	font-size: 20rpx;
+	color: #999;
 }
 

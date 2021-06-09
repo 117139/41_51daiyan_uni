@@ -47,7 +47,11 @@
 						<view class="pp_msg">
 							<view class="pp_d1">
 								<view class="pp_name oh1">{{item.title}}</view>
-								<view v-if="item.is_finish==2" class="pp_to" @tap="jump" :data-url="'/pages_goods/activity/activity?id='+item.id">活动详情<text class="iconfont iconnext3"></text></view>
+								<!-- #ifdef H5 -->
+								<view  @tap="jump" :data-url="'/pagesA/share/share?id='+item.id+'&user_id='+loginMsg.id">活动分享</view>
+								<!-- #endif -->
+								<view v-if="item.is_finish==2" class="pp_to" @tap="jump" :data-url="'/pages_goods/activity/activity?id='+item.id">活动详情<text class="iconfont iconnext3"></text>
+								</view>
 								<view v-else class="pp_to" @tap="jump" :data-url="'/pagesA/zhanbao/zhanbao?id='+item.id">活动战报<text class="iconfont iconnext3"></text></view>
 							</view>
 							<view class="pp_d2">招募<text>{{item.recruit_number}}</text>人</view>
@@ -87,6 +91,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -106,6 +111,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
+			that=this
 				this.getdata()
 		},
 
@@ -156,6 +162,12 @@
 		 */
 		onShareAppMessage: function() {
 
+		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
 		},
 		methods: {
 			getdata() {

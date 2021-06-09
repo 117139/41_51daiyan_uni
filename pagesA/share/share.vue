@@ -1,28 +1,43 @@
 <template>
 	<view>
 		<view class="container">
-		  <view class="avtivity_box">
-		    <image class="avtivity_box"  :src="filter.imgIP(datas.act_img[0])" mode="aspectFill"></image>
-		    <view class="hd_time">活动截止时间：{{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>
-		  </view>
-			<view class="share_main">
+			<image class="hdzb_bg"  :src="getimg('/static_s//51daiyan/images/pro2/share_bg_02.jpg')" mode="widthFix"></image>
+			<view class="avtivity_box">
+				<view class="view_zzc"></view>
+				<image class="avtivity_box_img"  :src="filter.imgIP(datas.act_img[0])" mode="aspectFill"></image>
+				<view class="hd_time">活动截止时间：{{filter.getDate_ymd(datas.start_time,'/')}}-{{filter.getDate_ymd(datas.end_time,'/')}}</view>
+				<image class="share_main_ewm" :src="filter.imgIP(datas.user_personal_code)" mode="aspectFill"></image>
+			</view>
+		  <view class="hd_fx_tit">
+				{{datas.merchant_name}}
+				<br>
+				<!-- 代言人优选征集 -->
+				{{datas.act_title}}
+			</view>
+			<image class="share_main_tx" @tap.stop="toupiao" :src="datas.user_head_portrait" mode="aspectFill"></image>
+			<view class="share_main_tip">
+				我在参加{{datas.merchant_name}}{{datas.act_title}}活动，需
+				要您的宝贵一票
+			</view>
+			<view class="toupiao_btn dis_flex aic ju_c" @tap.stop="toupiao">投票并领取红包</view>
+			<view class="toupiao_btn_tip" @tap="jump" :data-url="'/pages_goods/activity/activity?id='+ad_id">查看活动详情<text class="iconfont iconnext3"></text></view>
+			<!-- <view class="share_main">
 				<image class="share_main_bg" :src="filter.imgIP('/static_s/51daiyan/images/share_bg_02.jpg')" mode="widthFix"></image>
-				<!-- <image class="share_main_bg" src="/static/images/share_bg_02.jpg" mode="widthFix"></image> -->
 				<view class="share_main_box">
 					<image class="share_main_tx" @tap.stop="toupiao" :src="datas.user_head_portrait" mode="aspectFill"></image>
 					<view class="share_main_tx_tp" @tap.stop="toupiao"></view>
 					<view class="share_main_text">我在参与{{datas.act_title}}活动，需要您的宝贵一票</view>
 					
 				</view>
-			</view>
-			<view class="share_bottom">
+			</view> -->
+			<!-- <view class="share_bottom">
 				<view class="share_tip">
 					<view>1、点击头像即可投票</view>
 					<view>2、每次活动没人仅可投票一次</view>
 					<view>3、扫描二维码即可进入代言人的个人主页</view>
 				</view>
 				<image class="share_main_ewm" :src="filter.imgIP(datas.user_personal_code)" mode="aspectFill"></image>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -53,6 +68,12 @@
 		
 		onShareAppMessage() {
 			
+		},
+		onShareTimeline(){
+			return {
+				title:'51代言',
+				query:'pid=' + that.loginMsg.id,
+			}
 		},
 		onLoad(option) {
 			
@@ -103,6 +124,12 @@
 				})
 				
 			},
+			getimg(img){
+				return service.getimg(img)
+			},
+			jump(e) {
+				service.jump(e)
+			},
 			toupiao(e) {
 			  // var id = this.user_id
 			  // var idx = e.currentTarget.dataset.idx
@@ -135,18 +162,56 @@
 </script>
 
 <style scoped>
+	view,text{
+		position: relative;
+		z-index: 2;
+	}
 	.container{
 		width: 100%;
+		height: 100vh;
 		/* height: 100vh;
 		overflow: hidden; */
 		background: #fff;
 	  position: relative;
-		padding-bottom: 30upx;
+		padding: 30upx 30upx;
+		overflow: hidden;
 	}
-	.avtivity_box{
-	  position: relative;
-	  width: 100%;
-	  height: 336rpx;
+	.hdzb_bg{
+		width: 100%;
+		position: absolute;
+		top: 0;
+		z-index: 0;
+	}
+	.avtivity_box {
+		position: relative;
+		width: 100%;
+		height: 336upx;
+		border-radius: 20upx;
+		border: 10upx solid #fff;
+		margin-bottom: 100upx;
+	}
+	.view_zzc{
+		top: -24upx;
+		z-index: 1;
+		position: absolute;
+		left: 15upx;
+		right: 15upx;
+		height: 100upx;
+		background: #FFFFFF;
+		border: 10px solid #FFFFFF;
+		opacity: 0.55;
+		border-radius: 20upx;
+	}
+	.view_zzc1{
+		top: -24upx;
+		border-radius: 10upx;
+	}
+	.avtivity_box_img{
+		width: 100%;
+		height: 100%;
+		position: relative;
+		z-index: 2;
+		border-radius: 8upx;
 	}
 	.hd_time{
 	  width: 100%;
@@ -155,6 +220,7 @@
 	  text-align: center;
 	  font-size: 24rpx;
 	  color: #fff;
+		z-index: 2;
 	}
 	.avtivity_time{
 	  width:750rpx;
@@ -188,64 +254,63 @@
 		top: 0;
 		left: 0;
 	}
-	.share_main_tx{
-		width: 146upx;
-		height: 146upx;
-		border-radius: 50%;
+	
+	
+	.share_main_ewm{
 		position: absolute;
-		top: 122upx;
-		/* left: 307upx; */
-		left: 50%;
-		margin-left: -73upx;
+		width: 107upx;
+		height: 107upx;
+		top: 10upx;
+		right: 10upx;
+		z-index: 2;
+		/* top: 628upx;
+		left: 562upx; */
 	}
-	.share_main_tx_tp{
-		position: absolute;
-		top: 272upx;
-		width: 500upx;
-		left: 50%;
-		margin-left: -250upx;
-		height: 100upx;
-	}
-	.share_main_text{
-		position: absolute;
-		top: 518upx;
-		left: 50%;
-		width: 690upx;
-		margin-left: -345upx;
-		font-size: 30upx;
-		color: #333;
-		font-weight: bold;
+	
+	
+	
+	.hd_fx_tit{
+		font-size: 90upx;
+		font-family: HuXiaoBo-NanShen;
+		font-weight: normal;
+		font-style: italic;
+		color: #F5F5F5;
+		text-shadow: 0px 0px 10px rgba(225, 37, 3, 0.57);
 		text-align: center;
 	}
 	
-	.share_bottom{
-		width: 690upx;
-		padding: 30upx;
-		background: #fff;
-		
-		box-shadow: 1px 3px 10px 0px rgba(0, 0, 0, 0.2);
-		border-radius: 30upx;
-		margin-top: 10upx;
-		display: flex;
-		align-items: stretch;
-		justify-content: space-between;
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
+	.share_main_tx{
+		width: 240upx;
+		height: 240upx;
+		border-radius: 50%;
+		border: 2upx solid #fff;
+		margin: 20upx auto;
 	}
-	.share_tip{
-		width: 480upx;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
+	.share_main_tip{
+		width: 450upx;
+		margin: 10px auto 50upx;
+		font-size: 30upx;
+		color: #fff;
+		text-align: center;
+	}
+	.toupiao_btn{
+		font-size: 30upx;
+		color: #A0380E;
+		width: 647upx;
+		height: 90upx;
+		background: linear-gradient(0deg, #FE611A, #FECA37);
+		border: 4upx solid #fff;
+		box-shadow: 0px 6upx 18upx 0px rgba(157, 0, 0, 0.32);
+		border-radius: 45upx;
+		margin: 10upx auto 40upx;
+	}
+	.toupiao_btn_tip{
+		font-size: 30upx;
+		color: #fff;
+		margin: 10px auto 0;
+		padding-bottom: 20upx;
+	}
+	.toupiao_btn_tip text{
 		font-size: 24upx;
-		color: #333;
-	}
-	.share_main_ewm{
-		/* position: absolute; */
-		width: 143upx;
-		height: 143upx;
-		/* top: 628upx;
-		left: 562upx; */
 	}
 </style>
