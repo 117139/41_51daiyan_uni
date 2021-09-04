@@ -2,6 +2,7 @@
 	<view>
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
 		<view class="container" v-if="htmlReset==0">
+			<official-account class="gzgzh_btn"></official-account>
 			<view class="zanwu_box" v-if="data_list.length==0">
 				<image  :src="getimg('/static_s/51daiyan/images/car_null.png')"></image>
 				<text>购物车空空如也，快去挑好货咯～</text>

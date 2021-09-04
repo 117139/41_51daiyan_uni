@@ -314,12 +314,14 @@
 					}
 				}
 				if(type=='yh'){
-					yh=yh.toFixed(2)
+					console.log(yh)
 					yh=yh*1
+					yh=yh.toFixed(2)
 					return '-￥'+yh+'元'
 				}
 				zj=zj-yh*1+yunfei*1
 				if(zj>0){
+					console.log(zj)
 					zj=zj*1
 					zj=zj.toFixed(2)
 				}

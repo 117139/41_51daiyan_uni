@@ -12,7 +12,7 @@ var imgIP=function(img){
 	  img = imgip+img
 	}
 	// var newimg =imgip+img
-	console.log(img)
+	// console.log(img)
 	return img
 }
 var imgIP_video=function(img){

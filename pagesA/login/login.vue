@@ -2,7 +2,10 @@
 	<view class="container">
 		<image class="login_bg" :src="filter.imgIP('/static_s/51daiyan/images/loginbg.png')"></image>
 		<view class="login_wx">微信用户一键登录
-			<button class='bottom' type='primary' open-type="getUserInfo" 
+			<button  v-if="canIUseGetUserProfile" class='bottom' type='primary' open-type="getUserInfo"
+				lang="zh_CN" @tap="getuserprofile">
+			    授权登录</button>
+			<button v-else class='bottom' type='primary' open-type="getUserInfo" 
 			lang="zh_CN" @getuserinfo="bindGetUserInfo">
 			    授权登录</button>
 		</view>
@@ -22,7 +25,8 @@
 	export default {
 		data() {
 			return {
-				canIUse: uni.canIUse('button.open-type.getUserInfo')
+				canIUse: uni.canIUse('button.open-type.getUserInfo'),
+				canIUseGetUserProfile: false
 			}
 		},
 		computed: {
@@ -30,6 +34,11 @@
 				'hasLogin',
 				'loginMsg'
 			])
+		},
+		onLoad() {
+			if (wx.getUserProfile) {
+			      this.canIUseGetUserProfile= true
+			    }
 		},
 		methods: {
 			...mapMutations(['wxshouquan','login']),
@@ -60,6 +69,19 @@
 			onShareAppMessage: function () {
 			
 			},
+			getuserprofile(e){
+				wx.getUserProfile({
+					desc:'正在获取',//不写不弹提示框
+					success:function(res){
+							uni.setStorageSync('userInfo',res.userInfo)
+							service.wxlogin(1)
+						 console.log('获取成功: ',res)
+					},
+					fail:function(err){
+						 console.log("获取失败: ",err)
+					}
+				})
+			},
 			bindGetUserInfo: function(e) {
 				var that =this
 			  if (e.detail.userInfo) {
@@ -70,9 +92,9 @@
 						title:'正在登录',
 						mask:true
 					})
+			    uni.setStorageSync('userInfo', e.detail.userInfo)
 					service.wxlogin(1)
 					
-			    uni.setStorageSync('userInfo', e.detail.userInfo)
 			    
 			  } else {
 			    //用户按了拒绝按钮

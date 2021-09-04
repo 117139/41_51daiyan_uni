@@ -23,8 +23,8 @@ view.data-v-2cbc6809,text.data-v-2cbc6809,navigator.data-v-2cbc6809{
 	margin-top: 30rpx;
 }
 .zbj_tx.data-v-2cbc6809{
-	width: 130rpx;
-	height: 130rpx;
+	width: 150rpx;
+	height: 150rpx;
 	margin-right: 20rpx;
 	-webkit-box-flex: 0;
 	-webkit-flex: none;
@@ -32,7 +32,7 @@ view.data-v-2cbc6809,text.data-v-2cbc6809,navigator.data-v-2cbc6809{
 	border-radius: 10rpx;
 }
 .zbj_li_msg.data-v-2cbc6809{
-	width: 500rpx;
+	width: 480rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;

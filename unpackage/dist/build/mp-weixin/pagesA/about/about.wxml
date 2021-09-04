@@ -1,0 +1,2 @@
+<wxs src="../../utils/filter.wxs" module="filter"></wxs>
+<view class="data-v-10e1c4c4"><view class="about_box data-v-10e1c4c4"><rich-text nodes="{{aboutBody}}"></rich-text></view></view>

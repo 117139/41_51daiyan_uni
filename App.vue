@@ -25,6 +25,7 @@
 					})
 				}
 			},25000)
+			
 			// service.get_info()
 			// return
 			// #ifdef MP-WEIXIN
@@ -623,5 +624,24 @@
 	    display: -webkit-box;
 	    -webkit-line-clamp: 4;
 	    -webkit-box-orient: vertical;
+	}
+	
+	
+	
+	
+	
+	.gzgzh_btn{
+		width: 100%;
+		/* height: 100upx; */
+		/* position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 999; */
+	}
+	#app{
+		height: 100vh;
+	}
+	.appswiper{
+		height: 100vh;
 	}
 </style>

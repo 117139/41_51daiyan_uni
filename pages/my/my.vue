@@ -1,7 +1,8 @@
 <template>
 	<view>
+		<official-account class="gzgzh_btn"></official-account>
 		<view class="container">
-		
+			
 		  <view class="header_box">
 		    <view class="user_box" v-if="!hasLogin">
 		      <view class="user_tx" data-url="/pagesA/login/login" @tap='jump'>
@@ -43,6 +44,8 @@
 		        <text class="iconfont iconshezhi"></text>
 		      </view>
 		    </view>
+				
+				
 		    <view class="user_money user_money1">
 		      <view class="user_money_tit" data-url="/pagesA/my_tx/my_tx" @tap="jump_money" data-login="true" :data-haslogin="hasLogin">
 		        <view class="v1">
@@ -74,6 +77,8 @@
 		      </view>
 		    </view>
 		  </view>
+			
+			
 		  <view class="my_mian">
 		    <view class="user_money user_money" v-if="hasLogin">
 		      <view class="user_money_tit">
@@ -189,7 +194,10 @@
 		        <text class="iconfont iconnext3"></text>
 		      </view>
 		    </view>
-		  </view>
+		  
+			
+				
+			</view>
 		</view>
 	</view>
 </template>

@@ -56,9 +56,14 @@
 			
 		},
 		onShareTimeline(){
-			return {
-				title:'51代言',
-				query:'pid=' + that.loginMsg.id,
+			if(that.loginMsg){
+				return {
+					title:'我是代言人，邀您领红包！',
+					imageUrl:that.$store.state.loginMsg.avatarurl,
+					query:'pid=' + that.loginMsg.id,
+				}
+			}else{
+				
 			}
 		},
 		methods: {
@@ -153,14 +158,14 @@
 		margin-top: 30upx;
 	}
 	.zbj_tx{
-		width: 130upx;
-		height: 130upx;
+		width: 150upx;
+		height: 150upx;
 		margin-right: 20upx;
 		flex: none;
 		border-radius: 10upx;
 	}
 	.zbj_li_msg{
-		width: 500upx;
+		width: 480upx;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;

@@ -1,69 +1,64 @@
 <template>
 	<view>
-			<swiper :vertical="true" :circular="false" :current="current" :skip-hidden-item-layout="true" @change="changeCurrent" @animationfinish="changeItem">
-			   <swiper-item :item-id="oneItemParam.a_id">
-			       <video title="1111111" id="myVideo0"  @fullscreenchange="fullScreen_fuc" 
-						 :src="filter.imgIP(oneItemParam.video[0])"  :poster="filter.imgIP_video(oneItemParam.video[0])"
+			<swiper :vertical="true" :circular="circular_type" :current="current" :skip-hidden-item-layout="true" @change="changeCurrent" @animationfinish="changeItem">
+			   <swiper-item :item-id="''+item.a_id" v-for="(item,index) in videoList" style="position: relative;">
+			       <video title="1111111" :id="`video_${item.a_id}`"  
+						 :src="filter.imgIP(item.video[0])"  :poster="filter.imgIP_video(item.video[0])"
 						 :custom-cache="true" :controls="false" :loop="true" :show-center-play-btn="false" 
-						 :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
+						 :show-fullscreen-btn="false" @tap="videoPlay"></video>
+						 
+						 
+						 
+						 
 			   </swiper-item>
-			   			
-			   <swiper-item :item-id="twoItemParam.a_id"  v-if="videoList.length>1">
-			       <video title="2222222" id="myVideo1"   @fullscreenchange="fullScreen_fuc" 
-						 :src="filter.imgIP(twoItemParam.video[0])"  :poster="filter.imgIP_video(twoItemParam.video[0])" 
-						 :custom-cache="true" :controls="false" :loop="true" :show-center-play-btn="false" 
-						 :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
-			   </swiper-item>
-			   			
-			   <swiper-item :item-id="threeItemParam.a_id" v-if="videoList.length>2">
-			       <video title="3333333" id="myVideo2"   @fullscreenchange="fullScreen_fuc" 
-						 :src="filter.imgIP(threeItemParam.video[0])" :poster="filter.imgIP_video(threeItemParam.video[0])" 
-						 :custom-cache="true" :controls="false" :loop="true" :show-center-play-btn="false" 
-						 :show-fullscreen-btn="false" @play="eventPlay" @tap="tabVideo"></video>
-			   </swiper-item>
+			   
 			</swiper>
 			<cover-view class="back_btn" :style="style" @tap="back()">
 				<cover-image  :src="filter.imgIP('/static_s/51daiyan/images/back.png')" class="head"></cover-image>
 			</cover-view>
+			
+			
+			
+			
 			<!-- 用户 -->
 			<cover-view :hidden="isFull" class="user flex flex-alignItems">
 			    <cover-view class="user-rf">
 			        <cover-view class="flex flex-alignItems name">
-			            <cover-view class="name-child hide1">{{videoParam.nickname}}</cover-view>
+			            <cover-view class="name-child hide1">{{videoList[current_index].nickname}}</cover-view>
 			            <cover-image :src="filter.imgIP('/static_s/51daiyan/images/dizhi.png')" class="v_address" ></cover-image>
-			            <cover-view class="fz22 ">{{videoParam.a_ship_address}}</cover-view>
+			            <cover-view class="fz22 ">{{videoList[current_index].a_ship_address}}</cover-view>
 			        </cover-view>
 			    </cover-view>
 			</cover-view>
 			
 			<!-- 代言商品 -->
-			<cover-view class="tag" @tap="jump" :data-url="'/pages_goods/details/details?id='+videoParam.g_id">
-			   <cover-image :src="filter.imgIP(videoParam.g_pic[0])" class="v_goods_img" ></cover-image>
+			<cover-view class="tag" @tap="jump" :data-url="'/pages_goods/details/details?id='+videoList[current_index].g_id">
+			   <cover-image :src="filter.imgIP(videoList[current_index].g_pic[0])" class="v_goods_img" ></cover-image>
 			   <cover-view class="goods_msg">
-			      <cover-view class="oh2">{{filter.textOh(videoParam.g_title)}}</cover-view>
-			      <cover-view class="goods_Pri1"><cover-view class="pri1">¥{{videoParam.g_price}}</cover-view><cover-view class="pri2">销量{{videoParam.gd_virtual_sales}}</cover-view></cover-view>
+			      <cover-view class="oh2">{{filter.textOh(videoList[current_index].g_title)}}</cover-view>
+			      <cover-view class="goods_Pri1"><cover-view class="pri1">¥{{videoList[current_index].g_price}}</cover-view><cover-view class="pri2">销量{{videoList[current_index].gd_virtual_sales}}</cover-view></cover-view>
 			   </cover-view>
 			</cover-view>
 			
-			<cover-image :src="filter.imgIP('/static_s/51daiyan/images/bofang.png')" class="play" v-if="playMark==1" @tap="tabVideo"></cover-image>
+			<cover-image :src="filter.imgIP('/static_s/51daiyan/images/bofang.png')" class="play" v-if="playMark==1" @tap="videoPlay"></cover-image>
 			<!-- <view class="fullBtn"  @tap="asdasd">
 			  <cover-image src="{{filter.imgIP('tx.png')}}" class="head"></cover-image>
 			  <cover-view class="sp_gz">+关注</cover-view>
 			</view> -->
 			<view class="fullBtn" >
-			  <cover-image @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+videoParam.user_id" :src="filter.imgIP(videoParam.user_head)" class="head"></cover-image>
-			  <cover-view class="sp_gz" v-if="!videoParam.is_motion" @tap.stop="guanzhuFuc(videoParam.user_id,'affirm')">+关注</cover-view>
+			  <cover-image @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+videoList[current_index].user_id" :src="filter.imgIP(videoList[current_index].user_head)" class="head"></cover-image>
+			  <cover-view class="sp_gz" v-if="!videoList[current_index].is_motion" @tap.stop="guanzhuFuc(videoList[current_index].user_id,'affirm')">+关注</cover-view>
 			</view>
 			<view class="fullBtn fullBtn1"  @tap="videoLike">
-			  <cover-view class="dianzan_cion"  v-if="videoParam.is_praise==2" @tap="guanzhuFuc_dz(4,videoParam.a_id,'affirm')">
+			  <cover-view class="dianzan_cion"  v-if="videoList[current_index].is_praise==2" @tap="guanzhuFuc_dz(4,videoList[current_index].a_id,'affirm')">
 			    <cover-image :src="filter.imgIP('/static_s/51daiyan/images/dianzan.png')" class="dianzan_image"></cover-image>
 			  </cover-view>
-			  <cover-view class="dianzan_cion" v-if="videoParam.is_praise==1" @tap="guanzhuFuc_dz(4,videoParam.a_id,'cancel')">
+			  <cover-view class="dianzan_cion" v-if="videoList[current_index].is_praise==1" @tap="guanzhuFuc_dz(4,videoList[current_index].a_id,'cancel')">
 			    <cover-image :src="filter.imgIP('/static_s/51daiyan/images/dianzan1.png')" class="dianzan_image"></cover-image>
 			  </cover-view>
-			  <cover-view class="dianzan_num">{{videoParam.praise_number}}</cover-view>
+			  <cover-view class="dianzan_num">{{videoList[current_index].praise_number}}</cover-view>
 			</view>
-			<view class="fullBtn fullBtn2"  @tap="jump" :data-url="'/pages_goods/details/details?id='+videoParam.g_id">
+			<view class="fullBtn fullBtn2"  @tap="jump" :data-url="'/pages_goods/details/details?id='+videoList[current_index].g_id">
 			  <cover-image :src="filter.imgIP('/static_s/51daiyan/images/v_goods.png')" class="head"></cover-image>
 			</view>
 	</view>
@@ -76,6 +71,8 @@
 	let videoContext = null; //video实例
 	let time = null
 	var add_kg=''
+	var that
+	// let play = false;
 	import {
 		mapState,
 		mapMutations
@@ -112,7 +109,14 @@
 				
 				fullScreen: false,
 				fullScreenId: 'myVideo0',
-				isFull: false
+				isFull: false,
+				
+				
+				
+				
+				circular_type:false,
+				swiperIndex:0,
+				current_index:0
 			}
 		},
 		computed: {
@@ -123,14 +127,9 @@
 			])
 		},
 		onLoad: function (e) {
+			that=this
 			this.idx=e.idx
-		  // 拿到当前视频的实例
-		  this.videoContext0 = wx.createVideoContext('myVideo0')
-		  // 拿到当前视频的实例
-		  this.videoContext1 = wx.createVideoContext('myVideo1')
-		  // 拿到当前视频的实例
-		  this.videoContext2 = wx.createVideoContext('myVideo2')
-		
+		 
 		  /* 初始化页面视频id 及 视频下标 */
 		  this.videoId= e.idx || 1,
 		  this.getdatalist()
@@ -153,6 +152,9 @@
 			},
 			
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh()
+		},
 		methods: {
 			back(){
 				uni.navigateBack()
@@ -163,7 +165,7 @@
 				var jkurl = '/videoPlay'
 				var datas = {
 					token: that.loginMsg.userToken,
-					ad_id: that.videoParam.a_id
+					ad_id: that.videoList[that.current_index].a_id
 				}
 				
 				// 单个请求
@@ -231,32 +233,20 @@
 							
 							that.videoList= datas
 							
-									
-							let videoIndex = that.videoList.findIndex(v => v.a_id == that.videoId)
-							console.log(that.videoList, '-----------')
-							let current = videoIndex % 3
-									
-							/* 拿到对应视频的数据 */
-							that.getVideoParam(videoIndex)
-									
-							if (current === 0) {
-							  that.oneItemParam= datas[videoIndex]
-							}
-									
-							if (current === 1) {
-							  that.twoItemParam= datas[videoIndex]
-							}
-									
-							if (current === 2) {
-							  that.threeItemParam= datas[videoIndex]
-							}
-									
-							// 匹配对应数据
-							that.tabItem(current, videoIndex)
+							// if(that.videoList.length>3){
+							// 	that.circular_type=true
+							// }else{
+							// 	that.circular_type=false
+							// }		
+							if(that.videoList.length<4){
+								that.circular_type=false
+							}else{
+								that.circular_type=true
+							}	
+							
 							setTimeout(()=>{
-								that.stop()
-								/* 开始播放视频 */
-								that.play(videoIndex)
+								that.playMark = 1;
+								that.videoPlay();
 								
 								add_kg=setTimeout(()=>{
 									//短视频增加播放量
@@ -264,6 +254,13 @@
 								},1500)
 							},500)
 						} else {
+							// let newList = [...that.videoList, ...that.videoList]
+							// that.videoList= newList
+							if(datas.length==0){
+								// that.circular_type=false
+								return
+								
+							}
 							let newList = [...that.videoList, ...datas]
 							that.videoList= newList
 							// that.data_list = that.datas.concat(datas)
@@ -283,37 +280,77 @@
 			},
 			changeCurrent(e) {
 			  console.log(e.detail.current)
-			  if (e.detail.current == 0) {
-			    this.fullScreenId= 'myVideo0'
-			  } else if (e.detail.current == 1) {
-			    this.fullScreenId= 'myVideo1'
-			  } else if (e.detail.current == 2) {
-			    this.fullScreenId= 'myVideo2'
-			  }
-			  // 当前视频的数据列表
-			  let videoList = this.videoList
-			
-			  // 当前视图视频id
-			  let id = e.detail.currentItemId
-			
-			  /* 根据当前视图视频id拿到对应的视频列表下标 */
-			  let videoIndex = videoList.findIndex(v => v.a_id == id)
-			  console.log('104:--------'+videoIndex)
-			  /* 滑动到倒数第二个视频 加载视频列表 */
-			  if (videoIndex == (videoList.length - 2)) {
+				
+				let source = e.detail.source
+				if(source!='touch'){
+									
+					 return
+				}
+				// 暂停之前的视频
+				this.videoPause();
+				
+				this.current_index = e.detail.current;
+				console.log(e.detail.current);
+				// 播放现在的视频
+				this.videoPlay();
+				
+				// 判断是否第一条
+				if( e.detail.current == 0 ){
+					console.log('到顶了');
+					return false;
+				}
+				// 当前视频的数据列表
+				let videoList = this.videoList
+				/* 滑动到倒数第二个视频 加载视频列表 */
+				if (e.detail.current == (videoList.length - 2)) {
 					// if(videoList.length>9){
 						this.getdatalist()
-					// }
-					
-					
-			    // let newList = [...this.videoList, ...list2]
-			    // this.videoList= newList
-			  }
+				
+				}
+				// 判断是否最后一条
+				if( e.detail.current == videoList.length-1 ){
+					console.log('到底了');
+					return false;
+				}
+			 
+			  
+			
+			
+			},
+			videoPlay() {
+				// 当前视频的数据列表
+				let videoList = this.videoList
+				let video_id = videoList[this.current_index].a_id;
+				
+				if (that.playMark == 1) {
+					console.log('播放视频',`video_${video_id}`);
+					this.videoCtx = uni.createVideoContext(`video_${video_id}`, this);
+					this.videoCtx.play();
+					this.show_play = false;
+					that.playMark = 2;
+				} else {
+					console.log('暂停视频',`video_${video_id}`);
+					this.videoCtx = uni.createVideoContext(`video_${video_id}`, this);
+					this.videoCtx.pause();
+					this.show_play = true;
+					that.playMark = 1;
+				}
+			},
+			videoPause() {
+				// 当前视频的数据列表
+				let videoList = this.videoList
+				let video_id = videoList[this.current_index].a_id;
+				this.videoCtx = uni.createVideoContext(`video_${video_id}`, this);
+				console.log('暂停视频',`video_${video_id}`);
+				this.videoCtx.pause();
+				this.show_play = true;
+				that.playMark = 1;
 			},
 			/**
 			 *  current 变化时 修改视频容器对应的数据
 			 */
 			changeItem(e) {
+				return
 				var that =this
 			  // 当前item的位置
 			  let current = this.current
@@ -332,6 +369,22 @@
 			
 			  /* 根据当前视图视频id拿到对应的视频列表下标 */
 			  let videoIndex = videoList.findIndex(v => v.a_id == id)
+				that.swiperIndex=swiperIndex
+				setTimeout(()=>{
+					clearInterval(add_kg)
+					/* 销毁视频实例 */
+					that.stop()
+								
+					/* 开始播放视频 */
+					that.play(swiperIndex)
+					
+					add_kg=setTimeout(()=>{
+						//短视频增加播放量
+						that.addlookNum()
+					},1500)
+				},500)
+				return
+				
 			
 			  /* 拿到对应视频的数据 */
 			  this.getVideoParam(videoIndex)
@@ -423,22 +476,10 @@
 			  this.videoContext1 && this.videoContext1.pause()
 			  this.videoContext2 && this.videoContext2.pause()
 			},
-			// 开始播放 
-			eventPlay(e) {
-			  this.playMark= 2
-			},
+			
 			// 点击视频
 			tabVideo(e) {
-			  // return;
-			  let swiperIndex = this.current
-			  let playMark = this.playMark
-			  if (playMark == 2) {
-			    this.stop()
-			    this.playMark= 1
-			  } else {
-			    this.play(swiperIndex)
-			    this.playMark= 2
-			  }
+			 this.videoPlay();
 			},
 			// 点赞
 			guanzhuFuc_dz(type, id, key) {
@@ -892,7 +933,7 @@ swiper video {
   align-items: center;
   justify-content: center; */
   font-size: 22rpx;
-  line-height: 22rpx;
+  line-height: 24rpx;
   padding: 6rpx 12rpx;
   position: relative;
   top: -10rpx;

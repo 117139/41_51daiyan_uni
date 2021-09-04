@@ -4,48 +4,86 @@
 			<view class="top_box">
 				<view class="top_search_box">
 					<view class="top_search">
-						<text class="iconfont iconsousuo"></text>
-						<input type="text" placeholder="搜索人名代言号/商品/品牌" v-model="daiyan_ss" @input="daiyan_sousuo" confirm-type='搜索'
-						 @confirm="onRetry" />
+						<!-- <text class="iconfont iconsousuo"></text> -->
+						<view @tap="xz_pop=true" class="dis_flex t_search_s aic">{{ss_cur=='user'?'用户':ss_cur=='goods'?'商品':ss_cur=='brand'?'品牌':''}} <text class="iconfont iconXSJ"></text></view>
+						<!-- <input type="text" placeholder="搜索人名代言号/商品/品牌" v-model="daiyan_ss" @input="daiyan_sousuo"
+							confirm-type='搜索' @confirm="onRetry" /> -->
+						<input type="text" placeholder="搜索人名代言号/商品" v-model="daiyan_ss" @input="daiyan_sousuo"
+							confirm-type='搜索' @confirm="onRetry" />
 						<text class="iconfont iconguanbi" @tap="daiyan_ss=''"></text>
 					</view>
-					<view class="top_search_cancel"  @tap="daiyan_ss=''">取消</view>
+					<view class="top_search_cancel" @tap="daiyan_ss=''">取消</view>
 				</view>
-				<view class="search_type">
+				<view class="xz_zzc" v-if="xz_pop==true"  @tap="xz_pop=false" @touchmove.stop.prevent="xz_pop=false">
+					<view class="search_xz" @tap.stop="test_fuc">
+						<view @tap.stop="ss_type" data-type="user">用户</view>
+						<view @tap.stop="ss_type" data-type="goods">商品</view>
+						<!-- <view @tap.stop="ss_type" data-type="brand">品牌</view> -->
+					</view>
+				</view>
+				<!-- <view class="xz_zzc" v-if="xz_pop1==true" @tap="xz_pop1=false" @touchmove.stop.prevent="xz_pop1=false">
+					<view class="ss_history_tit">历史记录</view>
+				</view> -->
+				<!-- <view class="search_type">
 					<view :class="ss_cur=='user'?'cur':''" @tap="ss_type" data-type="user">用户</view>
 					<view :class="ss_cur=='goods'?'cur':''" @tap="ss_type" data-type="goods">商品</view>
 					<view :class="ss_cur=='brand'?'cur':''" @tap="ss_type" data-type="brand">品牌</view>
-				</view>
+				</view> -->
 			</view>
 
 			<view class="ss_list">
+				<view v-if="data_list.length==0">
+					<view class="ss_history_tit dis_flex aic ju_b">
+						<text>历史记录</text>
+						<text @tap="clearKey" class="iconfont iconshanchushu"></text>
+					</view>
+					<view class="ss_history_list">
+						<view class="ss_history_li" v-for="(item,index) in searchKey" :key='index' @click="ls_search(item)">
+						{{item}}
+						</view>
+					</view>
+					<view class="ss_history_tit dis_flex aic ju_b">
+						<text>热门商品</text>
+						<text></text>
+					</view>
+					<view class="ss_history_list">
+						<view class="ss_history_li" v-for="(item,index) in ss_goods" :key='index' @tap="jump"
+						:data-url="'/pages_goods/details/details?id='+item.id">
+						{{item.title}}
+						</view>
+					</view>
+				</view>
 				<view class="data_null" v-if="data_list.length==0">
 					<image :src="filter.imgIP('/static_s/51daiyan/images/data_null.png')"></image>
 				</view>
 				<block v-if="data_list.length>0" v-for="(item,id) in data_list">
 					<!-- 用户 -->
-					<view v-if="ss_cur=='user'" class="li_box" >
+					<view v-if="ss_cur=='user'" class="li_box">
 						<view class="user_tx">
-							<image class="user_tx" :lazy-load='true' :src="filter.imgIP(item.head_portrait)" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.id"></image>
+							<image class="user_tx" :lazy-load='true' :src="filter.imgIP(item.head_portrait)" @tap="jump"
+								:data-url="'/pagesA/my_index/my_index?id='+item.id"></image>
 							<!-- mingxing -->
 							<view v-if="item.identity_id==1" class="star_v star_v1">
-								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
+								<image :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 							</view>
 							<!-- daren -->
 							<view v-if="item.identity_id==2" class="star_v star_v1">
-								<image  :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
+								<image :src="filter.imgIP('/static_s/51daiyan/images/star_dbg.png')"></image>
 								<text class="iconv iconfont"></text>
 								<text class="user_v_lv">{{item.user_grade_num?item.user_grade_num:0}}</text>
 							</view>
 							<!-- <image v-if="item.identity_id==1" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_b.png')"></image>
 							<image v-if="item.identity_id==2" class="user_v" :src="filter.imgIP('/static_s/51daiyan/images/star_d.png')"></image> -->
 						</view>
-						<view class="user_name oh1" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.id">{{item.nickname}}</view>
-						<view  v-if="!item.is_follow" class="user_btn"  @tap.stop="guanzhuFuc(2,item.id,'affirm')">+关注</view>
-						<view  v-else class="user_btn user_btn1" @tap.stop="guanzhuFuc(2,item.id,'cancel')">已关注</view>
+						<view class="user_name oh1" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+item.id">
+							{{item.nickname}}</view>
+						<view v-if="!item.is_follow" class="user_btn" @tap.stop="guanzhuFuc(2,item.id,'affirm')">+关注
+						</view>
+						<view v-else class="user_btn user_btn1" @tap.stop="guanzhuFuc(2,item.id,'cancel')">已关注</view>
 					</view>
 					<!-- 商品 -->
-					<view v-if="ss_cur=='goods'" class="li_box goods_li" @tap="jump" :data-url="'/pages_goods/details/details?id='+item.id">
+					<view v-if="ss_cur=='goods'" class="li_box goods_li" @tap="jump"
+						:data-url="'/pages_goods/details/details?id='+item.id">
 						<view class="ss_goods_img">
 							<image class="ss_goods_img" :lazy-load='true' :src="filter.imgIP(item.g_pic[0])"></image>
 						</view>
@@ -59,12 +97,12 @@
 								<view class="goods_zan">
 									<text class="iconfont icondianzan2"></text> {{item.advocacy_mannumber}} 代言人
 								</view>
-								<view class="find_sj" >
+								<view class="find_sj">
 									<view class="sj_list">
-										<image  @tap.stop="jump"
-											:data-url="'/pages_goods/daiyanren/daiyanren?id='+item.id" 
-											v-for="(item1,idx1) in item.adv_user" class="sj_li" :src="filter.imgIP(item1.head_portrait)"
-											 mode="aspectFill"></image>
+										<image @tap.stop="jump"
+											:data-url="'/pages_goods/daiyanren/daiyanren?id='+item.id"
+											v-for="(item1,idx1) in item.adv_user" class="sj_li"
+											:src="filter.imgIP(item1.head_portrait)" mode="aspectFill"></image>
 									</view>
 									<text class="iconfont iconnext3"></text>
 								</view>
@@ -73,13 +111,17 @@
 					</view>
 
 					<!-- 品牌 -->
-					<view v-if="ss_cur=='brand'" class="li_box" >
-						<view class="user_tx" @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+item.group_code">
+					<view v-if="ss_cur=='brand'" class="li_box">
+						<view class="user_tx" @tap="jump"
+							:data-url="'/pages_goods/dp_index/dp_index?id='+item.group_code">
 							<image class="user_tx" :lazy-load='true' :src="filter.imgIP(item.head_portrait)"></image>
 						</view>
-						<view class="user_name oh1" @tap="jump" :data-url="'/pages_goods/dp_index/dp_index?id='+item.group_code">{{item.store_name}}</view>
-						<view v-if="!item.is_follow" class="user_btn" @tap.stop="guanzhuFuc(1,item.group_code,'affirm')">+关注</view>
-						<view v-else class="user_btn user_btn1" @tap.stop="guanzhuFuc(1,item.group_code,'cancel')">已关注</view>
+						<view class="user_name oh1" @tap="jump"
+							:data-url="'/pages_goods/dp_index/dp_index?id='+item.group_code">{{item.store_name}}</view>
+						<view v-if="!item.is_follow" class="user_btn"
+							@tap.stop="guanzhuFuc(1,item.group_code,'affirm')">+关注</view>
+						<view v-else class="user_btn user_btn1" @tap.stop="guanzhuFuc(1,item.group_code,'cancel')">已关注
+						</view>
 					</view>
 				</block>
 			</view>
@@ -96,39 +138,53 @@
 		mapMutations
 	} from 'vuex'
 	var inputt
+	var that
 	export default {
 		data() {
 			return {
-				btn_kg:0,
+				btn_kg: 0,
 				type: '',
 				ss_cur: 'user',
 				daiyan_ss: '',
 				data_list: [],
-				page:1,
-				size:20,
+				page: 1,
+				size: 20,
+				xz_pop:false,
+				
+				
+				
+				searchKey:[],
+				ss_goods:[]
 			}
 		},
-		computed:{
+		computed: {
 			...mapState([
 				'hasLogin',
 				'loginMsg',
 				'wxlogin',
 				// 'order_ls_data'
 			]),
-			
+
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
-			var that = this
+			that = this
 			that.type = options.type
 			if (options.name) {
 				wx.setNavigationBarTitle({
 					title: options.name,
 				})
 			}
-			this.onRetry()
+			var vv = uni.getStorageSync('searchLocal')||[];
+			// console.log(vv)
+			if(vv.length>0){
+				var arr = vv.split("-");
+				this.searchKey = arr;
+			}
+			that.getss_goods()
+			// this.onRetry()
 		},
 
 		/**
@@ -170,7 +226,9 @@
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function() {
-			this.getdatalist()
+			if(that.data_list.length>0){
+				this.getdatalist()
+			}
 		},
 
 		/**
@@ -180,14 +238,72 @@
 
 		},
 		methods: {
+			test_fuc(){
+				
+			},
+			ls_search(item){
+				that.daiyan_ss=item
+				that.onRetry()
+			},
+			clearKey: function() {
+				var that = this;
+				uni.showModal({
+					title: '提示',
+					content: '点击确定将删除所有历史信息，确定删除吗？',
+					success: function(res) {
+						if (res.confirm) {
+							that.searchKey = [];
+							// uni.setStorage({
+							// 	key: 'searchLocal',
+							// 	data: that.searchKey
+							// });
+							uni.removeStorageSync('searchLocal')
+						} else if (res.cancel) {
+			
+						}
+					}
+				});
+			
+			},
 			onRetry() {
 				this.page = 1
-				this.data_list=[]
+				this.data_list = []
 				this.getdatalist()
+				this.getss_goods()
+			},
+			
+			getss_goods() {
+				let that = this
+				console.log(that.btn_kg)
+				
+				var datas = {}
+				service.P_get('/getRecommendGoods', datas).then(res => {
+					console.log(res)
+			
+					if (res.code == 1) {
+						that.ss_goods = res.data
+						
+					}
+				}).catch(e => {
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
 			},
 			getdatalist() {
 				let that = this
 				console.log(that.btn_kg)
+				if(that.ss_cur=='user'){
+					if(!that.daiyan_s){
+						uni.showToast({
+							icon:'none',
+							title:'请先输入搜索内容'
+						})
+						return
+					}
+				}
 				if (that.btn_kg == 1) {
 					return
 				} else {
@@ -245,14 +361,33 @@
 					var kw = that.daiyan_ss
 					console.log(kw.length)
 					if (kw.length > 0) {
-
+						var newArr = that.searchKey;
+						 var repeat= false;
+						for(var j=0;j<newArr.length;j++){
+						       
+						      if(newArr[j]==kw){
+						          repeat=true;
+						          
+						      }
+						}
+						if(!repeat){
+							 newArr.push(kw);
+							 that.searchKey = newArr;
+							 var newStr = newArr.join('-');
+							 uni.setStorage({
+							 	key: 'searchLocal',
+							 	data: newStr
+							 });
+						}
+						console.log('that.searchKey--------->')
+						console.log(that.searchKey)
 						that.onRetry()
 
 					} else {
 						that.onRetry()
 						// that.qy_show = that.qy_arr3
 					}
-				}, 1000)
+				}, 800)
 			},
 			ss_type(e) {
 
@@ -260,67 +395,72 @@
 				if (that.ss_cur == e.currentTarget.dataset.type) return
 				console.log(e.currentTarget.dataset.type)
 				that.ss_cur = e.currentTarget.dataset.type
-				that.onRetry()
-			},
-			guanzhuFuc(type,id,key){
-				var that =this
-				var data={
-					token:that.loginMsg.userToken,
-					type:type,
-					id:id,
-					operate:key,
+				that.xz_pop=false
+				if(that.ss_cur=='goods'){
+					that.onRetry()
+				}else{
+					that.data_list=[]
 				}
-				if(key=='affirm'){
-					if(that.btn_kg==1){
+			},
+			guanzhuFuc(type, id, key) {
+				var that = this
+				var data = {
+					token: that.loginMsg.userToken,
+					type: type,
+					id: id,
+					operate: key,
+				}
+				if (key == 'affirm') {
+					if (that.btn_kg == 1) {
 						return
-					}else{
-						that.btn_kg=1
+					} else {
+						that.btn_kg = 1
 					}
-					service.P_post('/attention/operation',data).then(res => {
-					  console.log(res)
-						that.btn_kg=0
-						if(res.code==-1){
+					service.P_post('/attention/operation', data).then(res => {
+						console.log(res)
+						that.btn_kg = 0
+						if (res.code == -1) {
 							uni.navigateTo({
-								url:'/pagesA/login/login'
+								url: '/pagesA/login/login'
 							})
 							return
-						}else if(res.code==0&&res.msg=='请先登录账号~'){
+						} else if (res.code == 0 && res.msg == '请先登录账号~') {
 							uni.navigateTo({
-								url:'/pagesA/login/login'
+								url: '/pagesA/login/login'
 							})
 							return
-						}else if(res.code==1){
+						} else if (res.code == 1) {
 							// that.onRetry()
-							
-							for(var i=0; i<that.data_list.length;i++){
+
+							for (var i = 0; i < that.data_list.length; i++) {
 								console.log(i)
 								var li_id
-								if(type==1){
-									li_id=that.data_list[i].group_code
+								if (type == 1) {
+									li_id = that.data_list[i].group_code
 								}
-								if(type==2){
-									li_id=that.data_list[i].id
+								if (type == 2) {
+									li_id = that.data_list[i].id
 								}
-								if(li_id==id){
-									
+								if (li_id == id) {
+
 									// that.data_list[i].is_friend=2
 									// that.$set(that.data_list,i,that.data_list[i])
-									that.$set(that.data_list[i],'is_follow',1)
+									that.$set(that.data_list[i], 'is_follow', 1)
 								}
 							}
 							uni.showToast({
-								icon:'none',
-								title:'操作成功'
+								icon: 'none',
+								title: '操作成功'
 							})
-						}else{
-							
+						} else {
+
 						}
 					}).catch(e => {
-						that.btn_kg=0
-					  console.log(e)
+						that.btn_kg = 0
+						console.log(e)
 						uni.showToast({
-							icon:'none',
-							title:'操作失败'
+							icon: 'none',
+							title: '操作失败'
 						})
 					})
 					return
@@ -328,53 +468,53 @@
 				wx.showModal({
 					title: '提示',
 					content: '是否取消关注?',
-					success (res) {
+					success(res) {
 						if (res.confirm) {
 							console.log('用户点击确定')
-							service.P_post('/attention/operation',data).then(res => {
-							  console.log(res)
-								that.btn_kg=0
-								if(res.code==-1){
+							service.P_post('/attention/operation', data).then(res => {
+								console.log(res)
+								that.btn_kg = 0
+								if (res.code == -1) {
 									uni.navigateTo({
-										url:'/pagesA/login/login'
+										url: '/pagesA/login/login'
 									})
 									return
-								}else if(res.code==0&&res.msg=='请先登录账号~'){
+								} else if (res.code == 0 && res.msg == '请先登录账号~') {
 									uni.navigateTo({
-										url:'/pagesA/login/login'
+										url: '/pagesA/login/login'
 									})
 									return
-								}else if(res.code==1){
+								} else if (res.code == 1) {
 									// that.onRetry()
-									
-									for(var i=0; i<that.data_list.length;i++){
-										var li_id=''
-										if(type==1){
-											li_id=that.data_list[i].group_code
+
+									for (var i = 0; i < that.data_list.length; i++) {
+										var li_id = ''
+										if (type == 1) {
+											li_id = that.data_list[i].group_code
 										}
-										if(type==2){
-											li_id=that.data_list[i].id
+										if (type == 2) {
+											li_id = that.data_list[i].id
 										}
 										console.log(i)
-										if(li_id==id){
+										if (li_id == id) {
 											// that.data_list[i].is_friend=1
 											// that.$set(that.data_list,i,that.data_list[i])
-											that.$set(that.data_list[i],'is_follow','')
+											that.$set(that.data_list[i], 'is_follow', '')
 										}
 									}
 									uni.showToast({
-										icon:'none',
-										title:'操作成功'
+										icon: 'none',
+										title: '操作成功'
 									})
-								}else{
-									
+								} else {
+
 								}
 							}).catch(e => {
-								that.btn_kg=0
-							  console.log(e)
+								that.btn_kg = 0
+								console.log(e)
 								uni.showToast({
-									icon:'none',
-									title:'操作失败'
+									icon: 'none',
+									title: '操作失败'
 								})
 							})
 						} else if (res.cancel) {
@@ -382,12 +522,12 @@
 						}
 					}
 				})
-				
-				
-				
-				
+
+
+
+
 			},
-			
+
 			jump(e) {
 				console.log(e.currentTarget.dataset.type)
 				service.jump(e)
@@ -400,9 +540,10 @@
 	.container {
 		width: 100%;
 		min-height: 100%;
-		padding-top: 140rpx;
+		/* padding-top: 140rpx; */
+		padding-top: 80rpx;
 		/* #ifdef H5 */
-		
+
 		/* padding-top: calc(140rpx + calc(44px + env(safe-area-inset-top))); */
 		/* #endif */
 		background: #fff;
@@ -412,7 +553,7 @@
 		position: fixed;
 		top: 0;
 		/* #ifdef H5 */
-		
+
 		top: calc(44px + env(safe-area-inset-top));
 		/* #endif */
 		left: 0;
@@ -426,7 +567,7 @@
 		display: flex;
 		align-items: center;
 		width: 100%;
-		padding: 0 28rpx;
+		padding: 0 28rpx 10upx;
 		box-sizing: border-box;
 	}
 
@@ -668,5 +809,64 @@
 
 	.ss_list1 {
 		padding: 0 48rpx;
+	}
+	.t_search_s{
+		font-size: 24upx;
+		padding: 0 10upx;
+		border-right: 1px solid #DEDEDE;
+	}
+	.t_search_s text{
+		font-size: 12upx;
+	}
+	.xz_zzc{
+		position: fixed;
+		top: 55upx;
+		/* #ifdef H5 */
+		top: 140upx;
+		/* #endif */
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 900;
+		background: rgba(255,255,255,1);
+		padding: 30upx;
+	}
+	.search_xz{
+		position: fixed;
+		top: 55upx;
+		/* #ifdef H5 */
+		top: 140upx;
+		/* #endif */
+		left: 30upx;
+		
+		padding: 20upx 50upx;
+		background: #fff;
+		box-shadow: 0px 1px 10px 0px rgb(119,119,119,.3);
+	}
+	.search_xz view{
+		font-size: 26upx;
+		line-height: 50upx;
+	}
+	.ss_history_tit{
+		font-size: 30upx;
+		color: #333;
+		margin-bottom: 10upx;
+	}
+	.ss_history_tit text{
+		font-size: 30upx;
+	}
+	.ss_history_list{
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		padding: 10upx 0 20upx;
+	}
+	.ss_history_li{
+		padding: 2px 8px;
+		background: #F7F7F7;
+		border-radius: 2rpx;
+		font-size: 24rpx;
+		margin: 10upx;
+		margin-bottom: 10upx;
 	}
 </style>

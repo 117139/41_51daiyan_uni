@@ -344,6 +344,7 @@
 					"path": "xvideo/xvideo",
 					"style": {
 						"disableScroll": true,
+						"enablePullDownRefresh": false,
 						"navigationBarTextStyle": "white",
 						"navigationStyle": "custom"
 					}

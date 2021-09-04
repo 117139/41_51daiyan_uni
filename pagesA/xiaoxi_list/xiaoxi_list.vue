@@ -5,7 +5,10 @@
 			<view class="zanwu" v-if="datas.length==0">暂无内容</view>
 			<view class="xx_li" v-for="(item,idx) in datas">
 				<view class="user_tx">
-					<image v-if="item.send_type!=1" class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/xtxx.png')"></image>
+					<block  v-if="item.send_type!=1">
+						<image v-if="item.operation_id>0" class="user_tx" :src="filter.imgIP(item.operation_head_portrait)" @tap="jump"  :data-url="'/pagesA/my_index/my_index?id='+item.operation_id"></image>
+						<image v-else class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/xtxx.png')"></image>
+					</block>
 					<image v-else class="user_tx" :src="filter.imgIP(item.head_portrait)"  @tap="xz_fuc(item)"></image>
 				</view>
 				<view class="xx_msg">
@@ -14,6 +17,9 @@
 						{{item.msg}}
 					</view>
 					<view v-else-if="item.send_type==3" class="to_msg oh2"  @tap="jump" :data-url="'/pages_goods/activity/activity?id='+item.send_type_obj_id">
+						{{item.msg}}
+					</view>
+					<view v-else-if="item.send_type==4" class="to_msg oh2">
 						{{item.msg}}
 					</view>
 					<view v-else class="to_msg oh2" @tap="xz_fuc(item)">
@@ -118,11 +124,11 @@
 		 */
 		onLoad: function(options) {
 			this.type = options.type
-			if (options.type == 1) {
-				this.msg = '您代言钱包进账3元，余额变为¥235。'
-			} else {
-				this.msg = '您参与的【华为优选代言人活动】即将开始，敬请关注。'
-			}
+			// if (options.type == 1) {
+			// 	this.msg = '您代言钱包进账3元，余额变为¥235。'
+			// } else {
+			// 	this.msg = '您参与的【华为优选代言人活动】即将开始，敬请关注。'
+			// }
 			this.getdatalist()
 		},
 		/**
@@ -142,7 +148,7 @@
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function() {
-			// this.getdatalist()
+			this.getdatalist()
 		},
 
 		/**

@@ -4,8 +4,11 @@
 			<view class="tixian_box">
 				<image  class="tixian_box" :src="filter.imgIP('/static_s/51daiyan/images/tx_bg_02.jpg')"></image>
 				<view class="money_yue">
-					<view class="d1">¥<text>{{my_d}}</text></view>
-					<view class="d2">代言豆</view>
+					<view class="d1"><text>{{my_d}}</text>个</view>
+					<view class="d2 dis_flex aic ju_b">
+						<text>代言豆</text>
+						<text>100个代言豆=1元人民币</text>
+					</view>
 				</view>
 			</view>
 			<!-- 提现金额 -->
@@ -203,6 +206,7 @@
 	left: 28rpx;
 	color: #fff;
 	font-size: 30rpx;
+	right: 28upx;
 }
 
 .money_yue text{
@@ -210,6 +214,12 @@
 }
 .money_yue .d1{
 	margin-bottom: 20rpx;
+}
+.money_yue .d2{
+	width: 100%;
+}
+.money_yue .d2 text{
+	font-size: 30upx;
 }
 .tx_mon_box{
 	width: 100%;

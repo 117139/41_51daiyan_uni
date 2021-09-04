@@ -1,0 +1,2 @@
+<wxs src="../../utils/filter.wxs" module="filter"></wxs>
+<view class="data-v-a3a059a8"><view class="container data-v-a3a059a8"><image class="h_bg data-v-a3a059a8" src="{{filter.imgIP('/static_s/51daiyan/images/game_jsbg_02.jpg')}}"></image><view class="js_box data-v-a3a059a8"><image class="js_tit data-v-a3a059a8" src="{{filter.imgIP('/static_s/51daiyan/images/game_js6.png')}}"></image><scroll-view class="js_msg data-v-a3a059a8" scroll-y="{{true}}"><view class="data-v-a3a059a8"><rich-text nodes="{{xy_datas[0].content}}"></rich-text></view></scroll-view></view></view></view>

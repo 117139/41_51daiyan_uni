@@ -115,7 +115,7 @@
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom: function () {
-			this.onRetry()
+			this.getdatalist()
 		},
 		methods: {
 			onRetry(){
@@ -273,6 +273,8 @@
 	right: 0;
 	border-bottom: 1px solid #eee;
 	background: #fff;
+	
+	z-index: 900;
 }
 .top_search_box{
 	display: flex;

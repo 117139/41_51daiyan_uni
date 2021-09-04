@@ -9,6 +9,15 @@
 					<view><image class="c_bl" :src="filter.imgIP('/static_s/51daiyan/images/images/lj_bl_05.jpg')"></image>1分钟了解51代言</view>
 					<text class="iconfont iconnext3"></text>
 				</view>
+				<!-- <view class="top_search_box">
+					<view class="top_search">
+						<text class="iconfont iconsousuo"></text>
+						<input type="text" placeholder="搜索商品" v-model="daiyan_ss" @input="daiyan_sousuo"
+							confirm-type='搜索' @confirm="onRetry" />
+						<text class="iconfont iconguanbi" @tap="daiyan_ss=''"></text>
+					</view>
+					<view class="top_search_cancel" @tap="daiyan_ss=''">取消</view>
+				</view> -->
 				<!-- <view class="yhq_box">
 					<view class="yhp_tit">
 						<view class="yhq_t_l">共享优惠券</view>
@@ -115,6 +124,9 @@
 				datas:'',
 				data_list:[],
 				data_last:false,
+				
+				
+				daiyan_ss:''
 			}
 		},
 		computed: {
@@ -182,9 +194,14 @@
 	
 		},
 		onShareTimeline(){
-			return {
-				title:'51代言',
-				query:'pid=' + that.loginMsg.id,
+			if(that.loginMsg){
+				return {
+					title:'我是代言人，邀您领红包！',
+					imageUrl:that.$store.state.loginMsg.avatarurl,
+					query:'pid=' + that.loginMsg.id,
+				}
+			}else{
+				
 			}
 		},
 		methods: {
@@ -292,7 +309,26 @@
 				console.log(e.currentTarget.dataset.type)
 				that.s_type=e.currentTarget.dataset.type
 				that.onRetry()
-			}
+			},
+			
+			daiyan_sousuo(e) {
+				var that = this
+				console.log(e.detail.value)
+				// this.daiyan_ss=e.detail.value
+				clearInterval(inputt)
+				inputt = setTimeout(function() {
+					var kw = that.daiyan_ss
+					console.log(kw.length)
+					if (kw.length > 0) {
+						
+						that.onRetry()
+			
+					} else {
+						that.onRetry()
+						// that.qy_show = that.qy_arr3
+					}
+				}, 800)
+			},
 		}
 	}
 </script>
@@ -535,4 +571,86 @@
 	font-size: 22rpx;
 	color: #fff;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.top_search_box {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		padding:  10upx 28rpx;
+		box-sizing: border-box;
+		background: #fff;
+	}
+
+	.top_search {
+		flex: 1;
+		width: 608rpx;
+		height: 55rpx;
+		background: rgba(245, 245, 245, 1);
+		border-radius: 28rpx;
+		display: flex;
+		align-items: center;
+		padding: 0 20rpx;
+		box-sizing: border-box;
+		/* margin-bottom: 13rpx; */
+	}
+
+	.top_search text {
+		color: #BBBBBB;
+	}
+
+	.top_search input {
+		flex: 1;
+		font-size: 24rpx;
+		padding: 0 15rpx;
+		box-sizing: border-box;
+	}
+
+	.top_search_cancel {
+
+
+		margin-left: 28rpx;
+		font-size: 30rpx;
+	}
+
+	.search_type {
+		padding: 10rpx 28rpx 0;
+		box-sizing: border-box;
+		height: 58rpx;
+		display: flex;
+		align-items: center;
+	}
+
+	.search_type view {
+		height: 58rpx;
+		line-height: 58rpx;
+		border-bottom: 2px solid rgba(0, 0, 0, 0);
+		font-size: 30rpx;
+		color: #999;
+		margin-right: 100rpx;
+	}
+
+	.search_type .cur {
+		color: #333;
+		font-weight: bold;
+		border-bottom: 2px solid #F9B234;
+	}
 </style>

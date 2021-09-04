@@ -12,6 +12,8 @@
 	right: 0;
 	border-bottom: 1px solid #eee;
 	background: #fff;
+	
+	z-index: 900;
 }
 .top_search_box.data-v-3726e76a{
 	display: -webkit-box;

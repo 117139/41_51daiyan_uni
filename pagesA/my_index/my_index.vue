@@ -5,8 +5,10 @@
 		<view v-if="htmlReset==0&&!datas" class="loading_def">
 			<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
 		</view>
+		
 		<view v-if="datas" class="container">
 			<image class="h_bg" :src="filter.imgIP('/static_s/51daiyan/images/images/my_indexbg_02.jpg')"></image>
+			
 			<view class="h_main">
 				<view class="my_index_box1">
 					<view class="my_index">
@@ -28,12 +30,14 @@
 							<view class="user_name">
 								<text>{{datas.remark?datas.remark:datas.nickname}}</text> 
 								<text v-if="loginMsg.id!=datas.id&&datas.is_attention==2" @tap="jump" :data-url="'/pagesA/my_setBeizhu/my_setBeizhu?id='+datas.id+'&name='+datas.remark" class="iconfont iconbeizhu" style="margin-left: 10upx;"></text>
+								
 							</view>
 							<view class="daiyan_lv"><text class="iconfont iconxingzhuang60kaobei2"></text>代言星级 {{datas.advocacy_grade_value}}</view>
 						</view>
 						<view v-if="loginMsg.id!=datas.id&&datas.is_friend==2" class="gz_btn gz_btn1" @tap="toroom(datas.identification_id)" :data-url="'/pages/tim/room?id='+datas.id">私信</view>
 						<view v-if="loginMsg.id!=datas.id&&datas.is_attention==2" class="gz_btn" @tap="guanzhuFuc(datas.id,'cancel')">已关注</view>
 						<view v-if="loginMsg.id!=datas.id&&datas.is_attention==1" class="gz_btn" @tap="guanzhuFuc(datas.id,'affirm')">+关注</view>
+						<image class="my_ewm" v-if="loginMsg.id==datas.id" :src="filter.imgIP('/static_s/51daiyan/images/pro2/my_grewm.png')" mode="aspectFit" @tap="cook_ewm(loginMsg.personal_code)"></image>
 					</view>
 					<view class="dy_id">
 						<text v-if="datas.remark">昵称：{{datas.nickname}}</text>
@@ -41,7 +45,7 @@
 						<text>粉丝：{{datas.fans_number}}</text>
 					</view>
 					<view class="dy_id">
-						<text class="oh1">简介：{{datas.introduction}}</text>
+						<text class="oh1">简介：{{datas.introduction?datas.introduction:''}}</text>
 					</view>
 					<view class="dy_bq">
 						<view>
@@ -228,7 +232,8 @@
 				page: 1,
 				size: 20,
 				gz_type: false,
-				show_num:0
+				show_num:0,
+				gz_id:''
 			}
 		},
 		computed: {
@@ -249,6 +254,15 @@
 			if(options.id){
 				this.uid = options.id
 			}
+			if(options.pid){
+				this.pid = options.pid
+				console.log('静默关注--------------------------------------》')
+				if(that.loginMsg.id==options.id){
+					return
+				}
+				that.gz_id=options.id
+				// that.guanzhuFuc(options.id,'affirm')
+			}
 			console.log('options.scene-------------------------》')
 			// console.log(options.scene)
 			if(options.scene){
@@ -259,11 +273,28 @@
 				var obj = {};
 				obj[arr[0]] = arr[1]
 				this.uid = obj.id
+				that.gz_id=obj.id
+				console.log('静默关注--------------------------------------》')
+				// that.guanzhuFuc(obj.id,'affirm')
 			}
 			this.getdata()
 			this.getdata_cy()
+			setTimeout(function(){
+				if(that.gz_id){
+					that.guanzhuFuc(that.gz_id,'affirm')
+				}
+			},1500)
 		},
-
+		watch:{
+			hasLogin(val){
+				if(val){
+					if(that.gz_id){
+						that.guanzhuFuc(that.gz_id,'affirm')
+					}
+					
+				}
+			}
+		},
 		/**
 		 * 生命周期函数--监听页面初次渲染完成
 		 */
@@ -281,7 +312,7 @@
 			}
 			this.show_num++
 		},
-
+		
 		/**
 		 * 生命周期函数--监听页面隐藏
 		 */
@@ -320,24 +351,96 @@
 				// this.setData({
 				// 	sharetype:'share'
 				// })
+				
+				if(that.loginMsg){
+					return {
+						title: '51代言',
+						path: '/pages_goods/daiyan_xq/daiyan_xq?id=' + res.target.dataset.id+'&pid=' + that.loginMsg.id,
+						success: function(res) {
+							console.log('成功', res)
+						}
+					}
+				}else{
+					return {
+						title: '51代言',
+						path: '/pages_goods/daiyan_xq/daiyan_xq?id=' + res.target.dataset.id,
+						success: function(res) {
+							console.log('成功', res)
+						}
+					}
+				}
 			}
 			
-			return {
-				title: '51代言',
-				path: '/pages_goods/daiyan_xq/daiyan_xq?id=' + res.target.dataset.id,
-				success: function(res) {
-					console.log('成功', res)
+			
+			if (res.from === 'menu') {
+				// console.log(res.target.dataset.type)
+				// this.setData({
+				// 	sharetype:'share'
+				// })
+				
+				if(that.loginMsg){
+					return {
+						title: '51代言',
+						path: '/pagesA/my_index/my_index?id='+that.uid+'&pid=' + that.loginMsg.id,
+						success: function(res) {
+							console.log('成功', res)
+						}
+					}
+				}else{
+					return {
+						title: '51代言',
+						path: '/pagesA/my_index/my_index?id='+that.uid,
+						success: function(res) {
+							console.log('成功', res)
+						}
+					}
 				}
 			}
 		},
 		onShareTimeline(){
-			return {
-				title:'51代言',
-				query:'pid=' + that.loginMsg.id+'id='+that.uid,
+			
+			if(that.loginMsg){
+				return {
+					title:'我是代言人，邀您领红包！',
+					imageUrl:that.$store.state.loginMsg.avatarurl,
+					query:'pid=' + that.loginMsg.id+'&id='+that.uid,
+				}
+			}else{
+				return {
+					title:'我是代言人，邀您领红包！',
+					// imageUrl:that.$store.state.loginMsg.avatarurl,
+					query:'id='+that.uid,
+				}
 			}
 		},
 		methods: {
-			
+			cook_ewm(img){
+				 // 预览图片
+				 var a=[]
+				 a.push(img)
+				        uni.previewImage({
+				            urls: a,
+				            longPressActions: {
+				                itemList: [ '保存图片'],
+				                success: function(data) {
+				                    // console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+														uni.saveImageToPhotosAlbum({
+																	filePath: img,
+																	success: function () {
+																			console.log('save success');
+																			uni.showToast({
+																				icon:'none',
+																				title:'保存成功'
+																			})
+																	}
+															});
+				                },
+				                fail: function(err) {
+				                    console.log(err.errMsg);
+				                }
+				            }
+				        });
+			},
 			open_hb_fuc(item,type){
 				this.$refs.hongbao.open_hb(0,item,type)
 			},
@@ -591,6 +694,7 @@
 								icon:'none',
 								title:'操作成功'
 							})
+							that.gz_id=''
 						}else{
 							
 						}
@@ -684,7 +788,8 @@
 
 	.h_bg {
 		width: 100%;
-		height: 422rpx;
+		/* height: 422rpx; */
+		height: 432rpx;
 		position: absolute;
 		top: 0;
 		z-index: 1;
@@ -700,7 +805,8 @@
 
 	.my_index_box1 {
 		width: 100%;
-		height: 422rpx;
+		/* height: 422rpx; */
+		height: 432rpx;
 		padding-top: 33rpx;
 	}
 
@@ -773,7 +879,7 @@
 	.dy_id {
 		font-size: 24rpx;
 		color: #fff;
-		margin: 16rpx 0;
+		margin: 12rpx 0;
 		padding: 0 28rpx;
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
@@ -786,7 +892,7 @@
 
 	.dy_bq {
 		display: flex;
-		margin-bottom: 50rpx;
+		margin-bottom: 15rpx;
 		padding: 0 28rpx;
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
@@ -1190,4 +1296,9 @@
 	.goods_hb_box{
 		top: 50upx;
 	}
+	.my_ewm{
+		width: 60upx;
+		height: 60upx;
+	}
+	
 </style>

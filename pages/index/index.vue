@@ -6,7 +6,8 @@
 				<image v-if="!hasLogin" class="user_tx" :src="filter.imgIP('/static_s/51daiyan/images/mr_tx.jpg')" data-url="/pagesA/login/login" @tap='jump'></image>
 				<image v-else class="user_tx" @tap="jump" :data-url="'/pagesA/my_index/my_index?id='+loginMsg.id"  :src="loginMsg.avatarurl"></image>
 				<view class="sousuo_box" @tap="jump" data-url="/pages_goods/search/search">
-					<text class="iconfont iconsousuo"></text>搜索人名代言号/商品/品牌
+					<!-- <text class="iconfont iconsousuo"></text>搜索人名代言号/商品/品牌 -->
+					<text class="iconfont iconsousuo"></text>搜索人名代言号/商品
 				</view>
 				<view class="game_js" @tap="jump" data-url="/pages_goods/game_js/game_js">
 					<text class="iconfont iconic_help_px"></text>
@@ -238,6 +239,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -260,7 +262,7 @@
 			}
 		},
 		onLoad() {
-			var that = this
+			that = this
 			that.getdata()
 			that.event.on('/pages/index/index', 'test', function(args) {
 				//args为trigger中所有的参数，可自定义数据，除了type和page及success
@@ -308,20 +310,36 @@
 				// this.setData({
 				// 	sharetype:'share'
 				// })
-			}
-			
-			return {
-				title: '51代言',
-				path: '/pages_goods/daiyan_xq/daiyan_xq?id=' + res.target.dataset.id,
-				success: function(res) {
-					console.log('成功', res)
+				if(that.loginMsg){
+					return {
+						title: '51代言',
+						path: '/pages_goods/daiyan_xq/daiyan_xq?id=' + res.target.dataset.id+'&pid=' + that.loginMsg.id,
+						success: function(res) {
+							console.log('成功', res)
+						}
+					}
+				}else{
+					return {
+						title: '51代言',
+						path: '/pages_goods/daiyan_xq/daiyan_xq?id=' + res.target.dataset.id,
+						success: function(res) {
+							console.log('成功', res)
+						}
+					}
 				}
 			}
+			
+			
 		},
 		onShareTimeline(){
-			return {
-				title:'51代言',
-				query:'pid=' + that.loginMsg.id
+			if(that.loginMsg){
+				return {
+					// title:'51代言',
+					title:'我是代言人，邀您领红包！',
+					imageUrl:that.$store.state.loginMsg.avatarurl,
+					query:'pid=' + that.loginMsg.id
+				}
+			}else{
 			}
 		},
 		computed: {

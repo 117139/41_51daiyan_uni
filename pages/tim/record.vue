@@ -11,6 +11,7 @@
 		</view> -->
 		<!-- 聊天记录 会话列表 -->
 		<view class="conversition-box" v-if="hasLogin">
+			<official-account class="gzgzh_btn"></official-account>
 			<view v-if="datas.xtxx" class="xx_li" @tap="jump" data-url="/pagesA/xiaoxi_list/xiaoxi_list?type=3">
 				<view class="user_tx" >
 					<image class="user_tx"  :src="filter.imgIP('/static_s/51daiyan/images/xtxx.png')"></image>

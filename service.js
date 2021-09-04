@@ -8,7 +8,7 @@ const STATE_KEY = 'STATE_KEY';
 /* #ifndef H5 */
 // const IPurl = 'https://wx.51daiyan.cn/api/';
 /* #endif */
-// const IPurl = 'http://qsgqic.natappfree.cc/api/';
+// const IPurl = 'http://xuwes6.natappfree.cc/api/';
 const IPurl = 'https://wx.51daiyan.cn/api/';
 const imgurl = 'https://cdn.51daiyan.cn/';
 /**
@@ -192,6 +192,111 @@ const call = function(e) {
 
 const wxlogin = function(num) {
 	var that = this
+	
+	var userInfo = uni.getStorageSync('userInfo')
+	if (!userInfo) {
+			
+	} else {
+		uni.login({
+			success: function(res) {
+		
+				// 发送 res.code 到后台换取 openId, sessionKey, unionId
+				var uinfo = userInfo
+				let data = {
+					code: res.code,
+					nickname: uinfo.nickName,
+					avatarurl: uinfo.avatarUrl
+				}
+				let rcode = res.code
+				console.log(res.code)
+				uni.request({
+					url: IPurl + '/login',
+					data: data,
+					header: {
+						'content-type': 'application/x-www-form-urlencoded'
+					},
+					dataType: 'json',
+					method: 'POST',
+					success(res) {
+						uni.hideLoading()
+						console.log(res.data)
+						if (res.data.code == 1) {
+							console.log('登录成功')
+							console.log(res.data)
+							uni.setStorageSync('token', res.data.data.userToken)
+							//获取手机号
+							if (!res.data.data.phone) {
+								uni.showToast({
+									icon: 'none',
+									title: '请先绑定手机号'
+								})
+								if (num == 1) {
+									setTimeout(() => {
+										uni.redirectTo({
+											url: '/pagesA/getTel/getTel'
+										})
+									}, 1000)
+								} else {
+									setTimeout(() => {
+										uni.navigateTo({
+											url: '/pagesA/getTel/getTel'
+										})
+									}, 1000)
+								}
+								return
+							}
+							uni.setStorageSync('loginmsg', res.data.data)
+							store.commit('login', res.data.data)
+		
+							event.trigger({
+								type: 'test',
+								page: '/pages/index/index',
+								//obj和test是举的例子，随意啥都行，这个传过去在on中的args中都可以获取到
+								obj: {
+		
+								},
+								test: {
+									'loginmsg': res.data.data
+								},
+								success: function(data) {
+									//data为on中返回的数据
+								}
+							});
+							// im login
+		
+		
+		
+							if (num == 1) {
+								uni.showToast({
+									icon: 'none',
+									title: '登录成功'
+								})
+								setTimeout(() => {
+									uni.navigateBack()
+								}, 1000)
+							}
+						} else {
+							uni.removeStorageSync('userInfo')
+							uni.removeStorageSync('token')
+							uni.showToast({
+								icon: 'none',
+								title: '登录失败',
+							})
+						}
+		
+					},
+					fail() {
+						uni.hideLoading()
+						uni.showToast({
+							icon: 'none',
+							title: '登录失败'
+						})
+					}
+				})
+			}
+		})
+	}
+	return
 	// 获取用户信息
 	uni.getSetting({
 		success: res => {
@@ -322,12 +427,13 @@ const get_info = function(data) {
 		url: IPurl + '/user/info',
 		data: {
 			token:store.state.loginMsg.userToken,
-			// token:'fa7b4f7fcc5df37c3fddc4af254ffad4',
+			// token:'a0c5d43b2fa7aa59233287ba6f3536e0',
 			// token:'e48aec7443bab4ad0398fb4f55a57363',
 			// token:'12e1c60d8de6a4259b8b689d9c8e742e',
 			// token:'70c383a3deb1008a622fb41485e05c37',
 			// token:'6fc0fd38e32d91f8ec7720fe95e1a666',
 			// token:'94c599cbfc0f8a6a0a9a5127c8b76fe2'
+			// token:'ede428b7c887b98338ae8a9474ac84f8'
 			// token:store.state.loginMsg.userToken
 		},
 		header: {
@@ -476,7 +582,9 @@ const http = ({
 						return
 					} else if (res.data.code == 0) {
 						if (res.data.msg) {
-
+							if(res.data.msg=='您已经关注了此用户'){
+								return
+							}
 							uni.showToast({
 								icon: 'none',
 								title: res.data.msg

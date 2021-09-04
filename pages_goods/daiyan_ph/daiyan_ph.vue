@@ -132,7 +132,8 @@
 		},
 		onShareTimeline(){
 			return {
-				title:'51代言',
+				title:'我是代言人，邀您领红包！',
+				// imageUrl:that.$store.state.loginMsg.avatarurl,
 				query:'pid=' + that.loginMsg.id,
 			}
 		},

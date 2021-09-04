@@ -257,7 +257,7 @@ swiper video.data-v-30619706 {
   align-items: center;
   justify-content: center; */
   font-size: 22rpx;
-  line-height: 22rpx;
+  line-height: 24rpx;
   padding: 6rpx 12rpx;
   position: relative;
   top: -10rpx;

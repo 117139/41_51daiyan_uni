@@ -55,7 +55,8 @@
 			return {
 				datas:'',
 				ad_id:'',
-				user_id:''
+				user_id:'',
+				gz_id:''
 			}
 		},
 		computed: {
@@ -68,11 +69,38 @@
 		
 		onShareAppMessage() {
 			
+			if(that.loginMsg){
+				return {
+					title: '51代言',
+					path: '/pagesA/share/share?id='+that.ad_id+'&user_id=' + that.user_id+'&pid=' + that.loginMsg.id,
+					success: function(res) {
+						console.log('成功', res)
+					}
+				}
+			}else{
+				return {
+					title: '51代言',
+					path: '/pagesA/share/share?id='+that.ad_id+'&user_id=' + that.user_id,
+					success: function(res) {
+						console.log('成功', res)
+					}
+				}
+			}
 		},
 		onShareTimeline(){
-			return {
-				title:'51代言',
-				query:'pid=' + that.loginMsg.id,
+			
+			if(that.loginMsg){
+				return {
+					title:'我是代言人，邀您领红包！',
+					imageUrl:that.$store.state.loginMsg.avatarurl,
+					query:'id='+that.ad_id+'&user_id='+that.user_id,
+				}
+			}else{
+				return {
+					title:'我是代言人，邀您领红包！',
+					// imageUrl:that.$store.state.loginMsg.avatarurl,
+					query:'id='+that.ad_id+'&user_id='+that.user_id,
+				}
 			}
 		},
 		onLoad(option) {
@@ -80,9 +108,124 @@
 			that=this
 			that.ad_id=option.id||''
 			that.user_id=option.user_id||''
+			if(option.pid){
+				// this.pid = option.pid
+				
+				console.log('静默关注--------------------------------------》')
+				if(that.loginMsg.id==option.user_id){
+					// return
+				}else{
+					// that.guanzhuFuc(option.user_id,'affirm')
+					that.gz_id=options.user_id
+				}
+				
+			}
+			
+			setTimeout(function(){
+				if(that.gz_id){
+					that.guanzhuFuc(that.gz_id,'affirm')
+				}
+			},1500)
 			that.getdatalist()
 		},
+		watch:{
+			hasLogin(val){
+				if(val){
+					if(that.gz_id){
+						that.guanzhuFuc(that.gz_id,'affirm')
+					}
+					
+				}
+			}
+		},
 		methods: {
+			guanzhuFuc(id,key){
+				var that =this
+				var data={
+					token:that.loginMsg.userToken,
+					type:2,
+					id:id,
+					operate:key,
+				}
+				if(key=='affirm'){
+					service.P_post('/attention/operation',data).then(res => {
+					  console.log(res)
+						that.btnkg=0
+						if(res.code==-1){
+							uni.navigateTo({
+								url:'/pagesA/login/login'
+							})
+							return
+						}else if(res.code==0&&res.msg=='请先登录账号~'){
+							uni.navigateTo({
+								url:'/pagesA/login/login'
+							})
+							return
+						}else if(res.code==1){
+							that.gz_id=''
+							// that.getdata()
+							// uni.showToast({
+							// 	icon:'none',
+							// 	title:'操作成功'
+							// })
+						}else{
+							
+						}
+					}).catch(e => {
+						that.btnkg=0
+					  console.log(e)
+						uni.showToast({
+							icon:'none',
+							title:'关注失败'
+						})
+					})
+					return
+				}
+				wx.showModal({
+					title: '提示',
+					content: '是否取消关注?',
+					success (res) {
+						if (res.confirm) {
+							console.log('用户点击确定')
+							service.P_post('/attention/operation',data).then(res => {
+							  console.log(res)
+								that.btnkg=0
+								if(res.code==-1){
+									uni.navigateTo({
+										url:'/pagesA/login/login'
+									})
+									return
+								}else if(res.code==0&&res.msg=='请先登录账号~'){
+									uni.navigateTo({
+										url:'/pagesA/login/login'
+									})
+									return
+								}else if(res.code==1){
+									// that.getdata()
+									// uni.showToast({
+									// 	icon:'none',
+									// 	title:'关注成功'
+									// })
+								}else{
+									
+								}
+							}).catch(e => {
+								that.btnkg=0
+							  console.log(e)
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消')
+						}
+					}
+				})
+				
+				
+			},
+			
 			getdatalist() {
 			
 				let that = this

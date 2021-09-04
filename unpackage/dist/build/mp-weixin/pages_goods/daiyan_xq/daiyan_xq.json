@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "代言详情",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "hongbao": "/components/hongbao/hongbao"
+  }
+}

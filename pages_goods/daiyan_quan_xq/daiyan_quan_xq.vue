@@ -311,9 +311,19 @@
 
 		},
 		onShareTimeline(){
-			return {
-				title:'51代言',
-				query:'pid=' + that.loginMsg.id,
+			
+			if(that.loginMsg){
+				return {
+					title:'我是代言人，邀您领红包！',
+					imageUrl:that.$store.state.loginMsg.avatarurl,
+					query:'pid=' + that.loginMsg.id+'&id='+that.id,
+				}
+			}else{
+				return {
+					title:'我是代言人，邀您领红包！',
+					// imageUrl:that.$store.state.loginMsg.avatarurl,
+					query:'id='+that.id,
+				}
 			}
 		},
 		methods: {
